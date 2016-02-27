@@ -12,7 +12,8 @@ class FrontPageViewController: UIViewController {
 
     @IBOutlet weak var logoCyrus: UIImageView!
     
-    var cyrusText = "Hi there,my name is Cyrus The Great.\n I founded the Achaemedid empire that comprised of many nations.\n\nDuring my time(between 559-530 B.C), I was passionate about human rights,politics and influencing civilizations.\nI brought peace to nations I conquered by respecting their existing customs and views.\n\nToday,my goal is to connect you with people who share similar interest with you so you can learn and discuss about those views.\n\nKindly Sign Up or Login to start connecting.\n\n"
+    var cyrusText = "Hi there,my name is Cyrus\n Today,my goal is to connect you with people who share similar interest with you so you can learn and discuss about those views.\n\nKindly Sign Up or Login to start connecting.\n"
+    
     var cyrusIntroWords: [Character]!
     var myCounter = 0
     var timer:NSTimer?
