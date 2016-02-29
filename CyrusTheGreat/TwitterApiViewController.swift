@@ -27,9 +27,12 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
     var userToFollower = Dictionary<String, Int>()
     var topicToUser = [String:Int]()
     
-    var tableViewData = [String]()
-    var tableViewTwoData = [String]()
-    var tableViewThreeData = [String]()
+//    var tableViewData = [String]()
+    var tableViewData = [Topic]()
+//    var tableViewTwoData = [String]()
+    var tableViewTwoData = [Topic]()
+//    var tableViewThreeData = [String]()
+    var tableViewThreeData = [Topic]()
     
     
     override func viewDidLoad() {
@@ -39,15 +42,18 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
         tweetTableView.dataSource = self
         tweetTableView.delegate = self
         tweetTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell1")
+        tweetTableView.allowsMultipleSelection = true
         
         
         tweetTwoTableView.dataSource = self
         tweetTwoTableView.delegate = self
         tweetTwoTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell2")
+        tweetTwoTableView.allowsMultipleSelection = true
         
         tweetThreeTableView.dataSource = self
         tweetThreeTableView.delegate = self
         tweetThreeTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell3")
+        tweetThreeTableView.allowsMultipleSelection = true
         
         
     }
@@ -81,25 +87,200 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
         if tableView == self.tweetTableView {
             cell = tweetTableView.dequeueReusableCellWithIdentifier("Cell1") as? UITableViewCell
             let row = indexPath.row
-            cell!.textLabel!.text = tableViewData[row]
+            cell!.textLabel!.text = tableViewData[row].topic
+            cell!.selected = tableViewData[row].selected
+            
+            if(cell!.selected) {
+             cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
+             tableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: UITableViewScrollPosition.None)
+            } else {
+                cell!.accessoryType = UITableViewCellAccessoryType.None
+            }
+            
+            
+            
         }
         
         if tableView == self.tweetTwoTableView {
             cell = tweetTwoTableView.dequeueReusableCellWithIdentifier("Cell2") as? UITableViewCell
             let row = indexPath.row
             
-            cell!.textLabel!.text = tableViewTwoData[row]
+            cell!.textLabel!.text = tableViewTwoData[row].topic
+            cell!.selected = tableViewTwoData[row].selected
+            
+            
+            if(cell!.selected) {
+                cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
+                tableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: UITableViewScrollPosition.None)
+            } else {
+                cell!.accessoryType = UITableViewCellAccessoryType.None
+            }
         }
         
         if tableView == self.tweetThreeTableView {
             cell = tweetThreeTableView.dequeueReusableCellWithIdentifier("Cell3") as? UITableViewCell
             let row = indexPath.row
-            cell!.textLabel!.text = tableViewThreeData[row]
+            
+            cell!.textLabel!.text = tableViewThreeData[row].topic
+            cell!.selected = tableViewThreeData[row].selected
+            
+            
+            if(cell!.selected) {
+                cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
+                tableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: UITableViewScrollPosition.None)
+            } else {
+                cell!.accessoryType = UITableViewCellAccessoryType.None
+            }
+        }
+        
+//        println("Topic: " + cell!.textLabel!.text! + " Selected " + String(stringInterpolationSegment: cell!.selected))
+        
+        
+        //            cell!.backgroundColor = UIColor.blueColor()
+//            
+//        }
+        return cell!
+    }
+    
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        var cell:UITableViewCell?
+        
+       
+        if tableView == self.tweetTableView {
+            cell = tweetTableView.dequeueReusableCellWithIdentifier("Cell1") as? UITableViewCell
+            let row = indexPath.row
+            
+             println("Selection called")
+            cell!.selected = tableViewData[row].selected
+//            
+            if (!cell!.selected) {
+                cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
+//                cell!.selected = false
+                tableViewData[row].selected = true
+                tableView.reloadData()
+                
+            }
+            
+        }
+        
+        if tableView == self.tweetTwoTableView {
+            cell = tweetTwoTableView.dequeueReusableCellWithIdentifier("Cell2") as? UITableViewCell
+            let row = indexPath.row
+            
+            println("Selection called")
+            cell!.selected = tableViewTwoData[row].selected
+            //
+            if (!cell!.selected) {
+                cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
+                tableViewTwoData[row].selected = true
+                tableView.reloadData()
+                
+            }
+
+        }
+        
+        if tableView == self.tweetThreeTableView {
+            cell = tweetThreeTableView.dequeueReusableCellWithIdentifier("Cell3") as? UITableViewCell
+            
+            let row = indexPath.row
+            
+            println("Selection called for table 3")
+            cell!.selected = tableViewThreeData[row].selected
+            println( "Is TableViewThree Selected "+String( stringInterpolationSegment: tableViewThreeData[row].selected))
+            //
+            if (!cell!.selected) {
+                cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
+                tableViewThreeData[row].selected = true
+                tableView.reloadData()
+                
+            }
+
+        }
+        
+//        tableView.reloadData()
+        
+
+    }
+    
+    func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
+        var cell:UITableViewCell?
+        
+        
+        if tableView == self.tweetTableView {
+            cell = tweetTableView.dequeueReusableCellWithIdentifier("Cell1") as? UITableViewCell
+            let row = indexPath.row
+            
+            println("DeSelection called")
+            //            cell!.textLabel!.text = tableViewData[row]
+//            println(
+            println("Current cell Value: " + String(stringInterpolationSegment: cell!.selected))
+            cell!.selected = tableViewData[row].selected
+            println("Current Topic: " + String(stringInterpolationSegment: tableViewData[row].topic))
+            println("Current Row Value: " + String(stringInterpolationSegment: tableViewData[row].selected))
+            //
+            if (cell!.selected) {
+                cell!.accessoryType = UITableViewCellAccessoryType.None
+                 cell!.selected = false
+                tableViewData[row].selected = false
+                
+                tableView.reloadData()
+                
+            }
+            
         }
         
         
-        return cell!
+        if tableView == self.tweetTwoTableView {
+            cell = tweetTwoTableView.dequeueReusableCellWithIdentifier("Cell2") as? UITableViewCell
+            let row = indexPath.row
+            
+            println("DeSelection called")
+            
+            println("Current cell Value: " + String(stringInterpolationSegment: cell!.selected))
+            cell!.selected = tableViewTwoData[row].selected
+            println("Current Topic: " + String(stringInterpolationSegment: tableViewTwoData[row].topic))
+            println("Current Row Value: " + String(stringInterpolationSegment: tableViewTwoData[row].selected))
+            //
+            if (cell!.selected) {
+                cell!.accessoryType = UITableViewCellAccessoryType.None
+                cell!.selected = false
+                tableViewTwoData[row].selected = false
+                
+                tableView.reloadData()
+                
+            }
+            
+        }
+        
+        if tableView == self.tweetThreeTableView {
+            cell = tweetThreeTableView.dequeueReusableCellWithIdentifier("Cell3") as? UITableViewCell
+            let row = indexPath.row
+            
+            println("DeSelection called")
+            
+            println("Current cell Value: " + String(stringInterpolationSegment: cell!.selected))
+            cell!.selected = tableViewThreeData[row].selected
+            println("Current Topic: " + String(stringInterpolationSegment: tableViewThreeData[row].topic))
+            println("Current Row Value: " + String(stringInterpolationSegment: tableViewThreeData[row].selected))
+            //
+            if (cell!.selected) {
+                cell!.accessoryType = UITableViewCellAccessoryType.None
+                cell!.selected = false
+                tableViewThreeData[row].selected = false
+                
+                tableView.reloadData()
+                
+            }
+            
+        }
+        
+        
+        
+        
     }
+    
+    
     
     func sortUserByUserCount() {
         
@@ -297,7 +478,10 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
                 
                 for var index = 0; index < imporTantTopics.count; index++ {
                     var currTopic = imporTantTopics[index]
-                    tableViewData.append(currTopic.0)
+                    var newTopic = Topic()
+                    newTopic.topic = currTopic.0
+                    newTopic.selected = true
+                    tableViewData.append(newTopic)
                     
                 }
                 
@@ -320,20 +504,29 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
                 // Index for TableViewOne Data
                 for var index = 0; index < topicSplit; index++ {
                     var currTopic = imporTantTopics[index]
-                    tableViewData.append(currTopic.0)
+                    var newTopic = Topic()
+                    newTopic.topic = currTopic.0
+                    newTopic.selected = true
+                    tableViewData.append(newTopic)
                     
                 }
                 
                 
                 for var secInd = topicSplit; midPosition < imporTantTopics.count && secInd < midPosition; secInd++ {
                     var currTopic = imporTantTopics[secInd]
-                    tableViewTwoData.append(currTopic.0)
+                    var newTopic = Topic()
+                    newTopic.topic = currTopic.0
+                    newTopic.selected = true
+                    tableViewTwoData.append(newTopic)
                 }
                 
                 
                 for var thirdInd = midPosition; thirdInd < imporTantTopics.count; thirdInd++ {
                     var currTopic = imporTantTopics[thirdInd]
-                    tableViewThreeData.append(currTopic.0)
+                    var newTopic = Topic()
+                    newTopic.topic = currTopic.0
+                    newTopic.selected = true
+                    tableViewThreeData.append(newTopic)
                 }
                 //
                 //        for topic in imporTantTopics {
@@ -460,6 +653,11 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
         })
     }
     
+}
+
+class Topic {
+    var topic: String!
+    var selected: Bool!
 }
 
 // Sentence Case String
