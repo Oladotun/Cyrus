@@ -17,25 +17,26 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
     @IBOutlet weak var tweetTwoTableView: UITableView!
     @IBOutlet weak var tweetThreeTableView: UITableView!
     
+    @IBOutlet weak var uselessTopics: UILabel!
+    
     let account = ACAccountStore()
     var twitterAccount=ACAccount()
     var userFriends = Int()
     var userToList = [String : [String]]()
-    var userTopics = [String]()
     let stopWords = ["new","social","liked","tweet","people","list","twitter","boss","dick","shit","fuck","link","facebook","friend","celeb","my","feed","influencer","racist","all"]
     var userCollected =  [AnyObject]()
     var userToFollower = Dictionary<String, Int>()
     var topicToUser = [String:Int]()
     
-//    var tableViewData = [String]()
     var tableViewData = [Topic]()
-//    var tableViewTwoData = [String]()
     var tableViewTwoData = [Topic]()
-//    var tableViewThreeData = [String]()
     var tableViewThreeData = [Topic]()
+    
+    var uselessTopicsArray = [String]()
     
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         self.userLookUp()
         
@@ -54,6 +55,8 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
         tweetThreeTableView.delegate = self
         tweetThreeTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell3")
         tweetThreeTableView.allowsMultipleSelection = true
+        
+         uselessTopics.text = ""
         
         
     }
@@ -97,6 +100,7 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
                 cell!.accessoryType = UITableViewCellAccessoryType.None
             }
             
+           
             
             
         }
@@ -133,12 +137,18 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
             }
         }
         
-//        println("Topic: " + cell!.textLabel!.text! + " Selected " + String(stringInterpolationSegment: cell!.selected))
         
+        if uselessTopicsArray.count > 0 {
+            var allUselessWords = ",".join(uselessTopicsArray)
+            
+            dispatch_async(dispatch_get_main_queue(), {
+                self.uselessTopics.text = allUselessWords
+            })
+        } else {
+            uselessTopics.text = ""
+        }
         
-        //            cell!.backgroundColor = UIColor.blueColor()
-//            
-//        }
+
         return cell!
     }
     
@@ -158,6 +168,8 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
                 cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
 //                cell!.selected = false
                 tableViewData[row].selected = true
+                
+                uselessTopicsArray = uselessTopicsArray.filter( {$0 != self.tableViewData[row].topic})
                 tableView.reloadData()
                 
             }
@@ -174,6 +186,7 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
             if (!cell!.selected) {
                 cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
                 tableViewTwoData[row].selected = true
+                uselessTopicsArray = uselessTopicsArray.filter( {$0 != self.tableViewTwoData[row].topic})
                 tableView.reloadData()
                 
             }
@@ -187,11 +200,12 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
             
             println("Selection called for table 3")
             cell!.selected = tableViewThreeData[row].selected
-            println( "Is TableViewThree Selected "+String( stringInterpolationSegment: tableViewThreeData[row].selected))
+            println( "Is TableViewThree Selected " + String( stringInterpolationSegment: tableViewThreeData[row].selected))
             //
             if (!cell!.selected) {
                 cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
                 tableViewThreeData[row].selected = true
+                uselessTopicsArray = uselessTopicsArray.filter( {$0 != self.tableViewThreeData[row].topic})
                 tableView.reloadData()
                 
             }
@@ -224,6 +238,8 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
                  cell!.selected = false
                 tableViewData[row].selected = false
                 
+                uselessTopicsArray.append(tableViewData[row].topic)
+                
                 tableView.reloadData()
                 
             }
@@ -247,6 +263,8 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
                 cell!.selected = false
                 tableViewTwoData[row].selected = false
                 
+                uselessTopicsArray.append(tableViewTwoData[row].topic)
+                
                 tableView.reloadData()
                 
             }
@@ -268,6 +286,8 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
                 cell!.accessoryType = UITableViewCellAccessoryType.None
                 cell!.selected = false
                 tableViewThreeData[row].selected = false
+                
+                uselessTopicsArray.append(tableViewThreeData[row].topic)
                 
                 tableView.reloadData()
                 

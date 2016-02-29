@@ -625,13 +625,22 @@ know more abut you</string>
                                     <rect key="frame" x="257" y="0.0" width="138" height="500"/>
                                 </variation>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nFK-aK-73I">
+                                <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="16" y="585" width="379" height="43"/>
+                                </variation>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EE1-Ly-FMO">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                 <state key="normal" title="Next">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="148" y="618" width="99" height="30"/>
+                                    <rect key="frame" x="151" y="641" width="99" height="30"/>
                                 </variation>
                             </button>
                         </subviews>
@@ -639,12 +648,14 @@ know more abut you</string>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="CWe-Og-yBX"/>
+                                <exclude reference="nFK-aK-73I"/>
                                 <exclude reference="EE1-Ly-FMO"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
                             <mask key="subviews">
                                 <include reference="CWe-Og-yBX"/>
+                                <include reference="nFK-aK-73I"/>
                                 <include reference="EE1-Ly-FMO"/>
                             </mask>
                         </variation>
@@ -653,6 +664,7 @@ know more abut you</string>
                         <outlet property="tweetTableView" destination="3My-eI-iZo" id="6fd-h7-QOR"/>
                         <outlet property="tweetThreeTableView" destination="CWe-Og-yBX" id="qN9-hf-fb6"/>
                         <outlet property="tweetTwoTableView" destination="cm4-E7-9lg" id="ho6-qb-3EJ"/>
+                        <outlet property="uselessTopics" destination="nFK-aK-73I" id="2ve-uw-waE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ctV-cd-7en" sceneMemberID="firstResponder"/>
