@@ -14,19 +14,22 @@ import Accounts
 class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableViewDelegate  {
 
     @IBOutlet weak var tweetTableView: UITableView!
-    
     @IBOutlet weak var tweetTwoTableView: UITableView!
+    @IBOutlet weak var tweetThreeTableView: UITableView!
+    
     let account = ACAccountStore()
     var twitterAccount=ACAccount()
     var userFriends = Int()
     var userToList = [String : [String]]()
     var userTopics = [String]()
-    let stopWords = ["new","social","liked","tweet","people","list","twitter","boss","dick","shit","fuck","link","facebook","friend","celeb","my","feed","influencer"]
+    let stopWords = ["new","social","liked","tweet","people","list","twitter","boss","dick","shit","fuck","link","facebook","friend","celeb","my","feed","influencer","racist","all"]
     var userCollected =  [AnyObject]()
     var userToFollower = Dictionary<String, Int>()
     var topicToUser = [String:Int]()
+    
     var tableViewData = [String]()
     var tableViewTwoData = [String]()
+    var tableViewThreeData = [String]()
     
     
     override func viewDidLoad() {
@@ -41,6 +44,10 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
         tweetTwoTableView.dataSource = self
         tweetTwoTableView.delegate = self
         tweetTwoTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell2")
+        
+        tweetThreeTableView.dataSource = self
+        tweetThreeTableView.delegate = self
+        tweetThreeTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell3")
         
         
     }
@@ -57,8 +64,10 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
             count = tableViewData.count
             
         } else if tableView == self.tweetTwoTableView {
-            print("Second Table called")
+//            print("Second Table called")
             count = tableViewTwoData.count
+        } else if tableView == self.tweetThreeTableView {
+            count = tableViewThreeData.count
         }
         
         
@@ -80,6 +89,12 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
             let row = indexPath.row
             
             cell!.textLabel!.text = tableViewTwoData[row]
+        }
+        
+        if tableView == self.tweetThreeTableView {
+            cell = tweetThreeTableView.dequeueReusableCellWithIdentifier("Cell3") as? UITableViewCell
+            let row = indexPath.row
+            cell!.textLabel!.text = tableViewThreeData[row]
         }
         
         
@@ -118,9 +133,9 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
         let requestURL = NSURL(string: "https://api.twitter.com/1.1/lists/memberships.json")
         let dispatch_group = dispatch_group_create()
         
-        for info in input {
-            //                var info = input[0]
-            //                println(info.0)
+//        for info in input {
+            var info = input[0]
+            println(info.0)
             
             let parameters = ["screen_name":info.0,"trim_user": "1", "count" : "300"]
             let postRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: requestURL, parameters: parameters as [NSObject : AnyObject])
@@ -158,7 +173,7 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
             })
             
             
-        }
+//        }
         
         
         dispatch_group_notify(dispatch_group, dispatch_get_main_queue()) {
@@ -212,16 +227,27 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
             
         }
         
+        
         var splitWord = wordToChange.componentsSeparatedByString(" ")
+        
+        if (splitWord.count > 3) {
+            return true
+        }
+        
+        
         var wordSentence = [String]()
         
         for word in splitWord {
-            wordSentence.append(word.lowercaseString.capitalizeFirst)
+            wordSentence.append(word.lowercaseString.capitalizeFirst.trim())
         }
         
         currWord = " ".join(wordSentence)
+        currWord = currWord.trim()
         
-        return false
+        if (currWord.isEmpty) {
+            return true
+        }
+         return false
         
     }
     
@@ -258,36 +284,83 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
         
         
         
-        var topicSplit = imporTantTopics.count / 2
         
         
-        // Index for TableViewOne Data
-        for var index = 0; index < topicSplit; index++ {
-            var currTopic = imporTantTopics[index]
-            tableViewData.append(currTopic.0)
+        
+        if(imporTantTopics.count > 0) {
+            
+            imporTantTopics.sort({ (s1:(String,Int), s2:(String,Int)) -> Bool in return count(s1.0) < count(s2.0)})
+            
+            
+            if(imporTantTopics.count <= 3) {
+                
+                
+                for var index = 0; index < imporTantTopics.count; index++ {
+                    var currTopic = imporTantTopics[index]
+                    tableViewData.append(currTopic.0)
+                    
+                }
+                
+                if (tableViewData.count > 0) {
+                    
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.tweetTableView.reloadData()
+                        
+                    })
+                }
+                
+                
+                
+            } else {
+                
+                var topicSplit = imporTantTopics.count / 3
+                var midPosition = topicSplit * 2
+                
+                
+                // Index for TableViewOne Data
+                for var index = 0; index < topicSplit; index++ {
+                    var currTopic = imporTantTopics[index]
+                    tableViewData.append(currTopic.0)
+                    
+                }
+                
+                
+                for var secInd = topicSplit; midPosition < imporTantTopics.count && secInd < midPosition; secInd++ {
+                    var currTopic = imporTantTopics[secInd]
+                    tableViewTwoData.append(currTopic.0)
+                }
+                
+                
+                for var thirdInd = midPosition; thirdInd < imporTantTopics.count; thirdInd++ {
+                    var currTopic = imporTantTopics[thirdInd]
+                    tableViewThreeData.append(currTopic.0)
+                }
+                //
+                //        for topic in imporTantTopics {
+                //            userTopics.append(topic.0)
+                //        }
+                
+                println(tableViewData)
+                println(tableViewTwoData)
+                println(tableViewThreeData)
+                
+                if (tableViewData.count > 0) {
+                    
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.tweetTableView.reloadData()
+                        self.tweetTwoTableView.reloadData()
+                        self.tweetThreeTableView.reloadData()
+                    })
+                }
+                
+            }
+            
+            
+            
             
         }
         
         
-        for var secInd = topicSplit; secInd < imporTantTopics.count; secInd++ {
-            var currTopic = imporTantTopics[secInd]
-            tableViewTwoData.append(currTopic.0)
-        }
-        //
-        //        for topic in imporTantTopics {
-        //            userTopics.append(topic.0)
-        //        }
-        
-        println(tableViewData)
-        println(tableViewTwoData)
-        
-        if (tableViewData.count > 0) {
-            
-            dispatch_async(dispatch_get_main_queue(), {
-                self.tweetTableView.reloadData()
-                self.tweetTwoTableView.reloadData()
-            })
-        }
         
         //        if (tableViewTwoData.count > 0) {
         //            println("loading data")
@@ -397,6 +470,11 @@ extension String {
         var result = self
         result.replaceRange(startIndex...startIndex, with: String(self[startIndex]).uppercaseString)
         return result
+    }
+    
+    func trim() -> String
+    {
+        return self.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
     }
     
 }
