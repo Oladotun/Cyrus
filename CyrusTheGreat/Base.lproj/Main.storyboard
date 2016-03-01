@@ -232,7 +232,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AK1-99-zkb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="336" y="327"/>
+            <point key="canvasLocation" x="-840" y="337.5"/>
         </scene>
         <!--Sign Up Page View Controller-->
         <scene sceneID="oFx-Td-rWR">
@@ -478,7 +478,7 @@ know more abut you</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cUG-aw-PuC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="796" y="327"/>
+            <point key="canvasLocation" x="-54" y="337.5"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="l4X-wF-Z1a">
@@ -559,7 +559,7 @@ know more abut you</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3gU-WS-ZiQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1317" y="327"/>
+            <point key="canvasLocation" x="699" y="337.5"/>
         </scene>
         <!--Twitter Api View Controller-->
         <scene sceneID="pYp-I6-mSB">
@@ -586,7 +586,7 @@ know more abut you</string>
                                     </tableViewCell>
                                 </prototypes>
                                 <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="0.0" y="0.0" width="200" height="500"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="127" height="500"/>
                                 </variation>
                                 <connections>
                                     <outlet property="dataSource" destination="B7R-MV-9fr" id="yVI-nM-MzL"/>
@@ -606,20 +606,70 @@ know more abut you</string>
                                     </tableViewCell>
                                 </prototypes>
                                 <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="200" y="0.0" width="200" height="500"/>
+                                    <rect key="frame" x="125" y="0.0" width="134" height="500"/>
                                 </variation>
                             </tableView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="CWe-Og-yBX">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell3" id="EPi-Wr-4Vt">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="EPi-Wr-4Vt" id="MH0-Mo-O4c">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="257" y="0.0" width="138" height="500"/>
+                                </variation>
+                            </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nFK-aK-73I">
+                                <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="16" y="585" width="379" height="43"/>
+                                </variation>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EE1-Ly-FMO">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="Next">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="151" y="641" width="99" height="30"/>
+                                </variation>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="CWe-Og-yBX"/>
+                                <exclude reference="nFK-aK-73I"/>
+                                <exclude reference="EE1-Ly-FMO"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="CWe-Og-yBX"/>
+                                <include reference="nFK-aK-73I"/>
+                                <include reference="EE1-Ly-FMO"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="tweetTableView" destination="3My-eI-iZo" id="6fd-h7-QOR"/>
+                        <outlet property="tweetThreeTableView" destination="CWe-Og-yBX" id="qN9-hf-fb6"/>
                         <outlet property="tweetTwoTableView" destination="cm4-E7-9lg" id="ho6-qb-3EJ"/>
+                        <outlet property="uselessTopics" destination="nFK-aK-73I" id="2ve-uw-waE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ctV-cd-7en" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1809" y="327"/>
+            <point key="canvasLocation" x="1467" y="337.5"/>
         </scene>
     </scenes>
 </document>
