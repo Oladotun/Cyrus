@@ -640,8 +640,12 @@ know more abut you</string>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="151" y="641" width="99" height="30"/>
+                                    <rect key="frame" x="151" y="636" width="99" height="30"/>
                                 </variation>
+                                <connections>
+                                    <action selector="nextPage:" destination="B7R-MV-9fr" eventType="touchUpInside" id="gdQ-RO-BKs"/>
+                                    <segue destination="FPe-MW-7Ug" kind="show" id="d1g-Y0-iWf"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -670,6 +674,92 @@ know more abut you</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ctV-cd-7en" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1467" y="337.5"/>
+        </scene>
+        <!--Home Page View Controller-->
+        <scene sceneID="sDI-a8-sp3">
+            <objects>
+                <viewController id="FPe-MW-7Ug" customClass="HomePageViewController" customModule="CyrusTheGreat" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="J80-Pq-B9v"/>
+                        <viewControllerLayoutGuide type="bottom" id="xPY-Hk-hNq"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ey4-5Q-FAA">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wNX-T6-RB8">
+                                <rect key="frame" x="-25" y="-15" width="51" height="31"/>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="121" y="472" width="51" height="31"/>
+                                </variation>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Availabilty:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Py8-6M-M26">
+                                <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="121" y="511" width="83" height="21"/>
+                                </variation>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aYp-V6-Bg5">
+                                <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="224" y="511" width="153" height="21"/>
+                                </variation>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="woZ-yt-l7h">
+                                <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="16" y="583" width="368" height="44"/>
+                                </variation>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EJB-TK-fqx">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <color key="backgroundColor" red="0.035455710292197518" green="0.058884680503431854" blue="0.10990767045454541" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" title="Meet Up">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="90" y="183" width="195" height="113"/>
+                                </variation>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="wNX-T6-RB8"/>
+                                <exclude reference="Py8-6M-M26"/>
+                                <exclude reference="aYp-V6-Bg5"/>
+                                <exclude reference="woZ-yt-l7h"/>
+                                <exclude reference="EJB-TK-fqx"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="wNX-T6-RB8"/>
+                                <include reference="Py8-6M-M26"/>
+                                <include reference="aYp-V6-Bg5"/>
+                                <include reference="woZ-yt-l7h"/>
+                                <include reference="EJB-TK-fqx"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="availSwitch" destination="wNX-T6-RB8" id="V2U-s3-Aqh"/>
+                        <outlet property="currAvailability" destination="aYp-V6-Bg5" id="H7O-3b-FS8"/>
+                        <outlet property="interestCollected" destination="woZ-yt-l7h" id="3Qd-uj-GVq"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GjE-hO-a2H" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2323.5" y="330.75"/>
         </scene>
     </scenes>
 </document>

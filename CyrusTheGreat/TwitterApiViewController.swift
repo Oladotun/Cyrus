@@ -34,6 +34,8 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
     
     var uselessTopicsArray = [String]()
     
+    var usefulTopics = [String]()
+    
     
     override func viewDidLoad() {
         
@@ -664,6 +666,54 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
                 
         })
     }
+    
+    
+    
+    
+    
+    
+    
+    @IBAction func nextPage(sender: AnyObject) {
+        
+        for topic in tableViewData {
+            usefulTopics.append(topic.topic)
+        }
+        
+        for topic in tableViewTwoData {
+            usefulTopics.append(topic.topic)
+        }
+        
+        for topic in tableViewThreeData {
+            usefulTopics.append(topic.topic)
+        }
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+        
+        let destinationVC = segue.destinationViewController as! HomePageViewController
+        
+        destinationVC.interests = usefulTopics
+        
+
+    }
+    
+    
+    
+    
+    
+    
+    
+    
     
 }
 
