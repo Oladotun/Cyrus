@@ -69,7 +69,6 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
         
         var count: Int?
         if tableView == self.tweetTableView {
-            
             count = tableViewData.count
             
         } else if tableView == self.tweetTwoTableView {
@@ -137,10 +136,20 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
             }
         }
         
+        addToUselessTopics()
+        
+        
+
+        return cell!
+    }
+    
+    
+    func addToUselessTopics() {
         
         if uselessTopicsArray.count > 0 {
             var allUselessWords = ",".join(uselessTopicsArray)
             
+            // TODO: Format text on label screen
             dispatch_async(dispatch_get_main_queue(), {
                 self.uselessTopics.text = allUselessWords
             })
@@ -148,8 +157,6 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
             uselessTopics.text = ""
         }
         
-
-        return cell!
     }
     
     
@@ -568,24 +575,9 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
                 
             }
             
-            
-            
-            
         }
         
-        
-        
-        //        if (tableViewTwoData.count > 0) {
-        //            println("loading data")
-        //            dispatch_async(dispatch_get_main_queue(), {
-        //                self.tweetTwoTableView.reloadData()
-        //            })
-        //        }
-        
-        
-        
-        //        self.tweetTwoTableView.reloadData()
-        
+    
         
         
     }
