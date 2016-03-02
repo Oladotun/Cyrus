@@ -1,25 +1,22 @@
 //
-//  SignUpPageViewController.swift
+//  ApiConnectorViewController.swift
 //  CyrusTheGreat
 //
-//  Created by Dotun Opasina on 2/18/16.
+//  Created by Dotun Opasina on 3/2/16.
 //  Copyright (c) 2016 Dotun Opasina. All rights reserved.
 //
 
 import UIKit
 
-class SignUpPageViewController: UIViewController {
+class ApiConnectorViewController: UIViewController {
 
-    @IBOutlet weak var userLogo: UIImageView!
-    
-    @IBOutlet weak var cyrusTalkLabel: UILabel!
+    @IBOutlet weak var cyrusPrompt: UILabel!
+    @IBOutlet weak var cyrusLogo: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        userLogo.image = UIImage(named:"cyrus")
         
-        cyrusTalkLabel.text = "Hi,Cyrus here,I would like to know more about you."
-        cyrusTalkLabel.textAlignment = NSTextAlignment.Left
-
+        cyrusLogo.image = UIImage(named:"cyrus")
+        cyrusPrompt.text = "Trust me, I can infer your interest"
         // Do any additional setup after loading the view.
     }
 
