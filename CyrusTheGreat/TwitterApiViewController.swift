@@ -46,17 +46,22 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
         tweetTableView.delegate = self
         tweetTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell1")
         tweetTableView.allowsMultipleSelection = true
+        // Used to make sure the view printed is exactly the length needed
+        tweetTableView.tableFooterView = UIView()
         
         
         tweetTwoTableView.dataSource = self
         tweetTwoTableView.delegate = self
         tweetTwoTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell2")
         tweetTwoTableView.allowsMultipleSelection = true
+        tweetTwoTableView.tableFooterView = UIView()
+        
         
         tweetThreeTableView.dataSource = self
         tweetThreeTableView.delegate = self
         tweetThreeTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell3")
         tweetThreeTableView.allowsMultipleSelection = true
+        tweetThreeTableView.tableFooterView = UIView()
         
          uselessTopics.text = ""
         

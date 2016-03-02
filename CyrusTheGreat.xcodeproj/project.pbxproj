@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7C0661AC1C85CC54003C04BD /* HomePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0661AB1C85CC54003C04BD /* HomePageViewController.swift */; };
+		7C0661AE1C876670003C04BD /* ApiConnectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0661AD1C876670003C04BD /* ApiConnectorViewController.swift */; };
 		7CED63651C7353CD0003B19A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CED63641C7353CD0003B19A /* AppDelegate.swift */; };
 		7CED636A1C7353CD0003B19A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7CED63681C7353CD0003B19A /* Main.storyboard */; };
 		7CED636C1C7353CD0003B19A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7CED636B1C7353CD0003B19A /* Images.xcassets */; };
@@ -30,6 +31,7 @@
 
 /* Begin PBXFileReference section */
 		7C0661AB1C85CC54003C04BD /* HomePageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePageViewController.swift; sourceTree = "<group>"; };
+		7C0661AD1C876670003C04BD /* ApiConnectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiConnectorViewController.swift; sourceTree = "<group>"; };
 		7CED635F1C7353CD0003B19A /* CyrusTheGreat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CyrusTheGreat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7CED63631C7353CD0003B19A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7CED63641C7353CD0003B19A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 				7CED63871C75FC110003B19A /* SignUpPageViewController.swift */,
 				7CED63B71C81F9A90003B19A /* TwitterApiViewController.swift */,
 				7C0661AB1C85CC54003C04BD /* HomePageViewController.swift */,
+				7C0661AD1C876670003C04BD /* ApiConnectorViewController.swift */,
 			);
 			path = CyrusTheGreat;
 			sourceTree = "<group>";
@@ -223,6 +226,7 @@
 			files = (
 				7CED63881C75FC110003B19A /* SignUpPageViewController.swift in Sources */,
 				7CED63B81C81F9A90003B19A /* TwitterApiViewController.swift in Sources */,
+				7C0661AE1C876670003C04BD /* ApiConnectorViewController.swift in Sources */,
 				7CED63651C7353CD0003B19A /* AppDelegate.swift in Sources */,
 				7C0661AC1C85CC54003C04BD /* HomePageViewController.swift in Sources */,
 				7CED63861C7355DC0003B19A /* FrontPageViewController.swift in Sources */,
