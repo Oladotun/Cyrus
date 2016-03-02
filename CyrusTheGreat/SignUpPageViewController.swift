@@ -12,10 +12,13 @@ class SignUpPageViewController: UIViewController {
 
     @IBOutlet weak var userLogo: UIImageView!
     
+    @IBOutlet weak var cyrusTalkLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
         userLogo.image = UIImage(named:"cyrus")
         
+        cyrusTalkLabel.text = "Hi,Cyrus here,I would like to know more about you."
+        cyrusTalkLabel.textAlignment = NSTextAlignment.Left
 
         // Do any additional setup after loading the view.
     }
