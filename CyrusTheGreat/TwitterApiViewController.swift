@@ -722,24 +722,24 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
     
 }
 
-class Topic {
-    var topic: String!
-    var selected: Bool!
-}
-
-// Sentence Case String
-extension String {
-    
-    var capitalizeFirst: String {
-        if isEmpty { return "" }
-        var result = self
-        result.replaceRange(startIndex...startIndex, with: String(self[startIndex]).uppercaseString)
-        return result
-    }
-    
-    func trim() -> String
-    {
-        return self.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-    }
-    
-}
+//class Topic {
+//    var topic: String!
+//    var selected: Bool!
+//}
+//
+//// Sentence Case String
+//extension String {
+//    
+//    var capitalizeFirst: String {
+//        if isEmpty { return "" }
+//        var result = self
+//        result.replaceRange(startIndex...startIndex, with: String(self[startIndex]).uppercaseString)
+//        return result
+//    }
+//    
+//    func trim() -> String
+//    {
+//        return self.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+//    }
+//    
+//}
