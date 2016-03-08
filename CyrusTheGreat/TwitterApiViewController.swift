@@ -94,7 +94,7 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
         var cell:UITableViewCell?
         
         if tableView == self.tweetTableView {
-            cell = tweetTableView.dequeueReusableCellWithIdentifier("Cell1") as? UITableViewCell
+            cell = tweetTableView.dequeueReusableCellWithIdentifier("Cell1")! as UITableViewCell
             let row = indexPath.row
             cell!.textLabel!.text = tableViewData[row].topic
             cell!.selected = tableViewData[row].selected
@@ -112,7 +112,7 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
         }
         
         if tableView == self.tweetTwoTableView {
-            cell = tweetTwoTableView.dequeueReusableCellWithIdentifier("Cell2") as? UITableViewCell
+            cell = tweetTwoTableView.dequeueReusableCellWithIdentifier("Cell2")! as UITableViewCell
             let row = indexPath.row
             
             cell!.textLabel!.text = tableViewTwoData[row].topic
@@ -128,7 +128,7 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
         }
         
         if tableView == self.tweetThreeTableView {
-            cell = tweetThreeTableView.dequeueReusableCellWithIdentifier("Cell3") as? UITableViewCell
+            cell = tweetThreeTableView.dequeueReusableCellWithIdentifier("Cell3")! as UITableViewCell
             let row = indexPath.row
             
             cell!.textLabel!.text = tableViewThreeData[row].topic
@@ -154,7 +154,7 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
     func addToUselessTopics() {
         
         if uselessTopicsArray.count > 0 {
-            var allUselessWords = ",".join(uselessTopicsArray)
+            let allUselessWords = uselessTopicsArray.joinWithSeparator(",")
             
             // TODO: Format text on label screen
             dispatch_async(dispatch_get_main_queue(), {
@@ -172,10 +172,10 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
         
        
         if tableView == self.tweetTableView {
-            cell = tweetTableView.dequeueReusableCellWithIdentifier("Cell1") as? UITableViewCell
+            cell = tweetTableView.dequeueReusableCellWithIdentifier("Cell1")! as UITableViewCell
             let row = indexPath.row
             
-             println("Selection called")
+             print("Selection called")
             cell!.selected = tableViewData[row].selected
 //            
             if (!cell!.selected) {
@@ -191,10 +191,10 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
         }
         
         if tableView == self.tweetTwoTableView {
-            cell = tweetTwoTableView.dequeueReusableCellWithIdentifier("Cell2") as? UITableViewCell
+            cell = tweetTwoTableView.dequeueReusableCellWithIdentifier("Cell2")! as UITableViewCell
             let row = indexPath.row
             
-            println("Selection called")
+            print("Selection called")
             cell!.selected = tableViewTwoData[row].selected
             //
             if (!cell!.selected) {
@@ -208,13 +208,13 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
         }
         
         if tableView == self.tweetThreeTableView {
-            cell = tweetThreeTableView.dequeueReusableCellWithIdentifier("Cell3") as? UITableViewCell
+            cell = tweetThreeTableView.dequeueReusableCellWithIdentifier("Cell3")! as UITableViewCell
             
             let row = indexPath.row
             
-            println("Selection called for table 3")
+            print("Selection called for table 3")
             cell!.selected = tableViewThreeData[row].selected
-            println( "Is TableViewThree Selected " + String( stringInterpolationSegment: tableViewThreeData[row].selected))
+            print( "Is TableViewThree Selected " + String( stringInterpolationSegment: tableViewThreeData[row].selected))
             //
             if (!cell!.selected) {
                 cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
@@ -236,16 +236,16 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
         
         
         if tableView == self.tweetTableView {
-            cell = tweetTableView.dequeueReusableCellWithIdentifier("Cell1") as? UITableViewCell
+            cell = tweetTableView.dequeueReusableCellWithIdentifier("Cell1")! as UITableViewCell
             let row = indexPath.row
             
-            println("DeSelection called")
+            print("DeSelection called")
             //            cell!.textLabel!.text = tableViewData[row]
 //            println(
-            println("Current cell Value: " + String(stringInterpolationSegment: cell!.selected))
+            print("Current cell Value: " + String(stringInterpolationSegment: cell!.selected))
             cell!.selected = tableViewData[row].selected
-            println("Current Topic: " + String(stringInterpolationSegment: tableViewData[row].topic))
-            println("Current Row Value: " + String(stringInterpolationSegment: tableViewData[row].selected))
+            print("Current Topic: " + String(stringInterpolationSegment: tableViewData[row].topic))
+            print("Current Row Value: " + String(stringInterpolationSegment: tableViewData[row].selected))
             //
             if (cell!.selected) {
                 cell!.accessoryType = UITableViewCellAccessoryType.None
@@ -262,15 +262,15 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
         
         
         if tableView == self.tweetTwoTableView {
-            cell = tweetTwoTableView.dequeueReusableCellWithIdentifier("Cell2") as? UITableViewCell
+            cell = tweetTwoTableView.dequeueReusableCellWithIdentifier("Cell2")! as UITableViewCell
             let row = indexPath.row
             
-            println("DeSelection called")
+            print("DeSelection called")
             
-            println("Current cell Value: " + String(stringInterpolationSegment: cell!.selected))
+            print("Current cell Value: " + String(stringInterpolationSegment: cell!.selected))
             cell!.selected = tableViewTwoData[row].selected
-            println("Current Topic: " + String(stringInterpolationSegment: tableViewTwoData[row].topic))
-            println("Current Row Value: " + String(stringInterpolationSegment: tableViewTwoData[row].selected))
+            print("Current Topic: " + String(stringInterpolationSegment: tableViewTwoData[row].topic))
+            print("Current Row Value: " + String(stringInterpolationSegment: tableViewTwoData[row].selected))
             //
             if (cell!.selected) {
                 cell!.accessoryType = UITableViewCellAccessoryType.None
@@ -286,15 +286,15 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
         }
         
         if tableView == self.tweetThreeTableView {
-            cell = tweetThreeTableView.dequeueReusableCellWithIdentifier("Cell3") as? UITableViewCell
+            cell = tweetThreeTableView.dequeueReusableCellWithIdentifier("Cell3")! as UITableViewCell
             let row = indexPath.row
             
-            println("DeSelection called")
+            print("DeSelection called")
             
-            println("Current cell Value: " + String(stringInterpolationSegment: cell!.selected))
+            print("Current cell Value: " + String(stringInterpolationSegment: cell!.selected))
             cell!.selected = tableViewThreeData[row].selected
-            println("Current Topic: " + String(stringInterpolationSegment: tableViewThreeData[row].topic))
-            println("Current Row Value: " + String(stringInterpolationSegment: tableViewThreeData[row].selected))
+            print("Current Topic: " + String(stringInterpolationSegment: tableViewThreeData[row].topic))
+            print("Current Row Value: " + String(stringInterpolationSegment: tableViewThreeData[row].selected))
             //
             if (cell!.selected) {
                 cell!.accessoryType = UITableViewCellAccessoryType.None
@@ -329,16 +329,17 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
             
         }
         
-        var sortedArray = sorted(userToFollower, {$0.1 > $1.1})
+//        var sortedArray = (userToFollower, {$0.1 > $1.1})
+        var sortedArray = userToFollower.sort({$0.1 > $1.1})
         //        print("User Follower\n")
         
-        println("\nUser sorted \n")
+        print("\nUser sorted \n")
         
         if (sortedArray.count > 5) {
             sortedArray = Array(sortedArray[0..<5])
             
         }
-        println(sortedArray)
+        print(sortedArray)
         getFriendLists(sortedArray)
         
     }
@@ -349,8 +350,8 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
         let dispatch_group = dispatch_group_create()
         
 //        for info in input {
-            var info = input[0]
-            println(info.0)
+            let info = input[0]
+            print(info.0)
             
             let parameters = ["screen_name":info.0,"trim_user": "1", "count" : "300"]
             let postRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: requestURL, parameters: parameters as [NSObject : AnyObject])
@@ -362,27 +363,37 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
                 { (responseData:NSData!, urlResponse: NSHTTPURLResponse!, error:NSError!) -> Void in
                     
                     
-                    var err: NSError?
-                    let dataSourceDictionary = NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.MutableLeaves, error: &err) as!  NSDictionary
+//                    var err: NSError?
+//                    let dataSourceDictionary = NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.MutableLeaves, error: &err) as!  NSDictionary
                     
-                    let collected = dataSourceDictionary["lists"] as! [(AnyObject)]
-                    var listName = [String]()
-                    
-                    dispatch_async(dispatch_get_main_queue(), {
+                    do {
                         
-                        for list in collected {
-                            let currList = list as! NSDictionary
-                            listName.append((currList.objectForKey("name") as? String)!)
+                        let dataSourceDictionary = try NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.MutableLeaves)
+                        
+                        let collected = dataSourceDictionary["lists"] as! [(AnyObject)]
+                        var listName = [String]()
+                        
+                        dispatch_async(dispatch_get_main_queue(), {
                             
-                        }
+                            for list in collected {
+                                let currList = list as! NSDictionary
+                                listName.append((currList.objectForKey("name") as? String)!)
+                                
+                            }
+                            
+                            
+                            self.userToList[String(info.0)] = listName
+                            
+                            dispatch_group_leave(dispatch_group)
+                            
+                            
+                        })
                         
-                        
-                        self.userToList[String(info.0)] = listName
-                        
-                        dispatch_group_leave(dispatch_group)
-                        
-                        
-                    })
+                    } catch {
+                        print(error)
+                    }
+                  
+                    
                     
                     
             })
@@ -393,7 +404,7 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
         
         dispatch_group_notify(dispatch_group, dispatch_get_main_queue()) {
             
-            println("Result")
+            print("Result")
             self.getTopicFromUserLists()
             
         }
@@ -404,17 +415,17 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
         
         var wordToChange = currWord
         let unsafeChars = NSCharacterSet.alphanumericCharacterSet().invertedSet
-        wordToChange = " ".join(wordToChange.componentsSeparatedByCharactersInSet(unsafeChars))
+        wordToChange = (wordToChange.componentsSeparatedByCharactersInSet(unsafeChars)).joinWithSeparator(" ")
         
         
         
-        if count(currWord) < 3 {
+        if currWord.characters.count < 3 {
             return true
             
         }
         
         // Check to make sure the first Character is a digit, do not insert as an interest if true
-        var firstChar = Array(currWord)[0]
+//        var firstChar = Array(arrayLiteral: currWord)[0]
         let s = currWord.unicodeScalars
         let uni = s[s.startIndex]
         let digits = NSCharacterSet.decimalDigitCharacterSet()
@@ -427,13 +438,13 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
         
         for word in stopWords {
             
-            if (count(wordToChange) > count(word) ) {
+            if (wordToChange.length > word.length ) {
                 
                 if wordToChange.lowercaseString.rangeOfString(word) != nil {
                     
                     return true
                 }
-            } else if (count(word) == count(wordToChange)) {
+            } else if (wordToChange.length == word.length) {
                 
                 if(word.caseInsensitiveCompare(wordToChange) == NSComparisonResult.OrderedSame) {
                     return true
@@ -443,7 +454,7 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
         }
         
         
-        var splitWord = wordToChange.componentsSeparatedByString(" ")
+        let splitWord = wordToChange.componentsSeparatedByString(" ")
         
         if (splitWord.count > 3) {
             return true
@@ -456,7 +467,7 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
             wordSentence.append(word.lowercaseString.capitalizeFirst.trim())
         }
         
-        currWord = " ".join(wordSentence)
+        currWord = wordSentence.joinWithSeparator(" ")
         currWord = currWord.trim()
         
         if (currWord.isEmpty) {
@@ -468,7 +479,7 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
     
     func getTopicFromUserLists() {
         
-        var userList = userToList.values
+        let userList = userToList.values
         for topics in userList {
             
             for topic in topics {
@@ -485,7 +496,9 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
             }
             
         }
-        let sortedArray = sorted(topicToUser, {$0.1 > $1.1})
+//        let sortedArray = sorted(topicToUser, {$0.1 > $1.1})
+        
+        let sortedArray = topicToUser.sort({$0.1 > $1.1})
         //        println(sortedArray)
         
         var imporTantTopics = [(String,Int)]()
@@ -504,15 +517,15 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
         
         if(imporTantTopics.count > 0) {
             
-            imporTantTopics.sort({ (s1:(String,Int), s2:(String,Int)) -> Bool in return count(s1.0) < count(s2.0)})
+            imporTantTopics.sortInPlace({ (s1:(String,Int), s2:(String,Int)) -> Bool in return (s1.0).length < (s2.0).length})
             
             
             if(imporTantTopics.count <= 3) {
                 
                 
                 for var index = 0; index < imporTantTopics.count; index++ {
-                    var currTopic = imporTantTopics[index]
-                    var newTopic = Topic()
+                    let currTopic = imporTantTopics[index]
+                    let newTopic = Topic()
                     newTopic.topic = currTopic.0
                     newTopic.selected = true
                     tableViewData.append(newTopic)
@@ -531,14 +544,14 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
                 
             } else {
                 
-                var topicSplit = imporTantTopics.count / 3
-                var midPosition = topicSplit * 2
+                let topicSplit = imporTantTopics.count / 3
+                let midPosition = topicSplit * 2
                 
                 
                 // Index for TableViewOne Data
                 for var index = 0; index < topicSplit; index++ {
-                    var currTopic = imporTantTopics[index]
-                    var newTopic = Topic()
+                    let currTopic = imporTantTopics[index]
+                    let newTopic = Topic()
                     newTopic.topic = currTopic.0
                     newTopic.selected = true
                     tableViewData.append(newTopic)
@@ -547,8 +560,8 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
                 
                 
                 for var secInd = topicSplit; midPosition < imporTantTopics.count && secInd < midPosition; secInd++ {
-                    var currTopic = imporTantTopics[secInd]
-                    var newTopic = Topic()
+                    let currTopic = imporTantTopics[secInd]
+                    let newTopic = Topic()
                     newTopic.topic = currTopic.0
                     newTopic.selected = true
                     tableViewTwoData.append(newTopic)
@@ -556,8 +569,8 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
                 
                 
                 for var thirdInd = midPosition; thirdInd < imporTantTopics.count; thirdInd++ {
-                    var currTopic = imporTantTopics[thirdInd]
-                    var newTopic = Topic()
+                    let currTopic = imporTantTopics[thirdInd]
+                    let newTopic = Topic()
                     newTopic.topic = currTopic.0
                     newTopic.selected = true
                     tableViewThreeData.append(newTopic)
@@ -567,9 +580,9 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
                 //            userTopics.append(topic.0)
                 //        }
                 
-                println(tableViewData)
-                println(tableViewTwoData)
-                println(tableViewThreeData)
+                print(tableViewData)
+                print(tableViewTwoData)
+                print(tableViewThreeData)
                 
                 if (tableViewData.count > 0) {
                     
@@ -593,13 +606,13 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
     func userLookUp() {
         
         let accountType = account.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
-        println("In Connect To Twiiter")
+        print("In Connect To Twiiter")
         
         account.requestAccessToAccountsWithType(accountType, options: nil,
             completion: {(success:Bool, error:NSError!) -> Void in
                 
                 print("In Completion Mode")
-                println(success)
+                print(success)
                 
                 if success {
                     let arrayOfAccounts = self.account.accountsWithAccountType(accountType)
@@ -614,31 +627,40 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
                         
                         postRequest.performRequestWithHandler(
                             {(responseData:NSData!, urlResponse: NSHTTPURLResponse!, error:NSError!) -> Void in
-                                var err:NSError?
-                                let userInfoDictionary = NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.MutableLeaves, error: &err) as!  NSDictionary
-                                self.userFriends = userInfoDictionary["friends_count"] as! Int
-                                print(self.userFriends)
-                                if (self.userFriends > 200) {
-                                    // TODO Visit more pages in future
-                                    self.userFriends = 200
-                                } else if (self.userFriends < 2) {
+                                
+                                
+                                do {
                                     
-                                    print("Please follow someone you are interested in on twitter")
-                                    // TODO Check the users list membership
+                                    let userInfoDictionary = try NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.MutableLeaves)
+                                    self.userFriends = userInfoDictionary["friends_count"] as! Int
+                                    print(self.userFriends)
+                                    if (self.userFriends > 200) {
+                                        // TODO Visit more pages in future
+                                        self.userFriends = 200
+                                    } else if (self.userFriends < 2) {
+                                        
+                                        print("Please follow someone you are interested in on twitter")
+                                        // TODO Check the users list membership
+                                        
+                                    } else {
+                                        self.getUserInfo()
+                                    }
                                     
-                                } else {
-                                    self.getUserInfo()
+                                } catch {
+                                    print(error)
                                 }
+                                
+                                
                                 
                         })
                         
                         
                     } else {
-                        println("No account to access")
+                        print("No account to access")
                     }
                     
                 } else {
-                    println("Could not access")
+                    print("Could not access")
                 }
         })
         
@@ -657,16 +679,22 @@ class TwitterApiViewController: UIViewController,UITableViewDataSource,UITableVi
         
         postRequest.performRequestWithHandler(
             { (responseData:NSData!, urlResponse: NSHTTPURLResponse!, error:NSError!) -> Void in
-                var err: NSError?
-                let dataSourceDictionary = NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.MutableLeaves, error: &err) as!  NSDictionary
                 
-                self.userCollected =  dataSourceDictionary["users"] as! [(AnyObject)]
-                self.sortUserByUserCount()
                 
-                if self.userCollected.count != 0 {
-                    dispatch_async(dispatch_get_main_queue(), {
-                        self.tweetTableView.reloadData()
-                    })
+                do {
+                    
+                    let dataSourceDictionary = try NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.MutableLeaves)
+                    self.userCollected =  dataSourceDictionary["users"] as! [(AnyObject)]
+                    self.sortUserByUserCount()
+                    
+                    if self.userCollected.count != 0 {
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.tweetTableView.reloadData()
+                        })
+                    }
+                    
+                } catch {
+                    print(error)
                 }
                 
         })

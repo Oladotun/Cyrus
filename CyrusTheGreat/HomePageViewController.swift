@@ -24,7 +24,7 @@ class HomePageViewController: UIViewController {
         
         if interests.count > 0 {
             
-            self.interestCollected.text = ",".join(interests)
+            self.interestCollected.text = (interests.joinWithSeparator(","))
             
         }
 

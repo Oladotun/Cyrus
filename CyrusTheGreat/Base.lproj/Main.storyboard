@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Rdi-ec-lHb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Rdi-ec-lHb">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -570,9 +571,10 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell1" id="YCi-py-rF1">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="22" width="260" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YCi-py-rF1" id="9CS-yE-0av">
+                                            <rect key="frame" x="0.0" y="0.0" width="260" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -590,9 +592,10 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell2" id="22z-6A-Zeq">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="22" width="316" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="22z-6A-Zeq" id="RgB-Yg-1Df">
+                                            <rect key="frame" x="0.0" y="0.0" width="316" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -609,6 +612,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="EPi-Wr-4Vt" id="MH0-Mo-O4c">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -676,6 +680,7 @@
                         <viewControllerLayoutGuide type="bottom" id="YGt-ho-mjR"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="cF9-B0-i7I">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="dT2-DH-zMS">
@@ -759,16 +764,16 @@
                                 <exclude reference="qna-gY-LLY"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="Flm-rD-Eau"/>
-                                <exclude reference="Jkz-tk-OMI"/>
-                                <exclude reference="YrB-DZ-rUw"/>
                                 <exclude reference="Jov-IU-cPQ"/>
                                 <exclude reference="QoD-dH-ua9"/>
                                 <exclude reference="m5x-SP-iV9"/>
+                                <exclude reference="3I2-dg-rd3"/>
                                 <exclude reference="Acc-HT-Kys"/>
                                 <exclude reference="RDa-7z-t0b"/>
                                 <exclude reference="pCp-YV-x4f"/>
-                                <exclude reference="3I2-dg-rd3"/>
+                                <exclude reference="Flm-rD-Eau"/>
+                                <exclude reference="Jkz-tk-OMI"/>
+                                <exclude reference="YrB-DZ-rUw"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
@@ -778,16 +783,16 @@
                                 <include reference="qna-gY-LLY"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="Flm-rD-Eau"/>
-                                <include reference="Jkz-tk-OMI"/>
-                                <include reference="YrB-DZ-rUw"/>
                                 <include reference="Jov-IU-cPQ"/>
                                 <include reference="QoD-dH-ua9"/>
                                 <include reference="m5x-SP-iV9"/>
+                                <include reference="3I2-dg-rd3"/>
                                 <include reference="Acc-HT-Kys"/>
                                 <include reference="RDa-7z-t0b"/>
                                 <include reference="pCp-YV-x4f"/>
-                                <include reference="3I2-dg-rd3"/>
+                                <include reference="Flm-rD-Eau"/>
+                                <include reference="Jkz-tk-OMI"/>
+                                <include reference="YrB-DZ-rUw"/>
                             </mask>
                         </variation>
                     </view>
@@ -798,7 +803,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SPw-eQ-WTH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1467" y="980.25"/>
+            <point key="canvasLocation" x="1482" y="981.75"/>
         </scene>
         <!--Home Page View Controller-->
         <scene sceneID="sDI-a8-sp3">
