@@ -16,6 +16,8 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
     @IBOutlet weak var availSwitch: UISwitch!
     
     @IBOutlet weak var interestCollected: UILabel!
+    
+    var displayView = UIView()
     var interests: [String]!
     
     @IBOutlet weak var noOfPeer: UILabel!
@@ -37,6 +39,32 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
 //            
 //        }
 
+    }
+    
+    
+    
+    func setUpDisplayView() {
+        
+        displayView = UIView(frame: CGRect(x: view.frame.midX - 90, y: view.frame.midY - 25, width: 180, height: 50))
+       displayView.backgroundColor = UIColor.whiteColor()
+        displayView.alpha = 1.0
+       displayView.layer.cornerRadius = 10
+        
+        
+        //Here the spinnier is initialized
+        let activityView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+        activityView.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+        activityView.startAnimating()
+        
+        let textLabel = UILabel(frame: CGRect(x: 60, y: 0, width: 200, height: 50))
+        textLabel.textColor = UIColor.grayColor()
+        textLabel.text = "Pairing You Up"
+        
+        displayView.addSubview(activityView)
+        displayView.addSubview(textLabel)
+        
+        view.addSubview(displayView)
+        
     }
     
     func foundPeer() {
@@ -83,13 +111,22 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
         
         print(appDelegate.mpcManager.foundPeers.count)
         
+        
+        
         if  appDelegate.mpcManager.foundPeers.count > 0 {
+            
+            setUpDisplayView()
             let selectedPeer = appDelegate.mpcManager.foundPeers[0] as MCPeerID
             print("Going to connect from Meet Up page")
             appDelegate.mpcManager.browser.invitePeer(selectedPeer, toSession: appDelegate.mpcManager.session, withContext: nil, timeout: 20)
+            displayView.removeFromSuperview()
             
             
         }
+        
+//        let load = UIActivityViewController(activityItems: [nil], applicationActivities: nil)
+        
+        
         
     }
     
@@ -114,6 +151,9 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
         NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
             self.presentViewController(alert, animated: true, completion: nil)
         }
+        
+        
+        
         
     }
 
