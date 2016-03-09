@@ -18,6 +18,7 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
     @IBOutlet weak var interestCollected: UILabel!
     var interests: [String]!
     
+    @IBOutlet weak var noOfPeer: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +26,7 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
         currAvailability.text = "Offline"
         availSwitch.addTarget(self, action: Selector("switched:"), forControlEvents: UIControlEvents.ValueChanged)
         appDelegate.mpcManager.delegate = self
-        
+        noOfPeer.text = ""
         appDelegate.mpcManager.browser.startBrowsingForPeers()
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: "invitationWasReceived:", name: "testInvitation", object: nil)
         
@@ -40,9 +41,13 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
     
     func foundPeer() {
         
+        noOfPeer.text = "\(appDelegate.mpcManager.foundPeers.count)"
+        
     }
     
     func lostPeer() {
+        
+        noOfPeer.text = "\(appDelegate.mpcManager.foundPeers.count)"
         
     }
     
