@@ -7,18 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7C0661AC1C85CC54003C04BD /* HomePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0661AB1C85CC54003C04BD /* HomePageViewController.swift */; };
+		7C03202B1C90A06900E299D2 /* MPCManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C03202A1C90A06900E299D2 /* MPCManager.swift */; };
+		7C03202D1C90A09A00E299D2 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C03202C1C90A09A00E299D2 /* ChatViewController.swift */; };
+		7C0320311C90A6BF00E299D2 /* HomePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0320301C90A6BF00E299D2 /* HomePageViewController.swift */; };
+		7C0320341C90B04100E299D2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7C0320321C90B04100E299D2 /* Main.storyboard */; };
 		7C0661AE1C876670003C04BD /* ApiConnectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0661AD1C876670003C04BD /* ApiConnectorViewController.swift */; };
 		7CDC51961C88614F00D50F53 /* CollectionTwitterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDC51951C88614F00D50F53 /* CollectionTwitterViewController.swift */; };
 		7CDC51981C8862A700D50F53 /* CollectionTwitterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDC51971C8862A600D50F53 /* CollectionTwitterCollectionViewCell.swift */; };
 		7CED63651C7353CD0003B19A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CED63641C7353CD0003B19A /* AppDelegate.swift */; };
-		7CED636A1C7353CD0003B19A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7CED63681C7353CD0003B19A /* Main.storyboard */; };
 		7CED636C1C7353CD0003B19A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7CED636B1C7353CD0003B19A /* Images.xcassets */; };
 		7CED636F1C7353CD0003B19A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CED636D1C7353CD0003B19A /* LaunchScreen.xib */; };
 		7CED637B1C7353CD0003B19A /* CyrusTheGreatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CED637A1C7353CD0003B19A /* CyrusTheGreatTests.swift */; };
 		7CED63861C7355DC0003B19A /* FrontPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CED63851C7355DC0003B19A /* FrontPageViewController.swift */; };
 		7CED63881C75FC110003B19A /* SignUpPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CED63871C75FC110003B19A /* SignUpPageViewController.swift */; };
-		7CED63B81C81F9A90003B19A /* TwitterApiViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CED63B71C81F9A90003B19A /* TwitterApiViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,14 +33,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		7C0661AB1C85CC54003C04BD /* HomePageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePageViewController.swift; sourceTree = "<group>"; };
+		7C03202A1C90A06900E299D2 /* MPCManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MPCManager.swift; sourceTree = "<group>"; };
+		7C03202C1C90A09A00E299D2 /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		7C0320301C90A6BF00E299D2 /* HomePageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePageViewController.swift; sourceTree = "<group>"; };
+		7C0320331C90B04100E299D2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		7C0661AD1C876670003C04BD /* ApiConnectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiConnectorViewController.swift; sourceTree = "<group>"; };
 		7CDC51951C88614F00D50F53 /* CollectionTwitterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionTwitterViewController.swift; sourceTree = "<group>"; };
 		7CDC51971C8862A600D50F53 /* CollectionTwitterCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionTwitterCollectionViewCell.swift; sourceTree = "<group>"; };
 		7CED635F1C7353CD0003B19A /* CyrusTheGreat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CyrusTheGreat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7CED63631C7353CD0003B19A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7CED63641C7353CD0003B19A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		7CED63691C7353CD0003B19A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		7CED636B1C7353CD0003B19A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		7CED636E1C7353CD0003B19A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		7CED63741C7353CD0003B19A /* CyrusTheGreatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CyrusTheGreatTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -47,7 +50,6 @@
 		7CED637A1C7353CD0003B19A /* CyrusTheGreatTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CyrusTheGreatTests.swift; sourceTree = "<group>"; };
 		7CED63851C7355DC0003B19A /* FrontPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrontPageViewController.swift; sourceTree = "<group>"; };
 		7CED63871C75FC110003B19A /* SignUpPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpPageViewController.swift; sourceTree = "<group>"; };
-		7CED63B71C81F9A90003B19A /* TwitterApiViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterApiViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,15 +91,16 @@
 		7CED63611C7353CD0003B19A /* CyrusTheGreat */ = {
 			isa = PBXGroup;
 			children = (
+				7C0320321C90B04100E299D2 /* Main.storyboard */,
 				7CED63641C7353CD0003B19A /* AppDelegate.swift */,
-				7CED63681C7353CD0003B19A /* Main.storyboard */,
 				7CED636B1C7353CD0003B19A /* Images.xcassets */,
 				7CED636D1C7353CD0003B19A /* LaunchScreen.xib */,
 				7CED63621C7353CD0003B19A /* Supporting Files */,
 				7CED63851C7355DC0003B19A /* FrontPageViewController.swift */,
+				7C03202A1C90A06900E299D2 /* MPCManager.swift */,
+				7C0320301C90A6BF00E299D2 /* HomePageViewController.swift */,
+				7C03202C1C90A09A00E299D2 /* ChatViewController.swift */,
 				7CED63871C75FC110003B19A /* SignUpPageViewController.swift */,
-				7CED63B71C81F9A90003B19A /* TwitterApiViewController.swift */,
-				7C0661AB1C85CC54003C04BD /* HomePageViewController.swift */,
 				7C0661AD1C876670003C04BD /* ApiConnectorViewController.swift */,
 				7CDC51951C88614F00D50F53 /* CollectionTwitterViewController.swift */,
 				7CDC51971C8862A600D50F53 /* CollectionTwitterCollectionViewCell.swift */,
@@ -212,7 +215,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7CED636A1C7353CD0003B19A /* Main.storyboard in Resources */,
+				7C0320341C90B04100E299D2 /* Main.storyboard in Resources */,
 				7CED636F1C7353CD0003B19A /* LaunchScreen.xib in Resources */,
 				7CED636C1C7353CD0003B19A /* Images.xcassets in Resources */,
 			);
@@ -233,12 +236,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				7CED63881C75FC110003B19A /* SignUpPageViewController.swift in Sources */,
-				7CED63B81C81F9A90003B19A /* TwitterApiViewController.swift in Sources */,
+				7C03202B1C90A06900E299D2 /* MPCManager.swift in Sources */,
 				7CDC51981C8862A700D50F53 /* CollectionTwitterCollectionViewCell.swift in Sources */,
 				7C0661AE1C876670003C04BD /* ApiConnectorViewController.swift in Sources */,
 				7CED63651C7353CD0003B19A /* AppDelegate.swift in Sources */,
-				7C0661AC1C85CC54003C04BD /* HomePageViewController.swift in Sources */,
+				7C0320311C90A6BF00E299D2 /* HomePageViewController.swift in Sources */,
 				7CED63861C7355DC0003B19A /* FrontPageViewController.swift in Sources */,
+				7C03202D1C90A09A00E299D2 /* ChatViewController.swift in Sources */,
 				7CDC51961C88614F00D50F53 /* CollectionTwitterViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -262,10 +266,10 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		7CED63681C7353CD0003B19A /* Main.storyboard */ = {
+		7C0320321C90B04100E299D2 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				7CED63691C7353CD0003B19A /* Base */,
+				7C0320331C90B04100E299D2 /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";

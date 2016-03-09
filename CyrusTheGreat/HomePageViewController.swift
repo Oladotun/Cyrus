@@ -7,8 +7,11 @@
 //
 
 import UIKit
+import MultipeerConnectivity
 
-class HomePageViewController: UIViewController {
+class HomePageViewController: UIViewController,  MPCManagerDelegate {
+    
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     @IBOutlet weak var currAvailability: UILabel!
     @IBOutlet weak var availSwitch: UISwitch!
     
@@ -21,13 +24,36 @@ class HomePageViewController: UIViewController {
         availSwitch.setOn(false, animated:true)
         currAvailability.text = "Offline"
         availSwitch.addTarget(self, action: Selector("switched:"), forControlEvents: UIControlEvents.ValueChanged)
+        appDelegate.mpcManager.delegate = self
         
-        if interests.count > 0 {
-            
-            self.interestCollected.text = (interests.joinWithSeparator(","))
-            
-        }
+        appDelegate.mpcManager.browser.startBrowsingForPeers()
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "invitationWasReceived:", name: "testInvitation", object: nil)
+        
+        
+//        if interests.count > 0 {
+//            
+//            self.interestCollected.text = (interests.joinWithSeparator(","))
+//            
+//        }
 
+    }
+    
+    func foundPeer() {
+        
+    }
+    
+    func lostPeer() {
+        
+    }
+    
+    func connectedWithPeer(peerID: MCPeerID) {
+        print("Connecting from home \(peerID.displayName)")
+        
+//        NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+//            
+//            self.performSegueWithIdentifier("idSegueChat", sender: self)
+//            
+//        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -38,12 +64,53 @@ class HomePageViewController: UIViewController {
     func switched(switchState: UISwitch) {
         if switchState.on {
             currAvailability.text = "Online"
+            self.appDelegate.mpcManager.advertiser.startAdvertisingPeer()
+            
         } else {
             currAvailability.text = "Offline"
+            self.appDelegate.mpcManager.advertiser.stopAdvertisingPeer()
         }
     }
     
 
+    @IBAction func meetUpClicked(sender: AnyObject) {
+         availSwitch.setOn(true, animated:true)
+        
+        print(appDelegate.mpcManager.foundPeers.count)
+        
+        if  appDelegate.mpcManager.foundPeers.count > 0 {
+            let selectedPeer = appDelegate.mpcManager.foundPeers[0] as MCPeerID
+            print("Going to connect from Meet Up page")
+            appDelegate.mpcManager.browser.invitePeer(selectedPeer, toSession: appDelegate.mpcManager.session, withContext: nil, timeout: 20)
+            
+            
+        }
+        
+    }
+    
+    func invitationWasReceived(fromPeer: String) {
+        
+        print("I got called yeah")
+        let alert = UIAlertController(title: "", message: "\(fromPeer) wants to chat with you", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        let acceptAction: UIAlertAction = UIAlertAction(title: "Accept", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
+            
+            self.appDelegate.mpcManager.invitationHandler(true, self.appDelegate.mpcManager.session)
+        }
+        
+        let declineAction: UIAlertAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel) { (alertAction) -> Void in
+            
+            self.appDelegate.mpcManager.invitationHandler(false,MCSession())
+        }
+        
+        alert.addAction(acceptAction)
+        alert.addAction(declineAction)
+        
+        NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
+        
+    }
 
 
     /*
