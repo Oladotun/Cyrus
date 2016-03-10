@@ -25,6 +25,7 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
     var session: MCSession!
     
     var peer: MCPeerID!
+    var peerTopics: String?
     
     var browser: MCNearbyServiceBrowser!
     
@@ -32,23 +33,40 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
     
     var foundPeers = [MCPeerID]()
     
+    
     var invitationHandler: ((Bool, MCSession)->Void) = { status, session in }
     
     var delegate: MPCManagerDelegate?
+    
+    var peerIDTopics = [String:String]()
     
     
     override init() {
         super.init()
         
         peer = MCPeerID(displayName: UIDevice.currentDevice().name)
+        
+    }
+    
+    
+    func initAttributes(topics:String) {
+        
+        peerTopics = topics
+        
         session = MCSession(peer: peer,securityIdentity: nil, encryptionPreference: .Required)
         session.delegate = self
         
         browser = MCNearbyServiceBrowser(peer: peer, serviceType: "appcoda-mpc")
+        //        browser = MCNearbyServiceBrowser(
         browser.delegate = self
         
-        advertiser = MCNearbyServiceAdvertiser(peer: peer, discoveryInfo: nil, serviceType: "appcoda-mpc")
+        peerIDTopics [peer.displayName] = peerTopics
+        
+        advertiser = MCNearbyServiceAdvertiser(peer: peer, discoveryInfo: peerIDTopics, serviceType: "appcoda-mpc")
         advertiser.delegate = self
+        
+        
+        
     }
     
     
@@ -59,12 +77,17 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
     
     
     func advertiser(advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: NSData?, invitationHandler: (Bool, MCSession) -> Void) {
+        
+//        let peerInfo =  NSKeyedUnarchiver.unarchiveObjectWithData(context!) as! [String]
+
         self.invitationHandler = invitationHandler
         
-        print("Invitation Handler \(invitationHandler)")
+        print("Calling Invitation Handler \(invitationHandler)")
+//        print("Passed Data \(peerInfo)")
         delegate?.invitationWasReceived(peerID.displayName)
     }
     
+
     func advertiser(advertiser: MCNearbyServiceAdvertiser, didNotStartAdvertisingPeer error: NSError) {
         print(error.localizedDescription)
     }
@@ -73,6 +96,11 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
     
     func browser(browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
         foundPeers.append(peerID)
+//        foundPeerTopics.append(peerTopics)
+        
+        print("Found name \(peerID.displayName)")
+        
+        print("Current id display Topics\(info![peerID.displayName])")
         
         delegate?.foundPeer()
     }

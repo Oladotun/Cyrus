@@ -28,6 +28,8 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
         currAvailability.text = "Offline"
         availSwitch.addTarget(self, action: Selector("switched:"), forControlEvents: UIControlEvents.ValueChanged)
         appDelegate.mpcManager.delegate = self
+        
+        appDelegate.mpcManager.initAttributes("work wish talk")
         noOfPeer.text = ""
         appDelegate.mpcManager.browser.startBrowsingForPeers()
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: "invitationWasReceived:", name: "testInvitation", object: nil)
@@ -117,6 +119,8 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
             
             setUpDisplayView()
             let selectedPeer = appDelegate.mpcManager.foundPeers[0] as MCPeerID
+            
+            
             print("Going to connect from Meet Up page")
             appDelegate.mpcManager.browser.invitePeer(selectedPeer, toSession: appDelegate.mpcManager.session, withContext: nil, timeout: 20)
             displayView.removeFromSuperview()
