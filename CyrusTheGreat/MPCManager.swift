@@ -12,79 +12,77 @@ import MultipeerConnectivity
 
 protocol MPCManagerDelegate {
     func foundPeer()
-    
     func lostPeer()
-    
-    func invitationWasReceived(fromPeer: String)
-    
+    func invitationWasReceived(fromPeer: String, topic: String)
     func connectedWithPeer(peerID: MCPeerID)
+    var findMorePeer: Bool {set get}
 }
 
 class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, MCNearbyServiceAdvertiserDelegate {
     
     var session: MCSession!
-    
     var peer: MCPeerID!
-    var peerTopics: String?
-    
+    var peerTopics: [String]!
     var browser: MCNearbyServiceBrowser!
-    
     var advertiser: MCNearbyServiceAdvertiser!
-    
     var foundPeers = [MCPeerID]()
     
     
+    var matchTopics = [String]()
     var invitationHandler: ((Bool, MCSession)->Void) = { status, session in }
-    
     var delegate: MPCManagerDelegate?
-    
-    var peerIDTopics = [String:String]()
+    var presentTopic: Bool!
     
     
     override init() {
-        super.init()
         
+        super.init()
         peer = MCPeerID(displayName: UIDevice.currentDevice().name)
         
     }
     
     
-    func initAttributes(topics:String) {
-        
-        peerTopics = topics
+    func initAttributes(topics:[String]) {
+       
         
         session = MCSession(peer: peer,securityIdentity: nil, encryptionPreference: .Required)
         session.delegate = self
-        
         browser = MCNearbyServiceBrowser(peer: peer, serviceType: "appcoda-mpc")
-        //        browser = MCNearbyServiceBrowser(
         browser.delegate = self
+//        print(peerTopics)
+        peerTopics = topics
         
-        peerIDTopics [peer.displayName] = peerTopics
-        
-        advertiser = MCNearbyServiceAdvertiser(peer: peer, discoveryInfo: peerIDTopics, serviceType: "appcoda-mpc")
+        print(peerTopics)
+        advertiser = MCNearbyServiceAdvertiser(peer: peer, discoveryInfo: nil, serviceType: "appcoda-mpc")
         advertiser.delegate = self
-        
-        
         
     }
     
     
-//    func advertiser(advertiser: MCNearbyServiceAdvertiser!, didReceiveInvitationFromPeer peerID: MCPeerID!, withContext context: NSData!, invitationHandler: ((Bool, MCSession!) -> Void)!) {
-//        self.invitationHandler = invitationHandler
-//        delegate?.invitationWasReceived(peerID.displayName)
-//    }
-    
-    
     func advertiser(advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: NSData?, invitationHandler: (Bool, MCSession) -> Void) {
         
-//        let peerInfo =  NSKeyedUnarchiver.unarchiveObjectWithData(context!) as! [String]
-
-        self.invitationHandler = invitationHandler
+        let currInfo =  NSKeyedUnarchiver.unarchiveObjectWithData(context!) as! NSDictionary
+        let currPeepTopic = currInfo["topics"] as! [String]
         
-        print("Calling Invitation Handler \(invitationHandler)")
-//        print("Passed Data \(peerInfo)")
-        delegate?.invitationWasReceived(peerID.displayName)
+        appendMatchedTopics(currPeepTopic)
+        
+        if ((presentTopic) != nil) {
+            
+            self.invitationHandler = invitationHandler
+            print("Calling Invitation Handler \(invitationHandler)")
+            print("Matched Topics is \(matchTopics)")
+            delegate?.invitationWasReceived(peerID.displayName, topic: matchTopics[0])
+            delegate?.findMorePeer = false
+             print("Found Pair, setting Peer to False")
+            
+        } else {
+            
+            print("No pair found, setting Peer to True")
+            
+            delegate?.findMorePeer = true
+            
+        }
+        
     }
     
 
@@ -92,17 +90,41 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
         print(error.localizedDescription)
     }
     
+//    private func checkMatch(topics: String) -> Bool {
+//        
+//        let otherArrayTopics = topics.componentsSeparatedByString(",")
+//        
+//        presentTopic = false
+//        for topic in peerTopics {
+//            if (otherArrayTopics.contains(topic)) {
+//                presentTopic = true
+//                break
+//            }
+//        }
+//        return presentTopic
+//    }
+    
+    private func appendMatchedTopics(userTopics: [String]){
+        presentTopic = false
+        for topic in peerTopics {
+            if (userTopics.contains(topic)) {
+                presentTopic = true
+                matchTopics.append(topic)
+            }
+        }
+        
+    }
     
     
     func browser(browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
+        
         foundPeers.append(peerID)
-//        foundPeerTopics.append(peerTopics)
-        
         print("Found name \(peerID.displayName)")
-        
-        print("Current id display Topics\(info![peerID.displayName])")
+//        print("Current id display Topics\(info![peerID.displayName])")
         
         delegate?.foundPeer()
+    
+
     }
     
     func browser(browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
@@ -153,7 +175,6 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
         
         let dataToSend = NSKeyedArchiver.archivedDataWithRootObject(dictionary)
         let peersArray = NSArray(object: targetPeer)
-//        var error: NSError?
         
         do {
             try session.sendData(dataToSend, toPeers: peersArray as! [MCPeerID], withMode: MCSessionSendDataMode.Reliable)
@@ -162,12 +183,6 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
             return false
         }
         
-        
-        
-//        if !session.sendData(dataToSend, toPeers: peersArray as [AnyObject], withMode: MCSessionSendDataMode.Reliable, error: &error){
-//            print(error?.localizedDescription)
-//            return false
-//        }
         
         return true
     }

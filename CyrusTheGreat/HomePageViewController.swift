@@ -14,25 +14,25 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     @IBOutlet weak var currAvailability: UILabel!
     @IBOutlet weak var availSwitch: UISwitch!
-    
     @IBOutlet weak var interestCollected: UILabel!
-    
+    @IBOutlet weak var noOfPeer: UILabel!
     var displayView = UIView()
     var interests: [String]!
     
-    @IBOutlet weak var noOfPeer: UILabel!
+    
+    var findMorePeer = true
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         availSwitch.setOn(false, animated:true)
         currAvailability.text = "Offline"
         availSwitch.addTarget(self, action: Selector("switched:"), forControlEvents: UIControlEvents.ValueChanged)
         appDelegate.mpcManager.delegate = self
-        
-        appDelegate.mpcManager.initAttributes("work wish talk")
+        appDelegate.mpcManager.initAttributes(interests)
         noOfPeer.text = ""
         appDelegate.mpcManager.browser.startBrowsingForPeers()
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "invitationWasReceived:", name: "testInvitation", object: nil)
+
         
         
 //        if interests.count > 0 {
@@ -47,9 +47,9 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
     
     func setUpDisplayView() {
         
-        displayView = UIView(frame: CGRect(x: view.frame.midX - 90, y: view.frame.midY - 25, width: 180, height: 50))
+       displayView = UIView(frame: CGRect(x: view.frame.midX - 90, y: view.frame.midY - 25, width: 180, height: 50))
        displayView.backgroundColor = UIColor.whiteColor()
-        displayView.alpha = 1.0
+       displayView.alpha = 1.0
        displayView.layer.cornerRadius = 10
         
         
@@ -109,35 +109,60 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
     
 
     @IBAction func meetUpClicked(sender: AnyObject) {
-         availSwitch.setOn(true, animated:true)
+//         availSwitch.setOn(true, animated:true)
         
         print(appDelegate.mpcManager.foundPeers.count)
         
         
+        
+        
+        for peer in appDelegate.mpcManager.foundPeers {
+            
+            var contentCreated = [String: [String]]()
+            contentCreated["topics"] = interests
+            
+            let dataExample : NSData = NSKeyedArchiver.archivedDataWithRootObject(contentCreated)
+            
+            print("Going to connect from Meet Up page")
+            appDelegate.mpcManager.browser.invitePeer(peer, toSession: appDelegate.mpcManager.session, withContext: dataExample, timeout: 20)
+            displayView.removeFromSuperview()
+            
+            print(findMorePeer)
+            if(!findMorePeer) {
+                break
+            }
+            
+        }
+        
+        print("Find more peer now set as \(findMorePeer)")
+        
+        // Process all the foundPEERS here
         
         if  appDelegate.mpcManager.foundPeers.count > 0 {
             
             setUpDisplayView()
             let selectedPeer = appDelegate.mpcManager.foundPeers[0] as MCPeerID
             
+            var contentCreated = [String: [String]]()
+            contentCreated["topics"] = interests
+            
+            let dataExample : NSData = NSKeyedArchiver.archivedDataWithRootObject(contentCreated)
             
             print("Going to connect from Meet Up page")
-            appDelegate.mpcManager.browser.invitePeer(selectedPeer, toSession: appDelegate.mpcManager.session, withContext: nil, timeout: 20)
+            appDelegate.mpcManager.browser.invitePeer(selectedPeer, toSession: appDelegate.mpcManager.session, withContext: dataExample, timeout: 20)
             displayView.removeFromSuperview()
             
             
         }
         
-//        let load = UIActivityViewController(activityItems: [nil], applicationActivities: nil)
-        
         
         
     }
     
-    func invitationWasReceived(fromPeer: String) {
+    func invitationWasReceived(fromPeer: String, topic:String ) {
         
         print("I got called yeah")
-        let alert = UIAlertController(title: "", message: "\(fromPeer) wants to chat with you", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: "", message: "\(fromPeer) wants to chat with you on \(topic)", preferredStyle: UIAlertControllerStyle.Alert)
         
         let acceptAction: UIAlertAction = UIAlertAction(title: "Accept", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
             

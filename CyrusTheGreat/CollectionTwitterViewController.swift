@@ -196,6 +196,7 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
                                 do {
                                     
                                     let userInfoDictionary = try NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.MutableLeaves)
+//                                    print(userInfoDictionary)
                                     self.userFriends = userInfoDictionary["friends_count"] as! Int
                                     print(self.userFriends)
                                     if (self.userFriends > 200) {
@@ -527,6 +528,20 @@ extension String {
     
     var length: Int {
         return characters.count
+    }
+    
+    func toBase64()->String{
+        
+        let data = self.dataUsingEncoding(NSUTF8StringEncoding)
+        
+        return data!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+        
+    }
+    
+    func base64Decoded() -> String {
+        let decodedData = NSData(base64EncodedString: self, options:NSDataBase64DecodingOptions(rawValue: 0))
+        let decodedString = NSString(data: decodedData!, encoding: NSUTF8StringEncoding)
+        return decodedString as! String
     }
     
 }
