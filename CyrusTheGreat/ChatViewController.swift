@@ -115,6 +115,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         let dataDictionary = NSKeyedUnarchiver.unarchiveObjectWithData(data!) as! NSDictionary
         
         if let message = dataDictionary["message"] as? String {
+            messagesArray = []
             
             if message != "_end_chat_" {
                 // Create a new dictionary and set the sender and the received message to it.
@@ -209,6 +210,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 txtChat.text = ""
     
                 self.updateTableView()
+                // Hide button after sent
+                sendButton.alpha = 0.0
     
             } else {
                 print("Could not send data")
@@ -244,13 +247,16 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tblChat.dequeueReusableCellWithIdentifier("idCell")! as! ChatViewCell
-        cell.textLabel?.text = messagesArray[indexPath.row]["message"]
+        cell.chatMessage.text = messagesArray[indexPath.row]["message"]
         
-        if(indexPath.row % 2 == 0) {
+        if(indexPath.row == messagesArray.count - 1) {
+            cell.yesButton.alpha = 1.0
+            cell.noButton.alpha = 1.0
+        } else {
             cell.yesButton.alpha = 0.0
             cell.noButton.alpha = 0.0
         }
-        
+        messagesArray = []
         
         return cell
     }

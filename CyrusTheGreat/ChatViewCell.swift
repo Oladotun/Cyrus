@@ -17,6 +17,8 @@ class ChatViewCell: UITableViewCell {
     
     var chatViewProtocol: ChatViewDelegate?
 
+    @IBOutlet weak var chatMessage: UITextView!
+
     @IBOutlet weak var yesButton: UIButton!
     @IBOutlet weak var noButton: UIButton!
     
@@ -30,7 +32,8 @@ class ChatViewCell: UITableViewCell {
     }
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
+              // Initialization code
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
