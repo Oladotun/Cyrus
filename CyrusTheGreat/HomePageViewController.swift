@@ -84,11 +84,11 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
     func connectedWithPeer(peerID: MCPeerID) {
         print("Connecting from home \(peerID.displayName)")
         
-//        NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
-//            
-//            self.performSegueWithIdentifier("idSegueChat", sender: self)
-//            
-//        }
+        NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+            
+            self.performSegueWithIdentifier("idSegueChat", sender: self)
+            
+        }
     }
 
     override func didReceiveMemoryWarning() {

@@ -14,6 +14,7 @@
 		7C0661AE1C876670003C04BD /* ApiConnectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0661AD1C876670003C04BD /* ApiConnectorViewController.swift */; };
 		7CDC51961C88614F00D50F53 /* CollectionTwitterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDC51951C88614F00D50F53 /* CollectionTwitterViewController.swift */; };
 		7CDC51981C8862A700D50F53 /* CollectionTwitterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDC51971C8862A600D50F53 /* CollectionTwitterCollectionViewCell.swift */; };
+		7CE313271C97027C00634900 /* ChatViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE313261C97027C00634900 /* ChatViewCell.swift */; };
 		7CED63651C7353CD0003B19A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CED63641C7353CD0003B19A /* AppDelegate.swift */; };
 		7CED636C1C7353CD0003B19A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7CED636B1C7353CD0003B19A /* Images.xcassets */; };
 		7CED636F1C7353CD0003B19A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CED636D1C7353CD0003B19A /* LaunchScreen.xib */; };
@@ -40,6 +41,7 @@
 		7C0661AD1C876670003C04BD /* ApiConnectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiConnectorViewController.swift; sourceTree = "<group>"; };
 		7CDC51951C88614F00D50F53 /* CollectionTwitterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionTwitterViewController.swift; sourceTree = "<group>"; };
 		7CDC51971C8862A600D50F53 /* CollectionTwitterCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionTwitterCollectionViewCell.swift; sourceTree = "<group>"; };
+		7CE313261C97027C00634900 /* ChatViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewCell.swift; sourceTree = "<group>"; };
 		7CED635F1C7353CD0003B19A /* CyrusTheGreat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CyrusTheGreat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7CED63631C7353CD0003B19A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7CED63641C7353CD0003B19A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 				7C0661AD1C876670003C04BD /* ApiConnectorViewController.swift */,
 				7CDC51951C88614F00D50F53 /* CollectionTwitterViewController.swift */,
 				7CDC51971C8862A600D50F53 /* CollectionTwitterCollectionViewCell.swift */,
+				7CE313261C97027C00634900 /* ChatViewCell.swift */,
 			);
 			path = CyrusTheGreat;
 			sourceTree = "<group>";
@@ -241,6 +244,7 @@
 				7C0661AE1C876670003C04BD /* ApiConnectorViewController.swift in Sources */,
 				7CED63651C7353CD0003B19A /* AppDelegate.swift in Sources */,
 				7C0320311C90A6BF00E299D2 /* HomePageViewController.swift in Sources */,
+				7CE313271C97027C00634900 /* ChatViewCell.swift in Sources */,
 				7CED63861C7355DC0003B19A /* FrontPageViewController.swift in Sources */,
 				7C03202D1C90A09A00E299D2 /* ChatViewController.swift in Sources */,
 				7CDC51961C88614F00D50F53 /* CollectionTwitterViewController.swift in Sources */,

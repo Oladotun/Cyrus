@@ -26,7 +26,7 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
     var userCollected =  [AnyObject]()
     var userToFollower = Dictionary<String, Int>()
     var userToList = [String : [String]]()
-    let stopWords = ["new","social","liked","tweet","people","list","twitter","boss","dick","shit","fuck","link","facebook","friend","celeb","my","feed","influencer","racist","all"]
+    let stopWords = ["new","social","liked","tweet","people","list","twitter","boss","dick","shit","fuck","link","facebook","friend","celeb","my","feed","influencer","racist","all","funny","follower","instagram","fav","interest","important"]
     var topicToUser = [String:Int]()
 
     override func viewDidLoad() {
@@ -202,6 +202,7 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
                                     if (self.userFriends > 200) {
                                         // TODO Visit more pages in future
                                         self.userFriends = 200
+                                        self.getUserInfo()
                                     } else if (self.userFriends < 2) {
                                         
                                         print("Please follow someone you are interested in on twitter")
@@ -294,7 +295,7 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
         let requestURL = NSURL(string: "https://api.twitter.com/1.1/lists/memberships.json")
         let dispatch_group = dispatch_group_create()
         
-        //        for info in input {
+//    for info in input {
         let info = input[0]
         print(info.0)
         
@@ -311,6 +312,7 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
                 do {
                     
                     let dataSourceDictionary = try NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.MutableLeaves)
+                    print(dataSourceDictionary)
                     
                     let collected = dataSourceDictionary["lists"] as! [(AnyObject)]
                     var listName = [String]()
@@ -341,7 +343,7 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
         })
         
         
-        //        }
+//    }
         
         
         dispatch_group_notify(dispatch_group, dispatch_get_main_queue()) {

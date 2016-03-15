@@ -9,30 +9,32 @@
 import UIKit
 import MultipeerConnectivity
 
-class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
+class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, ChatViewDelegate {
 
     @IBOutlet weak var txtChat: UITextField!
-    
+    @IBOutlet weak var meetTimePicker: UIDatePicker!
     @IBOutlet weak var tblChat: UITableView!
-    
     var messagesArray: [Dictionary<String,String>] = []
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
+    var chatMessage: String!
+    var chatDate: String!
+    
+    @IBOutlet weak var sendButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        
         tblChat.delegate = self
         tblChat.dataSource = self
         
         // Dynamic sizing of chat box
         tblChat.estimatedRowHeight = 60.0
         tblChat.rowHeight = UITableViewAutomaticDimension
-
         txtChat.delegate = self
-        
+        updateChatDate()
+        sendButton.alpha = 0.0
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleMPCReceivedDataWithNotification:", name: "receivedMPCDataNotification", object: nil)
     }
 
@@ -41,6 +43,21 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func meetTimeAction(sender: AnyObject) {
+       updateChatDate()
+        
+    }
+    
+    func updateChatDate() {
+        
+        let timeFormatter = NSDateFormatter()
+        timeFormatter.timeStyle = NSDateFormatterStyle.ShortStyle
+        
+        chatDate = timeFormatter.stringFromDate(meetTimePicker.date)
+        print( timeFormatter.stringFromDate(meetTimePicker.date))
+        
+    }
+
 
     /*
     // MARK: - Navigation
@@ -57,7 +74,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
     @IBAction func endChat(sender: AnyObject) {
         
-        let messageDictionary: [String:String] = ["messaged":"_end_chat_"]
+        let messageDictionary: [String:String] = ["message":"_end_chat_"]
         if appDelegate.mpcManager.sendData(dictionaryWithData: messageDictionary, toPeer: appDelegate.mpcManager.session.connectedPeers[0] ){
             self.dismissViewControllerAnimated(true, completion: { () -> Void in
                 self.appDelegate.mpcManager.session.disconnect()
@@ -66,9 +83,27 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
     }
     
+    
+    func yesTapped() {
+        print("Accepted")
+        // Close chat and go to another page with time and meet up location
+        // If user opens app, it should go to a page with time and meet up location info
+        // When the time for meet up, we ask the user if there have met up with this user
+        
+    }
+    
+    func noTapped() {
+        print("Declined")
+        
+        // when declined, we ask the user to propose time
+        
+    }
+    
     // Method for handling received data 
     
     func handleMPCReceivedDataWithNotification(notification: NSNotification) {
+        
+        print("Notifier called")
         // Get the dictionary containing the data and the source peer from the notification.
         let receivedDataDictionary = notification.object as! Dictionary<String, AnyObject>
         
@@ -118,11 +153,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             
             
         }
-        
-        
-        
-        
-        
+   
     }
     
     
@@ -131,28 +162,64 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         
         textField.resignFirstResponder()
-        let messageDictionary: [String: String] = ["message": textField.text!]
-        
-        if appDelegate.mpcManager.sendData(dictionaryWithData: messageDictionary, toPeer: appDelegate.mpcManager.session.connectedPeers[0] ) {
+        if textField == txtChat {
             
-            let dictionary: [String:String] = ["sender": "self","message": textField.text!]
-            messagesArray.append(dictionary)
-            
-            self.updateTableView()
-        
-        } else {
-            print("Could not send data")
+            if txtChat.text == "" {
+                print("Cant accept empty input")
+            } else {
+//                 meetChat.becomeFirstResponder()
+                chatMessage = txtChat.text
+                sendButton.alpha = 1.0
+            }
+           
         }
         
-        textField.text = ""
+        
+//        let messageDictionary: [String: String] = ["message": textField.text!]
+//        
+//        if appDelegate.mpcManager.sendData(dictionaryWithData: messageDictionary, toPeer: appDelegate.mpcManager.session.connectedPeers[0] ) {
+//            
+//            let dictionary: [String:String] = ["sender": "self","message": textField.text!]
+//            messagesArray.append(dictionary)
+//            
+//            self.updateTableView()
+//        
+//        } else {
+//            print("Could not send data")
+//        }
+        
+//        textField.text = ""
         return true
     }
     
+    
+    @IBAction func sendButton(sender: AnyObject) {
+        
+            print(chatDate)
+            print(chatMessage)
+        
+            let toSendMessage = chatMessage + "\n" + chatDate
+    
+            let messageDictionary: [String: String] = ["message": toSendMessage]
+    
+            if appDelegate.mpcManager.sendData(dictionaryWithData: messageDictionary, toPeer: appDelegate.mpcManager.session.connectedPeers[0] ) {
+    
+                let dictionary: [String:String] = ["sender": "self","message": toSendMessage]
+                messagesArray.append(dictionary)
+                txtChat.text = ""
+    
+                self.updateTableView()
+    
+            } else {
+                print("Could not send data")
+            }
+        
+    }
+    
+    
     func updateTableView() {
+        
         self.tblChat.reloadData()
-        
-        
-        
         if self.tblChat.contentSize.height > self.tblChat.frame.size.height {
             tblChat.scrollToRowAtIndexPath(NSIndexPath(forRow: messagesArray.count - 1, inSection: 0), atScrollPosition: UITableViewScrollPosition.Bottom, animated: true)
         }
@@ -163,19 +230,28 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     // MARK: UITableView related method implementation
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        
         return 1
     }
     
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         return messagesArray.count
     }
     
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = tblChat.dequeueReusableCellWithIdentifier("idCell")! as UITableViewCell
+        let cell = tblChat.dequeueReusableCellWithIdentifier("idCell")! as! ChatViewCell
         cell.textLabel?.text = messagesArray[indexPath.row]["message"]
+        
+        if(indexPath.row % 2 == 0) {
+            cell.yesButton.alpha = 0.0
+            cell.noButton.alpha = 0.0
+        }
+        
+        
         return cell
     }
     

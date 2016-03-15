@@ -166,6 +166,8 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
     
     func session(session: MCSession, didReceiveData data: NSData, fromPeer peerID: MCPeerID) {
         
+        print("data was sent")
+        
         let dictionary: [String: AnyObject] = ["data": data, "fromPeer": peerID]
         NSNotificationCenter.defaultCenter().postNotificationName("receivedMPCDataNotification", object: dictionary)
     }

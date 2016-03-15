@@ -798,6 +798,7 @@
                         <outlet property="currAvailability" destination="aYp-V6-Bg5" id="H7O-3b-FS8"/>
                         <outlet property="interestCollected" destination="woZ-yt-l7h" id="3Qd-uj-GVq"/>
                         <outlet property="noOfPeer" destination="Pol-cF-aq9" id="NiS-cn-FBu"/>
+                        <segue destination="bqI-cL-1Wj" kind="show" identifier="idSegueChat" id="H6L-Am-SpU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GjE-hO-a2H" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -816,16 +817,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="V4r-9B-cS2">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="V4r-9B-cS2">
                                 <rect key="frame" x="0.0" y="-30" width="97" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="send"/>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="137" y="77" width="243" height="30"/>
+                                </variation>
                             </textField>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="ZAD-GB-EgV">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="98" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="ZAD-GB-EgV">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="idCell" textLabel="Lgb-dE-nPI" detailTextLabel="ACz-ZQ-TDy" rowHeight="80" style="IBUITableViewCellStyleSubtitle" id="uQx-IT-aYC">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="idCell" textLabel="Lgb-dE-nPI" detailTextLabel="ACz-ZQ-TDy" rowHeight="98" style="IBUITableViewCellStyleSubtitle" id="uQx-IT-aYC" customClass="ChatViewCell" customModule="CyrusTheGreat" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uQx-IT-aYC" id="Mvn-y6-OxZ">
@@ -852,16 +856,63 @@
                                                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                     </variation>
                                                 </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lpy-HJ-9NF">
+                                                    <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                                    <state key="normal" title="Yes"/>
+                                                    <variation key="heightClass=regular-widthClass=compact" ambiguous="YES">
+                                                        <rect key="frame" x="184" y="12" width="32" height="21"/>
+                                                    </variation>
+                                                    <connections>
+                                                        <action selector="acceptedInfo:" destination="uQx-IT-aYC" eventType="touchUpInside" id="g7u-xS-wsA"/>
+                                                    </connections>
+                                                </button>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Accept" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j1r-ff-tDB">
+                                                    <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular-widthClass=compact" ambiguous="YES">
+                                                        <rect key="frame" x="15" y="10" width="54" height="21"/>
+                                                    </variation>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zvA-VS-cAV">
+                                                    <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                                    <state key="normal" title="No"/>
+                                                    <variation key="heightClass=regular-widthClass=compact" ambiguous="YES">
+                                                        <rect key="frame" x="230" y="12" width="35" height="21"/>
+                                                    </variation>
+                                                    <connections>
+                                                        <action selector="declinedInfo:" destination="uQx-IT-aYC" eventType="touchUpInside" id="hQ2-V9-6y8"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
+                                            <variation key="default">
+                                                <mask key="subviews">
+                                                    <exclude reference="Lpy-HJ-9NF"/>
+                                                    <exclude reference="j1r-ff-tDB"/>
+                                                    <exclude reference="zvA-VS-cAV"/>
+                                                </mask>
+                                            </variation>
+                                            <variation key="heightClass=regular-widthClass=compact">
+                                                <mask key="subviews">
+                                                    <include reference="Lpy-HJ-9NF"/>
+                                                    <include reference="j1r-ff-tDB"/>
+                                                    <include reference="zvA-VS-cAV"/>
+                                                </mask>
+                                            </variation>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="noButton" destination="zvA-VS-cAV" id="0cn-dd-L2G"/>
+                                            <outlet property="yesButton" destination="Lpy-HJ-9NF" id="0oN-sR-dcd"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="0.0" y="263" width="400" height="542"/>
+                                </variation>
                             </tableView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gc9-o3-hSi">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="mgx-wJ-nth"/>
-                                </constraints>
                                 <items>
                                     <barButtonItem systemItem="stop" id="a4X-9C-9eW">
                                         <connections>
@@ -869,54 +920,61 @@
                                         </connections>
                                     </barButtonItem>
                                 </items>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="mgx-wJ-nth"/>
-                                    </mask>
-                                </variation>
-                                <variation key="heightClass=regular-widthClass=compact">
-                                    <mask key="constraints">
-                                        <include reference="mgx-wJ-nth"/>
-                                    </mask>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="0.0" y="28" width="400" height="44"/>
                                 </variation>
                             </toolbar>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Destination" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zgK-j8-QXX">
+                                <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="18" y="83" width="87" height="24"/>
+                                </variation>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Meet Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PXQ-NO-gct">
+                                <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="18" y="124" width="82" height="21"/>
+                                </variation>
+                            </label>
+                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="K0O-iv-RrQ">
+                                <rect key="frame" x="-160" y="-108" width="320" height="216"/>
+                                <date key="date" timeIntervalSinceReferenceDate="479656034.531205">
+                                    <!--2016-03-14 13:47:14 +0000-->
+                                </date>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="143" y="115" width="171" height="82"/>
+                                </variation>
+                                <connections>
+                                    <action selector="meetTimeAction:" destination="bqI-cL-1Wj" eventType="valueChanged" id="R63-fM-goR"/>
+                                </connections>
+                            </datePicker>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k2o-80-iki">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="Send"/>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="318" y="225" width="48" height="30"/>
+                                </variation>
+                                <connections>
+                                    <action selector="sendButton:" destination="bqI-cL-1Wj" eventType="touchUpInside" id="Dr1-uW-JW6"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="ZAD-GB-EgV" secondAttribute="trailing" id="6ZE-md-yaI"/>
-                            <constraint firstItem="ZAD-GB-EgV" firstAttribute="bottom" secondItem="0zg-Li-ljC" secondAttribute="top" id="D6s-9w-lRb"/>
-                            <constraint firstItem="ZAD-GB-EgV" firstAttribute="top" secondItem="V4r-9B-cS2" secondAttribute="bottom" constant="20" id="GmP-4w-Ncx">
-                                <variation key="heightClass=regular-widthClass=compact" constant="15"/>
-                            </constraint>
-                            <constraint firstItem="gc9-o3-hSi" firstAttribute="leading" secondItem="ZAD-GB-EgV" secondAttribute="leading" id="Pbx-We-G1m"/>
-                            <constraint firstItem="V4r-9B-cS2" firstAttribute="centerX" secondItem="ZAD-GB-EgV" secondAttribute="centerX" id="XS1-f0-Rgz"/>
-                            <constraint firstItem="ZAD-GB-EgV" firstAttribute="leading" secondItem="mOz-hw-a2Q" secondAttribute="leading" id="ZNV-qI-BGq"/>
-                            <constraint firstItem="V4r-9B-cS2" firstAttribute="top" secondItem="gc9-o3-hSi" secondAttribute="bottom" constant="5" id="aLS-aI-OoB"/>
-                            <constraint firstItem="gc9-o3-hSi" firstAttribute="top" secondItem="XEq-vP-XRM" secondAttribute="bottom" constant="8" id="bhN-MS-Knq"/>
-                            <constraint firstItem="gc9-o3-hSi" firstAttribute="trailing" secondItem="ZAD-GB-EgV" secondAttribute="trailing" id="sLU-kd-AHV"/>
-                            <constraint firstItem="V4r-9B-cS2" firstAttribute="leading" secondItem="mOz-hw-a2Q" secondAttribute="leadingMargin" id="uMO-by-0he"/>
-                            <constraint firstItem="ZAD-GB-EgV" firstAttribute="top" secondItem="mOz-hw-a2Q" secondAttribute="top" id="xFR-xd-RgP">
-                                <variation key="heightClass=regular-widthClass=compact" constant="122"/>
-                            </constraint>
-                        </constraints>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="V4r-9B-cS2"/>
                                 <exclude reference="ZAD-GB-EgV"/>
                                 <exclude reference="gc9-o3-hSi"/>
-                            </mask>
-                            <mask key="constraints">
-                                <exclude reference="XS1-f0-Rgz"/>
-                                <exclude reference="aLS-aI-OoB"/>
-                                <exclude reference="uMO-by-0he"/>
-                                <exclude reference="Pbx-We-G1m"/>
-                                <exclude reference="bhN-MS-Knq"/>
-                                <exclude reference="sLU-kd-AHV"/>
-                                <exclude reference="6ZE-md-yaI"/>
-                                <exclude reference="D6s-9w-lRb"/>
-                                <exclude reference="GmP-4w-Ncx"/>
-                                <exclude reference="ZNV-qI-BGq"/>
-                                <exclude reference="xFR-xd-RgP"/>
+                                <exclude reference="zgK-j8-QXX"/>
+                                <exclude reference="PXQ-NO-gct"/>
+                                <exclude reference="K0O-iv-RrQ"/>
+                                <exclude reference="k2o-80-iki"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
@@ -924,23 +982,16 @@
                                 <include reference="V4r-9B-cS2"/>
                                 <include reference="ZAD-GB-EgV"/>
                                 <include reference="gc9-o3-hSi"/>
-                            </mask>
-                            <mask key="constraints">
-                                <include reference="XS1-f0-Rgz"/>
-                                <include reference="aLS-aI-OoB"/>
-                                <include reference="uMO-by-0he"/>
-                                <include reference="Pbx-We-G1m"/>
-                                <include reference="bhN-MS-Knq"/>
-                                <include reference="sLU-kd-AHV"/>
-                                <include reference="6ZE-md-yaI"/>
-                                <include reference="D6s-9w-lRb"/>
-                                <include reference="GmP-4w-Ncx"/>
-                                <include reference="ZNV-qI-BGq"/>
-                                <include reference="xFR-xd-RgP"/>
+                                <include reference="zgK-j8-QXX"/>
+                                <include reference="PXQ-NO-gct"/>
+                                <include reference="K0O-iv-RrQ"/>
+                                <include reference="k2o-80-iki"/>
                             </mask>
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="meetTimePicker" destination="K0O-iv-RrQ" id="xkc-7b-PKw"/>
+                        <outlet property="sendButton" destination="k2o-80-iki" id="Q54-C9-ben"/>
                         <outlet property="tblChat" destination="ZAD-GB-EgV" id="Sdi-Yv-Su9"/>
                         <outlet property="txtChat" destination="V4r-9B-cS2" id="w24-Fi-iZ9"/>
                     </connections>
