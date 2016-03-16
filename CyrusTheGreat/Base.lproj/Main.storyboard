@@ -198,7 +198,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AK1-99-zkb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-840" y="337.5"/>
+            <point key="canvasLocation" x="-6978" y="442.5"/>
         </scene>
         <!--Sign Up Page View Controller-->
         <scene sceneID="oFx-Td-rWR">
@@ -444,7 +444,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cUG-aw-PuC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-54" y="337.5"/>
+            <point key="canvasLocation" x="-6192" y="442.5"/>
         </scene>
         <!--Api Connector View Controller-->
         <scene sceneID="l4X-wF-Z1a">
@@ -552,7 +552,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3gU-WS-ZiQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="699" y="337.5"/>
+            <point key="canvasLocation" x="-5439" y="442.5"/>
         </scene>
         <!--Collection Twitter View Controller-->
         <scene sceneID="M8y-TV-lzt">
@@ -689,7 +689,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SPw-eQ-WTH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1459.5" y="330.75"/>
+            <point key="canvasLocation" x="-4678.5" y="435.75"/>
         </scene>
         <!--Home Page View Controller-->
         <scene sceneID="sDI-a8-sp3">
@@ -803,12 +803,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GjE-hO-a2H" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2202" y="330.75"/>
+            <point key="canvasLocation" x="-3936" y="435.75"/>
         </scene>
         <!--Chat View Controller-->
         <scene sceneID="UFq-q8-tXK">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="BMU-fB-EO2" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="bqI-cL-1Wj" customClass="ChatViewController" customModule="CyrusTheGreat" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="XEq-vP-XRM"/>
@@ -887,7 +886,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uQx-IT-aYC" id="Mvn-y6-OxZ">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="131"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lpy-HJ-9NF">
@@ -898,6 +897,7 @@
                                                     </variation>
                                                     <connections>
                                                         <action selector="acceptedInfo:" destination="uQx-IT-aYC" eventType="touchUpInside" id="g7u-xS-wsA"/>
+                                                        <segue destination="qDC-g8-A9b" kind="show" id="eLe-5T-NXi"/>
                                                     </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Accept" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j1r-ff-tDB">
@@ -922,7 +922,7 @@
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="755" verticalCompressionResistancePriority="755" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="F29-Ly-yUb">
                                                     <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <mutableString key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</mutableString>
+                                                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                     <dataDetectorType key="dataDetectorTypes" address="YES"/>
@@ -991,8 +991,26 @@
                         <outlet property="txtChat" destination="V4r-9B-cS2" id="w24-Fi-iZ9"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BMU-fB-EO2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2955" y="330.75"/>
+            <point key="canvasLocation" x="-3183" y="435.75"/>
+        </scene>
+        <!--Meet Up Page View Controller-->
+        <scene sceneID="6x6-Rs-Ez2">
+            <objects>
+                <viewController id="qDC-g8-A9b" customClass="MeetUpPageViewController" customModule="CyrusTheGreat" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Tsn-iv-FBf"/>
+                        <viewControllerLayoutGuide type="bottom" id="oGe-x8-09U"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="TRc-uQ-m9i">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tA1-9R-djL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2349" y="435.75"/>
         </scene>
     </scenes>
 </document>
