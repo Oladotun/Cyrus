@@ -22,6 +22,7 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleMPCReceivedDataWithNotification:", name: "receivedMPCDataNotification", object: nil)
+        personClothing.delegate = self
 
         // Do any additional setup after loading the view.
     }
@@ -42,19 +43,14 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate {
             
             if message != "_end_chat_" {
                 // Create a new dictionary and set the sender and the received message to it.
-                let messageDictionary: [String: String] = ["sender": fromPeer.displayName, "message": message]
                 
-                messagesArray.append(messageDictionary)
-                
-                personDesc.text = "\(fromPeer.displayName) is wearing \(message)"
-                
-                print("Receiving data")
+//                print("Handle Receiving data")
                 
                 // Reload the tableview data and scroll to the bottom using the main thread.
-//                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-////                    self.updateTableView()
-//                
-//                })
+                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                    self.personDesc.text = "\(fromPeer.displayName) is wearing \(message)"
+                
+                })
                 
                 
             }
@@ -69,25 +65,6 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate {
     }
     
 
-//    @IBAction func wearingDesc(sender: AnyObject) {
-//        
-//        let toSendMessage = ""
-//        let messageDictionary: [String: String] = ["message": toSendMessage]
-//        
-//        if appDelegate.mpcManager.sendData(dictionaryWithData: messageDictionary, toPeer: appDelegate.mpcManager.session.connectedPeers[0] ) {
-//            
-////            let dictionary: [String:String] = ["sender": "self","message": toSendMessage]
-////            messagesArray.append(dictionary)
-////            txtChat.text = ""
-//            
-////            self.updateTableView()
-//            // Hide button after sent
-////            sendButton.alpha = 0.0
-//            
-//        } else {
-//            print("Could not send data")
-//        }
-//    }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         
@@ -96,22 +73,17 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate {
         if (textField.text == "") {
             print("Enter Destination")
         } else {
-            
+//            print("text field isnt empty")
+
             let toSendMessage = textField.text
             let messageDictionary: [String: String] = ["message": toSendMessage!]
             
             if appDelegate.mpcManager.sendData(dictionaryWithData: messageDictionary, toPeer: appDelegate.mpcManager.session.connectedPeers[0] ) {
                 
-                //            let dictionary: [String:String] = ["sender": "self","message": toSendMessage]
-                //            messagesArray.append(dictionary)
-                //            txtChat.text = ""
-                
-                //            self.updateTableView()
                 // Hide button after sent
                 
                 textField.enabled = false
-                textField.userInteractionEnabled = false
-                //            sendButton.alpha = 0.0
+//                textField.userInteractionEnabled = false
                 
             } else {
                 print("Could not send data")

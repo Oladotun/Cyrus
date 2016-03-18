@@ -20,6 +20,9 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     var chatMessage: String!
     var chatDate: String!
     
+    var iamSender:Bool!
+    
+    
     @IBOutlet weak var sendButton: UIButton!
     
     override func viewDidLoad() {
@@ -165,6 +168,9 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                     
                     // Reload the tableview data and scroll to the bottom using the main thread.
                     NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                    
+                        self.iamSender = false
+                        
                         self.updateTableView()
                     })
                     
@@ -212,28 +218,12 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             if txtChat.text == "" {
                 print("Cant accept empty input")
             } else {
-//                 meetChat.becomeFirstResponder()
                 chatMessage = txtChat.text
                 sendButton.alpha = 1.0
             }
            
         }
         
-        
-//        let messageDictionary: [String: String] = ["message": textField.text!]
-//        
-//        if appDelegate.mpcManager.sendData(dictionaryWithData: messageDictionary, toPeer: appDelegate.mpcManager.session.connectedPeers[0] ) {
-//            
-//            let dictionary: [String:String] = ["sender": "self","message": textField.text!]
-//            messagesArray.append(dictionary)
-//            
-//            self.updateTableView()
-//        
-//        } else {
-//            print("Could not send data")
-//        }
-        
-//        textField.text = ""
         return true
     }
     
@@ -256,6 +246,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 self.updateTableView()
                 // Hide button after sent
                 sendButton.alpha = 0.0
+                iamSender = true
     
             } else {
                 print("Could not send data")
@@ -294,8 +285,16 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         cell.chatMessage.text = messagesArray[indexPath.row]["message"]
         
         if(indexPath.row == messagesArray.count - 1) {
-            cell.yesButton.alpha = 1.0
-            cell.noButton.alpha = 1.0
+            
+//            print(iamSender!)
+            if (iamSender! == true) {
+                cell.yesButton.alpha = 0.0
+                cell.noButton.alpha = 0.0
+            } else {
+                cell.yesButton.alpha = 1.0
+                cell.noButton.alpha = 1.0
+            }
+            
         } else {
             cell.yesButton.alpha = 0.0
             cell.noButton.alpha = 0.0
