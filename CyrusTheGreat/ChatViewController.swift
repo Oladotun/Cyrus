@@ -36,6 +36,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         updateChatDate()
         sendButton.alpha = 0.0
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleMPCReceivedDataWithNotification:", name: "receivedMPCDataNotification", object: nil)
+        
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "moveToNext:", name: "chatYesClicked", object: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -83,12 +85,37 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
     }
     
+
     
     func yesTapped() {
         print("Accepted")
+        
         // Close chat and go to another page with time and meet up location
         // If user opens app, it should go to a page with time and meet up location info
         // When the time for meet up, we ask the user if there have met up with this user
+        
+        
+        
+        
+        
+        let toSendMessage = "segueToNext"
+        
+        let messageDictionary: [String: String] = ["message": toSendMessage]
+        
+        if appDelegate.mpcManager.sendData(dictionaryWithData: messageDictionary, toPeer: appDelegate.mpcManager.session.connectedPeers[0] ) {
+            
+            NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+                
+                self.performSegueWithIdentifier("yesSegue", sender: self)
+                
+            }
+            
+            
+        } else {
+            print("Could not send data")
+        }
+        
+        
         
     }
     
@@ -119,16 +146,33 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             
             if message != "_end_chat_" {
                 // Create a new dictionary and set the sender and the received message to it.
-                let messageDictionary: [String: String] = ["sender": fromPeer.displayName, "message": message]
                 
-                messagesArray.append(messageDictionary)
                 
-                print("Receiving data")
+                if message == "segueToNext" {
+                    NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+                        
+                        self.performSegueWithIdentifier("yesSegue", sender: self)
+                        
+                    }
+                    
+                } else {
+                    
+                    let messageDictionary: [String: String] = ["sender": fromPeer.displayName, "message": message]
+                    
+                    messagesArray.append(messageDictionary)
+                    
+                    print("Receiving data")
+                    
+                    // Reload the tableview data and scroll to the bottom using the main thread.
+                    NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                        self.updateTableView()
+                    })
+                    
+                }
                 
-                // Reload the tableview data and scroll to the bottom using the main thread.
-                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                    self.updateTableView()
-                })
+                
+                
+                
                 
                 
             } else {
@@ -256,6 +300,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             cell.yesButton.alpha = 0.0
             cell.noButton.alpha = 0.0
         }
+        cell.chatViewProtocol = self
         messagesArray = []
         
         return cell

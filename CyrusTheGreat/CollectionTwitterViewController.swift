@@ -312,7 +312,7 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
                 do {
                     
                     let dataSourceDictionary = try NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.MutableLeaves)
-                    print(dataSourceDictionary)
+//                    print(dataSourceDictionary)
                     
                     let collected = dataSourceDictionary["lists"] as! [(AnyObject)]
                     var listName = [String]()
