@@ -16,6 +16,8 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate {
     var destination:String!
     var time: String!
 
+    @IBOutlet weak var meetupTime: UILabel!
+    @IBOutlet weak var meetupDesc: UILabel!
     @IBOutlet weak var personDesc: UILabel!
     @IBOutlet weak var personClothing: UITextField!
     override func viewDidLoad() {
@@ -23,6 +25,8 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate {
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleMPCReceivedDataWithNotification:", name: "receivedMPCDataNotification", object: nil)
         personClothing.delegate = self
+        meetupDesc.text = "MeetUp Destination is at \(destination)"
+        meetupTime.text = "Planned meetup time is \(time)"
 
         // Do any additional setup after loading the view.
     }

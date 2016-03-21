@@ -145,13 +145,14 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         let dataDictionary = NSKeyedUnarchiver.unarchiveObjectWithData(data!) as! NSDictionary
         
         if let message = dataDictionary["message"] as? String {
-            messagesArray = []
+            
             
             if message != "_end_chat_" {
                 // Create a new dictionary and set the sender and the received message to it.
                 
                 
                 if message == "segueToNext" {
+                    print("current message array count is \(messagesArray.count)")
                     NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
                         
                         self.performSegueWithIdentifier("yesSegue", sender: self)
@@ -161,6 +162,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 } else {
                     
                     let messageDictionary: [String: String] = ["sender": fromPeer.displayName, "message": message]
+                    messagesArray = []
                     
                     messagesArray.append(messageDictionary)
                     
@@ -300,10 +302,35 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             cell.noButton.alpha = 0.0
         }
         cell.chatViewProtocol = self
-        messagesArray = []
+//        messagesArray = []
         
         return cell
     }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+        
+        if (segue.identifier == "yesSegue") {
+            
+            let destVC = segue.destinationViewController as! MeetUpPageViewController
+            
+//            print("current message Array")
+//            
+            let messageInfo = messagesArray[0]["message"]
+            
+            let messageInfoArray = messageInfo?.componentsSeparatedByString("\n")
+            
+            destVC.time = messageInfoArray![1]
+            destVC.destination = messageInfoArray![0]
+            
+            
+            
+        }
+    }
+    
+    
+    
     
     
 }
