@@ -73,11 +73,11 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
             print("Matched Topics is \(matchTopics)")
             delegate?.invitationWasReceived(peerID.displayName, topic: matchTopics[0])
             delegate?.findMorePeer = false
-             print("Found Pair, setting Peer to False")
+             print("Found Pair, setting Peer finding to False")
             
         } else {
             
-            print("No pair found, setting Peer to True")
+            print("No pair found, setting Peer finding to True")
             
             delegate?.findMorePeer = true
             

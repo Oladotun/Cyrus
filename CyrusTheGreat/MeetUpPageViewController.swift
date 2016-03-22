@@ -21,6 +21,7 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate,CBCentralM
     var destination:String!
     var time: String!
     var timerInvalidate:Bool!
+    var sessionDisconnected:Bool!
     
     var timer = NSTimer() //make a timer variable, but do do anything yet
     let timeInterval:NSTimeInterval = 10.0
@@ -44,6 +45,7 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate,CBCentralM
         timeToMeetUpAlert.text = ""
         yesButton.alpha = 0.0
         timerInvalidate = false
+        sessionDisconnected = false
         
         timer = NSTimer.scheduledTimerWithTimeInterval(timeInterval,
             target: self,
@@ -97,6 +99,10 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate,CBCentralM
     @IBAction func yesMeetup(sender: AnyObject) {
         timerInvalidate = true
         pmanager = CBCentralManager(delegate: self, queue: nil, options: [CBCentralManagerOptionShowPowerAlertKey: true])
+        appDelegate.mpcManager.session.disconnect()
+        
+        appDelegate.mpcManager.advertiser.startAdvertisingPeer()
+        appDelegate.mpcManager.browser.startBrowsingForPeers()
     }
     
 
@@ -192,6 +198,15 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate,CBCentralM
         
         let currentTime = dateFormatter.stringFromDate(todaysDate)
         
+        
+        if (!sessionDisconnected) {
+            sessionDisconnected = true
+            
+            if (!personClothing.enabled && otherPersonName != nil) {
+                appDelegate.mpcManager.session.disconnect()
+            }
+        }
+        
         if (timerInvalidate == true) {
             timer.invalidate()
         }else if minusFiveMinString == currentTime {
@@ -202,6 +217,7 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate,CBCentralM
             timeToMeetUpAlert.text = "Meet Up now with \(self.otherPersonName)"
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
             yesButton.alpha = 1.0
+//            appDelegate.mpcManager.session.disconnect()
         } else {
             print("false")
         }
