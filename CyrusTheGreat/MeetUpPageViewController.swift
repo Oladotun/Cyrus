@@ -200,10 +200,11 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate,CBCentralM
         
         
         if (!sessionDisconnected) {
-            sessionDisconnected = true
+           
             
             if (!personClothing.enabled && otherPersonName != nil) {
                 appDelegate.mpcManager.session.disconnect()
+                sessionDisconnected = true
             }
         }
         
