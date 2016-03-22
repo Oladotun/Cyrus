@@ -242,6 +242,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             if appDelegate.mpcManager.sendData(dictionaryWithData: messageDictionary, toPeer: appDelegate.mpcManager.session.connectedPeers[0] ) {
     
                 let dictionary: [String:String] = ["sender": "self","message": toSendMessage]
+                messagesArray = []
                 messagesArray.append(dictionary)
                 txtChat.text = ""
     

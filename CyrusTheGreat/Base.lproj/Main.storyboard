@@ -198,7 +198,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AK1-99-zkb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-6978" y="442.5"/>
+            <point key="canvasLocation" x="-7506" y="447.75"/>
         </scene>
         <!--Sign Up Page View Controller-->
         <scene sceneID="oFx-Td-rWR">
@@ -444,7 +444,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cUG-aw-PuC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-6192" y="442.5"/>
+            <point key="canvasLocation" x="-6763.5" y="447.75"/>
         </scene>
         <!--Api Connector View Controller-->
         <scene sceneID="l4X-wF-Z1a">
@@ -552,7 +552,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3gU-WS-ZiQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5439" y="442.5"/>
+            <point key="canvasLocation" x="-5977.5" y="447.75"/>
         </scene>
         <!--Collection Twitter View Controller-->
         <scene sceneID="M8y-TV-lzt">
@@ -689,7 +689,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SPw-eQ-WTH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4678.5" y="435.75"/>
+            <point key="canvasLocation" x="-5194.5" y="444"/>
         </scene>
         <!--Home Page View Controller-->
         <scene sceneID="sDI-a8-sp3">
@@ -803,7 +803,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GjE-hO-a2H" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3936" y="435.75"/>
+            <point key="canvasLocation" x="-4392" y="447.75"/>
         </scene>
         <!--Chat View Controller-->
         <scene sceneID="UFq-q8-tXK">
@@ -993,7 +993,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BMU-fB-EO2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3183" y="435.75"/>
+            <point key="canvasLocation" x="-3618" y="444"/>
         </scene>
         <!--Meet Up Page View Controller-->
         <scene sceneID="6x6-Rs-Ez2">
@@ -1051,6 +1051,25 @@
                                     <rect key="frame" x="17" y="372" width="360" height="21"/>
                                 </variation>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FVr-58-cf9">
+                                <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="20" y="516" width="360" height="21"/>
+                                </variation>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qfi-O6-713">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="Yes"/>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="28" y="572" width="49" height="30"/>
+                                </variation>
+                                <connections>
+                                    <action selector="yesMeetup:" destination="qDC-g8-A9b" eventType="touchUpInside" id="1PQ-7j-oSV"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <variation key="default">
@@ -1060,6 +1079,8 @@
                                 <exclude reference="4ya-mv-Lhc"/>
                                 <exclude reference="cVo-T9-xR2"/>
                                 <exclude reference="sci-ec-Yst"/>
+                                <exclude reference="FVr-58-cf9"/>
+                                <exclude reference="qfi-O6-713"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
@@ -1069,6 +1090,8 @@
                                 <include reference="4ya-mv-Lhc"/>
                                 <include reference="cVo-T9-xR2"/>
                                 <include reference="sci-ec-Yst"/>
+                                <include reference="FVr-58-cf9"/>
+                                <include reference="qfi-O6-713"/>
                             </mask>
                         </variation>
                     </view>
@@ -1077,11 +1100,13 @@
                         <outlet property="meetupTime" destination="sci-ec-Yst" id="1IJ-MO-XpQ"/>
                         <outlet property="personClothing" destination="W5D-jC-hLs" id="Rfv-jg-Llp"/>
                         <outlet property="personDesc" destination="4ya-mv-Lhc" id="Joa-ph-WcM"/>
+                        <outlet property="timeToMeetUpAlert" destination="FVr-58-cf9" id="Z5B-MV-QCC"/>
+                        <outlet property="yesButton" destination="qfi-O6-713" id="dkY-6T-Gx5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tA1-9R-djL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2349" y="435.75"/>
+            <point key="canvasLocation" x="-2857.5" y="447.75"/>
         </scene>
     </scenes>
 </document>
