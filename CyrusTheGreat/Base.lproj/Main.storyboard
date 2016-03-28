@@ -955,9 +955,18 @@
                                     </tableViewCell>
                                 </prototypes>
                                 <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="0.0" y="258" width="400" height="542"/>
+                                    <rect key="frame" x="0.0" y="258" width="400" height="252"/>
                                 </variation>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0N3-gf-fGD">
+                                <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="0.0" y="608" width="400" height="46"/>
+                                </variation>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <variation key="default">
@@ -969,6 +978,7 @@
                                 <exclude reference="K0O-iv-RrQ"/>
                                 <exclude reference="k2o-80-iki"/>
                                 <exclude reference="ZAD-GB-EgV"/>
+                                <exclude reference="0N3-gf-fGD"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
@@ -980,6 +990,7 @@
                                 <include reference="K0O-iv-RrQ"/>
                                 <include reference="k2o-80-iki"/>
                                 <include reference="ZAD-GB-EgV"/>
+                                <include reference="0N3-gf-fGD"/>
                             </mask>
                         </variation>
                     </view>
@@ -988,6 +999,7 @@
                         <outlet property="sendButton" destination="k2o-80-iki" id="Q54-C9-ben"/>
                         <outlet property="tblChat" destination="ZAD-GB-EgV" id="Sdi-Yv-Su9"/>
                         <outlet property="txtChat" destination="V4r-9B-cS2" id="w24-Fi-iZ9"/>
+                        <outlet property="warningLabel" destination="0N3-gf-fGD" id="OYP-dn-TaX"/>
                         <segue destination="qDC-g8-A9b" kind="show" identifier="yesSegue" id="H6H-p2-NYj"/>
                     </connections>
                 </viewController>

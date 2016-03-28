@@ -17,8 +17,10 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     var messagesArray: [Dictionary<String,String>] = []
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
+    @IBOutlet weak var warningLabel: UILabel!
     var chatMessage: String!
     var chatDate: String!
+    var messageCount: Int!
     
     var iamSender:Bool!
     
@@ -38,6 +40,9 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         txtChat.delegate = self
         updateChatDate()
         sendButton.alpha = 0.0
+        messageCount = 0
+        warningLabel.text = ""
+        warningLabel.textColor = UIColor.redColor()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleMPCReceivedDataWithNotification:", name: "receivedMPCDataNotification", object: nil)
         
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: "moveToNext:", name: "chatYesClicked", object: nil)
@@ -99,8 +104,6 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
         
         
-        
-        
         let toSendMessage = "segueToNext"
         
         let messageDictionary: [String: String] = ["message": toSendMessage]
@@ -126,6 +129,22 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         print("Declined")
         
         // when declined, we ask the user to propose time
+        
+        let toSendMessage = "noNext"
+        
+        let messageDictionary: [String: String] = ["message": toSendMessage]
+        
+        if appDelegate.mpcManager.sendData(dictionaryWithData: messageDictionary, toPeer: appDelegate.mpcManager.session.connectedPeers[0] ) {
+            
+           messagesArray = []
+           warningLabel.text = "You declined the current invitation"
+           self.updateTableView()
+           self.iamSender = false
+            
+            
+        } else {
+            print("Could not send data")
+        }
         
     }
     
@@ -158,6 +177,17 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                         self.performSegueWithIdentifier("yesSegue", sender: self)
                         
                     }
+                    
+                } else if message == "noNext" {
+                    messagesArray = []
+                    warningLabel.text = "Invitation Declined"
+                    
+                    NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                        
+                        self.iamSender = false
+                        
+                        self.updateTableView()
+                    })
                     
                 } else {
                     
@@ -219,9 +249,12 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             
             if txtChat.text == "" {
                 print("Cant accept empty input")
+                warningLabel.text = "Cant accept empty input"
             } else {
                 chatMessage = txtChat.text
                 sendButton.alpha = 1.0
+                messageCount = messageCount + 1
+                warningLabel.text = ""
             }
            
         }
@@ -238,22 +271,34 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             let toSendMessage = chatMessage + "\n" + chatDate
     
             let messageDictionary: [String: String] = ["message": toSendMessage]
-    
+        
+        if messageCount < 11 {
+            
             if appDelegate.mpcManager.sendData(dictionaryWithData: messageDictionary, toPeer: appDelegate.mpcManager.session.connectedPeers[0] ) {
-    
+                
                 let dictionary: [String:String] = ["sender": "self","message": toSendMessage]
                 messagesArray = []
                 messagesArray.append(dictionary)
                 txtChat.text = ""
-    
+                
                 self.updateTableView()
                 // Hide button after sent
                 sendButton.alpha = 0.0
                 iamSender = true
-    
+                
             } else {
                 print("Could not send data")
+                warningLabel.text = "Could not Send data"
             }
+            
+        } else {
+            print("Reached Chat Limit, Pls choose last sent location")
+            
+            warningLabel.text = "Reached Chat Limit, Pls choose last sent location"
+            
+        }
+    
+        
         
     }
     

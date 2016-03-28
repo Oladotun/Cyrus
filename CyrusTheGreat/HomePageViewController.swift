@@ -124,7 +124,7 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
             let dataExample : NSData = NSKeyedArchiver.archivedDataWithRootObject(contentCreated)
             
             print("Going to connect from Meet Up page")
-            appDelegate.mpcManager.browser.invitePeer(peer, toSession: appDelegate.mpcManager.session, withContext: dataExample, timeout: 20)
+            appDelegate.mpcManager.browser.invitePeer(peer, toSession: appDelegate.mpcManager.session, withContext: dataExample, timeout: 60)
             displayView.removeFromSuperview()
             
             print(findMorePeer)

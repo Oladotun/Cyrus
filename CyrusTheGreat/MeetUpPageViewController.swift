@@ -99,10 +99,36 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate,CBCentralM
     @IBAction func yesMeetup(sender: AnyObject) {
         timerInvalidate = true
         pmanager = CBCentralManager(delegate: self, queue: nil, options: [CBCentralManagerOptionShowPowerAlertKey: true])
-        appDelegate.mpcManager.session.disconnect()
+//        appDelegate.mpcManager.session.disconnect()
         
-        appDelegate.mpcManager.advertiser.startAdvertisingPeer()
-        appDelegate.mpcManager.browser.startBrowsingForPeers()
+        print("We are about to start re-advertising")
+       
+        
+        NSTimer.scheduledTimerWithTimeInterval(timeInterval,
+            target: self,
+            selector: "checkBrowser:",
+            userInfo: "finished",
+            repeats: true)
+    }
+    
+    func checkBrowser(timer:NSTimer) {
+        for peer in appDelegate.mpcManager.foundPeers {
+            
+            if (peer.displayName == otherPersonName) {
+                
+                // Set the handler
+                
+                
+                
+                 appDelegate.mpcManager.browser.invitePeer(peer, toSession: appDelegate.mpcManager.session, withContext: nil, timeout: 20)
+                
+                
+                timeToMeetUpAlert.text = "Found other user \(otherPersonName)"
+
+            } else {
+                print("Not found yet")
+            }
+        }
     }
     
 
@@ -198,29 +224,43 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate,CBCentralM
         
         let currentTime = dateFormatter.stringFromDate(todaysDate)
         
-        
-        if (!sessionDisconnected) {
-           
+        if (!personClothing.enabled && otherPersonName != nil) {
             
-            if (!personClothing.enabled && otherPersonName != nil) {
+            if (!sessionDisconnected) {
                 appDelegate.mpcManager.session.disconnect()
+                self.appDelegate.mpcManager.invitationHandler(true, self.appDelegate.mpcManager.session)
                 sessionDisconnected = true
+                
+                appDelegate.mpcManager.advertiser.startAdvertisingPeer()
+                appDelegate.mpcManager.browser.startBrowsingForPeers()
+                
+                timeToMeetUpAlert.text = "Are you on your way to meet up with \(self.otherPersonName) "
+                yesButton.alpha = 1.0
+                AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+                
+                
             }
+            
+            if minusFiveMinString >= currentTime {
+                timeToMeetUpAlert.text = "Are you on your way to meet up with \(self.otherPersonName) "
+                yesButton.alpha = 1.0
+                AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+            } else if currentTime  >= meetUpTime {
+                timeToMeetUpAlert.text = "Meet Up now with \(self.otherPersonName)"
+                AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+                yesButton.alpha = 1.0
+                //            self.appDelegate.mpcManager.invitationHandler(true, self.appDelegate.mpcManager.session)
+                //            appDelegate.mpcManager.session.disconnect()
+            }
+            
+            print("currently disconnected \(sessionDisconnected)")
         }
         
         if (timerInvalidate == true) {
             timer.invalidate()
-        }else if minusFiveMinString == currentTime {
-            timeToMeetUpAlert.text = "Are you on your way to meet up with \(self.otherPersonName) "
-            yesButton.alpha = 1.0
-            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-        } else if meetUpTime == currentTime {
-            timeToMeetUpAlert.text = "Meet Up now with \(self.otherPersonName)"
-            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-            yesButton.alpha = 1.0
-//            appDelegate.mpcManager.session.disconnect()
-        } else {
-            print("false")
+        }
+        else {
+            print("timer invalidate is false")
         }
         
 //        time

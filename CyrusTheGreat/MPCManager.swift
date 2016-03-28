@@ -61,27 +61,37 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
     
     func advertiser(advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: NSData?, invitationHandler: (Bool, MCSession) -> Void) {
         
-        let currInfo =  NSKeyedUnarchiver.unarchiveObjectWithData(context!) as! NSDictionary
-        let currPeepTopic = currInfo["topics"] as! [String]
         
-        appendMatchedTopics(currPeepTopic)
-        
-        if ((presentTopic) != nil) {
-            
-            self.invitationHandler = invitationHandler
-            print("Calling Invitation Handler \(invitationHandler)")
-            print("Matched Topics is \(matchTopics)")
-            delegate?.invitationWasReceived(peerID.displayName, topic: matchTopics[0])
-            delegate?.findMorePeer = false
-             print("Found Pair, setting Peer finding to False")
+        if (context == nil) {
+             self.invitationHandler = invitationHandler
             
         } else {
             
-            print("No pair found, setting Peer finding to True")
+            let currInfo =  NSKeyedUnarchiver.unarchiveObjectWithData(context!) as! NSDictionary
+            let currPeepTopic = currInfo["topics"] as! [String]
             
-            delegate?.findMorePeer = true
+            appendMatchedTopics(currPeepTopic)
+            
+            if ((presentTopic) != nil) {
+                
+                self.invitationHandler = invitationHandler
+                print("Calling Invitation Handler \(invitationHandler)")
+                print("Matched Topics is \(matchTopics)")
+                delegate?.invitationWasReceived(peerID.displayName, topic: matchTopics[0])
+                delegate?.findMorePeer = false
+                print("Found Pair, setting Peer finding to False")
+                
+            } else {
+                
+                print("No pair found, setting Peer finding to True")
+                
+                delegate?.findMorePeer = true
+                
+            }
             
         }
+        
+        
         
     }
     
