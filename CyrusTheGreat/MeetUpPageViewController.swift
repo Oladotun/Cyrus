@@ -10,6 +10,7 @@ import UIKit
 import MultipeerConnectivity
 import AudioToolbox
 import CoreBluetooth
+import Firebase
 
 class MeetUpPageViewController: UIViewController, UITextFieldDelegate,CBCentralManagerDelegate {
     
@@ -35,6 +36,9 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate,CBCentralM
     
     @IBOutlet weak var yesButton: UIButton!
     
+    var otherUserID:String!
+    var fireBaseConnect: Firebase!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -43,15 +47,23 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate,CBCentralM
         meetupDesc.text = "MeetUp Destination is at \(destination)"
         meetupTime.text = "Planned meetup time is \(time)"
         timeToMeetUpAlert.text = ""
-        yesButton.alpha = 0.0
+//        yesButton.alpha = 0.0
         timerInvalidate = false
         sessionDisconnected = false
         
-        timer = NSTimer.scheduledTimerWithTimeInterval(timeInterval,
-            target: self,
-            selector: "alertPhone:",
-            userInfo: "finished",
-            repeats: true)
+//        timer = NSTimer.scheduledTimerWithTimeInterval(timeInterval,
+//            target: self,
+//            selector: "alertPhone:",
+//            userInfo: "finished",
+//            repeats: true)
+        
+        fireBaseConnect = Firebase(url:"https://cyrusthegreat.firebaseio.com/\(otherUserID)")
+        
+        print("current url: https://cyrusthegreat.firebaseio.com/\(otherUserID)")
+        appDelegate.myFire.observeEventType(.Value, withBlock: {
+            snapshot in
+            print("\(snapshot.key) -> \(snapshot.value)")
+        })
 //        alertPhone()
 
         // Do any additional setup after loading the view.
@@ -97,39 +109,43 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate,CBCentralM
     
     
     @IBAction func yesMeetup(sender: AnyObject) {
-        timerInvalidate = true
-        pmanager = CBCentralManager(delegate: self, queue: nil, options: [CBCentralManagerOptionShowPowerAlertKey: true])
-//        appDelegate.mpcManager.session.disconnect()
+//        timerInvalidate = true
+//        pmanager = CBCentralManager(delegate: self, queue: nil, options: [CBCentralManagerOptionShowPowerAlertKey: true])
+        appDelegate.mpcManager.session.disconnect()
         
         print("We are about to start re-advertising")
+        fireBaseConnect.setValue("Meet up time is here from \(UIDevice.currentDevice().name)")
+//        appDelegate.myFire.setValue("Meet up time is here from \(UIDevice.currentDevice().name)")
+        
+        
        
         
-        NSTimer.scheduledTimerWithTimeInterval(timeInterval,
-            target: self,
-            selector: "checkBrowser:",
-            userInfo: "finished",
-            repeats: true)
+//        NSTimer.scheduledTimerWithTimeInterval(timeInterval,
+//            target: self,
+//            selector: "checkBrowser:",
+//            userInfo: "finished",
+//            repeats: true)
     }
     
-    func checkBrowser(timer:NSTimer) {
-        for peer in appDelegate.mpcManager.foundPeers {
-            
-            if (peer.displayName == otherPersonName) {
-                
-                // Set the handler
-                
-                
-                
-                 appDelegate.mpcManager.browser.invitePeer(peer, toSession: appDelegate.mpcManager.session, withContext: nil, timeout: 20)
-                
-                
-                timeToMeetUpAlert.text = "Found other user \(otherPersonName)"
-
-            } else {
-                print("Not found yet")
-            }
-        }
-    }
+//    func checkBrowser(timer:NSTimer) {
+//        for peer in appDelegate.mpcManager.foundPeers {
+//            
+//            if (peer.displayName == otherPersonName) {
+//                
+//                // Set the handler
+//                
+//                
+//                
+//                 appDelegate.mpcManager.browser.invitePeer(peer, toSession: appDelegate.mpcManager.session, withContext: nil, timeout: 20)
+//                
+//                
+//                timeToMeetUpAlert.text = "Found other user \(otherPersonName)"
+//
+//            } else {
+//                print("Not found yet")
+//            }
+//        }
+//    }
     
 
     
@@ -198,73 +214,73 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate,CBCentralM
 
     
     
-    func alertPhone(timer:NSTimer) {
-        
-//        let timeFormater = NSDateFormatter
-        let inFormatter = NSDateFormatter()
-        inFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
-        inFormatter.dateFormat = "hh:mm a"
-        
-        
-        let outFormatter = NSDateFormatter()
-        outFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
-        outFormatter.dateFormat = "hh:mm a"
-        
-        let todaysDate:NSDate = NSDate()
-        let dateFormatter:NSDateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "hh:mm a"
-        
-        let date = inFormatter.dateFromString(time)!
-        let meetUpTime = inFormatter.stringFromDate(date)
-        
-        let minusFiveMin = date.dateByAddingTimeInterval(-5 * 60)
-        let minusFiveMinString = outFormatter.stringFromDate(minusFiveMin)
-        
-        
-        
-        let currentTime = dateFormatter.stringFromDate(todaysDate)
-        
-        if (!personClothing.enabled && otherPersonName != nil) {
-            
-            if (!sessionDisconnected) {
-                appDelegate.mpcManager.session.disconnect()
-                self.appDelegate.mpcManager.invitationHandler(true, self.appDelegate.mpcManager.session)
-                sessionDisconnected = true
-                
-                appDelegate.mpcManager.advertiser.startAdvertisingPeer()
-                appDelegate.mpcManager.browser.startBrowsingForPeers()
-                
-                timeToMeetUpAlert.text = "Are you on your way to meet up with \(self.otherPersonName) "
-                yesButton.alpha = 1.0
-                AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-                
-                
-            }
-            
-            if minusFiveMinString >= currentTime {
-                timeToMeetUpAlert.text = "Are you on your way to meet up with \(self.otherPersonName) "
-                yesButton.alpha = 1.0
-                AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-            } else if currentTime  >= meetUpTime {
-                timeToMeetUpAlert.text = "Meet Up now with \(self.otherPersonName)"
-                AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-                yesButton.alpha = 1.0
-                //            self.appDelegate.mpcManager.invitationHandler(true, self.appDelegate.mpcManager.session)
-                //            appDelegate.mpcManager.session.disconnect()
-            }
-            
-            print("currently disconnected \(sessionDisconnected)")
-        }
-        
-        if (timerInvalidate == true) {
-            timer.invalidate()
-        }
-        else {
-            print("timer invalidate is false")
-        }
-        
-//        time
-    }
+//    func alertPhone(timer:NSTimer) {
+//        
+////        let timeFormater = NSDateFormatter
+//        let inFormatter = NSDateFormatter()
+//        inFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+//        inFormatter.dateFormat = "hh:mm a"
+//        
+//        
+//        let outFormatter = NSDateFormatter()
+//        outFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+//        outFormatter.dateFormat = "hh:mm a"
+//        
+//        let todaysDate:NSDate = NSDate()
+//        let dateFormatter:NSDateFormatter = NSDateFormatter()
+//        dateFormatter.dateFormat = "hh:mm a"
+//        
+//        let date = inFormatter.dateFromString(time)!
+//        let meetUpTime = inFormatter.stringFromDate(date)
+//        
+//        let minusFiveMin = date.dateByAddingTimeInterval(-5 * 60)
+//        let minusFiveMinString = outFormatter.stringFromDate(minusFiveMin)
+//        
+//        
+//        
+//        let currentTime = dateFormatter.stringFromDate(todaysDate)
+//        
+//        if (!personClothing.enabled && otherPersonName != nil) {
+//            
+//            if (!sessionDisconnected) {
+//                appDelegate.mpcManager.session.disconnect()
+//                self.appDelegate.mpcManager.invitationHandler(true, self.appDelegate.mpcManager.session)
+//                sessionDisconnected = true
+//                
+//                appDelegate.mpcManager.advertiser.startAdvertisingPeer()
+//                appDelegate.mpcManager.browser.startBrowsingForPeers()
+//                
+//                timeToMeetUpAlert.text = "Are you on your way to meet up with \(self.otherPersonName) "
+//                yesButton.alpha = 1.0
+//                AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+//                
+//                
+//            }
+//            
+//            if minusFiveMinString >= currentTime {
+//                timeToMeetUpAlert.text = "Are you on your way to meet up with \(self.otherPersonName) "
+//                yesButton.alpha = 1.0
+//                AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+//            } else if currentTime  >= meetUpTime {
+//                timeToMeetUpAlert.text = "Meet Up now with \(self.otherPersonName)"
+//                AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+//                yesButton.alpha = 1.0
+//                //            self.appDelegate.mpcManager.invitationHandler(true, self.appDelegate.mpcManager.session)
+//                //            appDelegate.mpcManager.session.disconnect()
+//            }
+//            
+//            print("currently disconnected \(sessionDisconnected)")
+//        }
+//        
+//        if (timerInvalidate == true) {
+//            timer.invalidate()
+//        }
+//        else {
+//            print("timer invalidate is false")
+//        }
+//        
+////        time
+//    }
     
     
     

@@ -22,14 +22,18 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     var chatDate: String!
     var messageCount: Int!
     
+    var otherUserUID:String!
+    
     var iamSender:Bool!
+    
     
     
     @IBOutlet weak var sendButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        sendUserID()
         // Do any additional setup after loading the view.
         tblChat.delegate = self
         tblChat.dataSource = self
@@ -66,6 +70,20 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         chatDate = timeFormatter.stringFromDate(meetTimePicker.date)
         print( timeFormatter.stringFromDate(meetTimePicker.date))
         
+    }
+    
+    
+    func sendUserID() {
+        let toSendMessage = "fireBaseUser \(appDelegate.fireUID)"
+        
+        let messageDictionary: [String: String] = ["message": toSendMessage]
+        
+        if appDelegate.mpcManager.sendData(dictionaryWithData: messageDictionary, toPeer: appDelegate.mpcManager.session.connectedPeers[0] ) {
+            print("sending user id")
+
+        } else {
+            print("Could not send data")
+        }
     }
 
 
@@ -170,8 +188,15 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 // Create a new dictionary and set the sender and the received message to it.
                 
                 
-                if message == "segueToNext" {
+                if message.contains("fireBaseUser")
+                {
+                    let messageInfo = message.componentsSeparatedByString(" ")
+                    self.otherUserUID = messageInfo[1]
+                    print("other user info \(otherUserUID)")
+                }
+                 else if  message.contains("segueToNext") {
                     print("current message array count is \(messagesArray.count)")
+                    
                     NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
                         
                         self.performSegueWithIdentifier("yesSegue", sender: self)
@@ -369,14 +394,18 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             
             destVC.time = messageInfoArray![1]
             destVC.destination = messageInfoArray![0]
-            
+            destVC.otherUserID = self.otherUserUID
             
             
         }
     }
     
     
+}
+
+extension String {
     
-    
-    
+    func contains(find: String) -> Bool{
+        return self.rangeOfString(find) != nil
+    }
 }

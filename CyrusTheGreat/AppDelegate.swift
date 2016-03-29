@@ -7,17 +7,40 @@
 //
 
 import UIKit
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var mpcManager: MPCManager!
+    var userFire: Firebase!
+    var myFire: Firebase!
+    var fireUID: String!
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         mpcManager = MPCManager()
+        userFire = Firebase(url: "https://cyrusthegreat.firebaseio.com/")
+        userFire.authAnonymouslyWithCompletionBlock { error, authData in
+            if error != nil {
+                // There was an error logging in anonymously
+                print(error)
+                
+            } else {
+                // We are now logged in
+                
+                let currData = authData as FAuthData
+//                print(currData.uid)
+                self.fireUID = currData.uid
+                
+                 self.myFire = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(self.fireUID)")
+                
+            }
+        }
+        
+        
         return true
     }
 
