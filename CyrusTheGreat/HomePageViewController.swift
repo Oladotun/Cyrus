@@ -8,6 +8,7 @@
 
 import UIKit
 import MultipeerConnectivity
+import Firebase
 
 class HomePageViewController: UIViewController,  MPCManagerDelegate {
     
@@ -18,6 +19,7 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
     @IBOutlet weak var noOfPeer: UILabel!
     var displayView = UIView()
     var interests: [String]!
+    var chatInitiator:Bool!
     
     
     var findMorePeer = true
@@ -25,6 +27,7 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        chatInitiator = false
         availSwitch.setOn(false, animated:true)
         currAvailability.text = "Offline"
         availSwitch.addTarget(self, action: Selector("switched:"), forControlEvents: UIControlEvents.ValueChanged)
@@ -84,11 +87,21 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
     func connectedWithPeer(peerID: MCPeerID) {
         print("Connecting from home \(peerID.displayName)")
         
-        NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+        if(peerID.displayName == " ") {
             
-            self.performSegueWithIdentifier("idSegueChat", sender: self)
+            print("Could not connect")
+            
+        } else {
+            
+            NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+                
+                self.performSegueWithIdentifier("idSegueChat", sender: self)
+                
+            }
             
         }
+        
+       
     }
 
     override func didReceiveMemoryWarning() {
@@ -113,9 +126,6 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
         
         print(appDelegate.mpcManager.foundPeers.count)
         
-        
-        
-        
         for peer in appDelegate.mpcManager.foundPeers {
             
             var contentCreated = [String: [String]]()
@@ -124,6 +134,7 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
             let dataExample : NSData = NSKeyedArchiver.archivedDataWithRootObject(contentCreated)
             
             print("Going to connect from Meet Up page")
+            chatInitiator = true // Caught the culprit
             appDelegate.mpcManager.browser.invitePeer(peer, toSession: appDelegate.mpcManager.session, withContext: dataExample, timeout: 60)
             displayView.removeFromSuperview()
             
@@ -150,6 +161,25 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
             
             print("Going to connect from Meet Up page")
             appDelegate.mpcManager.browser.invitePeer(selectedPeer, toSession: appDelegate.mpcManager.session, withContext: dataExample, timeout: 20)
+            // Setting up firebase connection
+            self.appDelegate.userFire.authAnonymouslyWithCompletionBlock { error, authData in
+                if error != nil {
+                    // There was an error logging in anonymously
+                    print(error)
+                    
+                } else {
+                    // We are now logged in
+                    
+                    let currData = authData as FAuthData
+                    print(currData.uid)
+                    self.appDelegate.fireUID = currData.uid
+
+                    self.appDelegate.myFire = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(currData.uid)")
+                    
+                }
+            }
+            
+            
             displayView.removeFromSuperview()
             
             
@@ -167,6 +197,12 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
         let acceptAction: UIAlertAction = UIAlertAction(title: "Accept", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
             
             self.appDelegate.mpcManager.invitationHandler(true, self.appDelegate.mpcManager.session)
+            
+            
+            // Set up firebase for questions page
+            
+            
+            
         }
         
         let declineAction: UIAlertAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel) { (alertAction) -> Void in
@@ -188,14 +224,24 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
     
 
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        
+        if segue.identifier == "idSegueChat" {
+            
+            let destinationVC = segue.destinationViewController as! ChatViewController
+            if (self.chatInitiator == true) {
+               destinationVC.initiator = self.chatInitiator
+            }
+            
+            
+        }
     }
-    */
+
 
 }

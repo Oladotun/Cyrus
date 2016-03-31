@@ -12,7 +12,7 @@ import AudioToolbox
 import CoreBluetooth
 import Firebase
 
-class MeetUpPageViewController: UIViewController, UITextFieldDelegate,CBCentralManagerDelegate {
+class MeetUpPageViewController: UIViewController, UITextFieldDelegate { // ,CBCentralManagerDelegate
     
     var pmanager: CBCentralManager!
     
@@ -50,6 +50,7 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate,CBCentralM
 //        yesButton.alpha = 0.0
         timerInvalidate = false
         sessionDisconnected = false
+       
         
 //        timer = NSTimer.scheduledTimerWithTimeInterval(timeInterval,
 //            target: self,
@@ -57,17 +58,34 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate,CBCentralM
 //            userInfo: "finished",
 //            repeats: true)
         
-        fireBaseConnect = Firebase(url:"https://cyrusthegreat.firebaseio.com/\(otherUserID)")
+//        fireBaseConnect = Firebase(url:"https://cyrusthegreat.firebaseio.com/\(appDelegate.fireUID)")
         
-        print("current url: https://cyrusthegreat.firebaseio.com/\(otherUserID)")
+        fireBaseConnect = appDelegate.myFire.childByAutoId()
+        
+
+        print("current url: https://cyrusthegreat.firebaseio.com/\(appDelegate.fireUID)")
         appDelegate.myFire.observeEventType(.Value, withBlock: {
+//            snapshot.childrenCount()
             snapshot in
             print("\(snapshot.key) -> \(snapshot.value)")
+            
+            print(snapshot.childrenCount)
+            
+        
+//            snapshot
         })
 //        alertPhone()
 
         // Do any additional setup after loading the view.
     }
+    
+//    
+//    func checkQuestion() {
+//        if (appDelegate.myFire) {
+//            
+//        }
+//    }
+    
     
     func handleMPCReceivedDataWithNotification(notification: NSNotification) {
         
@@ -115,7 +133,13 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate,CBCentralM
         
         print("We are about to start re-advertising")
         fireBaseConnect.setValue("Meet up time is here from \(UIDevice.currentDevice().name)")
+//        appDelegate.myFire.childByAutoId()
+        
+//            .setValue("Meet up time is here from \(UIDevice.currentDevice().name)")
 //        appDelegate.myFire.setValue("Meet up time is here from \(UIDevice.currentDevice().name)")
+//        appDelegate.myFire.childByAutoId()
+        
+        
         
         
        
@@ -182,33 +206,33 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate,CBCentralM
         print("\(peripheral.name)")
     }
     
-    func centralManagerDidUpdateState(central: CBCentralManager) {
-        print("checking state")
-        switch (central.state) {
-        case .PoweredOff:
-            print("CoreBluetooth BLE hardware is powered off")
-            
-        case .PoweredOn:
-            print("CoreBluetooth BLE hardware is powered on and ready")
-            //            blueToothReady = true;
-            
-        case .Resetting:
-            print("CoreBluetooth BLE hardware is resetting")
-            
-        case .Unauthorized:
-            print("CoreBluetooth BLE state is unauthorized")
-            
-        case .Unknown:
-            print("CoreBluetooth BLE state is unknown");
-            
-        case .Unsupported:
-            print("CoreBluetooth BLE hardware is unsupported on this platform");
-            
-        }
+//    func centralManagerDidUpdateState(central: CBCentralManager) {
+//        print("checking state")
+//        switch (central.state) {
+//        case .PoweredOff:
+//            print("CoreBluetooth BLE hardware is powered off")
+//            
+//        case .PoweredOn:
+//            print("CoreBluetooth BLE hardware is powered on and ready")
+//            //            blueToothReady = true;
+//            
+//        case .Resetting:
+//            print("CoreBluetooth BLE hardware is resetting")
+//            
+//        case .Unauthorized:
+//            print("CoreBluetooth BLE state is unauthorized")
+//            
+//        case .Unknown:
+//            print("CoreBluetooth BLE state is unknown");
+//            
+//        case .Unsupported:
+//            print("CoreBluetooth BLE hardware is unsupported on this platform");
+//            
+//        }
         //        if blueToothReady {
         //            discoverDevices()
         //        }
-    }
+//    }
     
     
 

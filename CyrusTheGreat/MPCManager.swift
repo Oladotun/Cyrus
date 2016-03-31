@@ -166,6 +166,8 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
             print("Connecting to session \(session)")
             
         case MCSessionState.NotConnected:
+
+            delegate?.connectedWithPeer(MCPeerID(displayName: " "))
             print("Could not connect to session \(session)")
             print("display name \(peerID.displayName)")
             print("\(peer.displayName)")

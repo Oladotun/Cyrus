@@ -8,7 +8,7 @@
 
 import UIKit
 import MultipeerConnectivity
-
+import Firebase
 class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, ChatViewDelegate {
 
     @IBOutlet weak var txtChat: UITextField!
@@ -21,8 +21,9 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     var chatMessage: String!
     var chatDate: String!
     var messageCount: Int!
+    var initiator = false
     
-    var otherUserUID:String!
+//    var otherUserUID:String!
     
     var iamSender:Bool!
     
@@ -33,7 +34,18 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        sendUserID()
+        print("initiator is \(initiator)")
+        print("We are setting up to initiate")
+        
+        NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+            
+            if (self.initiator == true) {
+                self.sendUserID()
+            }
+            
+        }
+        
+        
         // Do any additional setup after loading the view.
         tblChat.delegate = self
         tblChat.dataSource = self
@@ -191,8 +203,9 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 if message.contains("fireBaseUser")
                 {
                     let messageInfo = message.componentsSeparatedByString(" ")
-                    self.otherUserUID = messageInfo[1]
-                    print("other user info \(otherUserUID)")
+                    appDelegate.fireUID = messageInfo[1]
+                    appDelegate.myFire = Firebase(url:"https://cyrusthegreat.firebaseio.com/\(appDelegate.fireUID)")
+//                    print("other user info \(otherUserUID)")
                 }
                  else if  message.contains("segueToNext") {
                     print("current message array count is \(messagesArray.count)")
@@ -394,7 +407,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             
             destVC.time = messageInfoArray![1]
             destVC.destination = messageInfoArray![0]
-            destVC.otherUserID = self.otherUserUID
+//            destVC.otherUserID = self.otherUserUID
             
             
         }

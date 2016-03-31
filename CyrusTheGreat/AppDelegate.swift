@@ -23,22 +23,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         mpcManager = MPCManager()
         userFire = Firebase(url: "https://cyrusthegreat.firebaseio.com/")
-        userFire.authAnonymouslyWithCompletionBlock { error, authData in
-            if error != nil {
-                // There was an error logging in anonymously
-                print(error)
-                
-            } else {
-                // We are now logged in
-                
-                let currData = authData as FAuthData
-//                print(currData.uid)
-                self.fireUID = currData.uid
-                
-                 self.myFire = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(self.fireUID)")
-                
-            }
-        }
+//        userFire.authAnonymouslyWithCompletionBlock { error, authData in
+//            if error != nil {
+//                // There was an error logging in anonymously
+//                print(error)
+//                
+//            } else {
+//                // We are now logged in
+//                
+//                let currData = authData as FAuthData
+////                print(currData.uid)
+//                self.fireUID = currData.uid
+//                
+//                 self.myFire = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(self.fireUID)")
+//                
+//            }
+//        }
         
         
         return true
