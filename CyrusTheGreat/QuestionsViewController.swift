@@ -10,11 +10,19 @@ import UIKit
 
 class QuestionsViewController: UIViewController {
     
-     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     var interestsCollected: String!
     var interestDictionary = Dictionary<String, Int>()
+    var interestSameArray: [String]!
+    
+    let questionPrelude:[String] = ["What is your favorite thing about ","Why do you like " ,"Why did you get into "]
 
     @IBOutlet weak var interestMatchLabel: UILabel!
+    
+    var timer = NSTimer() //make a timer variable, but do not do anything yet
+    let timeInterval:NSTimeInterval = 1.0
+    
+    var numOfQuestions:Int = 1
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +32,9 @@ class QuestionsViewController: UIViewController {
             self.interestMatch()
             
         }
+       
         interestMatchLabel.text = "What is your favorite thing about \(appDelegate.matchedTopic) ?"
+        timer = NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: "questTime", userInfo: nil, repeats: true)
         
         // Do any additional setup after loading the view.
     }
@@ -73,6 +83,8 @@ class QuestionsViewController: UIViewController {
                 }
                 
             }
+            
+            self.interestSameArray = Array(self.interestDictionary.keys)
 //            self.interestMatchLabel.text = "\(self.interestDictionary)"
 //            print("current dictionary: \(self.interestDictionary)")
             
@@ -83,6 +95,29 @@ class QuestionsViewController: UIViewController {
         
         
 //        interestMatchLabel.text = "\(interestDictionary)"
+    }
+    
+    
+    func questTime() {
+        if (numOfQuestions >= 4) {
+            timer.invalidate()
+        } else {
+            if (numOfQuestions < 3) {
+                
+                interestMatchLabel.text = "What is your favorite thing about \(interestSameArray[numOfQuestions]) ?"
+                
+            } else {
+                interestMatchLabel.text = "\(questionPrelude[2]) Engineering ?"
+            }
+            
+
+        }
+        
+         numOfQuestions = numOfQuestions + 1
+        
+        
+        
+        
     }
 
     /*
