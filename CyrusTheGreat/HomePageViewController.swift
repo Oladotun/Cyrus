@@ -35,6 +35,7 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
         appDelegate.mpcManager.initAttributes(interests)
         noOfPeer.text = ""
         appDelegate.mpcManager.browser.startBrowsingForPeers()
+        appDelegate.interests = interests
 
         
         
@@ -89,7 +90,12 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
         
         if(peerID.displayName == " ") {
             
-            print("Could not connect")
+            print("Could not connect delete cyrus firebase")
+            
+            
+            if (appDelegate.myFire != nil) {
+                appDelegate.myFire.unauth()
+            }
             
         } else {
             

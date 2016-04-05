@@ -17,6 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var userFire: Firebase!
     var myFire: Firebase!
     var fireUID: String!
+    var interests: [String]!
+    var matchedTopic: String!
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {

@@ -579,7 +579,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="59" height="74"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aT7-Ne-KGs">
@@ -1114,11 +1114,72 @@
                         <outlet property="personDesc" destination="4ya-mv-Lhc" id="Joa-ph-WcM"/>
                         <outlet property="timeToMeetUpAlert" destination="FVr-58-cf9" id="Z5B-MV-QCC"/>
                         <outlet property="yesButton" destination="qfi-O6-713" id="dkY-6T-Gx5"/>
+                        <segue destination="6Lf-jl-U0I" kind="show" identifier="toQuestion" id="EEg-fh-ITX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tA1-9R-djL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2857.5" y="447.75"/>
+            <point key="canvasLocation" x="-2964" y="444"/>
+        </scene>
+        <!--Questions View Controller-->
+        <scene sceneID="KlB-cV-ePG">
+            <objects>
+                <viewController id="DDq-FN-vDe" customClass="QuestionsViewController" customModule="CyrusTheGreat" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="810-Vh-sSf"/>
+                        <viewControllerLayoutGuide type="bottom" id="fCD-1R-USr"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ncs-YZ-Pok">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="30" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fh4-ZQ-E75">
+                                <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="20" y="217" width="360" height="211"/>
+                                </variation>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="Fh4-ZQ-E75"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="Fh4-ZQ-E75"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <navigationItem key="navigationItem" id="XBn-lX-MDU"/>
+                    <connections>
+                        <outlet property="interestMatchLabel" destination="Fh4-ZQ-E75" id="k7P-Ix-fUE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Vbp-42-5J3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1147.5" y="444"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="NsC-HH-sfc">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="6Lf-jl-U0I" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="egK-UC-Qon">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="DDq-FN-vDe" kind="relationship" relationship="rootViewController" id="WXa-U1-rR3"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tcm-ed-aYN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2065.5" y="444"/>
         </scene>
     </scenes>
 </document>

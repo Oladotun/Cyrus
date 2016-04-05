@@ -22,6 +22,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     var chatDate: String!
     var messageCount: Int!
     var initiator = false
+    var observer:  NSObjectProtocol!
     
 //    var otherUserUID:String!
     
@@ -37,13 +38,27 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         print("initiator is \(initiator)")
         print("We are setting up to initiate")
         
+        let mainQueue = NSOperationQueue.mainQueue()
+        
         NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
             
             if (self.initiator == true) {
                 self.sendUserID()
+            } else {
+                self.sendMatchedTopic()
             }
             
+            
+//            NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleMPCReceivedDataWithNotification:", name: "receivedMPCDataNotification", object: nil)
+ 
         }
+        
+        
+        
+        observer = NSNotificationCenter.defaultCenter().addObserverForName("receivedMPCDataNotification", object: nil, queue: mainQueue, usingBlock: {
+            note in self.handleMPCReceivedDataWithNotification(note)
+            
+        })
         
         
         // Do any additional setup after loading the view.
@@ -59,7 +74,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         messageCount = 0
         warningLabel.text = ""
         warningLabel.textColor = UIColor.redColor()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleMPCReceivedDataWithNotification:", name: "receivedMPCDataNotification", object: nil)
+        
         
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: "moveToNext:", name: "chatYesClicked", object: nil)
     }
@@ -84,7 +99,20 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
     }
     
-    
+    func sendMatchedTopic() {
+        
+        let toSendMessage = "MatchTopic \(appDelegate.matchedTopic)"
+        
+        let messageDictionary: [String: String] = ["message": toSendMessage]
+        
+        if appDelegate.mpcManager.sendData(dictionaryWithData: messageDictionary, toPeer: appDelegate.mpcManager.session.connectedPeers[0] ) {
+            print("sending matchedTopic to initiator")
+            
+        } else {
+            print("Could not send data")
+        }
+        
+    }
     func sendUserID() {
         let toSendMessage = "fireBaseUser \(appDelegate.fireUID)"
         
@@ -202,10 +230,16 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 
                 if message.contains("fireBaseUser")
                 {
+                    print("Setting up firebase for other user")
                     let messageInfo = message.componentsSeparatedByString(" ")
                     appDelegate.fireUID = messageInfo[1]
                     appDelegate.myFire = Firebase(url:"https://cyrusthegreat.firebaseio.com/\(appDelegate.fireUID)")
 //                    print("other user info \(otherUserUID)")
+                } else if message.contains("MatchTopic"){
+                    let messageInfo = message.componentsSeparatedByString(" ")
+                    appDelegate.matchedTopic = messageInfo[1]
+                    print("Matched Topic is \(messageInfo)")
+                    
                 }
                  else if  message.contains("segueToNext") {
                     print("current message array count is \(messagesArray.count)")
@@ -407,6 +441,9 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             
             destVC.time = messageInfoArray![1]
             destVC.destination = messageInfoArray![0]
+            
+//            
+            NSNotificationCenter.defaultCenter().removeObserver(observer, name: "receivedMPCDataNotification", object: nil)
 //            destVC.otherUserID = self.otherUserUID
             
             

@@ -20,12 +20,14 @@ protocol MPCManagerDelegate {
 
 class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, MCNearbyServiceAdvertiserDelegate {
     
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     var session: MCSession!
     var peer: MCPeerID!
     var peerTopics: [String]!
     var browser: MCNearbyServiceBrowser!
     var advertiser: MCNearbyServiceAdvertiser!
     var foundPeers = [MCPeerID]()
+    var matchTopic : String!
     
     
     var matchTopics = [String]()
@@ -78,6 +80,7 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
                 print("Calling Invitation Handler \(invitationHandler)")
                 print("Matched Topics is \(matchTopics)")
                 delegate?.invitationWasReceived(peerID.displayName, topic: matchTopics[0])
+               matchTopic = matchTopics[0]
                 delegate?.findMorePeer = false
                 print("Found Pair, setting Peer finding to False")
                 
@@ -160,6 +163,11 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
         switch state {
         case MCSessionState.Connected:
             print("Connection to session \(session)")
+            NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+             print("Setting up match topic delegate")
+             self.appDelegate.matchedTopic = self.matchTopic
+                print("matched topic is \(self.appDelegate.matchedTopic)")
+            }
             delegate?.connectedWithPeer(peerID)
             
         case MCSessionState.Connecting:

@@ -27,6 +27,8 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate { // ,CBCe
     var timer = NSTimer() //make a timer variable, but do do anything yet
     let timeInterval:NSTimeInterval = 10.0
     
+     var observer:  NSObjectProtocol!
+    
 
     @IBOutlet weak var timeToMeetUpAlert: UILabel!
     @IBOutlet weak var meetupTime: UILabel!
@@ -42,7 +44,14 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate { // ,CBCe
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleMPCReceivedDataWithNotification:", name: "receivedMPCDataNotification", object: nil)
+        let mainQueue = NSOperationQueue.mainQueue()
+        
+        observer = NSNotificationCenter.defaultCenter().addObserverForName("receivedMPCDataNotification", object: nil, queue: mainQueue, usingBlock: {
+            note in self.handleMPCReceivedDataWithNotification(note)
+            
+        })
+        
+//        local.
         personClothing.delegate = self
         meetupDesc.text = "MeetUp Destination is at \(destination)"
         meetupTime.text = "Planned meetup time is \(time)"
@@ -70,6 +79,16 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate { // ,CBCe
             print("\(snapshot.key) -> \(snapshot.value)")
             
             print(snapshot.childrenCount)
+            
+            
+            if (snapshot.childrenCount == 2) {
+                
+                NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+                    
+                    self.performSegueWithIdentifier("toQuestion", sender: self)
+                    
+                }
+            }
             
         
 //            snapshot
@@ -125,14 +144,14 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate { // ,CBCe
         // Dispose of any resources that can be recreated.
     }
     
-    
+    // TODO disconnect session after
     @IBAction func yesMeetup(sender: AnyObject) {
 //        timerInvalidate = true
 //        pmanager = CBCentralManager(delegate: self, queue: nil, options: [CBCentralManagerOptionShowPowerAlertKey: true])
-        appDelegate.mpcManager.session.disconnect()
+//        appDelegate.mpcManager.session.disconnect()
         
         print("We are about to start re-advertising")
-        fireBaseConnect.setValue("Meet up time is here from \(UIDevice.currentDevice().name)")
+        fireBaseConnect.setValue("\(UIDevice.currentDevice().name):\(appDelegate.interests)")
 //        appDelegate.myFire.childByAutoId()
         
 //            .setValue("Meet up time is here from \(UIDevice.currentDevice().name)")
@@ -313,14 +332,22 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate { // ,CBCe
     
     
     
-    /*
+  
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        
+        if (segue.identifier == "toQuestion") {
+        
+        NSNotificationCenter.defaultCenter().removeObserver(self.observer, name: "receivedMPCDataNotification", object: nil)
+            
+        }
+        
+        
     }
-    */
+
 
 }
