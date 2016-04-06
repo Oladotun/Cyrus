@@ -70,7 +70,12 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
         } else {
             
             let currInfo =  NSKeyedUnarchiver.unarchiveObjectWithData(context!) as! NSDictionary
+            print(currInfo)
             let currPeepTopic = currInfo["topics"] as! [String]
+            let currUID = currInfo["chatUid"] as! [String]
+            
+            // Update current fireUID
+           
             
             appendMatchedTopics(currPeepTopic)
             
@@ -82,6 +87,8 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
                 delegate?.invitationWasReceived(peerID.displayName, topic: matchTopics[0])
                matchTopic = matchTopics[0]
                 delegate?.findMorePeer = false
+                 appDelegate.fireUID = currUID[0]
+                
                 print("Found Pair, setting Peer finding to False")
                 
             } else {
@@ -177,7 +184,7 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
             
         case MCSessionState.NotConnected:
 
-            delegate?.connectedWithPeer(MCPeerID(displayName: " "))
+            delegate?.connectedWithPeer(MCPeerID(displayName: "_use_firebase_chat_"))
             print("Could not connect to session \(session)")
             print("display name \(peerID.displayName)")
             print("\(peer.displayName)")

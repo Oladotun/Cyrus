@@ -43,7 +43,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
             
             if (self.initiator == true) {
-                self.sendUserID()
+//                self.sendUserID()
             } else {
                 self.sendMatchedTopic()
             }

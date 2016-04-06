@@ -97,15 +97,22 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
                 appDelegate.myFire.unauth()
             }
             
-        } else {
+        } else if (peerID.displayName == "_use_firebase_chat_") {
             
-            NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
-                
-                self.performSegueWithIdentifier("idSegueChat", sender: self)
-                
-            }
+            print("Both users connected")
             
         }
+        
+        
+//        else {
+//            
+//            NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+//                
+//                self.performSegueWithIdentifier("idSegueChat", sender: self)
+//                
+//            }
+//            
+//        }
         
        
     }
@@ -132,27 +139,27 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
         
         print(appDelegate.mpcManager.foundPeers.count)
         
-        for peer in appDelegate.mpcManager.foundPeers {
-            
-            var contentCreated = [String: [String]]()
-            contentCreated["topics"] = interests
-            
-            let dataExample : NSData = NSKeyedArchiver.archivedDataWithRootObject(contentCreated)
-            
-            print("Going to connect from Meet Up page")
-            chatInitiator = true // Caught the culprit
-            appDelegate.mpcManager.browser.invitePeer(peer, toSession: appDelegate.mpcManager.session, withContext: dataExample, timeout: 60)
-            displayView.removeFromSuperview()
-            
-            print(findMorePeer)
-            if(!findMorePeer) {
-                break
-            }
-            
-        }
+//        for peer in appDelegate.mpcManager.foundPeers {
+//            
+//            var contentCreated = [String: [String]]()
+//            contentCreated["topics"] = interests
+//            
+//            let dataExample : NSData = NSKeyedArchiver.archivedDataWithRootObject(contentCreated)
+//            
+//            print("Going to connect from Meet Up page")
+//            chatInitiator = true // Caught the culprit
+//            appDelegate.mpcManager.browser.invitePeer(peer, toSession: appDelegate.mpcManager.session, withContext: dataExample, timeout: 60)
+//            displayView.removeFromSuperview()
+//            
+//            print(findMorePeer)
+//            if(!findMorePeer) {
+//                break
+//            }
+//            
+//        }
         
-        print("Find more peer now set as \(findMorePeer)")
-        
+//        print("Find more peer now set as \(findMorePeer)")
+    
         // Process all the foundPEERS here
         
         if  appDelegate.mpcManager.foundPeers.count > 0 {
@@ -161,12 +168,7 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
             let selectedPeer = appDelegate.mpcManager.foundPeers[0] as MCPeerID
             
             var contentCreated = [String: [String]]()
-            contentCreated["topics"] = interests
             
-            let dataExample : NSData = NSKeyedArchiver.archivedDataWithRootObject(contentCreated)
-            
-            print("Going to connect from Meet Up page")
-            appDelegate.mpcManager.browser.invitePeer(selectedPeer, toSession: appDelegate.mpcManager.session, withContext: dataExample, timeout: 20)
             // Setting up firebase connection
             self.appDelegate.userFire.authAnonymouslyWithCompletionBlock { error, authData in
                 if error != nil {
@@ -182,8 +184,24 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
 
                     self.appDelegate.myFire = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(currData.uid)")
                     
+                    // send data to other user on connection
+                    
+                    contentCreated["topics"] = self.interests
+                    contentCreated["chatUid"] = [self.appDelegate.fireUID]
+                    
+                    print("Sent content")
+                    print(contentCreated)
+                    
+                    let dataExample : NSData = NSKeyedArchiver.archivedDataWithRootObject(contentCreated)
+                    
+                    print("Going to connect from Meet Up page")
+                    print(dataExample)
+                    self.appDelegate.mpcManager.browser.invitePeer(selectedPeer, toSession: self.appDelegate.mpcManager.session, withContext: dataExample, timeout: 20)
+                    
                 }
             }
+            
+            
             
             
             displayView.removeFromSuperview()
