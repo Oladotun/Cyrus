@@ -14,8 +14,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var mpcManager: MPCManager!
-    var userFire: Firebase!
-    var myFire: Firebase!
+    var userFire: Firebase! // CyrusTheGreat Connection
+    var myFire: Firebase! // Connection for specific chat session used in chat view controller
+    var fireConnect: Firebase! // Connection for current user used in questions View Controller
     var fireUID: String!
     var interests: [String]!
     var matchedTopic: String!

@@ -69,7 +69,7 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate { // ,CBCe
         
 //        fireBaseConnect = Firebase(url:"https://cyrusthegreat.firebaseio.com/\(appDelegate.fireUID)")
         
-        fireBaseConnect = appDelegate.myFire.childByAutoId()
+        appDelegate.fireConnect = appDelegate.myFire.childByAutoId()
         
 
         print("current url: https://cyrusthegreat.firebaseio.com/\(appDelegate.fireUID)")
@@ -151,7 +151,7 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate { // ,CBCe
 //        appDelegate.mpcManager.session.disconnect()
         
         print("We are about to start re-advertising")
-        fireBaseConnect.setValue("\(UIDevice.currentDevice().name):\(appDelegate.interests)")
+        appDelegate.fireConnect.setValue("\(UIDevice.currentDevice().name):\(appDelegate.interests)")
 //        appDelegate.myFire.childByAutoId()
         
 //            .setValue("Meet up time is here from \(UIDevice.currentDevice().name)")

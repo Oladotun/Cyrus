@@ -1154,8 +1154,15 @@
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" id="XBn-lX-MDU"/>
+                    <navigationItem key="navigationItem" id="XBn-lX-MDU">
+                        <barButtonItem key="leftBarButtonItem" systemItem="stop" id="3Ot-C2-gV2">
+                            <connections>
+                                <action selector="exitButton:" destination="DDq-FN-vDe" id="bZc-P9-VAv"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
+                        <outlet property="exitButton" destination="3Ot-C2-gV2" id="aBe-VT-KSB"/>
                         <outlet property="interestMatchLabel" destination="Fh4-ZQ-E75" id="k7P-Ix-fUE"/>
                     </connections>
                 </viewController>

@@ -117,7 +117,7 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
 //        return presentTopic
 //    }
     
-    private func appendMatchedTopics(userTopics: [String]){
+    func appendMatchedTopics(userTopics: [String]) -> [String]{
         presentTopic = false
         for topic in peerTopics {
             if (userTopics.contains(topic)) {
@@ -125,6 +125,8 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
                 matchTopics.append(topic)
             }
         }
+        
+        return matchTopics
         
     }
     
