@@ -24,12 +24,16 @@ class QuestionsViewController: UIViewController {
     
     var numOfQuestions:Int = 1
     
+    var endButtonPressed:Bool!
+    
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        endButtonPressed = false
         NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
             
-            self.interestMatch()
+            self.fireBaseBusiness()
             
         }
        
@@ -45,7 +49,32 @@ class QuestionsViewController: UIViewController {
     }
     
     
-    func interestMatch() {
+    @IBAction func exitButton(sender: AnyObject) {
+        
+        let alert = UIAlertController(title: "", message: "Are you sure you want to exit the chat?", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        let acceptAction: UIAlertAction = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
+            
+            self.appDelegate.fireConnect.setValue("_end_chat_")
+            self.endButtonPressed = true
+            
+            
+        }
+        
+        let declineAction: UIAlertAction = UIAlertAction(title: "No", style: UIAlertActionStyle.Cancel) { (alertAction) -> Void in
+            
+        }
+        
+        alert.addAction(acceptAction)
+        alert.addAction(declineAction)
+        
+        NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
+    }
+    
+    
+    func fireBaseBusiness() {
         appDelegate.myFire.observeEventType(.Value, withBlock: {
             //            snapshot.childrenCount()
             snapshot in
@@ -60,31 +89,66 @@ class QuestionsViewController: UIViewController {
             for value in allValues {
                 
 //                let allInterests = snapshot.value as! String
-                
-                let twitInterest = value.componentsSeparatedByString(":")
-                
-                self.interestsCollected = twitInterest[1].stringByReplacingOccurrencesOfString("[", withString: "")
-                self.interestsCollected = self.interestsCollected.stringByReplacingOccurrencesOfString("]", withString: "")
-                print("twitter interests \(self.interestsCollected)")
-                
-                let twitInterestArray =  self.interestsCollected.componentsSeparatedByString(",")
-            
-                
-                print("twitter interest array \(twitInterestArray)")
-                
-                for interest in twitInterestArray {
+                // Working on user topics and Matching topics
+                if value.contains(":") {
                     
-                    if let count = self.interestDictionary[interest] {
-                        self.interestDictionary[interest] = count + 1
-                    } else {
-                        self.interestDictionary[interest] = 1
+                    let twitInterest = value.componentsSeparatedByString(":")
+                    
+                    self.interestsCollected = twitInterest[1].stringByReplacingOccurrencesOfString("[", withString: "")
+                    self.interestsCollected = self.interestsCollected.stringByReplacingOccurrencesOfString("]", withString: "")
+                    print("twitter interests \(self.interestsCollected)")
+                    
+                    let twitInterestArray =  self.interestsCollected.componentsSeparatedByString(",")
+                    
+                    
+                    print("twitter interest array \(twitInterestArray)")
+                    
+                    for interest in twitInterestArray {
+                        
+                        if let count = self.interestDictionary[interest] {
+                            self.interestDictionary[interest] = count + 1
+                        } else {
+                            self.interestDictionary[interest] = 1
+                        }
+                        
                     }
+                   
+                } else {
+                    
+                    if value.contains("_end_chat_") {
+                        
+                        if(!self.endButtonPressed) {
+                            
+                            // In this case an "_end_chat_" message was received.
+                            // Show an alert view to the user.
+                            
+                            let alert = UIAlertController(title:"",message: "Other User ended this chat", preferredStyle: UIAlertControllerStyle.Alert)
+                            
+                            let doneAction: UIAlertAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
+                    
+//                                self.dismissViewControllerAnimated(true, completion: nil)
+                            }
+                            
+                            alert.addAction(doneAction)
+                            
+                            NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                                self.presentViewController(alert, animated: true, completion: nil)
+                            })
+                            
+                        }
+                        
+                    }
+                    
+                    
                     
                 }
                 
+                
+                    
             }
             
-            self.interestSameArray = Array(self.interestDictionary.keys)
+             self.interestSameArray = Array(self.interestDictionary.keys)
+                
 //            self.interestMatchLabel.text = "\(self.interestDictionary)"
 //            print("current dictionary: \(self.interestDictionary)")
             
