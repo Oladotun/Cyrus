@@ -93,13 +93,34 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
             print("Could not connect delete cyrus firebase")
             
             
-            if (appDelegate.myFire != nil) {
-                appDelegate.myFire.unauth()
+            if (appDelegate.meetUpFire != nil) {
+                appDelegate.meetUpFire.unauth()
             }
             
         } else if (peerID.displayName == "_use_firebase_chat_") {
             
-            print("Both users connected")
+            let meetPath = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(self.appDelegate.fireUID )/meetUp")
+            
+            print("meetPath in connection Page")
+            
+            print("\(meetPath.description)")
+            
+            meetPath.observeEventType(.Value, withBlock: {
+                snapshot in
+                if (snapshot.value as! String == "true") {
+                    NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+
+                        self.performSegueWithIdentifier("idSegueChat", sender: self)
+                        
+                    }
+                    
+                }
+            })
+            
+            
+            
+            
+//            print("Both users connected")
             
         }
         
@@ -182,20 +203,23 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
                     print(currData.uid)
                     self.appDelegate.fireUID = currData.uid
 
-                    self.appDelegate.myFire = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(currData.uid)")
+                    self.appDelegate.meetUpFire = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(currData.uid)")
+                    
+//                    self.appDelegate.meetUpFire
                     
                     // send data to other user on connection
                     
                     contentCreated["topics"] = self.interests
                     contentCreated["chatUid"] = [self.appDelegate.fireUID]
                     
-                    print("Sent content")
-                    print(contentCreated)
+//                    print("Sent content")
+//                    print(contentCreated)
                     
                     let dataExample : NSData = NSKeyedArchiver.archivedDataWithRootObject(contentCreated)
+                    self.chatInitiator = true
                     
                     print("Going to connect from Meet Up page")
-                    print(dataExample)
+//                    print(dataExample)
                     self.appDelegate.mpcManager.browser.invitePeer(selectedPeer, toSession: self.appDelegate.mpcManager.session, withContext: dataExample, timeout: 20)
                     
                 }
@@ -220,10 +244,30 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
         
         let acceptAction: UIAlertAction = UIAlertAction(title: "Accept", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
             
-            self.appDelegate.mpcManager.invitationHandler(true, self.appDelegate.mpcManager.session)
             
             
-            // Set up firebase for questions page
+            NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+                // Set up fire UID of user
+                self.appDelegate.meetUpFire = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(self.appDelegate.fireUID)")
+                
+                
+                // Set up firebase for questions page
+                
+                print("Setting meet up Online")
+                let meetPath = self.appDelegate.meetUpFire.childByAppendingPath("meetUp")
+                
+                meetPath.setValue("true")
+                
+                self.appDelegate.mpcManager.invitationHandler(true, self.appDelegate.mpcManager.session)
+                
+//                print("\(meetPath.description)")
+//                
+//                meetPath.observeEventType(.Value, withBlock: {
+//                    snapshot in
+//                    print("\(snapshot.key) -> \(snapshot.value)")
+//                })
+            }
+            
             
             
             
@@ -231,7 +275,7 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
         
         let declineAction: UIAlertAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel) { (alertAction) -> Void in
             
-            self.appDelegate.mpcManager.invitationHandler(false,MCSession())
+//            self.appDelegate.mpcManager.invitationHandler(false,MCSession())
         }
         
         alert.addAction(acceptAction)

@@ -75,7 +75,7 @@ class QuestionsViewController: UIViewController {
     
     
     func fireBaseBusiness() {
-        appDelegate.myFire.observeEventType(.Value, withBlock: {
+        appDelegate.meetUpFire.observeEventType(.Value, withBlock: {
             //            snapshot.childrenCount()
             snapshot in
             print("\(snapshot.key) -> \(snapshot.value)")

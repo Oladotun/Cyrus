@@ -38,28 +38,28 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         print("initiator is \(initiator)")
         print("We are setting up to initiate")
         
-        let mainQueue = NSOperationQueue.mainQueue()
+//        let mainQueue = NSOperationQueue.mainQueue()
         
-        NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
-            
-            if (self.initiator == true) {
-//                self.sendUserID()
-            } else {
-                self.sendMatchedTopic()
-            }
-            
-            
-//            NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleMPCReceivedDataWithNotification:", name: "receivedMPCDataNotification", object: nil)
- 
-        }
+//        NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+//            
+//            if (self.initiator == true) {
+////                self.sendUserID()
+//            } else {
+//                self.sendMatchedTopic()
+//            }
+//            
+//            
+////            NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleMPCReceivedDataWithNotification:", name: "receivedMPCDataNotification", object: nil)
+// 
+//        }
         
         
         
-        observer = NSNotificationCenter.defaultCenter().addObserverForName("receivedMPCDataNotification", object: nil, queue: mainQueue, usingBlock: {
-            note in self.handleMPCReceivedDataWithNotification(note)
-            
-        })
-        
+//        observer = NSNotificationCenter.defaultCenter().addObserverForName("receivedMPCDataNotification", object: nil, queue: mainQueue, usingBlock: {
+//            note in self.handleMPCReceivedDataWithNotification(note)
+//            
+//        })
+//        
         
         // Do any additional setup after loading the view.
         tblChat.delegate = self
@@ -233,7 +233,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                     print("Setting up firebase for other user")
                     let messageInfo = message.componentsSeparatedByString(" ")
                     appDelegate.fireUID = messageInfo[1]
-                    appDelegate.myFire = Firebase(url:"https://cyrusthegreat.firebaseio.com/\(appDelegate.fireUID)")
+                    appDelegate.meetUpFire = Firebase(url:"https://cyrusthegreat.firebaseio.com/\(appDelegate.fireUID)")
 //                    print("other user info \(otherUserUID)")
                 } else if message.contains("MatchTopic"){
                     let messageInfo = message.componentsSeparatedByString(" ")

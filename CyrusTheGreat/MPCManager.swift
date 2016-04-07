@@ -82,12 +82,13 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
             if ((presentTopic) != nil) {
                 
                 self.invitationHandler = invitationHandler
-                print("Calling Invitation Handler \(invitationHandler)")
-                print("Matched Topics is \(matchTopics)")
+//                print("Calling Invitation Handler \(invitationHandler)")
+//                print("Matched Topics is \(matchTopics)")
                 delegate?.invitationWasReceived(peerID.displayName, topic: matchTopics[0])
                matchTopic = matchTopics[0]
                 delegate?.findMorePeer = false
                  appDelegate.fireUID = currUID[0]
+                
                 
                 print("Found Pair, setting Peer finding to False")
                 
@@ -166,6 +167,7 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
         print(error.localizedDescription)
     }
     
+    // Connect through firebase with Session
     
     func session(session: MCSession, peer peerID: MCPeerID, didChangeState state: MCSessionState) {
         
@@ -173,17 +175,16 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
         case MCSessionState.Connected:
             print("Connection to session \(session)")
             NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
-             print("Setting up match topic delegate")
              self.appDelegate.matchedTopic = self.matchTopic
-                print("matched topic is \(self.appDelegate.matchedTopic)")
             }
-            delegate?.connectedWithPeer(peerID)
+//            delegate?.connectedWithPeer(peerID)
+            delegate?.connectedWithPeer(MCPeerID(displayName: "_use_firebase_chat_"))
             
         case MCSessionState.Connecting:
             print("Connecting to session \(session)")
             
         case MCSessionState.NotConnected:
-
+            
             delegate?.connectedWithPeer(MCPeerID(displayName: "_use_firebase_chat_"))
             print("Could not connect to session \(session)")
             print("display name \(peerID.displayName)")

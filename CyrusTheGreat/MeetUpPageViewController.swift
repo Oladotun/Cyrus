@@ -69,11 +69,11 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate { // ,CBCe
         
 //        fireBaseConnect = Firebase(url:"https://cyrusthegreat.firebaseio.com/\(appDelegate.fireUID)")
         
-        appDelegate.fireConnect = appDelegate.myFire.childByAutoId()
+        appDelegate.fireConnect = appDelegate.meetUpFire.childByAutoId()
         
 
         print("current url: https://cyrusthegreat.firebaseio.com/\(appDelegate.fireUID)")
-        appDelegate.myFire.observeEventType(.Value, withBlock: {
+        appDelegate.meetUpFire.observeEventType(.Value, withBlock: {
 //            snapshot.childrenCount()
             snapshot in
             print("\(snapshot.key) -> \(snapshot.value)")
