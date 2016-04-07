@@ -20,12 +20,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var fireUID: String!
     var interests: [String]!
     var matchedTopic: String!
+    var meetAccept: Bool!
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         mpcManager = MPCManager()
         userFire = Firebase(url: "https://cyrusthegreat.firebaseio.com/")
+        meetAccept = false
 //        userFire.authAnonymouslyWithCompletionBlock { error, authData in
 //            if error != nil {
 //                // There was an error logging in anonymously

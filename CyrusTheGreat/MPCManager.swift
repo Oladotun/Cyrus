@@ -8,6 +8,7 @@
 
 import UIKit
 import MultipeerConnectivity
+import Firebase
 
 
 protocol MPCManagerDelegate {
@@ -87,7 +88,12 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
                 delegate?.invitationWasReceived(peerID.displayName, topic: matchTopics[0])
                matchTopic = matchTopics[0]
                 delegate?.findMorePeer = false
+                print("currUID \(currUID[0])")
                  appDelegate.fireUID = currUID[0]
+                
+                self.appDelegate.meetUpFire = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(self.appDelegate.fireUID)")
+                let meetPath = self.appDelegate.meetUpFire.childByAppendingPath("meetUp")
+                meetPath.setValue("Not Set")
                 
                 
                 print("Found Pair, setting Peer finding to False")
@@ -167,6 +173,32 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
         print(error.localizedDescription)
     }
     
+    func setUpMeetUpTruth(){
+        print("In set meetup uid is \(self.appDelegate.fireUID)")
+        let meetPath = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(self.appDelegate.fireUID)/meetUp")
+        
+        print("meetPath in connection Page")
+        
+        print("\(meetPath.description)")
+        
+        meetPath.observeEventType(.Value, withBlock: {
+            snapshot in
+            if (snapshot.value != nil) {
+                
+                if(snapshot.value as! String == "true") {
+                    self.delegate?.connectedWithPeer(MCPeerID(displayName: "_use_firebase_chat_"))
+                } else {
+                    print("timed out")
+                    
+                    self.delegate?.connectedWithPeer(MCPeerID(displayName: self.peer.displayName))
+//                    meetPath.setValue("Timed out")
+                }
+                
+            }
+        })
+        
+    }
+    
     // Connect through firebase with Session
     
     func session(session: MCSession, peer peerID: MCPeerID, didChangeState state: MCSessionState) {
@@ -185,7 +217,7 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
             
         case MCSessionState.NotConnected:
             
-            delegate?.connectedWithPeer(MCPeerID(displayName: "_use_firebase_chat_"))
+            self.setUpMeetUpTruth()
             print("Could not connect to session \(session)")
             print("display name \(peerID.displayName)")
             print("\(peer.displayName)")

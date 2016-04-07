@@ -20,6 +20,7 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
     var displayView = UIView()
     var interests: [String]!
     var chatInitiator:Bool!
+    var alertInvite:UIAlertController!
     
     
     var findMorePeer = true
@@ -36,7 +37,9 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
         noOfPeer.text = ""
         appDelegate.mpcManager.browser.startBrowsingForPeers()
         appDelegate.interests = interests
-
+        
+        // Set up alert view
+        alertInvite = nil
         
         
 //        if interests.count > 0 {
@@ -99,7 +102,7 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
             
         } else if (peerID.displayName == "_use_firebase_chat_") {
             
-            let meetPath = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(self.appDelegate.fireUID )/meetUp")
+            let meetPath = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(self.appDelegate.fireUID)/meetUp")
             
             print("meetPath in connection Page")
             
@@ -107,7 +110,8 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
             
             meetPath.observeEventType(.Value, withBlock: {
                 snapshot in
-                if (snapshot.value as! String == "true") {
+                if (snapshot.value != nil) {
+                    
                     NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
 
                         self.performSegueWithIdentifier("idSegueChat", sender: self)
@@ -119,8 +123,30 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
             
             
             
-            
 //            print("Both users connected")
+            
+        }  else {
+            
+            if (self.alertInvite != nil) {
+                
+                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                    self.alertInvite.dismissViewControllerAnimated(true, completion: nil)
+                })
+                
+            }
+            
+            
+            let alert = UIAlertController(title:"",message: "Connection Timed out ended this chat", preferredStyle: UIAlertControllerStyle.Alert)
+            
+            let doneAction: UIAlertAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
+                alert.dismissViewControllerAnimated(true, completion: nil)
+            }
+            
+            alert.addAction(doneAction)
+            
+            NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                self.presentViewController(alert, animated: true, completion: nil)
+            })
             
         }
         
@@ -239,8 +265,12 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
     
     func invitationWasReceived(fromPeer: String, topic:String ) {
         
-        print("I got called yeah")
-        let alert = UIAlertController(title: "", message: "\(fromPeer) wants to chat with you on \(topic)", preferredStyle: UIAlertControllerStyle.Alert)
+        print("Current fireUID in receiver is \(self.appDelegate.fireUID)")
+        
+       
+        
+//        print("I got called yeah")
+        alertInvite = UIAlertController(title: "", message: "\(fromPeer) wants to chat with you on \(topic)", preferredStyle: UIAlertControllerStyle.Alert)
         
         let acceptAction: UIAlertAction = UIAlertAction(title: "Accept", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
             
@@ -248,24 +278,23 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
             
             NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
                 // Set up fire UID of user
+                
                 self.appDelegate.meetUpFire = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(self.appDelegate.fireUID)")
+                let meetPath =  Firebase(url: "https://cyrusthegreat.firebaseio.com/\(self.appDelegate.fireUID)/meetUp")
+                
                 
                 
                 // Set up firebase for questions page
                 
-                print("Setting meet up Online")
-                let meetPath = self.appDelegate.meetUpFire.childByAppendingPath("meetUp")
+//                print("Setting meet up Online")
+                
+                self.appDelegate.meetUpFire.childByAppendingPath("chatMsg")
+                self.appDelegate.meetUpFire.childByAppendingPath("chatAccept").setValue("false")
                 
                 meetPath.setValue("true")
                 
                 self.appDelegate.mpcManager.invitationHandler(true, self.appDelegate.mpcManager.session)
                 
-//                print("\(meetPath.description)")
-//                
-//                meetPath.observeEventType(.Value, withBlock: {
-//                    snapshot in
-//                    print("\(snapshot.key) -> \(snapshot.value)")
-//                })
             }
             
             
@@ -276,13 +305,16 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
         let declineAction: UIAlertAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel) { (alertAction) -> Void in
             
 //            self.appDelegate.mpcManager.invitationHandler(false,MCSession())
+            
+            // Not connecting and end
+            self.connectedWithPeer(MCPeerID(displayName: " "))
         }
         
-        alert.addAction(acceptAction)
-        alert.addAction(declineAction)
+        alertInvite.addAction(acceptAction)
+        alertInvite.addAction(declineAction)
         
         NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
-            self.presentViewController(alert, animated: true, completion: nil)
+            self.presentViewController(self.alertInvite, animated: true, completion: nil)
         }
         
         
