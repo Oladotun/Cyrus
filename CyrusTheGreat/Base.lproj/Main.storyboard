@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Rdi-ec-lHb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="z4o-XF-IxR">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
@@ -1121,6 +1121,7 @@
                         <viewControllerLayoutGuide type="bottom" id="m7z-Rb-QXZ"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="drt-bm-bRc">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LhD-oQ-GKb">
@@ -1132,16 +1133,27 @@
                                     <segue destination="0mv-3b-yBT" kind="embed" identifier="meetWearingSegue" id="Xn0-tF-aXW"/>
                                 </connections>
                             </containerView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8bC-P1-6av">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="5" y="50" width="389" height="658"/>
+                                </variation>
+                                <connections>
+                                    <segue destination="z4o-XF-IxR" kind="embed" id="YOc-sB-pQI"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="LhD-oQ-GKb"/>
+                                <exclude reference="8bC-P1-6av"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
                             <mask key="subviews">
                                 <include reference="LhD-oQ-GKb"/>
+                                <include reference="8bC-P1-6av"/>
                             </mask>
                         </variation>
                     </view>
@@ -1151,7 +1163,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rIl-G5-Lku" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3589.5" y="1195.5"/>
+            <point key="canvasLocation" x="-3618" y="1241.25"/>
         </scene>
         <!--Questions View Controller-->
         <scene sceneID="KlB-cV-ePG">
@@ -1162,7 +1174,7 @@
                         <viewControllerLayoutGuide type="bottom" id="fCD-1R-USr"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="ncs-YZ-Pok">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="30" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fh4-ZQ-E75">
@@ -1225,7 +1237,12 @@
         <scene sceneID="dBi-6j-THp">
             <objects>
                 <viewController id="0mv-3b-yBT" customClass="MeetUpPageViewController" customModule="CyrusTheGreat" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="RO4-Mc-XvF"/>
+                        <viewControllerLayoutGuide type="bottom" id="p33-wf-5IX"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="5Ry-6v-QOg">
+                        <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Let Person Know what you are wearing " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="495-Bt-Oxc">
@@ -1328,7 +1345,47 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ppk-vo-Dvn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2552.25" y="1090.5"/>
+            <point key="canvasLocation" x="-2522.25" y="989.25"/>
+        </scene>
+        <!--Location Tracker View Controller-->
+        <scene sceneID="uc7-IG-RkW">
+            <objects>
+                <viewController id="z4o-XF-IxR" customClass="LocationTrackerViewController" customModule="CyrusTheGreat" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="4jJ-nl-ysU"/>
+                        <viewControllerLayoutGuide type="bottom" id="LWs-I5-mfA"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Ye5-It-04A">
+                        <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O1W-bk-zmn" customClass="GMSMapView">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="20" y="69" width="349" height="406"/>
+                                </variation>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="O1W-bk-zmn"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="O1W-bk-zmn"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="currMapView" destination="O1W-bk-zmn" id="xR9-ZA-gwi"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9YI-FH-OYg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2522.25" y="1593"/>
         </scene>
     </scenes>
 </document>

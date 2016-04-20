@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import GoogleMaps
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -21,6 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var interests: [String]!
     var matchedTopic: String!
     var meetAccept: Bool!
+    
+    let googleMapsApiKey = "AIzaSyBNKALtaMqAXxDMy2jSaARp30xUjecbd8E"
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -44,7 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //                
 //            }
 //        }
-        
+        GMSServices.provideAPIKey(googleMapsApiKey)
         
         return true
     }
