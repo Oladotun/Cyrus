@@ -14,8 +14,10 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     @IBOutlet weak var txtChat: UITextField!
     @IBOutlet weak var meetTimePicker: UIDatePicker!
     @IBOutlet weak var tblChat: UITableView!
-    var messagesArray: [Dictionary<String,String>] = []
+//    var messagesArray: [Dictionary<String,String>] = []
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    
+    var messagesArray: [String] = []
     
     @IBOutlet weak var warningLabel: UILabel!
     var chatMessage: String!
@@ -27,6 +29,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
 //    var otherUserUID:String!
     
     var iamSender:Bool!
+    var chatMsgPath: Firebase!
+    var chatAcceptPath: Firebase!
     
     
     
@@ -37,6 +41,58 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
         print("initiator is \(initiator)")
         print("We are setting up to initiate")
+        
+       chatMsgPath = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(self.appDelegate.fireUID)/chatMsg")
+       chatAcceptPath = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(self.appDelegate.fireUID)/chatAccept")
+        chatAcceptPath.setValue("no")
+        
+        chatAcceptPath.observeEventType(.Value, withBlock: {
+            snapshot in
+            
+            if(snapshot.value as! String == "yes") {
+                
+                NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+                    
+                    self.performSegueWithIdentifier("yesSegue", sender: self)
+                    
+                }
+                
+            }
+        })
+        
+        
+        chatMsgPath.observeEventType(.Value, withBlock: {
+            
+            snapshot in
+            if let val = snapshot.value as? String {
+                
+                let sendMsg = val.componentsSeparatedByString(":")
+                
+                if (sendMsg.count > 0) {
+                    if(sendMsg[0] == UIDevice.currentDevice().name ){
+                        self.iamSender = true
+                        
+                    } else {
+                        self.iamSender = false
+                    }
+                    self.messagesArray.append(sendMsg[1])
+                    
+                    self.updateTableView()
+                }
+                
+            } else {
+                print("Message path not set") 
+            }
+            
+            
+            
+            
+            
+            
+            
+        })
+        
+        
         
 //        let mainQueue = NSOperationQueue.mainQueue()
         
@@ -99,32 +155,32 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
     }
     
-    func sendMatchedTopic() {
-        
-        let toSendMessage = "MatchTopic \(appDelegate.matchedTopic)"
-        
-        let messageDictionary: [String: String] = ["message": toSendMessage]
-        
-        if appDelegate.mpcManager.sendData(dictionaryWithData: messageDictionary, toPeer: appDelegate.mpcManager.session.connectedPeers[0] ) {
-            print("sending matchedTopic to initiator")
-            
-        } else {
-            print("Could not send data")
-        }
-        
-    }
-    func sendUserID() {
-        let toSendMessage = "fireBaseUser \(appDelegate.fireUID)"
-        
-        let messageDictionary: [String: String] = ["message": toSendMessage]
-        
-        if appDelegate.mpcManager.sendData(dictionaryWithData: messageDictionary, toPeer: appDelegate.mpcManager.session.connectedPeers[0] ) {
-            print("sending user id")
-
-        } else {
-            print("Could not send data")
-        }
-    }
+//    func sendMatchedTopic() {
+//        
+//        let toSendMessage = "MatchTopic \(appDelegate.matchedTopic)"
+//        
+//        let messageDictionary: [String: String] = ["message": toSendMessage]
+//        
+//        if appDelegate.mpcManager.sendData(dictionaryWithData: messageDictionary, toPeer: appDelegate.mpcManager.session.connectedPeers[0] ) {
+//            print("sending matchedTopic to initiator")
+//            
+//        } else {
+//            print("Could not send data")
+//        }
+//        
+//    }
+//    func sendUserID() {
+//        let toSendMessage = "fireBaseUser \(appDelegate.fireUID)"
+//        
+//        let messageDictionary: [String: String] = ["message": toSendMessage]
+//        
+//        if appDelegate.mpcManager.sendData(dictionaryWithData: messageDictionary, toPeer: appDelegate.mpcManager.session.connectedPeers[0] ) {
+//            print("sending user id")
+//
+//        } else {
+//            print("Could not send data")
+//        }
+//    }
 
 
     /*
@@ -142,12 +198,12 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
     @IBAction func endChat(sender: AnyObject) {
         
-        let messageDictionary: [String:String] = ["message":"_end_chat_"]
-        if appDelegate.mpcManager.sendData(dictionaryWithData: messageDictionary, toPeer: appDelegate.mpcManager.session.connectedPeers[0] ){
-            self.dismissViewControllerAnimated(true, completion: { () -> Void in
-                self.appDelegate.mpcManager.session.disconnect()
-            })
-        }
+//        let messageDictionary: [String:String] = ["message":"_end_chat_"]
+//        if appDelegate.mpcManager.sendData(dictionaryWithData: messageDictionary, toPeer: appDelegate.mpcManager.session.connectedPeers[0] ){
+//            self.dismissViewControllerAnimated(true, completion: { () -> Void in
+//                self.appDelegate.mpcManager.session.disconnect()
+//            })
+//        }
         
     }
     
@@ -160,24 +216,26 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         // If user opens app, it should go to a page with time and meet up location info
         // When the time for meet up, we ask the user if there have met up with this user
         
+        chatAcceptPath.setValue("yes")
         
+//        let toSendMessage = "segueToNext"
+//        
+//        let messageDictionary: [String: String] = ["message": toSendMessage]
+//        
+//        if appDelegate.mpcManager.sendData(dictionaryWithData: messageDictionary, toPeer: appDelegate.mpcManager.session.connectedPeers[0] ) {
+//            
+//            NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+//                
+//                self.performSegueWithIdentifier("yesSegue", sender: self)
+//                
+//            }
+//            
+//            
+//        } else {
+//            print("Could not send data")
+//        }
         
-        let toSendMessage = "segueToNext"
-        
-        let messageDictionary: [String: String] = ["message": toSendMessage]
-        
-        if appDelegate.mpcManager.sendData(dictionaryWithData: messageDictionary, toPeer: appDelegate.mpcManager.session.connectedPeers[0] ) {
-            
-            NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
-                
-                self.performSegueWithIdentifier("yesSegue", sender: self)
-                
-            }
-            
-            
-        } else {
-            print("Could not send data")
-        }
+       
         
         
         
@@ -188,128 +246,133 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
         // when declined, we ask the user to propose time
         
-        let toSendMessage = "noNext"
+//        let toSendMessage = "noNext"
+//        
+//        let messageDictionary: [String: String] = ["message": toSendMessage]
+//        
+//        if appDelegate.mpcManager.sendData(dictionaryWithData: messageDictionary, toPeer: appDelegate.mpcManager.session.connectedPeers[0] ) {
+//            
+//           messagesArray = []
+//           warningLabel.text = "You declined the current invitation"
+//           self.updateTableView()
+//           self.iamSender = false
+//            
+//            
+//        } else {
+//            print("Could not send data")
+//        }
         
-        let messageDictionary: [String: String] = ["message": toSendMessage]
         
-        if appDelegate.mpcManager.sendData(dictionaryWithData: messageDictionary, toPeer: appDelegate.mpcManager.session.connectedPeers[0] ) {
-            
-           messagesArray = []
-           warningLabel.text = "You declined the current invitation"
-           self.updateTableView()
-           self.iamSender = false
-            
-            
-        } else {
-            print("Could not send data")
-        }
+        chatAcceptPath.setValue("no")
+        chatMsgPath.setValue(" ")
+        self.updateTableView()
         
     }
     
     // Method for handling received data 
     
-    func handleMPCReceivedDataWithNotification(notification: NSNotification) {
-        
-        print("Notifier called")
-        // Get the dictionary containing the data and the source peer from the notification.
-        let receivedDataDictionary = notification.object as! Dictionary<String, AnyObject>
-        
-        // "Extract" the data and the source peer from the received dictionary.
-        let data = receivedDataDictionary["data"] as? NSData
-        let fromPeer = receivedDataDictionary["fromPeer"] as! MCPeerID
-        
-        // Convert the data (NSData) into a Dictionary object.
-        let dataDictionary = NSKeyedUnarchiver.unarchiveObjectWithData(data!) as! NSDictionary
-        
-        if let message = dataDictionary["message"] as? String {
-            
-            
-            if message != "_end_chat_" {
-                // Create a new dictionary and set the sender and the received message to it.
-                
-                
-                if message.contains("fireBaseUser")
-                {
-                    print("Setting up firebase for other user")
-                    let messageInfo = message.componentsSeparatedByString(" ")
-                    appDelegate.fireUID = messageInfo[1]
-                    appDelegate.meetUpFire = Firebase(url:"https://cyrusthegreat.firebaseio.com/\(appDelegate.fireUID)")
-//                    print("other user info \(otherUserUID)")
-                } else if message.contains("MatchTopic"){
-                    let messageInfo = message.componentsSeparatedByString(" ")
-                    appDelegate.matchedTopic = messageInfo[1]
-                    print("Matched Topic is \(messageInfo)")
-                    
-                }
-                 else if  message.contains("segueToNext") {
-                    print("current message array count is \(messagesArray.count)")
-                    
-                    NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
-                        
-                        self.performSegueWithIdentifier("yesSegue", sender: self)
-                        
-                    }
-                    
-                } else if message == "noNext" {
-                    messagesArray = []
-                    warningLabel.text = "Invitation Declined"
-                    
-                    NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                        
-                        self.iamSender = false
-                        
-                        self.updateTableView()
-                    })
-                    
-                } else {
-                    
-                    let messageDictionary: [String: String] = ["sender": fromPeer.displayName, "message": message]
-                    messagesArray = []
-                    
-                    messagesArray.append(messageDictionary)
-                    
-                    print("Receiving data")
-                    
-                    // Reload the tableview data and scroll to the bottom using the main thread.
-                    NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                    
-                        self.iamSender = false
-                        
-                        self.updateTableView()
-                    })
-                    
-                }
-                
-                
-                
-                
-                
-                
-            } else {
-                
-                // In this case an "_end_chat_" message was received.
-                // Show an alert view to the user.
-                
-                let alert = UIAlertController(title:"",message: "\(fromPeer.displayName) ended this chat", preferredStyle: UIAlertControllerStyle.Alert)
-                
-                let doneAction: UIAlertAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
-                    self.appDelegate.mpcManager.session.disconnect()
-                    self.dismissViewControllerAnimated(true, completion: nil)
-                }
-                
-                alert.addAction(doneAction)
-                
-                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                    self.presentViewController(alert, animated: true, completion: nil)
-                })
-                
-            }
-        
-            
-            
-        }
-   
-    }
+//    func handleMPCReceivedDataWithNotification(notification: NSNotification) {
+//        
+//        print("Notifier called")
+//        // Get the dictionary containing the data and the source peer from the notification.
+//        let receivedDataDictionary = notification.object as! Dictionary<String, AnyObject>
+//        
+//        // "Extract" the data and the source peer from the received dictionary.
+//        let data = receivedDataDictionary["data"] as? NSData
+//        let fromPeer = receivedDataDictionary["fromPeer"] as! MCPeerID
+//        
+//        // Convert the data (NSData) into a Dictionary object.
+//        let dataDictionary = NSKeyedUnarchiver.unarchiveObjectWithData(data!) as! NSDictionary
+//        
+//        if let message = dataDictionary["message"] as? String {
+//            
+//            
+//            if message != "_end_chat_" {
+//                // Create a new dictionary and set the sender and the received message to it.
+//                
+//                
+//                if message.contains("fireBaseUser")
+//                {
+//                    print("Setting up firebase for other user")
+//                    let messageInfo = message.componentsSeparatedByString(" ")
+//                    appDelegate.fireUID = messageInfo[1]
+//                    appDelegate.meetUpFire = Firebase(url:"https://cyrusthegreat.firebaseio.com/\(appDelegate.fireUID)")
+////                    print("other user info \(otherUserUID)")
+//                } else if message.contains("MatchTopic"){
+//                    let messageInfo = message.componentsSeparatedByString(" ")
+//                    appDelegate.matchedTopic = messageInfo[1]
+//                    print("Matched Topic is \(messageInfo)")
+//                    
+//                }
+//                 else if  message.contains("segueToNext") {
+//                    print("current message array count is \(messagesArray.count)")
+//                    
+//                    NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+//                        
+//                        self.performSegueWithIdentifier("yesSegue", sender: self)
+//                        
+//                    }
+//                    
+//                } else if message == "noNext" {
+//                    messagesArray = []
+//                    warningLabel.text = "Invitation Declined"
+//                    
+//                    NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+//                        
+//                        self.iamSender = false
+//                        
+//                        self.updateTableView()
+//                    })
+//                    
+//                } else {
+//                    
+//                    let messageDictionary: [String: String] = ["sender": fromPeer.displayName, "message": message]
+//                    messagesArray = []
+//                    
+//                    messagesArray.append(messageDictionary)
+//                    
+//                    print("Receiving data")
+//                    
+//                    // Reload the tableview data and scroll to the bottom using the main thread.
+//                    NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+//                    
+//                        self.iamSender = false
+//                        
+//                        self.updateTableView()
+//                    })
+//                    
+//                }
+//                
+//                
+//                
+//                
+//                
+//                
+//            } else {
+//                
+//                // In this case an "_end_chat_" message was received.
+//                // Show an alert view to the user.
+//                
+//                let alert = UIAlertController(title:"",message: "\(fromPeer.displayName) ended this chat", preferredStyle: UIAlertControllerStyle.Alert)
+//                
+//                let doneAction: UIAlertAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
+//                    self.appDelegate.mpcManager.session.disconnect()
+//                    self.dismissViewControllerAnimated(true, completion: nil)
+//                }
+//                
+//                alert.addAction(doneAction)
+//                
+//                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+//                    self.presentViewController(alert, animated: true, completion: nil)
+//                })
+//                
+//            }
+//        
+//            
+//            
+//        }
+//   
+//    }
     
     
     // Chat method
@@ -342,26 +405,39 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
             let toSendMessage = chatMessage + "\n" + chatDate
     
-            let messageDictionary: [String: String] = ["message": toSendMessage]
+//            let messageDictionary: [String: String] = ["message": toSendMessage]
         
         if messageCount < 11 {
             
-            if appDelegate.mpcManager.sendData(dictionaryWithData: messageDictionary, toPeer: appDelegate.mpcManager.session.connectedPeers[0] ) {
-                
-                let dictionary: [String:String] = ["sender": "self","message": toSendMessage]
-                messagesArray = []
-                messagesArray.append(dictionary)
-                txtChat.text = ""
-                
-                self.updateTableView()
-                // Hide button after sent
-                sendButton.alpha = 0.0
-                iamSender = true
-                
-            } else {
-                print("Could not send data")
-                warningLabel.text = "Could not Send data"
-            }
+//            if appDelegate.mpcManager.sendData(dictionaryWithData: messageDictionary, toPeer: appDelegate.mpcManager.session.connectedPeers[0] ) {
+//                
+//                let dictionary: [String:String] = ["sender": "self","message": toSendMessage]
+//                messagesArray = []
+//                messagesArray.append(dictionary)
+//                txtChat.text = ""
+//                
+//                self.updateTableView()
+//                // Hide button after sent
+//                sendButton.alpha = 0.0
+//                iamSender = true
+//                
+//            } else {
+//                print("Could not send data")
+//                warningLabel.text = "Could not Send data"
+//            }
+            
+            
+            
+            
+            chatMsgPath.setValue("\(UIDevice.currentDevice().name):\(toSendMessage)")
+            
+            
+            
+            
+            
+            
+            
+            
             
         } else {
             print("Reached Chat Limit, Pls choose last sent location")
@@ -402,7 +478,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tblChat.dequeueReusableCellWithIdentifier("idCell")! as! ChatViewCell
-        cell.chatMessage.text = messagesArray[indexPath.row]["message"]
+//        cell.chatMessage.text = messagesArray[indexPath.row]["message"]
+        cell.chatMessage.text = messagesArray[indexPath.row]
         
         if(indexPath.row == messagesArray.count - 1) {
             
@@ -435,15 +512,16 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             
 //            print("current message Array")
 //            
-            let messageInfo = messagesArray[0]["message"]
+//            let messageInfo = messagesArray[0]["message"]
+            let messageInfo = messagesArray[0]
             
-            let messageInfoArray = messageInfo?.componentsSeparatedByString("\n")
+            let messageInfoArray = messageInfo.componentsSeparatedByString("\n")
             
-            destVC.time = messageInfoArray![1]
-            destVC.destination = messageInfoArray![0]
+            destVC.time = messageInfoArray[1]
+            destVC.destination = messageInfoArray[0]
             
 //            
-            NSNotificationCenter.defaultCenter().removeObserver(observer, name: "receivedMPCDataNotification", object: nil)
+//            NSNotificationCenter.defaultCenter().removeObserver(observer, name: "receivedMPCDataNotification", object: nil)
 //            destVC.otherUserID = self.otherUserUID
             
             

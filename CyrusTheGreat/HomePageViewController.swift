@@ -125,30 +125,7 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
             
 //            print("Both users connected")
             
-        }  else {
-            
-            if (self.alertInvite != nil) {
-                
-                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                    self.alertInvite.dismissViewControllerAnimated(true, completion: nil)
-                })
-                
-            }
-            
-            
-            let alert = UIAlertController(title:"",message: "Connection Timed out ended this chat", preferredStyle: UIAlertControllerStyle.Alert)
-            
-            let doneAction: UIAlertAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
-                alert.dismissViewControllerAnimated(true, completion: nil)
-            }
-            
-            alert.addAction(doneAction)
-            
-            NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                self.presentViewController(alert, animated: true, completion: nil)
-            })
-            
-        }
+        } 
         
         
 //        else {
@@ -163,6 +140,8 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
         
        
     }
+    
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
