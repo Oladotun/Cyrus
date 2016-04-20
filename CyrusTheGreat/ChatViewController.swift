@@ -508,7 +508,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
         if (segue.identifier == "yesSegue") {
             
-            let destVC = segue.destinationViewController as! MeetUpPageViewController
+            let destVC = segue.destinationViewController as! MeetUpAndMapViewController
             
 //            print("current message Array")
 //            
