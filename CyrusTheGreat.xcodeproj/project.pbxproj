@@ -16,6 +16,7 @@
 		7C1155441CAD9A1F0041C012 /* QuestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1155431CAD9A1E0041C012 /* QuestionsViewController.swift */; };
 		7C3BF1DB1CC780940082AC03 /* MeetUpAndMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3BF1DA1CC780940082AC03 /* MeetUpAndMapViewController.swift */; };
 		7C3BF1DD1CC789F40082AC03 /* LocationTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3BF1DC1CC789F40082AC03 /* LocationTrackerViewController.swift */; };
+		7C3BF1E31CC7F25B0082AC03 /* MapTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3BF1E21CC7F25B0082AC03 /* MapTasks.swift */; };
 		7CDC51961C88614F00D50F53 /* CollectionTwitterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDC51951C88614F00D50F53 /* CollectionTwitterViewController.swift */; };
 		7CDC51981C8862A700D50F53 /* CollectionTwitterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDC51971C8862A600D50F53 /* CollectionTwitterCollectionViewCell.swift */; };
 		7CE313271C97027C00634900 /* ChatViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE313261C97027C00634900 /* ChatViewCell.swift */; };
@@ -50,6 +51,7 @@
 		7C3BF1DA1CC780940082AC03 /* MeetUpAndMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeetUpAndMapViewController.swift; sourceTree = "<group>"; };
 		7C3BF1DC1CC789F40082AC03 /* LocationTrackerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationTrackerViewController.swift; sourceTree = "<group>"; };
 		7C3BF1DF1CC799F90082AC03 /* CyrusTheGreat-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CyrusTheGreat-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
+		7C3BF1E21CC7F25B0082AC03 /* MapTasks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapTasks.swift; sourceTree = "<group>"; };
 		7CDC51951C88614F00D50F53 /* CollectionTwitterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionTwitterViewController.swift; sourceTree = "<group>"; };
 		7CDC51971C8862A600D50F53 /* CollectionTwitterCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionTwitterCollectionViewCell.swift; sourceTree = "<group>"; };
 		7CE313261C97027C00634900 /* ChatViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewCell.swift; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 				7C3BF1DA1CC780940082AC03 /* MeetUpAndMapViewController.swift */,
 				7C1154401C99A5070041C012 /* MeetUpPageViewController.swift */,
 				7C3BF1DC1CC789F40082AC03 /* LocationTrackerViewController.swift */,
+				7C3BF1E21CC7F25B0082AC03 /* MapTasks.swift */,
 				7CED63871C75FC110003B19A /* SignUpPageViewController.swift */,
 				7C0661AD1C876670003C04BD /* ApiConnectorViewController.swift */,
 				7CDC51951C88614F00D50F53 /* CollectionTwitterViewController.swift */,
@@ -333,6 +336,7 @@
 				7CDC51981C8862A700D50F53 /* CollectionTwitterCollectionViewCell.swift in Sources */,
 				7C0661AE1C876670003C04BD /* ApiConnectorViewController.swift in Sources */,
 				7CED63651C7353CD0003B19A /* AppDelegate.swift in Sources */,
+				7C3BF1E31CC7F25B0082AC03 /* MapTasks.swift in Sources */,
 				7C3BF1DD1CC789F40082AC03 /* LocationTrackerViewController.swift in Sources */,
 				7C0320311C90A6BF00E299D2 /* HomePageViewController.swift in Sources */,
 				7CE313271C97027C00634900 /* ChatViewCell.swift in Sources */,
