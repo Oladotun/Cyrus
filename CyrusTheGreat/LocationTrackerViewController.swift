@@ -8,15 +8,21 @@
 
 import UIKit
 import GoogleMaps
+import Firebase
 
 class LocationTrackerViewController: UIViewController {
     
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     let locationManager = CLLocationManager()
     let mapTasks = MapTasks()
     var routePolyline: GMSPolyline!
     
     var originMarker: GMSMarker!
     var destinationMarker: GMSMarker!
+    var otherUserDestinationMarker: GMSMarker!
+    
+    var locationFireBase: Firebase!
+    var myLocationFireBase: Firebase!
 
     @IBOutlet weak var currMapView: GMSMapView!
     override func viewDidLoad() {
@@ -24,10 +30,99 @@ class LocationTrackerViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         
+        locationFireBase = Firebase(url:"https://cyrusthegreat.firebaseio.com/location")
+        myLocationFireBase = locationFireBase.childByAppendingPath("\(UIDevice.currentDevice().name)")
+//        locationFireBase.setValue("empty")
+        
+        locationFireBase.observeEventType(.Value, withBlock: {
+            snapshot in
+            
+            
+            for child in snapshot.children {
+                
+                print ("current child info is \(child.key)")
+                
+                if child.key != UIDevice.currentDevice().name {
+                    
+                    let childSnapshot = snapshot.childSnapshotForPath(child.key)
+                    
+                    if let coordinateInString = childSnapshot.value as? String {
+                        
+                        let coordinateArray = coordinateInString.componentsSeparatedByString(",")
+                        let latString = coordinateArray[1]
+                        let longString = coordinateArray[0]
+                        
+                        
+                        let lat = (latString as NSString).doubleValue
+                        let long = (longString as NSString).doubleValue
+                        
+                        let latDegrees: CLLocationDegrees = lat
+                        let longDegrees: CLLocationDegrees = long
+                        
+                        let coordinate = CLLocationCoordinate2DMake(latDegrees , longDegrees)
+                        
+                        
+                        self.otherUserDestinationMarker = GMSMarker(position: coordinate)
+                        self.otherUserDestinationMarker.map = self.currMapView
+                        self.otherUserDestinationMarker.icon = GMSMarker.markerImageWithColor(UIColor.blackColor())
+                        self.otherUserDestinationMarker.title = "Other user address"
+                        
+                    } else {
+                        print("No Value for present")
+                    }
+                    
+                }
+            }
+            
+                    
+            
+ 
+            
+                
+                
+            
+//            if let val = snapshot.value as? String {
+//                
+//                let sendMsg = val.componentsSeparatedByString(":")
+//                
+//                if (sendMsg.count > 1) {
+//                    if(sendMsg[0] != UIDevice.currentDevice().name ){
+//                        
+//                      print("Other user location: \(sendMsg[1])")
+//                    var coordinateInString = sendMsg[1].componentsSeparatedByString(",")
+//                    let latitudeInString = coordinateInString[1]
+//                    let longInString = coordinateInString[0]
+//                        
+//                    let lat = (latitudeInString as NSString).doubleValue
+//                    let long = (longInString as NSString).doubleValue
+//                        
+//                    let latDegrees: CLLocationDegrees = lat
+//                    let longDegrees: CLLocationDegrees = long
+//                        
+//                    let coordinate = CLLocationCoordinate2DMake(latDegrees , longDegrees)
+//                        
+//                        
+//                    self.otherUserDestinationMarker = GMSMarker(position: coordinate)
+//                    self.otherUserDestinationMarker.map = self.currMapView
+//                    self.otherUserDestinationMarker.icon = GMSMarker.markerImageWithColor(UIColor.blackColor())
+//                    self.otherUserDestinationMarker.title = "Other user address"
+//                        
+//                        
+//                    }
+//
+//                
+//            } else {
+//                print("Message path not set")
+//            }
+        })
+        
         // Find current Location of user
         
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
+        locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+        
+//        currMapView.show
         
 //        currRoute()
     }
@@ -64,18 +159,24 @@ class LocationTrackerViewController: UIViewController {
     
     
     func configureMapAndMarkersForRoute() {
-        currMapView.camera = GMSCameraPosition.cameraWithTarget(mapTasks.originCoordinate, zoom: 9.0)
+        currMapView.camera = GMSCameraPosition.cameraWithTarget(mapTasks.originCoordinate, zoom: 10.0)
         
-        originMarker = GMSMarker(position: self.mapTasks.originCoordinate)
-        originMarker.map = self.currMapView
-        originMarker.icon = GMSMarker.markerImageWithColor(UIColor.greenColor())
-        originMarker.title = self.mapTasks.originAddress
+//        originMarker = GMSMarker(position: self.mapTasks.originCoordinate)
+//        originMarker.map = self.currMapView
+//        originMarker.icon = GMSMarker.markerImageWithColor(UIColor.greenColor())
+//        originMarker.title = self.mapTasks.originAddress
         
         destinationMarker = GMSMarker(position: self.mapTasks.destinationCoordinate)
         destinationMarker.map = self.currMapView
         destinationMarker.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
         destinationMarker.title = self.mapTasks.destinationAddress
         
+        let bounds = GMSCoordinateBounds(coordinate: self.mapTasks.originCoordinate, coordinate: self.mapTasks.destinationCoordinate)
+//        let camera = currMapView.cameraForBounds(bounds, insets: UIEdgeInsetsZero)
+//        currMapView.camera = camera!
+        
+        self.currMapView.animateWithCameraUpdate(GMSCameraUpdate.fitBounds(bounds, withPadding: 30.0))
+
         
 //        if waypointsArray.count > 0 {
 //            for waypoint in waypointsArray {
@@ -119,9 +220,11 @@ extension LocationTrackerViewController: CLLocationManagerDelegate {
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         // 3
         if status == .AuthorizedWhenInUse {
+            
             // 4
             locationManager.startUpdatingLocation()
             // 5
+            
             currMapView.myLocationEnabled = true
             currMapView.settings.myLocationButton = true
         }
@@ -159,12 +262,25 @@ extension LocationTrackerViewController: CLLocationManagerDelegate {
         
         print ("\((oldLocation.coordinate.longitude != newLocation.coordinate.longitude) || (oldLocation.coordinate.latitude != newLocation.coordinate.latitude))")
         
-        if (oldLocation.coordinate.longitude != newLocation.coordinate.longitude) || (oldLocation.coordinate.latitude != newLocation.coordinate.latitude) {
+        let longSub = oldLocation.coordinate.longitude - newLocation.coordinate.longitude
+        let latSub = oldLocation.coordinate.latitude - newLocation.coordinate.latitude
+        let stringLongSub = Double(String(format:"%.2f", longSub))
+        let stringLatSub = Double(String(format:"%.2f", latSub))
+        
+        print(stringLongSub)
+        print(stringLatSub)
+        
+        if (stringLongSub) > 0 || (stringLatSub) > 0 {
             
-            currMapView.camera = GMSCameraPosition(target: newLocation.coordinate, zoom: 10, bearing: 0, viewingAngle: 0)
-            let markPosition = GMSMarker(position: newLocation.coordinate)
-            markPosition.title = "My Position"
-            markPosition.map = currMapView
+            print("Longitude subtraction \(oldLocation.coordinate.longitude - newLocation.coordinate.longitude)")
+            print("Latitude subtraction \(oldLocation.coordinate.latitude - newLocation.coordinate.latitude)")
+            
+            currMapView.camera = GMSCameraPosition(target: newLocation.coordinate, zoom: 5, bearing: 0, viewingAngle: 0)
+            // Set Location so other user can know
+            myLocationFireBase.setValue("\(newLocation.coordinate.longitude),\(newLocation.coordinate.latitude)")
+//            let markPosition = GMSMarker(position: newLocation.coordinate)
+//            markPosition.title = "My Position"
+//            markPosition.map = currMapView
             currRoute(newLocation)
             
             print("Location Updated")
