@@ -15,6 +15,7 @@ class LocationTrackerViewController: UIViewController {
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     let locationManager = CLLocationManager()
     let mapTasks = MapTasks()
+    var allMarkers = [GMSMarker]()
     var routePolyline: GMSPolyline!
     
     var originMarker: GMSMarker!
@@ -66,6 +67,12 @@ class LocationTrackerViewController: UIViewController {
                         self.otherUserDestinationMarker.map = self.currMapView
                         self.otherUserDestinationMarker.icon = GMSMarker.markerImageWithColor(UIColor.blackColor())
                         self.otherUserDestinationMarker.title = "Other user address"
+                        
+                        print("appending other user info to marker array")
+                        self.allMarkers.append(self.otherUserDestinationMarker)
+                        self.drawBounds()
+                        
+                       
                         
                     } else {
                         print("No Value for present")
@@ -126,6 +133,10 @@ class LocationTrackerViewController: UIViewController {
         
 //        currRoute()
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -149,6 +160,7 @@ class LocationTrackerViewController: UIViewController {
             if success {
                 self.configureMapAndMarkersForRoute()
                 self.drawRoute()
+                self.drawBounds()
 //                self.displayRouteInfo()
             }
             else {
@@ -157,6 +169,23 @@ class LocationTrackerViewController: UIViewController {
         })
     }
     
+    
+    func drawBounds() {
+        
+        
+        let path = GMSMutablePath()
+        
+        print("Count of markers \(allMarkers.count)")
+
+        for marker in allMarkers {
+//            bounds.includingCoordinate(marker.position)
+            path.addCoordinate(marker.position)
+        }
+        
+        let bounds = GMSCoordinateBounds(path: path)
+        
+        self.currMapView.animateWithCameraUpdate(GMSCameraUpdate.fitBounds(bounds, withPadding: 30.0))
+    }
     
     func configureMapAndMarkersForRoute() {
         currMapView.camera = GMSCameraPosition.cameraWithTarget(mapTasks.originCoordinate, zoom: 10.0)
@@ -171,11 +200,17 @@ class LocationTrackerViewController: UIViewController {
         destinationMarker.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
         destinationMarker.title = self.mapTasks.destinationAddress
         
-        let bounds = GMSCoordinateBounds(coordinate: self.mapTasks.originCoordinate, coordinate: self.mapTasks.destinationCoordinate)
+//        let bounds = GMSCoordinateBounds(coordinate: self.mapTasks.originCoordinate, coordinate: self.mapTasks.destinationCoordinate)
 //        let camera = currMapView.cameraForBounds(bounds, insets: UIEdgeInsetsZero)
 //        currMapView.camera = camera!
         
-        self.currMapView.animateWithCameraUpdate(GMSCameraUpdate.fitBounds(bounds, withPadding: 30.0))
+        self.allMarkers.append(destinationMarker)
+        
+//         self.currMapView.animateWithCameraUpdate(GMSCameraUpdate.fitBounds(bounds, withPadding: 30.0))
+        
+//        drawBounds(self.mapTasks.destinationCoordinate)
+        
+       
 
         
 //        if waypointsArray.count > 0 {
@@ -278,10 +313,17 @@ extension LocationTrackerViewController: CLLocationManagerDelegate {
             currMapView.camera = GMSCameraPosition(target: newLocation.coordinate, zoom: 5, bearing: 0, viewingAngle: 0)
             // Set Location so other user can know
             myLocationFireBase.setValue("\(newLocation.coordinate.longitude),\(newLocation.coordinate.latitude)")
+            
+            originMarker = GMSMarker(position: newLocation.coordinate)
+            
+            
+            allMarkers.append(originMarker)
 //            let markPosition = GMSMarker(position: newLocation.coordinate)
 //            markPosition.title = "My Position"
 //            markPosition.map = currMapView
             currRoute(newLocation)
+            
+//             drawBounds(newLocation.coordinate)
             
             print("Location Updated")
             
