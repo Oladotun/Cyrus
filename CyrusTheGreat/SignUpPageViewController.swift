@@ -56,6 +56,7 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate {
                 withValueCompletionBlock: { error, result in
                     if error != nil {
                         // There was an error creating the account
+                        print(error)
                     } else {
                         let uid = result["uid"] as? String
                         print("Successfully created user account with uid: \(uid)")
