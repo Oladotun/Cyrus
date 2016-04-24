@@ -25,6 +25,7 @@ class LocationTrackerViewController: UIViewController {
     var locationFireBase: Firebase!
     var myLocationFireBase: Firebase!
 
+    @IBOutlet weak var durationLabel: UILabel!
     @IBOutlet weak var currMapView: GMSMapView!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,7 +48,13 @@ class LocationTrackerViewController: UIViewController {
                     
                     let childSnapshot = snapshot.childSnapshotForPath(child.key)
                     
-                    if let coordinateInString = childSnapshot.value as? String {
+                    if let coordinateDistanceInString = childSnapshot.value as? String {
+                        
+                        let informationArray = coordinateDistanceInString.componentsSeparatedByString("_duration_")
+                        
+                        let coordinateInString = informationArray[0]
+                        let timeToDestinationOfOtherUser = informationArray[1]
+                        
                         
                         let coordinateArray = coordinateInString.componentsSeparatedByString(",")
                         let latString = coordinateArray[1]
@@ -63,11 +70,18 @@ class LocationTrackerViewController: UIViewController {
                         let coordinate = CLLocationCoordinate2DMake(latDegrees , longDegrees)
                         
                         
+                        if (self.otherUserDestinationMarker != nil) {
+                            self.otherUserDestinationMarker.map = nil
+                            
+                        }
                         self.otherUserDestinationMarker = GMSMarker(position: coordinate)
+                        
                         self.otherUserDestinationMarker.map = self.currMapView
                         self.otherUserDestinationMarker.icon = GMSMarker.markerImageWithColor(UIColor.blackColor())
                         self.otherUserDestinationMarker.title = "Other user address"
                         
+                        print("Time of other user \(timeToDestinationOfOtherUser) away from destination")
+                        self.durationLabel.text = "Other user is \(timeToDestinationOfOtherUser) away from destination"
                         print("appending other user info to marker array")
                         self.allMarkers.append(self.otherUserDestinationMarker)
                         self.drawBounds()
@@ -87,40 +101,6 @@ class LocationTrackerViewController: UIViewController {
             
                 
                 
-            
-//            if let val = snapshot.value as? String {
-//                
-//                let sendMsg = val.componentsSeparatedByString(":")
-//                
-//                if (sendMsg.count > 1) {
-//                    if(sendMsg[0] != UIDevice.currentDevice().name ){
-//                        
-//                      print("Other user location: \(sendMsg[1])")
-//                    var coordinateInString = sendMsg[1].componentsSeparatedByString(",")
-//                    let latitudeInString = coordinateInString[1]
-//                    let longInString = coordinateInString[0]
-//                        
-//                    let lat = (latitudeInString as NSString).doubleValue
-//                    let long = (longInString as NSString).doubleValue
-//                        
-//                    let latDegrees: CLLocationDegrees = lat
-//                    let longDegrees: CLLocationDegrees = long
-//                        
-//                    let coordinate = CLLocationCoordinate2DMake(latDegrees , longDegrees)
-//                        
-//                        
-//                    self.otherUserDestinationMarker = GMSMarker(position: coordinate)
-//                    self.otherUserDestinationMarker.map = self.currMapView
-//                    self.otherUserDestinationMarker.icon = GMSMarker.markerImageWithColor(UIColor.blackColor())
-//                    self.otherUserDestinationMarker.title = "Other user address"
-//                        
-//                        
-//                    }
-//
-//                
-//            } else {
-//                print("Message path not set")
-//            }
         })
         
         // Find current Location of user
@@ -129,9 +109,6 @@ class LocationTrackerViewController: UIViewController {
         locationManager.requestWhenInUseAuthorization()
         locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
         
-//        currMapView.show
-        
-//        currRoute()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -161,7 +138,9 @@ class LocationTrackerViewController: UIViewController {
                 self.configureMapAndMarkersForRoute()
                 self.drawRoute()
                 self.drawBounds()
+                self.myLocationFireBase.setValue("\(origin.coordinate.longitude),\(origin.coordinate.latitude)_duration_\(self.mapTasks.totalDuration)")
 //                self.displayRouteInfo()
+                print("Duration of from destination \(self.mapTasks.totalDuration)")
             }
             else {
                 print(status)
@@ -178,12 +157,10 @@ class LocationTrackerViewController: UIViewController {
         print("Count of markers \(allMarkers.count)")
 
         for marker in allMarkers {
-//            bounds.includingCoordinate(marker.position)
             path.addCoordinate(marker.position)
         }
         
         let bounds = GMSCoordinateBounds(path: path)
-        
         self.currMapView.animateWithCameraUpdate(GMSCameraUpdate.fitBounds(bounds, withPadding: 30.0))
     }
     
@@ -196,6 +173,7 @@ class LocationTrackerViewController: UIViewController {
 //        originMarker.title = self.mapTasks.originAddress
         
         destinationMarker = GMSMarker(position: self.mapTasks.destinationCoordinate)
+        
         destinationMarker.map = self.currMapView
         destinationMarker.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
         destinationMarker.title = self.mapTasks.destinationAddress
@@ -210,21 +188,6 @@ class LocationTrackerViewController: UIViewController {
         
 //        drawBounds(self.mapTasks.destinationCoordinate)
         
-       
-
-        
-//        if waypointsArray.count > 0 {
-//            for waypoint in waypointsArray {
-//                let lat: Double = (waypoint.componentsSeparatedByString(",")[0] as NSString).doubleValue
-//                let lng: Double = (waypoint.componentsSeparatedByString(",")[1] as NSString).doubleValue
-//                
-//                let marker = GMSMarker(position: CLLocationCoordinate2DMake(lat, lng))
-//                marker.map = viewMap
-//                marker.icon = GMSMarker.markerImageWithColor(UIColor.purpleColor())
-//                
-//                markersArray.append(marker)
-//            }
-//        }
     }
     
     func drawRoute() {
@@ -312,7 +275,8 @@ extension LocationTrackerViewController: CLLocationManagerDelegate {
             
             currMapView.camera = GMSCameraPosition(target: newLocation.coordinate, zoom: 5, bearing: 0, viewingAngle: 0)
             // Set Location so other user can know
-            myLocationFireBase.setValue("\(newLocation.coordinate.longitude),\(newLocation.coordinate.latitude)")
+//            print()
+//            myLocationFireBase.setValue("\(newLocation.coordinate.longitude),\(newLocation.coordinate.latitude)_duration_\(mapTasks.totalDuration)")
             
             originMarker = GMSMarker(position: newLocation.coordinate)
             

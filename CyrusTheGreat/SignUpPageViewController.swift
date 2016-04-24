@@ -13,6 +13,8 @@ class SignUpPageViewController: UIViewController {
     @IBOutlet weak var userLogo: UIImageView!
     
     @IBOutlet weak var cyrusTalkLabel: UILabel!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         userLogo.image = UIImage(named:"cyrus")

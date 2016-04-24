@@ -238,7 +238,30 @@ class MapTasks: NSObject {
         let remainingMins = mins % 60
         let remainingSecs = totalDurationInSeconds % 60
         
-        totalDuration = "Duration: \(days) d, \(remainingHours) h, \(remainingMins) mins, \(remainingSecs) secs"
+        var duration = ""
+        
+        if (days > 0) {
+            duration += "\(days) d "
+        }
+        
+        if (remainingHours > 0) {
+            duration += " \(remainingHours) h "
+        }
+        
+        if (remainingMins > 0) {
+            duration += "\(remainingMins) mins "
+        }
+        if (remainingMins > 0) {
+            duration += "\(remainingSecs) secs"
+        }
+        
+        
+        
+//        totalDuration = "Duration: \(days) d, \(remainingHours) h, \(remainingMins) mins, \(remainingSecs) secs"
+        
+        totalDuration = duration.trim()
+        
+       
     }
     
     
