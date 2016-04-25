@@ -23,6 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var interests: [String]!
     var matchedTopic: String!
     var meetAccept: Bool!
+    var userIdentifier:String! // uid from firebase
     
     let googleMapsApiKey = "AIzaSyBNKALtaMqAXxDMy2jSaARp30xUjecbd8E"
 
