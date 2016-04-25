@@ -9,11 +9,11 @@
 import UIKit
 import Firebase
 import CoreData
+import SwiftyJSON
 
 class SignUpPageViewController: UIViewController,UITextFieldDelegate {
     
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-
 
     @IBOutlet weak var userLogo: UIImageView!    
     @IBOutlet weak var cyrusTalkLabel: UILabel!
@@ -23,6 +23,8 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate {
     @IBOutlet weak var firstNameField: UITextField!
     @IBOutlet weak var lastNameField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
+    
+    var schoolName:String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +37,8 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate {
         firstNameField.delegate = self
         lastNameField.delegate = self
         passwordField.delegate = self
+        
+     
 
         // Do any additional setup after loading the view.
     }
@@ -46,32 +50,94 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate {
     
     @IBAction func nextButton(sender: AnyObject) {
         
-        if (schoolEmailField.text!.isEmpty || passwordField.text!.isEmpty || firstNameField.text!.isEmpty || lastNameField.text!.isEmpty) {
+        if (schoolEmailField.text!.isEmpty || passwordField.text!.isEmpty || firstNameField.text!.isEmpty || lastNameField.text!.isEmpty ) { // || passwordField.text!.isEmpty || firstNameField.text!.isEmpty || lastNameField.text!.isEmpty
             
             print ("Please fill the empty field above")
             
         } else {
             
+            print(schoolEmailField.text!)
+            if (checkEmailDomain(getDomainFromEmail(schoolEmailField.text!))) {
                 appDelegate.userFire.createUser(schoolEmailField.text!, password: passwordField.text!,
-                withValueCompletionBlock: { error, result in
-                    if error != nil {
-                        // There was an error creating the account
-                        print(error)
-                    } else {
-                        let uid = result["uid"] as? String
-                        print("Successfully created user account with uid: \(uid)")
-                    }
-            })
+                    withValueCompletionBlock: { error, result in
+                        if error != nil {
+                            // There was an error creating the account
+                            print(error)
+                        } else {
+                            let uid = result["uid"] as? String
+                            print("Successfully created user account with uid: \(uid)")
+                            
+                            
+                            let managedContext = self.appDelegate.managedObjectContext
+                            
+                            //2
+                            let entity =  NSEntityDescription.entityForName("User", inManagedObjectContext:managedContext)
+                            
+                            let newUser = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
+                            
+                            newUser.setValue(uid!, forKey: "f_id")
+                            newUser.setValue(self.schoolEmailField.text!, forKey: "email")
+                            newUser.setValue(self.firstNameField.text!, forKey: "first_name")
+                            newUser.setValue(self.lastNameField.text!, forKey: "last_name")
+                            
+                            
+                            do {
+                                try managedContext.save()
+                                print("user info was saved")
+                            } catch let error as NSError {
+                                print("Could not save \(error), \(error.userInfo)")
+                            }
+                            
+                            
+                        }
+                })
+                
+            } else {
+                
+                print ("wrong usa student domain")
+                
+            }
+
             
         }
         
+    
         
+    }
+    
+    func getDomainFromEmail(email:String) -> String {
         
+        let indexOfDomain = email.characters.indexOf("@")
+        let indexDomain = email.characters.startIndex.distanceTo(indexOfDomain!) + 1
+        let emailString = (email as NSString).substringFromIndex(indexDomain)
         
+        return emailString
         
+    }
+    
+    
+    func checkEmailDomain(domainCheck:String) -> Bool {
+        let path = NSBundle.mainBundle().pathForResource("usa_uni", ofType: "json")
+        let jsonData = NSData(contentsOfFile:path!)
+        let json = JSON(data:jsonData!)
         
+        if let jsonArray = json.array {
+            for item in jsonArray {
+                if let jsonDict = item.dictionary { //  jsonDict : [String: JSon] 
+                    let domain = jsonDict["domain"]!.stringValue
+                    if (domainCheck == domain) {
+                        schoolName = jsonDict["name"]!.stringValue
+                        print("found array")
+                        print("our school name \(schoolName)")
+                        
+                        return true
+                    }
+ 
+                }
+            }
+        }
         
-        
+        return false
         
     }
     
@@ -84,7 +150,7 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate {
             
             let enteredWord = schoolEmailField.text!
             
-            if (!enteredWord.contains("@") || enteredWord.isEmpty) {
+            if (!enteredWord.isEmail || enteredWord.isEmpty) {
                 
                 print("Invalid Input")
                 
@@ -92,9 +158,10 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate {
                 firstNameField.becomeFirstResponder()
                 
             }
+//            schoolEmailField.resignFirstResponder()
             
         }
-        
+//        
         if (textField == firstNameField) {
             
             let firstName = firstNameField.text!
@@ -144,4 +211,15 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate {
     }
     */
 
+}
+
+extension String {
+    var isEmail: Bool {
+        do {
+            let regex = try NSRegularExpression(pattern: "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$", options: .CaseInsensitive)
+            return regex.firstMatchInString(self, options: NSMatchingOptions(rawValue: 0), range: NSMakeRange(0, self.characters.count)) != nil
+        } catch {
+            return false
+        }
+    }
 }
