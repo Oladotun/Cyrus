@@ -295,11 +295,12 @@
                         <outlet property="emailTextField" destination="JxN-vj-vfo" id="Ovb-P8-spP"/>
                         <outlet property="passField" destination="Vtg-av-qfy" id="ryv-vJ-3Lh"/>
                         <segue destination="FPe-MW-7Ug" kind="show" identifier="LoginHomeSegue" id="Skj-pL-1Aw"/>
+                        <segue destination="2Jf-bk-eeG" kind="show" identifier="NoInterestSegue" id="HVS-kA-2F2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a4W-Kg-BcC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-7506" y="1173"/>
+            <point key="canvasLocation" x="-6793.5" y="1173"/>
         </scene>
         <!--Sign Up Page View Controller-->
         <scene sceneID="oFx-Td-rWR">
@@ -1578,6 +1579,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Skj-pL-1Aw"/>
+        <segue reference="HVS-kA-2F2"/>
         <segue reference="HV1-fz-5Uo"/>
     </inferredMetricsTieBreakers>
 </document>

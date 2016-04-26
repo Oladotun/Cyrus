@@ -54,7 +54,8 @@ class LoginPageViewController: UIViewController, UITextFieldDelegate {
                         
                         self.appDelegate.userIdentifier = authData.uid
                        
-                        
+                        // Initialize mpc manager with user identifier
+                        self.appDelegate.mpcManager = MPCManager()
                         
                         // Get the user interests from firebase
                         let userInterests = Firebase(url:  "https://cyrusthegreat.firebaseio.com/users/\(authData.uid)/interests")
@@ -65,20 +66,22 @@ class LoginPageViewController: UIViewController, UITextFieldDelegate {
                                 
                                 if (snapshot.value is NSNull) {
                                     
-                                    print("We have a problem")
+                                    print("We have a problem of no interest")
+                                    self.performSegueWithIdentifier("NoInterestSegue", sender: self)
                                     
                                 } else {
                                     print(snapshot.value)
                                     self.interests = (snapshot.value as? [String])!
+                                    
+                                     self.performSegueWithIdentifier("LoginHomeSegue", sender: self)
                                     }
                                 
                             }
                             
                         })
                         
-                        // Initialize mpc manager with user identifier
-                        self.appDelegate.mpcManager = MPCManager()
-                        self.performSegueWithIdentifier("LoginHomeSegue", sender: self)
+                        
+                       
                         
                     }
                     
@@ -174,6 +177,12 @@ class LoginPageViewController: UIViewController, UITextFieldDelegate {
             destinationVC.interests = self.interests
             
         }
+        
+//        if (segue.identifier == "NoInterestSegue") {
+//            
+//            let destinationVC = segue.destinationViewController as! ApiConnectorViewController
+//            
+//        }
     }
 
 

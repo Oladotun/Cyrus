@@ -79,21 +79,26 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
             
             let currInfo =  NSKeyedUnarchiver.unarchiveObjectWithData(context!) as! NSDictionary
             print(currInfo)
-            let currPeepTopic = currInfo["topics"] as! [String]
+//            let currPeepTopic = currInfo["topics"] as! [String]
             let currUID = currInfo["chatUid"] as! [String]
             
             // Update current fireUID
            
             print ("I am in advertiser")
-            appendMatchedTopics(currPeepTopic)
+//            appendMatchedTopics(currPeepTopic)
             
             if ((presentTopic) != nil) {
                 
                 self.invitationHandler = invitationHandler
 //                print("Calling Invitation Handler \(invitationHandler)")
 //                print("Matched Topics is \(matchTopics)")
-                delegate?.invitationWasReceived(peerID.displayName, topic: matchTopics[0])
-               matchTopic = matchTopics[0]
+                matchTopics = foundPeerMatchTopics[peerID.displayName]!
+                
+                matchTopic = matchTopics.randomItem()
+                delegate?.invitationWasReceived(peerID.displayName, topic: matchTopic)
+                
+               
+               
                 delegate?.findMorePeer = false
                 print("currUID \(currUID[0])")
                  appDelegate.fireUID = currUID[0]
@@ -405,5 +410,12 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
 //    
 //    }
 
+}
+
+extension Array {
+    func randomItem() -> Element {
+        let index = Int(arc4random_uniform(UInt32(self.count)))
+        return self[index]
+    }
 }
 
