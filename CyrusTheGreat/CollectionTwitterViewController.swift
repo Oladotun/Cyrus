@@ -9,11 +9,14 @@
 import UIKit
 import Accounts
 import Social
+import Firebase
 
 class CollectionTwitterViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
     @IBOutlet weak var stringCollection: UICollectionView!
     let reuseIdentifier = "cell"
+    
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
     var topics = [String]()
     var uselessTopicsArray = [String]()
@@ -501,6 +504,9 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
         
         destinationVC.interests = topics
         
+        let userInterests = ["interests":topics]
+        self.appDelegate.userFire.childByAppendingPath("users")
+            .childByAppendingPath(appDelegate.userIdentifier).updateChildValues(userInterests)
         
     }
     

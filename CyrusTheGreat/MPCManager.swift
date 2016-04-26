@@ -29,18 +29,25 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
     var advertiser: MCNearbyServiceAdvertiser!
     var foundPeers = [MCPeerID]()
     var matchTopic : String!
-    
+    var foundPeerMatchScore = [String:Int]()
+    var foundPeerMatchTopics = [String:[String]]()
     
     var matchTopics = [String]()
     var invitationHandler: ((Bool, MCSession)->Void) = { status, session in }
     var delegate: MPCManagerDelegate?
     var presentTopic: Bool!
     
+    var selectedPeer:MCPeerID!
+    
+//    var arrayFoundFirebase = [Firebase]()
+    
     
     override init() {
         
         super.init()
-        peer = MCPeerID(displayName: UIDevice.currentDevice().name)
+//        peer = MCPeerID(displayName: UIDevice.currentDevice().name)
+        
+        peer = MCPeerID(displayName: appDelegate.userIdentifier)
         
     }
     
@@ -150,14 +157,14 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
         foundPeers.append(peerID)
         print("Found name \(peerID.displayName)")
 //        print("Current id display Topics\(info![peerID.displayName])")
-        
+        // Find the next user to connect to
+        sortFoundUserByScore(peerID)
         delegate?.foundPeer()
-    
-
     }
     
     func browser(browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
         
+        removePeerInfo(peerID)
         for(index, aPeer) in foundPeers.enumerate() {
             if aPeer == peerID {
                 foundPeers.removeAtIndex(index)
@@ -167,6 +174,116 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
         
         delegate?.lostPeer()
     }
+    
+
+    func sortFoundUserByScore(peerDisplay:MCPeerID) {
+        let otherUserPathInterests = Firebase(url:  "https://cyrusthegreat.firebaseio.com/users/\(peerDisplay.displayName)/interests")
+        
+        otherUserPathInterests.observeEventType(.Value, withBlock: {
+            snapshot in
+            if (snapshot.value != nil) {
+                
+                if (snapshot.value is NSNull) {
+                    
+                    print("We have a problem")
+                    
+                } else {
+                    print(snapshot.value)
+                    let otherUserInterests = snapshot.value as? [String]
+                    self.findMatches(peerDisplay,otherInterests: otherUserInterests!)
+                }
+                
+            }
+        })
+        
+//        arrayFoundFirebase.append(otherUserPathInterests)
+        
+//        otherUserPathInterests
+        
+        
+    }
+    
+    // Find number of matches for a particular user
+    
+    func findMatches(peerDisplay:MCPeerID,otherInterests:[String]) {
+        var count = 0
+        var matchTopics = [String]()
+        for topic in peerTopics {
+            if (otherInterests.contains(topic)) {
+                count = count + 1
+                matchTopics.append(topic)
+                
+            }
+        }
+        var sortedMatchedPeers = [(String,Int)]()
+        // We only have 10 users stored at a time
+        if (foundPeerMatchScore.count < 10) {
+            foundPeerMatchScore[peerDisplay.displayName] = count
+            foundPeerMatchTopics[peerDisplay.displayName] = otherInterests
+            
+            foundPeers.append(peerDisplay)
+        } else {
+            
+            if (count > sortedMatchedPeers.last!.1) {
+                
+                foundPeerMatchScore.removeValueForKey(sortedMatchedPeers.last!.0)
+                foundPeerMatchTopics.removeValueForKey(sortedMatchedPeers.last!.0)
+                
+                let removePeer = MCPeerID(displayName: sortedMatchedPeers.last!.0)
+                
+                for(index, aPeer) in foundPeers.enumerate() {
+                    if aPeer == removePeer {
+                        foundPeers.removeAtIndex(index)
+                        break
+                    }
+                }
+                
+//                foundPeers.rem
+                
+                foundPeerMatchTopics[peerDisplay.displayName] = otherInterests
+                foundPeerMatchScore[peerDisplay.displayName] = count
+            }
+        }
+        
+         sortedMatchedPeers = foundPeerMatchScore.sort{$0.1 > $1.1}
+        
+        selectedPeer = MCPeerID(displayName: sortedMatchedPeers.first!.0)
+        
+        print("peers to number of matches \n \(sortedMatchedPeers)")
+        
+    
+    }
+    
+    // Remove a found user match peer information
+    func removePeerInfo(peer:MCPeerID) {
+        
+//        let otherUserPathInterests = Firebase(url:  "https://cyrusthegreat.firebaseio.com/users/\(peer.displayName)/interests")
+        
+        foundPeerMatchScore.removeValueForKey(peer.displayName)
+        foundPeerMatchTopics.removeValueForKey(peer.displayName)
+        
+        if (foundPeerMatchScore.count > 0) {
+            
+            let sortedMatchedPeers = foundPeerMatchScore.sort{$0.1 > $1.1}
+            
+            selectedPeer = MCPeerID(displayName: sortedMatchedPeers.first!.0)
+            
+        } else {
+            selectedPeer = nil
+        }
+//        arrayFoundFirebase.removeObject(otherUserPathInterests)
+        
+    }
+    
+    
+//    func setAvailabilityFalse() {
+//        
+//        let userAvailable = ["available":"false"]
+//        self.appDelegate.userFire.childByAppendingPath("users")
+//            .childByAppendingPath(appDelegate.userIdentifier).updateChildValues(userAvailable)
+//    }
+    
+    
     
     
     func browser(browser: MCNearbyServiceBrowser, didNotStartBrowsingForPeers error: NSError) {
@@ -187,6 +304,9 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
                 
                 if(snapshot.value as! String == "true") {
                     self.delegate?.connectedWithPeer(MCPeerID(displayName: "_use_firebase_chat_"))
+                    
+//                    self.setAvailabilityFalse()
+                    
                 } else {
                     print("timed out")
                     
@@ -199,6 +319,8 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
         
     }
     
+    
+    
     // Connect through firebase with Session
     
     func session(session: MCSession, peer peerID: MCPeerID, didChangeState state: MCSessionState) {
@@ -210,7 +332,9 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
              self.appDelegate.matchedTopic = self.matchTopic
             }
 //            delegate?.connectedWithPeer(peerID)
+//            setAvailabilityFalse()
             delegate?.connectedWithPeer(MCPeerID(displayName: "_use_firebase_chat_"))
+            
             
         case MCSessionState.Connecting:
             print("Connecting to session \(session)")
@@ -266,12 +390,6 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
 //    
 //    
 //    }
-    
-   
-    
-  
 
-    
-    
-   
 }
+

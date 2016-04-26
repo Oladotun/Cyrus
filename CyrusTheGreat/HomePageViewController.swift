@@ -38,8 +38,16 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
         appDelegate.mpcManager.browser.startBrowsingForPeers()
         appDelegate.interests = interests
         
+//        appDelegate.mpcManager.sortFoundUserByScore(appDelegate.mpcManager.peer)
+        
         // Set up alert view
         alertInvite = nil
+        
+//        let userAvailable = ["available":"false"]
+//        self.appDelegate.userFire.childByAppendingPath("users")
+//            .childByAppendingPath(appDelegate.userIdentifier).updateChildValues(userAvailable)
+        
+        
         
         
 //        if interests.count > 0 {
@@ -151,10 +159,16 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
     func switched(switchState: UISwitch) {
         if switchState.on {
             currAvailability.text = "Online"
+//            let userInterests = ["available":"true"]
+//            self.appDelegate.userFire.childByAppendingPath("users")
+//                .childByAppendingPath(appDelegate.userIdentifier).updateChildValues(userInterests)
             self.appDelegate.mpcManager.advertiser.startAdvertisingPeer()
             
         } else {
             currAvailability.text = "Offline"
+//            let userAvailable = ["available":"false"]
+//            self.appDelegate.userFire.childByAppendingPath("users")
+//                .childByAppendingPath(appDelegate.userIdentifier).updateChildValues(userAvailable)
             self.appDelegate.mpcManager.advertiser.stopAdvertisingPeer()
         }
     }
@@ -191,7 +205,7 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
         if  appDelegate.mpcManager.foundPeers.count > 0 {
             
             setUpDisplayView()
-            let selectedPeer = appDelegate.mpcManager.foundPeers[0] as MCPeerID
+            let selectedPeer = appDelegate.mpcManager.selectedPeer as MCPeerID
             
             var contentCreated = [String: [String]]()
             

@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
-        mpcManager = MPCManager()
+//        mpcManager = MPCManager()
         userFire = Firebase(url: "https://cyrusthegreat.firebaseio.com/")
         meetAccept = false
 //        userFire.authAnonymouslyWithCompletionBlock { error, authData in

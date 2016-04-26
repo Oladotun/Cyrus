@@ -108,6 +108,9 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate {
                                     //  - https://<YOUR-FIREBASE-APP>.firebaseio.com/users/<uid>
                                     self.appDelegate.userFire.childByAppendingPath("users")
                                         .childByAppendingPath(authData.uid).setValue(newUser)
+                                    
+                                    // Initialize mpc manager with user identifier
+                                    self.appDelegate.mpcManager = MPCManager()
                                     self.performSegueWithIdentifier("connectTwitter", sender: self)
 
                                 }
