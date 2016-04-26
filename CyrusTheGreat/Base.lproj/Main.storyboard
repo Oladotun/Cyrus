@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="HsN-u7-B77">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="5Dr-lq-Qif">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
@@ -30,7 +30,7 @@
                                     <segue destination="HsN-u7-B77" kind="show" id="KXb-Pi-882"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="255" verticalHuggingPriority="255" translatesAutoresizingMaskIntoConstraints="NO" id="B3J-u2-rEi">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="255" verticalHuggingPriority="255" image="cyrus" translatesAutoresizingMaskIntoConstraints="NO" id="B3J-u2-rEi">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="153" id="BmA-sq-kVG"/>
@@ -86,6 +86,9 @@
                                         <exclude reference="Zri-5l-1yO"/>
                                     </mask>
                                 </variation>
+                                <connections>
+                                    <segue destination="MTj-iS-lCV" kind="show" id="eOv-3E-glu"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="755" text="Label" lineBreakMode="tailTruncation" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ctv-oK-ydn">
                                 <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
@@ -199,6 +202,104 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AK1-99-zkb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-7506" y="447.75"/>
+        </scene>
+        <!--Login Page View Controller-->
+        <scene sceneID="HXh-EF-Cg4">
+            <objects>
+                <viewController id="MTj-iS-lCV" customClass="LoginPageViewController" customModule="CyrusTheGreat" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="YkL-y4-8Gr"/>
+                        <viewControllerLayoutGuide type="bottom" id="ytU-AP-Uo4"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="5tN-Lj-P11">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lOw-8x-bgz">
+                                <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="20" y="140" width="71" height="21"/>
+                                </variation>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JxN-vj-vfo">
+                                <rect key="frame" x="-25" y="-30" width="97" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="152" y="131" width="228" height="30"/>
+                                </variation>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8WE-bD-GhO">
+                                <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="20" y="208" width="87" height="21"/>
+                                </variation>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Vtg-av-qfy">
+                                <rect key="frame" x="-25" y="-30" width="97" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="152" y="199" width="228" height="30"/>
+                                </variation>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Alt-4d-BMf">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="Login"/>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="97" y="290" width="161" height="30"/>
+                                </variation>
+                                <connections>
+                                    <action selector="loginButton:" destination="MTj-iS-lCV" eventType="touchUpInside" id="Xz0-JO-d8Z"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gxe-or-ohC">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="Sign up"/>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="174" y="352" width="52" height="30"/>
+                                </variation>
+                                <connections>
+                                    <segue destination="HsN-u7-B77" kind="show" id="HV1-fz-5Uo"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="lOw-8x-bgz"/>
+                                <exclude reference="JxN-vj-vfo"/>
+                                <exclude reference="8WE-bD-GhO"/>
+                                <exclude reference="Vtg-av-qfy"/>
+                                <exclude reference="Alt-4d-BMf"/>
+                                <exclude reference="gxe-or-ohC"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="lOw-8x-bgz"/>
+                                <include reference="JxN-vj-vfo"/>
+                                <include reference="8WE-bD-GhO"/>
+                                <include reference="Vtg-av-qfy"/>
+                                <include reference="Alt-4d-BMf"/>
+                                <include reference="gxe-or-ohC"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="emailTextField" destination="JxN-vj-vfo" id="Ovb-P8-spP"/>
+                        <outlet property="passField" destination="Vtg-av-qfy" id="ryv-vJ-3Lh"/>
+                        <segue destination="FPe-MW-7Ug" kind="show" identifier="LoginHomeSegue" id="Skj-pL-1Aw"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="a4W-Kg-BcC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-7506" y="1173"/>
         </scene>
         <!--Sign Up Page View Controller-->
         <scene sceneID="oFx-Td-rWR">
@@ -516,7 +617,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cUG-aw-PuC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-6763.5" y="447.75"/>
+            <point key="canvasLocation" x="-6774" y="444"/>
         </scene>
         <!--Api Connector View Controller-->
         <scene sceneID="l4X-wF-Z1a">
@@ -875,7 +976,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GjE-hO-a2H" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4392" y="447.75"/>
+            <point key="canvasLocation" x="-5686.5" y="1173"/>
         </scene>
         <!--Chat View Controller-->
         <scene sceneID="UFq-q8-tXK">
@@ -1475,4 +1576,8 @@
     <resources>
         <image name="cyrus" width="350" height="350"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="Skj-pL-1Aw"/>
+        <segue reference="HV1-fz-5Uo"/>
+    </inferredMetricsTieBreakers>
 </document>
