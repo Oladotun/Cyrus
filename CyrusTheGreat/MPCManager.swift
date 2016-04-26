@@ -84,7 +84,7 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
             
             // Update current fireUID
            
-            
+            print ("I am in advertiser")
             appendMatchedTopics(currPeepTopic)
             
             if ((presentTopic) != nil) {
@@ -163,7 +163,7 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
     }
     
     func browser(browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
-        
+        print("losing peer")
         removePeerInfo(peerID)
         for(index, aPeer) in foundPeers.enumerate() {
             if aPeer == peerID {
@@ -171,6 +171,8 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
                 break
             }
         }
+        
+        
         
         delegate?.lostPeer()
     }
@@ -195,6 +197,8 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
                 
             }
         })
+        
+//        let otherUserPathFound = Firebase(url:  "https://cyrusthegreat.firebaseio.com/users/\(peerDisplay.displayName)/available")
         
 //        arrayFoundFirebase.append(otherUserPathInterests)
         
@@ -247,7 +251,8 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
         
          sortedMatchedPeers = foundPeerMatchScore.sort{$0.1 > $1.1}
         
-        selectedPeer = MCPeerID(displayName: sortedMatchedPeers.first!.0)
+//        selectedPeer = MCPeerID(displayName: sortedMatchedPeers.first!.0)
+        selectPeer(sortedMatchedPeers.first!.0)
         
         print("peers to number of matches \n \(sortedMatchedPeers)")
         
@@ -257,8 +262,6 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
     // Remove a found user match peer information
     func removePeerInfo(peer:MCPeerID) {
         
-//        let otherUserPathInterests = Firebase(url:  "https://cyrusthegreat.firebaseio.com/users/\(peer.displayName)/interests")
-        
         foundPeerMatchScore.removeValueForKey(peer.displayName)
         foundPeerMatchTopics.removeValueForKey(peer.displayName)
         
@@ -266,13 +269,23 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
             
             let sortedMatchedPeers = foundPeerMatchScore.sort{$0.1 > $1.1}
             
-            selectedPeer = MCPeerID(displayName: sortedMatchedPeers.first!.0)
+//            selectedPeer = MCPeerID(displayName: sortedMatchedPeers.first!.0)
+            selectPeer(sortedMatchedPeers.first!.0)
+            print("found peer")
             
         } else {
+            print("setting setting selected peer")
             selectedPeer = nil
         }
-//        arrayFoundFirebase.removeObject(otherUserPathInterests)
         
+    }
+    
+    func selectPeer(peerIDDisplay:String) {
+        for found in foundPeers {
+            if (found.displayName == peerIDDisplay) {
+                selectedPeer = found
+            }
+        }
     }
     
     
@@ -341,9 +354,10 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
             
         case MCSessionState.NotConnected:
             
-            self.setUpMeetUpTruth()
             print("Could not connect to session \(session)")
             print("display name \(peerID.displayName)")
+            self.setUpMeetUpTruth()
+            
             print("\(peer.displayName)")
             
             

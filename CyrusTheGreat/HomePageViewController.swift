@@ -42,19 +42,6 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
         
         // Set up alert view
         alertInvite = nil
-        
-//        let userAvailable = ["available":"false"]
-//        self.appDelegate.userFire.childByAppendingPath("users")
-//            .childByAppendingPath(appDelegate.userIdentifier).updateChildValues(userAvailable)
-        
-        
-        
-        
-//        if interests.count > 0 {
-//            
-//            self.interestCollected.text = (interests.joinWithSeparator(","))
-//            
-//        }
 
     }
     
@@ -91,6 +78,7 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
     }
     
     func lostPeer() {
+        print ("Lost Peer called in home page")
         
         noOfPeer.text = "\(appDelegate.mpcManager.foundPeers.count)"
         
@@ -115,7 +103,7 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
             print("meetPath in connection Page")
             
             print("\(meetPath.description)")
-            
+            appDelegate.mpcManager.advertiser.stopAdvertisingPeer()
             meetPath.observeEventType(.Value, withBlock: {
                 snapshot in
                 if (snapshot.value != nil) {
@@ -159,16 +147,10 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
     func switched(switchState: UISwitch) {
         if switchState.on {
             currAvailability.text = "Online"
-//            let userInterests = ["available":"true"]
-//            self.appDelegate.userFire.childByAppendingPath("users")
-//                .childByAppendingPath(appDelegate.userIdentifier).updateChildValues(userInterests)
             self.appDelegate.mpcManager.advertiser.startAdvertisingPeer()
             
         } else {
             currAvailability.text = "Offline"
-//            let userAvailable = ["available":"false"]
-//            self.appDelegate.userFire.childByAppendingPath("users")
-//                .childByAppendingPath(appDelegate.userIdentifier).updateChildValues(userAvailable)
             self.appDelegate.mpcManager.advertiser.stopAdvertisingPeer()
         }
     }
@@ -178,25 +160,6 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
 //         availSwitch.setOn(true, animated:true)
         
         print(appDelegate.mpcManager.foundPeers.count)
-        
-//        for peer in appDelegate.mpcManager.foundPeers {
-//            
-//            var contentCreated = [String: [String]]()
-//            contentCreated["topics"] = interests
-//            
-//            let dataExample : NSData = NSKeyedArchiver.archivedDataWithRootObject(contentCreated)
-//            
-//            print("Going to connect from Meet Up page")
-//            chatInitiator = true // Caught the culprit
-//            appDelegate.mpcManager.browser.invitePeer(peer, toSession: appDelegate.mpcManager.session, withContext: dataExample, timeout: 60)
-//            displayView.removeFromSuperview()
-//            
-//            print(findMorePeer)
-//            if(!findMorePeer) {
-//                break
-//            }
-//            
-//        }
         
 //        print("Find more peer now set as \(findMorePeer)")
     
@@ -238,6 +201,7 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
                     self.chatInitiator = true
                     
                     print("Going to connect from Meet Up page")
+                    print("selected peer is \(selectedPeer.displayName)")
 //                    print(dataExample)
                     self.appDelegate.mpcManager.browser.invitePeer(selectedPeer, toSession: self.appDelegate.mpcManager.session, withContext: dataExample, timeout: 20)
                     
