@@ -39,7 +39,8 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate { // ,CBCe
     @IBOutlet weak var yesButton: UIButton!
     
     var otherUserID:String!
-    var fireBaseConnect: Firebase!
+    var userWearingNode: Firebase!
+    var sugueToQuestionNode : Firebase!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,6 +60,37 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate { // ,CBCe
 //        yesButton.alpha = 0.0
         timerInvalidate = false
         sessionDisconnected = false
+        
+        userWearingNode = appDelegate.meetUpFire.childByAppendingPath("clothWearing")
+        
+        
+        userWearingNode.observeEventType(.Value, withBlock: {
+            snapshot in snapshot.value
+            
+             for child in snapshot.children {
+                
+                print("current child info \(child.key)")
+                
+                if (child.key != self.appDelegate.userIdentifier) {
+                    
+                     let childSnapshot = snapshot.childSnapshotForPath(child.key)
+                    
+                      if let userWearingInfo = childSnapshot.value as? String {
+                        
+                        let userInfo = userWearingInfo.componentsSeparatedByString("_/_|")
+                        
+                        
+                        self.personDesc.text = "\(userInfo[0]) is wearing \(userInfo[1])"
+                        self.otherPersonName = userInfo[0]
+                        
+                    }
+                    
+                    
+                }
+                
+            }
+            
+        })
        
         
 //        timer = NSTimer.scheduledTimerWithTimeInterval(timeInterval,
@@ -69,32 +101,32 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate { // ,CBCe
         
 //        fireBaseConnect = Firebase(url:"https://cyrusthegreat.firebaseio.com/\(appDelegate.fireUID)")
         
-        appDelegate.meetUpFire = Firebase(url:"https://cyrusthegreat.firebaseio.com/testingMeetPage")
-        
-        appDelegate.fireConnect = appDelegate.meetUpFire.childByAutoId()
-        
-
-        print("current url: https://cyrusthegreat.firebaseio.com/\(appDelegate.fireUID)")
-        appDelegate.meetUpFire.observeEventType(.Value, withBlock: {
-//            snapshot.childrenCount()
-            snapshot in
-            print("\(snapshot.key) -> \(snapshot.value)")
-            
-            print(snapshot.childrenCount)
-            
-            
-            if (snapshot.childrenCount == 2) {
-                
-                NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
-                    
-                    self.performSegueWithIdentifier("toQuestion", sender: self)
-                    
-                }
-            }
-            
-        
-//            snapshot
-        })
+//        appDelegate.meetUpFire = Firebase(url:"https://cyrusthegreat.firebaseio.com/testingMeetPage")
+//        
+//        appDelegate.fireConnect = appDelegate.meetUpFire.childByAutoId()
+//        
+//
+//        print("current url: https://cyrusthegreat.firebaseio.com/\(appDelegate.fireUID)")
+//        appDelegate.meetUpFire.observeEventType(.Value, withBlock: {
+////            snapshot.childrenCount()
+//            snapshot in
+//            print("\(snapshot.key) -> \(snapshot.value)")
+//            
+//            print(snapshot.childrenCount)
+//            
+//            
+//            if (snapshot.childrenCount == 2) {
+//                
+//                NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+//                    
+//                    self.performSegueWithIdentifier("toQuestion", sender: self)
+//                    
+//                }
+//            }
+//            
+//        
+////            snapshot
+//        })
 //        alertPhone()
 
         // Do any additional setup after loading the view.
@@ -153,7 +185,9 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate { // ,CBCe
 //        appDelegate.mpcManager.session.disconnect()
         
         print("We are about to start re-advertising")
-        appDelegate.fireConnect.setValue("\(UIDevice.currentDevice().name):\(appDelegate.interests)")
+        
+        
+//        appDelegate.fireConnect.setValue("\(UIDevice.currentDevice().name):\(appDelegate.interests)")
 //        appDelegate.myFire.childByAutoId()
         
 //            .setValue("Meet up time is here from \(UIDevice.currentDevice().name)")
@@ -204,18 +238,21 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate { // ,CBCe
 //            print("text field isnt empty")
 
             let toSendMessage = textField.text
-            let messageDictionary: [String: String] = ["message": toSendMessage!]
+            let wearingMessage = "\(appDelegate.userFirstName)_/_|\(toSendMessage!)"
+            let messageDictionary: [String: String] = [appDelegate.userIdentifier: wearingMessage]
+
+            userWearingNode.updateChildValues(messageDictionary)
             
-            if appDelegate.mpcManager.sendData(dictionaryWithData: messageDictionary, toPeer: appDelegate.mpcManager.session.connectedPeers[0] ) {
-                
-                // Hide button after sent
-                
-                textField.enabled = false
-//                textField.userInteractionEnabled = false
-                
-            } else {
-                print("Could not send data")
-            }
+//            if appDelegate.mpcManager.sendData(dictionaryWithData: messageDictionary, toPeer: appDelegate.mpcManager.session.connectedPeers[0] ) {
+//                
+//                // Hide button after sent
+//                
+//                textField.enabled = false
+////                textField.userInteractionEnabled = false
+//                
+//            } else {
+//                print("Could not send data")
+//            }
             
 
             
@@ -326,7 +363,7 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate { // ,CBCe
 //        
 ////        time
 //    }
-    
+//    
     
     
     
@@ -342,11 +379,11 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate { // ,CBCe
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
-        if (segue.identifier == "toQuestion") {
-        
-        NSNotificationCenter.defaultCenter().removeObserver(self.observer, name: "receivedMPCDataNotification", object: nil)
-            
-        }
+//        if (segue.identifier == "toQuestion") {
+//        
+//        NSNotificationCenter.defaultCenter().removeObserver(self.observer, name: "receivedMPCDataNotification", object: nil)
+//            
+//        }
         
         
     }
