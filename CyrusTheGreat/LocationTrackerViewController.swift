@@ -34,6 +34,7 @@ class LocationTrackerViewController: UIViewController {
         
         locationFireBase = Firebase(url:"https://cyrusthegreat.firebaseio.com/location")
         myLocationFireBase = locationFireBase.childByAppendingPath("\(UIDevice.currentDevice().name)")
+//        myLocationFireBase.setValue("empty")
 //        locationFireBase.setValue("empty")
         
         locationFireBase.observeEventType(.Value, withBlock: {

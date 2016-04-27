@@ -69,6 +69,8 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate { // ,CBCe
         
 //        fireBaseConnect = Firebase(url:"https://cyrusthegreat.firebaseio.com/\(appDelegate.fireUID)")
         
+        appDelegate.meetUpFire = Firebase(url:"https://cyrusthegreat.firebaseio.com/testingMeetPage")
+        
         appDelegate.fireConnect = appDelegate.meetUpFire.childByAutoId()
         
 
