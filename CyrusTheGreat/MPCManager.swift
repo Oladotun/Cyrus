@@ -62,7 +62,7 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
 //        print(peerTopics)
         peerTopics = topics
         
-        print(peerTopics)
+//        print(peerTopics)
         advertiser = MCNearbyServiceAdvertiser(peer: peer, discoveryInfo: nil, serviceType: "appcoda-mpc")
         advertiser.delegate = self
         
@@ -79,7 +79,7 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
             
             let currInfo =  NSKeyedUnarchiver.unarchiveObjectWithData(context!) as! NSDictionary
             print(currInfo)
-//            let currPeepTopic = currInfo["topics"] as! [String]
+            let currPeepTopic = currInfo["topics"] as! [String]
             let currUID = currInfo["chatUid"] as! [String]
             
             // Update current fireUID
@@ -87,36 +87,49 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
             print ("I am in advertiser")
 //            appendMatchedTopics(currPeepTopic)
             
-            if ((presentTopic) != nil) {
-                
+//            if ((presentTopic) != nil) {
+            
                 self.invitationHandler = invitationHandler
 //                print("Calling Invitation Handler \(invitationHandler)")
 //                print("Matched Topics is \(matchTopics)")
-                matchTopics = foundPeerMatchTopics[peerID.displayName]!
+            
+            print("current name \(peerID.displayName)")
+            print("current foundPeerMatch \(foundPeerMatchTopics)")
+                matchTopics = currPeepTopic
                 
                 matchTopic = matchTopics.randomItem()
                 delegate?.invitationWasReceived(peerID.displayName, topic: matchTopic)
                 
                
                
-                delegate?.findMorePeer = false
+//                delegate?.findMorePeer = false
                 print("currUID \(currUID[0])")
                  appDelegate.fireUID = currUID[0]
                 
                 self.appDelegate.meetUpFire = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(self.appDelegate.fireUID)")
                 let meetPath = self.appDelegate.meetUpFire.childByAppendingPath("meetUp")
                 meetPath.setValue("Not Set")
-                
+            
+                let userMatched: NSDictionary = ["matchedTopics" : matchTopics]
+            
+                self.appDelegate.meetUpFire.updateChildValues(userMatched as [NSObject : AnyObject])
+            
+                let firstTopic = ["firstTopic" : matchTopic]
+            
+                self.appDelegate.meetUpFire.updateChildValues(firstTopic as [NSObject : AnyObject])
+            
                 
                 print("Found Pair, setting Peer finding to False")
                 
-            } else {
-                
-                print("No pair found, setting Peer finding to True")
-                
-                delegate?.findMorePeer = true
-                
-            }
+//            }
+            
+//            else {
+//                
+//                print("No pair found, setting Peer finding to True")
+//                
+//                delegate?.findMorePeer = true
+//                
+//            }
             
         }
         
@@ -143,19 +156,19 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
 //        return presentTopic
 //    }
     
-    func appendMatchedTopics(userTopics: [String]) -> [String]{
-        presentTopic = false
-        for topic in peerTopics {
-            if (userTopics.contains(topic)) {
-                presentTopic = true
-                matchTopics.append(topic)
-            }
-        }
-        
-        return matchTopics
-        
-    }
-    
+//    func appendMatchedTopics(userTopics: [String]) -> [String]{
+//        presentTopic = false
+//        for topic in peerTopics {
+//            if (userTopics.contains(topic)) {
+//                presentTopic = true
+//                matchTopics.append(topic)
+//            }
+//        }
+//        
+//        return matchTopics
+//        
+//    }
+//    
     
     func browser(browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
         
@@ -226,9 +239,11 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
         }
         var sortedMatchedPeers = [(String,Int)]()
         // We only have 10 users stored at a time
-        if (foundPeerMatchScore.count < 10) {
+        if (foundPeerMatchScore.count < 10 && matchTopics.count > 0) {
             foundPeerMatchScore[peerDisplay.displayName] = count
-            foundPeerMatchTopics[peerDisplay.displayName] = otherInterests
+            foundPeerMatchTopics[peerDisplay.displayName] = matchTopics
+            
+            print("found match topics \(foundPeerMatchTopics)")
             
             foundPeers.append(peerDisplay)
         } else {
@@ -266,7 +281,7 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
     
     // Remove a found user match peer information
     func removePeerInfo(peer:MCPeerID) {
-        
+        print("removal called")
         foundPeerMatchScore.removeValueForKey(peer.displayName)
         foundPeerMatchTopics.removeValueForKey(peer.displayName)
         

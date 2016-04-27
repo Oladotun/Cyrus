@@ -103,7 +103,7 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
             print("meetPath in connection Page")
             
             print("\(meetPath.description)")
-            appDelegate.mpcManager.advertiser.stopAdvertisingPeer()
+//            appDelegate.mpcManager.advertiser.stopAdvertisingPeer()
             meetPath.observeEventType(.Value, withBlock: {
                 snapshot in
                 if (snapshot.value != nil) {
@@ -185,13 +185,15 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
                     print(currData.uid)
                     self.appDelegate.fireUID = currData.uid
 
-                    self.appDelegate.meetUpFire = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(currData.uid)")
+                    self.appDelegate.meetUpFire = self.appDelegate.userFire.childByAppendingPath("\(currData.uid)")
+                        
+//                        Firebase(url: "https://cyrusthegreat.firebaseio.com/\(currData.uid)")
                     
 //                    self.appDelegate.meetUpFire
                     
                     // send data to other user on connection
                     
-                    contentCreated["topics"] = self.interests
+                    contentCreated["topics"] = self.appDelegate.mpcManager.foundPeerMatchTopics[self.appDelegate.mpcManager.selectedPeer.displayName]
                     contentCreated["chatUid"] = [self.appDelegate.fireUID]
                     
 //                    print("Sent content")
