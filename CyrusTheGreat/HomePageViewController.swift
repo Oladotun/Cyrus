@@ -38,6 +38,20 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
         appDelegate.mpcManager.browser.startBrowsingForPeers()
         appDelegate.interests = interests
         
+        
+        let userInfo = Firebase(url: "https://cyrusthegreat.firebaseio.com/users/\(appDelegate.userIdentifier)/first_name")
+        
+        userInfo.observeEventType(.Value, withBlock: {
+            snapshot in
+            
+            if (snapshot.value is NSNull) {
+                print("We have a problem")
+            } else {
+               self.appDelegate.userFirstName =  (snapshot.value as! String)
+            }
+            
+        })
+        
 //        appDelegate.mpcManager.sortFoundUserByScore(appDelegate.mpcManager.peer)
         
         // Set up alert view

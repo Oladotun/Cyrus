@@ -24,6 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var matchedTopic: String!
     var meetAccept: Bool!
     var userIdentifier:String! // uid from firebase
+    var userFirstName: String!
     
     let googleMapsApiKey = "AIzaSyBNKALtaMqAXxDMy2jSaARp30xUjecbd8E"
 

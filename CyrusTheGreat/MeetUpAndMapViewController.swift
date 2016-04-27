@@ -61,8 +61,8 @@ class MeetUpAndMapViewController: UIViewController {
         if (segue.identifier == "meetWearingSegue") {
             
             let childViewController = segue.destinationViewController as! MeetUpPageViewController
-            childViewController.time = ""
-            childViewController.destination = ""
+            childViewController.time = time
+            childViewController.destination = destination
             
         }
     }
