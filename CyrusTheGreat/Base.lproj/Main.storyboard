@@ -1315,14 +1315,9 @@
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" id="XBn-lX-MDU">
-                        <barButtonItem key="leftBarButtonItem" systemItem="stop" id="3Ot-C2-gV2">
-                            <connections>
-                                <action selector="exitButton:" destination="DDq-FN-vDe" id="bZc-P9-VAv"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="leftBarButtonItem" systemItem="stop" id="3Ot-C2-gV2"/>
                     </navigationItem>
                     <connections>
-                        <outlet property="exitButton" destination="3Ot-C2-gV2" id="aBe-VT-KSB"/>
                         <outlet property="interestMatchLabel" destination="Fh4-ZQ-E75" id="k7P-Ix-fUE"/>
                     </connections>
                 </viewController>
@@ -1399,7 +1394,7 @@
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                 <state key="normal" title="Yes"/>
                                 <connections>
-                                    <segue destination="6Lf-jl-U0I" kind="show" identifier="toQuestion" id="lfM-DM-2OH"/>
+                                    <action selector="yesMeetup:" destination="0mv-3b-yBT" eventType="touchUpInside" id="2J9-NY-blK"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bEv-eP-rrH">
@@ -1517,6 +1512,7 @@
                         <outlet property="personDesc" destination="ik9-ya-4Dn" id="BxD-yA-YaM"/>
                         <outlet property="timeToMeetUpAlert" destination="jYc-eK-EyZ" id="eRP-AO-Ers"/>
                         <outlet property="yesButton" destination="IVd-WW-gob" id="ZsH-bl-5cN"/>
+                        <segue destination="6Lf-jl-U0I" kind="show" identifier="toQuestion" id="Qko-a0-DVO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ppk-vo-Dvn" userLabel="First Responder" sceneMemberID="firstResponder"/>

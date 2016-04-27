@@ -30,15 +30,15 @@ class QuestionsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        endButtonPressed = false
-        NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
-            
-            self.fireBaseBusiness()
-            
-        }
-       
-        interestMatchLabel.text = "What is your favorite thing about \(appDelegate.matchedTopic) ?"
-        timer = NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: "questTime", userInfo: nil, repeats: true)
+//        endButtonPressed = false
+//        NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+//            
+//            self.fireBaseBusiness()
+//            
+//        }
+//       
+//        interestMatchLabel.text = "What is your favorite thing about \(appDelegate.matchedTopic) ?"
+//        timer = NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: "questTime", userInfo: nil, repeats: true)
         
         // Do any additional setup after loading the view.
     }

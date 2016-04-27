@@ -40,7 +40,8 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate { // ,CBCe
     
     var otherUserID:String!
     var userWearingNode: Firebase!
-    var sugueToQuestionNode : Firebase!
+    var segueToQuestionNode : Firebase!
+    var questionTime:Bool!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,8 +61,11 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate { // ,CBCe
 //        yesButton.alpha = 0.0
         timerInvalidate = false
         sessionDisconnected = false
+        questionTime = false
         
         userWearingNode = appDelegate.meetUpFire.childByAppendingPath("clothWearing")
+        
+        segueToQuestionNode = appDelegate.meetUpFire.childByAppendingPath("notifierNext")
         
         
         userWearingNode.observeEventType(.Value, withBlock: {
@@ -91,6 +95,34 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate { // ,CBCe
             }
             
         })
+        
+        
+        
+        segueToQuestionNode.observeEventType(.Value, withBlock: {
+            snapshot in snapshot.value
+            
+            for child in snapshot.children {
+                
+                print("current child info \(child.key)")
+                
+                if (child.key != self.appDelegate.userIdentifier) {
+                    
+                    let childSnapshot = snapshot.childSnapshotForPath(child.key)
+                    
+                    if let questionInfo = childSnapshot.value as? String {
+                        print(questionInfo)
+                        if (questionInfo == "true" && self.questionTime == true) {
+                            
+                            self.performSegueWithIdentifier("toQuestion", sender: self)
+                            
+                        }
+                    }
+ 
+                }
+            }
+            
+        })
+        
        
         
 //        timer = NSTimer.scheduledTimerWithTimeInterval(timeInterval,
@@ -185,6 +217,12 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate { // ,CBCe
 //        appDelegate.mpcManager.session.disconnect()
         
         print("We are about to start re-advertising")
+        questionTime = true
+        
+        
+        let messageDictionary: [String: String] = [appDelegate.userIdentifier: "\(questionTime)"]
+        
+        segueToQuestionNode.updateChildValues(messageDictionary)
         
         
 //        appDelegate.fireConnect.setValue("\(UIDevice.currentDevice().name):\(appDelegate.interests)")
