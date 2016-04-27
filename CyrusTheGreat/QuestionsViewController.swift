@@ -7,12 +7,13 @@
 //
 
 import UIKit
+import Firebase
 
 class QuestionsViewController: UIViewController {
     
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     var interestsCollected: String!
-    var interestDictionary = Dictionary<String, Int>()
+//    var interestDictionary = Dictionary<String, Int>()
     var interestSameArray: [String]!
     
     let questionPrelude:[String] = ["What is your favorite thing about ","Why do you like " ,"Why did you get into "]
@@ -25,7 +26,8 @@ class QuestionsViewController: UIViewController {
     var numOfQuestions:Int = 1
     
     var endButtonPressed:Bool!
-    
+    var firstTopicFire:Firebase!
+    var firstTopic:String!
    
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,6 +43,24 @@ class QuestionsViewController: UIViewController {
 //        timer = NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: "questTime", userInfo: nil, repeats: true)
         
         // Do any additional setup after loading the view.
+        
+        
+        
+        firstTopicFire = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(self.appDelegate.fireUID)/firstTopic")
+        
+        
+        firstTopicFire.observeEventType(.Value, withBlock: {
+            snapshot in
+            
+            if (snapshot.value is NSNull) {
+                print("we have a problem")
+            } else {
+                self.firstTopic = (snapshot.value as! String)
+                self.interestMatchLabel.text = "What are your favorite memories about \(self.firstTopic) ?"
+                
+            }
+            
+        })
     }
 
     override func didReceiveMemoryWarning() {
@@ -74,92 +94,6 @@ class QuestionsViewController: UIViewController {
     }
     
     
-    func fireBaseBusiness() {
-        appDelegate.meetUpFire.observeEventType(.Value, withBlock: {
-            //            snapshot.childrenCount()
-            snapshot in
-            print("\(snapshot.key) -> \(snapshot.value)")
-            
-            let eachPerson = snapshot.value as! NSDictionary
-            
-           let allValues = eachPerson.allValues as! [String]
-            
-            print("all values \(allValues)")
-            
-            for value in allValues {
-                
-//                let allInterests = snapshot.value as! String
-                // Working on user topics and Matching topics
-                if value.contains(":") {
-                    
-                    let twitInterest = value.componentsSeparatedByString(":")
-                    
-                    self.interestsCollected = twitInterest[1].stringByReplacingOccurrencesOfString("[", withString: "")
-                    self.interestsCollected = self.interestsCollected.stringByReplacingOccurrencesOfString("]", withString: "")
-                    print("twitter interests \(self.interestsCollected)")
-                    
-                    let twitInterestArray =  self.interestsCollected.componentsSeparatedByString(",")
-                    
-                    
-                    print("twitter interest array \(twitInterestArray)")
-                    
-                    for interest in twitInterestArray {
-                        
-                        if let count = self.interestDictionary[interest] {
-                            self.interestDictionary[interest] = count + 1
-                        } else {
-                            self.interestDictionary[interest] = 1
-                        }
-                        
-                    }
-                   
-                } else {
-                    
-                    if value.contains("_end_chat_") {
-                        
-                        if(!self.endButtonPressed) {
-                            
-                            // In this case an "_end_chat_" message was received.
-                            // Show an alert view to the user.
-                            
-                            let alert = UIAlertController(title:"",message: "Other User ended this chat", preferredStyle: UIAlertControllerStyle.Alert)
-                            
-                            let doneAction: UIAlertAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
-                    
-//                                self.dismissViewControllerAnimated(true, completion: nil)
-                            }
-                            
-                            alert.addAction(doneAction)
-                            
-                            NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                                self.presentViewController(alert, animated: true, completion: nil)
-                            })
-                            
-                        }
-                        
-                    }
-                    
-                    
-                    
-                }
-                
-                
-                    
-            }
-            
-             self.interestSameArray = Array(self.interestDictionary.keys)
-                
-//            self.interestMatchLabel.text = "\(self.interestDictionary)"
-//            print("current dictionary: \(self.interestDictionary)")
-            
-            
-            //            snapshot
-        })
-        
-        
-        
-//        interestMatchLabel.text = "\(interestDictionary)"
-    }
     
     
     func questTime() {
