@@ -27,6 +27,7 @@ class QuestionsViewController: UIViewController {
     
     var endButtonPressed:Bool!
     var firstTopicFire:Firebase!
+    var getMatchedTopicsFire:Firebase!
     var firstTopic:String!
    
     override func viewDidLoad() {
@@ -58,9 +59,29 @@ class QuestionsViewController: UIViewController {
                 self.firstTopic = (snapshot.value as! String)
                 self.interestMatchLabel.text = "What are your favorite memories about \(self.firstTopic) ?"
                 
+                self.timer = NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: "questTime", userInfo: nil, repeats: true)
+                
             }
             
         })
+        
+        
+        getMatchedTopicsFire = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(self.appDelegate.fireUID)/matchedTopics")
+        
+        getMatchedTopicsFire.observeEventType(.Value, withBlock: {
+            snapshot in
+            
+            if(snapshot.value is NSNull) {
+                print("Problem getting matched topics from question page")
+            } else {
+                self.interestSameArray = (snapshot.value as! [String])
+                
+            }
+        })
+        
+        
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -102,7 +123,14 @@ class QuestionsViewController: UIViewController {
         } else {
             if (numOfQuestions < 3) {
                 
-                interestMatchLabel.text = "What is your favorite thing about \(interestSameArray[numOfQuestions]) ?"
+                let prelude = questionPrelude.randomItem()
+                var interest = interestSameArray.randomItem()
+                
+                while (interest == firstTopic) {
+                    interest = interestSameArray.randomItem()
+                }
+                
+                interestMatchLabel.text = "\(prelude) \(interest) ?"
                 
             } else {
                 interestMatchLabel.text = "\(questionPrelude[2]) Engineering ?"
