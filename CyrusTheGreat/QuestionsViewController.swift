@@ -146,29 +146,46 @@ class QuestionsViewController: UIViewController {
                          if let nextQuestionSelectedValue = childSnapshot.value as? String {
                             
                             if (nextQuestionSelectedValue == "yes" && self.nextQuestionSelected == true) {
-                                
-                               
+                             
                                 self.seenTopics.append(self.firstTopic)
                                 if (self.messageSetter == true) {
-                                    var interest: String!
-                                    var topicFound = false
-                                    
-                                    repeat {
-                                        interest = self.interestSameArray.randomItem()
-                                        for seenTopic in self.seenTopics {
-                                            if (interest == seenTopic) {
-                                                topicFound = true
-                                            }
+                                
+                                    if (self.interestSameArray.count < 5 && (self.seenTopics.count == self.interestSameArray.count) ) {
+                                        
+                                        self.firstTopicFire.setValue("Share the Story of why you_/|decided to go into your field of study")
+                                        
+                                    } else {
+                                        
+                                        if (self.seenTopics.count == 5) {
+                                           self.firstTopicFire.setValue("Share the Story of why you_/|decided to go into your field of study")
+                                        } else {
+                                            
+                                            var interest: String!
+                                            var topicFound = false
+                                            
+                                            repeat {
+                                                interest = self.interestSameArray.randomItem()
+                                                for seenTopic in self.seenTopics {
+                                                    if (interest == seenTopic) {
+                                                        topicFound = true
+                                                    }
+                                                }
+                                                
+                                            } while(topicFound == true)
+                                            self.seenTopics.append(interest)
+                                            
+                                            let prelude = self.questionPrelude.randomItem()
+                                            let topicToSend = "\(prelude)_/|\(interest)"
+                                            
+                                            
+                                            self.firstTopicFire.setValue(topicToSend)
+                                            
                                         }
                                         
-                                    } while(topicFound == true)
-                                    self.seenTopics.append(interest)
-                                    
-                                    let prelude = self.questionPrelude.randomItem()
-                                    let topicToSend = "\(prelude)_/|\(interest)"
-                                    
-                                    
-                                    self.firstTopicFire.setValue(topicToSend)
+                                        
+                                        
+                                    }
+                                
                                 }
                                 
 
