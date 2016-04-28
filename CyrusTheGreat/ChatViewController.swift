@@ -48,6 +48,10 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UITableViewDele
        chatAcceptPath = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(self.appDelegate.fireUID)/chatAccept")
         chatAcceptPath.setValue("no")
         
+        let initializeQuestion = appDelegate.meetUpFire.childByAppendingPath("questionController")
+        initializeQuestion.setValue("Not Set")
+        
+        
         chatAcceptPath.observeEventType(.Value, withBlock: {
             snapshot in
             
