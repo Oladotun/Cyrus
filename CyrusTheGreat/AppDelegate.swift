@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import GoogleMaps
 import CoreData
+import CoreLocation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -27,6 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var userFirstName: String!
     
     let googleMapsApiKey = "AIzaSyBNKALtaMqAXxDMy2jSaARp30xUjecbd8E"
+    var locationManager: CLLocationManager!
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -50,7 +52,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //                
 //            }
 //        }
-        GMSServices.provideAPIKey(googleMapsApiKey)
+//        GMSServices.provideAPIKey(googleMapsApiKey)
+        
+        locationManager = CLLocationManager()
+        locationManager?.requestWhenInUseAuthorization()
         
         return true
     }

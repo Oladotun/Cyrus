@@ -120,14 +120,16 @@ class HomePageViewController: UIViewController,  MPCManagerDelegate {
 //            appDelegate.mpcManager.advertiser.stopAdvertisingPeer()
             meetPath.observeEventType(.Value, withBlock: {
                 snapshot in
-                if (snapshot.value != nil) {
+                if (snapshot.value is NSNull) {
                     
+                    print("We have a problem")
+                    
+                } else {
                     NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
-
+                        
                         self.performSegueWithIdentifier("idSegueChat", sender: self)
                         
                     }
-                    
                 }
             })
             

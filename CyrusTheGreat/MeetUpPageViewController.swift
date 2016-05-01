@@ -67,6 +67,34 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate { // ,CBCe
         
         segueToQuestionNode = appDelegate.meetUpFire.childByAppendingPath("notifierNext")
         
+        let locationFireBaseArrived = Firebase(url:"https://cyrusthegreat.firebaseio.com/location/arrived")
+        
+        locationFireBaseArrived.observeEventType(.Value, withBlock: {
+            snapshot in snapshot.value
+            
+            for child in snapshot.children {
+                
+                print("current child info \(child.key)")
+                
+                if (child.key != self.appDelegate.userIdentifier) {
+                    
+                    let childSnapshot = snapshot.childSnapshotForPath(child.key)
+                    
+                    if let otherArrived = childSnapshot.value as? String {
+                        
+                        if (otherArrived == "yes") {
+                            print ("Other user arrived")
+                            
+                        }
+                        
+                        
+                    }
+                }
+            }
+        })
+        
+        
+        
         
         userWearingNode.observeEventType(.Value, withBlock: {
             snapshot in snapshot.value

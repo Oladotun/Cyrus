@@ -333,20 +333,23 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
         
         meetPath.observeEventType(.Value, withBlock: {
             snapshot in
-            if (snapshot.value != nil) {
+            if (snapshot.value is NSNull) {
                 
+                print("We have a problem")
+                
+            } else {
                 if(snapshot.value as! String == "true") {
                     self.delegate?.connectedWithPeer(MCPeerID(displayName: "_use_firebase_chat_"))
                     
-//                    self.setAvailabilityFalse()
+                    //                    self.setAvailabilityFalse()
                     
                 } else {
                     print("timed out")
                     
                     self.delegate?.connectedWithPeer(MCPeerID(displayName: self.peer.displayName))
-//                    meetPath.setValue("Timed out")
+                    //                    meetPath.setValue("Timed out")
                 }
-                
+
             }
         })
         
