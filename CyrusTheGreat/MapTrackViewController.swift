@@ -29,6 +29,7 @@ class MapTrackViewController: UIViewController {
     var otherUserLocation: CLLocation!
     
     var locationFireBase: Firebase!
+    var setup:Bool!
    
 
     @IBOutlet weak var theMap: MKMapView!
@@ -48,8 +49,18 @@ class MapTrackViewController: UIViewController {
         
          locationFireBase = Firebase(url:"https://cyrusthegreat.firebaseio.com/location")
         fireBaseBusiness()
+        setup = true
     }
-
+    
+    override func viewDidAppear(animated: Bool) {
+        
+     super.viewDidAppear(true)
+        setup = true
+        findDist(MKPlacemark(coordinate: myLocation.coordinate, addressDictionary: nil), destination: destinationPlacemark, requestType: .Automobile, title: "first")
+        
+        findDist(MKPlacemark(coordinate: self.otherUserLocation.coordinate, addressDictionary: nil), destination: self.destinationPlacemark, requestType: .Automobile, title: "second")
+    
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -103,6 +114,7 @@ class MapTrackViewController: UIViewController {
             let userPoint = MKMapPointForCoordinate(myLocation!.coordinate)
             userPointRect = MKMapRectMake(userPoint.x, userPoint.y, 0, 0)
             unionAll = userPointRect
+            theMap.centerCoordinate = (myLocation?.coordinate)!
             
         }
         
@@ -131,7 +143,8 @@ class MapTrackViewController: UIViewController {
         // set the region for visibility on map
         if let union = unionAll {
             let unionRectThatFits = theMap.mapRectThatFits(union)
-            theMap.setVisibleMapRect(unionRectThatFits, edgePadding: UIEdgeInsetsMake(50.0, 50.0, 50.0, 50.0), animated: true)
+            theMap.setVisibleMapRect(unionRectThatFits, edgePadding: UIEdgeInsetsMake(80.0, 80.0, 80.0, 80.0), animated: true)
+            
             
         }
         
@@ -148,8 +161,6 @@ class MapTrackViewController: UIViewController {
 extension MapTrackViewController {
     
     func fireBaseBusiness() {
-        
-//        let myLocationFireBase = locationFireBase.childByAppendingPath("\(UIDevice.currentDevice().name)")
         
         locationFireBase.observeEventType(.Value, withBlock: {
             snapshot in
@@ -182,6 +193,21 @@ extension MapTrackViewController {
                             annotation.title = "Other User Location"
                             annotation.color = UIColor.purpleColor()
                             
+                            if let destination = self.destinationLocation {
+                                
+                                print("Destination marker called")
+                                let itemDist = self.otherUserLocation.distanceFromLocation(destination)
+                                if (itemDist < 200) {
+                                    self.findDist(MKPlacemark(coordinate: self.otherUserLocation.coordinate, addressDictionary: nil), destination: self.destinationPlacemark, requestType: .Walking, title: "second")
+                                } else {
+                                    
+                                    self.findDist(MKPlacemark(coordinate: self.otherUserLocation.coordinate, addressDictionary: nil), destination: self.destinationPlacemark, requestType: .Automobile, title: "second")
+                                    
+                                }
+                                
+                            }
+                            
+                            
                             self.theMap.addAnnotation(annotation)
                         }
                         
@@ -209,6 +235,35 @@ extension MapTrackViewController: CLLocationManagerDelegate {
         
         let userInfo = [self.appDelegate.userIdentifier: "\(myLocation.coordinate.latitude)_coordinate_\(myLocation.coordinate.longitude)"]
         self.locationFireBase.updateChildValues(userInfo)
+        
+        if let destination = destinationLocation {
+            
+            let itemDist = myLocation.distanceFromLocation(destination)
+            
+            if (itemDist < 20) { // Update more frequently if we are closer to destination
+                appDelegate.locationManager.distanceFilter = 2
+            }
+            
+            if (itemDist < 200) {
+                findDist(MKPlacemark(coordinate: myLocation.coordinate, addressDictionary: nil), destination: destinationPlacemark, requestType: .Walking, title: "first")
+                
+        
+            } else {
+                
+                findDist(MKPlacemark(coordinate: myLocation.coordinate, addressDictionary: nil), destination: destinationPlacemark, requestType: .Automobile, title: "first")
+                
+                
+            }
+            
+        }
+        
+        let annotation = Annotation()
+        annotation.coordinate = self.myLocation.coordinate
+        annotation.title = "Current Location"
+        annotation.color = UIColor.blueColor()
+        self.theMap.addAnnotation(annotation)
+        
+        
     }
     
 }
@@ -237,6 +292,74 @@ extension MapTrackViewController: MKMapViewDelegate {
             view.rightCalloutAccessoryView = UIButton(type: .DetailDisclosure) as UIView
         }
         return view
+    }
+    
+    
+    func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
+        
+        var polylineRenderer : MKPolylineRenderer!
+        if overlay is MKPolyline {
+            polylineRenderer = MKPolylineRenderer(overlay: overlay)
+            //            polylineRenderer.strokeColor = UIColor.blueColor()
+            
+            
+            if overlay.title! == "first" {
+                polylineRenderer.strokeColor =
+                    UIColor.blueColor().colorWithAlphaComponent(0.75)
+            } else if overlay.title! == "second" {
+                polylineRenderer.strokeColor =
+                    UIColor.greenColor().colorWithAlphaComponent(0.75)
+            }
+            polylineRenderer.lineWidth = 4
+            
+            return polylineRenderer
+            
+            
+            
+        }
+        return polylineRenderer
+    }
+    
+    func findDist(source:MKPlacemark,destination:MKPlacemark,requestType:MKDirectionsTransportType,title:String) -> MKRoute?   {
+        
+        let request: MKDirectionsRequest = MKDirectionsRequest()
+        request.source = MKMapItem(placemark: source)
+        request.destination = MKMapItem(placemark:destination)
+        
+        request.transportType = requestType
+        
+        // get directions
+        let directions = MKDirections(request: request)
+        var quickestRouteForSegment: MKRoute?
+        directions.calculateDirectionsWithCompletionHandler({
+            (response:MKDirectionsResponse?, error:NSError?) in
+            if let routeResponse = response?.routes {
+                quickestRouteForSegment = routeResponse.sort({$0.expectedTravelTime < $1.expectedTravelTime})[0]
+                quickestRouteForSegment?.polyline.title = title
+                var toRemove:MKOverlay!
+                for overlay in self.theMap.overlays {
+                    if (title == overlay.title!!) {
+                        print(title)
+                        toRemove = overlay
+                    }
+                }
+                
+                
+                
+                self.theMap.addOverlay(quickestRouteForSegment!.polyline)
+                
+                if (toRemove != nil) {
+                    self.theMap.removeOverlay(toRemove)
+                }
+                
+                
+            }
+        })
+        
+        return quickestRouteForSegment
+        
+        
+        
     }
     
 }
