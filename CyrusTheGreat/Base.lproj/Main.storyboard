@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="oR4-mZ-lNK">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="bqI-cL-1Wj">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
@@ -1074,11 +1074,11 @@
                                     <action selector="sendButton:" destination="bqI-cL-1Wj" eventType="touchUpInside" id="Dr1-uW-JW6"/>
                                 </connections>
                             </button>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="131" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="ZAD-GB-EgV">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="320" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="ZAD-GB-EgV">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="idCell" rowHeight="131" id="uQx-IT-aYC" customClass="ChatViewCell" customModule="CyrusTheGreat" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="idCell" rowHeight="320" id="uQx-IT-aYC" customClass="ChatViewCell" customModule="CyrusTheGreat" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uQx-IT-aYC" id="Mvn-y6-OxZ">
@@ -1119,7 +1119,7 @@
                                                         <action selector="declinedInfo:" destination="uQx-IT-aYC" eventType="touchUpInside" id="hQ2-V9-6y8"/>
                                                     </connections>
                                                 </button>
-                                                <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="755" verticalCompressionResistancePriority="755" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="F29-Ly-yUb">
+                                                <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="200" verticalHuggingPriority="200" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="F29-Ly-yUb">
                                                     <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
@@ -1328,11 +1328,12 @@
                         <outlet property="tblChat" destination="ZAD-GB-EgV" id="Sdi-Yv-Su9"/>
                         <outlet property="txtChat" destination="V4r-9B-cS2" id="w24-Fi-iZ9"/>
                         <outlet property="warningLabel" destination="0N3-gf-fGD" id="OYP-dn-TaX"/>
+                        <segue destination="oR4-mZ-lNK" kind="show" identifier="searchTableId" id="RZt-dn-WV6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BMU-fB-EO2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3618" y="444"/>
+            <point key="canvasLocation" x="-3468" y="447"/>
         </scene>
         <!--Search Table View Controller-->
         <scene sceneID="ORm-Hg-gUb">
@@ -1344,10 +1345,10 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CheckCell" rowHeight="67" id="IIC-W1-ziC">
-                                <rect key="frame" x="0.0" y="156" width="600" height="37"/>
+                                <rect key="frame" x="0.0" y="104" width="600" height="67"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="IIC-W1-ziC" id="SSK-cf-yW1">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="36"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="66"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -1359,10 +1360,14 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="7G1-WB-cbu"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <segue destination="9ul-fk-PtN" kind="unwind" identifier="unWindBack" unwindAction="unwindToChat:" id="joz-Ki-jyl"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Euv-95-ig5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="9ul-fk-PtN" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-1749" y="447.75"/>
+            <point key="canvasLocation" x="-1915.5" y="447.75"/>
         </scene>
         <!--Meet Up And Map View Controller-->
         <scene sceneID="Yf7-N8-njs">

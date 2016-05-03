@@ -11,6 +11,11 @@ import UIKit
 import CoreLocation
 import MapKit
 
+protocol SearchTableDelegate {
+    func cancel()
+    func selected(address:String)
+}
+
 class SearchTableViewController: UITableViewController,UISearchResultsUpdating {
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     var theMap: MKMapView!
@@ -20,6 +25,8 @@ class SearchTableViewController: UITableViewController,UISearchResultsUpdating {
     var keyWordSearch:String!
     
     var resultSearchController:UISearchController!
+    
+    var searchProtocol : SearchTableDelegate?
     
 //    @IBOutlet weak var searchBar: UISearchBar!
 //    @IBOutlet weak var headerView: UIView!
@@ -39,6 +46,9 @@ class SearchTableViewController: UITableViewController,UISearchResultsUpdating {
         resultSearchController.searchBar.searchBarStyle = UISearchBarStyle.Prominent
         // 6
         resultSearchController.searchBar.sizeToFit()
+        resultSearchController.searchBar.delegate = self
+        
+        
         // 7
         self.tableView.tableHeaderView = resultSearchController.searchBar
         
@@ -46,10 +56,10 @@ class SearchTableViewController: UITableViewController,UISearchResultsUpdating {
         appDelegate.locationManager.startUpdatingLocation()
         appDelegate.locationManager.desiredAccuracy = kCLLocationAccuracyBest
         theMap = MKMapView()
+        theMap.delegate = self
+        
+//        searchProtocol = SearchTableDelegate()
 
-        tableView.dataSource = self
-        tableView.delegate = self
-        self.edgesForExtendedLayout = UIRectEdge.None
 //        self.tableView.tableHeaderView = headerView
 //        self.tableView.tableHeaderView.size
 
@@ -59,7 +69,21 @@ class SearchTableViewController: UITableViewController,UISearchResultsUpdating {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
-
+//    override func viewWillAppear(animated: Bool) {
+//        super.viewWillAppear(true)
+//        resultSearchController.searchBar.becomeFirstResponder()
+//    }
+    
+//    override func viewDidDisappear(animated: Bool) {
+//        self.viewDidDisappear(true)
+//        
+//        resultSearchController.searchBar.delegate = nil
+//        self.tableView.delegate = nil
+//        self.tableView.dataSource = nil
+//        theMap.delegate = nil
+//        appDelegate.locationManager.stopUpdatingLocation()
+//        
+//    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -86,13 +110,23 @@ class SearchTableViewController: UITableViewController,UISearchResultsUpdating {
             
         }
         
-        if !searchController.active {
-            print("Cancelled")
-            self.itemsFound.removeAll()
-            tableView.reloadData()
-        }
+//        if !searchController.active {
+//            print("Cancelled")
+////            self.itemsFound.removeAll() 
+////            searchProtocol?.cancel()
+//            self.dismissViewControllerAnimated(true, completion: {})
+////            tableView.reloadData()
+//        }
 
+    }
+    deinit {
         
+        resultSearchController.searchBar.delegate = nil
+        self.tableView.delegate = nil
+        self.tableView.dataSource = nil
+        theMap.delegate = nil
+        appDelegate.locationManager.stopUpdatingLocation()
+
         
     }
     
@@ -143,7 +177,41 @@ class SearchTableViewController: UITableViewController,UISearchResultsUpdating {
         cell.textLabel?.text = itemsFound[indexPath.row].name! + "\n" + addressJoined
         return cell
     }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if (itemsFound.count > indexPath.row) {
+            
+            resultSearchController.searchBar.text = ""
+            var addressJoined = ""
+            
+            if let addressString = itemsFound[indexPath.row].placemark.addressDictionary {
+                if let addressInfo  = addressString["FormattedAddressLines"] {
+                    
+                    addressJoined = (addressInfo as! [String]).joinWithSeparator(",")
+                }
+            }
+            let completeWord = itemsFound[indexPath.row].name!
+            print("we are in did select row")
+            searchProtocol?.selected(completeWord)
+            if (resultSearchController.searchBar.isFirstResponder()){
+                 dismissViewControllerAnimated(true, completion: nil)
+            }
+           
+            dismissViewControllerAnimated(true, completion: nil)
+        }
+    }
 
+}
+extension SearchTableViewController : UISearchBarDelegate {
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        print("Cancelled")
+        searchBar.resignFirstResponder()
+        //            self.itemsFound.removeAll()
+                    searchProtocol?.cancel()
+//        self.performSegueWithIdentifier("unWindBack", sender: self)
+        self.dismissViewControllerAnimated(true, completion: nil)
+//        self.dismissViewControllerAnimated(true, completion: {})
+    }
 }
 
 

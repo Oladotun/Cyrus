@@ -18,7 +18,6 @@
 		7C3BF1DB1CC780940082AC03 /* MeetUpAndMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3BF1DA1CC780940082AC03 /* MeetUpAndMapViewController.swift */; };
 		7C3BF1DD1CC789F40082AC03 /* LocationTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3BF1DC1CC789F40082AC03 /* LocationTrackerViewController.swift */; };
 		7C3BF1E31CC7F25B0082AC03 /* MapTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3BF1E21CC7F25B0082AC03 /* MapTasks.swift */; };
-		7C6701161CD6DBDF0049C37E /* SearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6701151CD6DBDF0049C37E /* SearchResults.swift */; };
 		7C6701181CD7822D0049C37E /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6701171CD7822D0049C37E /* SearchTableViewController.swift */; };
 		7C7218A21CCCF6A90016C15B /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C7218A11CCCF6A80016C15B /* CoreData.framework */; };
 		7C7218A61CCCF8120016C15B /* CyrusTheGreat.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7C7218A41CCCF8120016C15B /* CyrusTheGreat.xcdatamodeld */; };
@@ -59,7 +58,6 @@
 		7C3BF1DC1CC789F40082AC03 /* LocationTrackerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationTrackerViewController.swift; sourceTree = "<group>"; };
 		7C3BF1DF1CC799F90082AC03 /* CyrusTheGreat-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CyrusTheGreat-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		7C3BF1E21CC7F25B0082AC03 /* MapTasks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapTasks.swift; sourceTree = "<group>"; };
-		7C6701151CD6DBDF0049C37E /* SearchResults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResults.swift; sourceTree = "<group>"; };
 		7C6701171CD7822D0049C37E /* SearchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
 		7C7218A11CCCF6A80016C15B /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		7C7218A51CCCF8120016C15B /* CyrusTheGreat.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CyrusTheGreat.xcdatamodel; sourceTree = "<group>"; };
@@ -151,7 +149,6 @@
 				7C03202A1C90A06900E299D2 /* MPCManager.swift */,
 				7C03202C1C90A09A00E299D2 /* ChatViewController.swift */,
 				7C6701171CD7822D0049C37E /* SearchTableViewController.swift */,
-				7C6701151CD6DBDF0049C37E /* SearchResults.swift */,
 				7CE313261C97027C00634900 /* ChatViewCell.swift */,
 				7C3BF1DA1CC780940082AC03 /* MeetUpAndMapViewController.swift */,
 				7C1154401C99A5070041C012 /* MeetUpPageViewController.swift */,
@@ -367,7 +364,6 @@
 				7C7218A61CCCF8120016C15B /* CyrusTheGreat.xcdatamodeld in Sources */,
 				7C3BF1DB1CC780940082AC03 /* MeetUpAndMapViewController.swift in Sources */,
 				7C03202D1C90A09A00E299D2 /* ChatViewController.swift in Sources */,
-				7C6701161CD6DBDF0049C37E /* SearchResults.swift in Sources */,
 				7CDC51961C88614F00D50F53 /* CollectionTwitterViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
