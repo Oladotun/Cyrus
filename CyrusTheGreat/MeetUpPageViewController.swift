@@ -46,12 +46,12 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate { // ,CBCe
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let mainQueue = NSOperationQueue.mainQueue()
-        
-        observer = NSNotificationCenter.defaultCenter().addObserverForName("receivedMPCDataNotification", object: nil, queue: mainQueue, usingBlock: {
-            note in self.handleMPCReceivedDataWithNotification(note)
-            
-        })
+//        let mainQueue = NSOperationQueue.mainQueue()
+//        
+//        observer = NSNotificationCenter.defaultCenter().addObserverForName("receivedMPCDataNotification", object: nil, queue: mainQueue, usingBlock: {
+//            note in self.handleMPCReceivedDataWithNotification(note)
+//            
+//        })
         
 //        local.
         personClothing.delegate = self
@@ -62,94 +62,94 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate { // ,CBCe
         timerInvalidate = false
         sessionDisconnected = false
         questionTime = false
-        
-        userWearingNode = appDelegate.meetUpFire.childByAppendingPath("clothWearing")
-        
-        segueToQuestionNode = appDelegate.meetUpFire.childByAppendingPath("notifierNext")
-        
-        let locationFireBaseArrived = Firebase(url:"https://cyrusthegreat.firebaseio.com/location/arrived")
-        
-        locationFireBaseArrived.observeEventType(.Value, withBlock: {
-            snapshot in snapshot.value
-            
-            for child in snapshot.children {
-                
-                print("current child info \(child.key)")
-                
-                if (child.key != self.appDelegate.userIdentifier) {
-                    
-                    let childSnapshot = snapshot.childSnapshotForPath(child.key)
-                    
-                    if let otherArrived = childSnapshot.value as? String {
-                        
-                        if (otherArrived == "yes") {
-                            print ("Other user arrived")
-                            
-                        }
-                        
-                        
-                    }
-                }
-            }
-        })
-        
-        
-        
-        
-        userWearingNode.observeEventType(.Value, withBlock: {
-            snapshot in snapshot.value
-            
-             for child in snapshot.children {
-                
-                print("current child info \(child.key)")
-                
-                if (child.key != self.appDelegate.userIdentifier) {
-                    
-                     let childSnapshot = snapshot.childSnapshotForPath(child.key)
-                    
-                      if let userWearingInfo = childSnapshot.value as? String {
-                        
-                        let userInfo = userWearingInfo.componentsSeparatedByString("_/_|")
-                        
-                        
-                        self.personDesc.text = "\(userInfo[0]) is wearing \(userInfo[1])"
-                        self.otherPersonName = userInfo[0]
-                        
-                    }
-                    
-                    
-                }
-                
-            }
-            
-        })
-        
-        
-        
-        segueToQuestionNode.observeEventType(.Value, withBlock: {
-            snapshot in snapshot.value
-            
-            for child in snapshot.children {
-                
-                print("current child info \(child.key)")
-                
-                if (child.key != self.appDelegate.userIdentifier) {
-                    
-                    let childSnapshot = snapshot.childSnapshotForPath(child.key)
-                    
-                    if let questionInfo = childSnapshot.value as? String {
-                        print(questionInfo)
-                        if (questionInfo == "true" && self.questionTime == true) {
-                            
-                            self.performSegueWithIdentifier("toQuestion", sender: self)
-                            
-                        }
-                    }
- 
-                }
-            }
-            
-        })
+//        
+//        userWearingNode = appDelegate.meetUpFire.childByAppendingPath("clothWearing")
+//        
+//        segueToQuestionNode = appDelegate.meetUpFire.childByAppendingPath("notifierNext")
+//        
+//        let locationFireBaseArrived = Firebase(url:"https://cyrusthegreat.firebaseio.com/location/arrived")
+//        
+//        locationFireBaseArrived.observeEventType(.Value, withBlock: {
+//            snapshot in snapshot.value
+//            
+//            for child in snapshot.children {
+//                
+//                print("current child info \(child.key)")
+//                
+//                if (child.key != self.appDelegate.userIdentifier) {
+//                    
+//                    let childSnapshot = snapshot.childSnapshotForPath(child.key)
+//                    
+//                    if let otherArrived = childSnapshot.value as? String {
+//                        
+//                        if (otherArrived == "yes") {
+//                            print ("Other user arrived")
+//                            
+//                        }
+//                        
+//                        
+//                    }
+//                }
+//            }
+//        })
+//        
+//        
+//        
+//        
+//        userWearingNode.observeEventType(.Value, withBlock: {
+//            snapshot in snapshot.value
+//            
+//             for child in snapshot.children {
+//                
+//                print("current child info \(child.key)")
+//                
+//                if (child.key != self.appDelegate.userIdentifier) {
+//                    
+//                     let childSnapshot = snapshot.childSnapshotForPath(child.key)
+//                    
+//                      if let userWearingInfo = childSnapshot.value as? String {
+//                        
+//                        let userInfo = userWearingInfo.componentsSeparatedByString("_/_|")
+//                        
+//                        
+//                        self.personDesc.text = "\(userInfo[0]) is wearing \(userInfo[1])"
+//                        self.otherPersonName = userInfo[0]
+//                        
+//                    }
+//                    
+//                    
+//                }
+//                
+//            }
+//            
+//        })
+//        
+//        
+//        
+//        segueToQuestionNode.observeEventType(.Value, withBlock: {
+//            snapshot in snapshot.value
+//            
+//            for child in snapshot.children {
+//                
+//                print("current child info \(child.key)")
+//                
+//                if (child.key != self.appDelegate.userIdentifier) {
+//                    
+//                    let childSnapshot = snapshot.childSnapshotForPath(child.key)
+//                    
+//                    if let questionInfo = childSnapshot.value as? String {
+//                        print(questionInfo)
+//                        if (questionInfo == "true" && self.questionTime == true) {
+//                            
+//                            self.performSegueWithIdentifier("toQuestion", sender: self)
+//                            
+//                        }
+//                    }
+// 
+//                }
+//            }
+//            
+//        })
         
        
         
@@ -199,39 +199,39 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate { // ,CBCe
 //        }
 //    }
     
-    
-    func handleMPCReceivedDataWithNotification(notification: NSNotification) {
-        
-        let receivedDataDictionary = notification.object as! Dictionary<String, AnyObject>
-        
-        // "Extract" the data and the source peer from the received dictionary.
-        let data = receivedDataDictionary["data"] as? NSData
-        let fromPeer = receivedDataDictionary["fromPeer"] as! MCPeerID
-        
-        // Convert the data (NSData) into a Dictionary object.
-        let dataDictionary = NSKeyedUnarchiver.unarchiveObjectWithData(data!) as! NSDictionary
-        
-        if let message = dataDictionary["message"] as? String {
-            messagesArray = []
-            
-            if message != "_end_chat_" {
-                // Create a new dictionary and set the sender and the received message to it.
-                
-//                print("Handle Receiving data")
-                
-                // Reload the tableview data and scroll to the bottom using the main thread.
-                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                    self.personDesc.text = "\(fromPeer.displayName) is wearing \(message)"
-                    self.otherPersonName = fromPeer.displayName
-                
-                })
-                
-                
-            }
-        }
-        
-        
-    }
+//    
+//    func handleMPCReceivedDataWithNotification(notification: NSNotification) {
+//        
+//        let receivedDataDictionary = notification.object as! Dictionary<String, AnyObject>
+//        
+//        // "Extract" the data and the source peer from the received dictionary.
+//        let data = receivedDataDictionary["data"] as? NSData
+//        let fromPeer = receivedDataDictionary["fromPeer"] as! MCPeerID
+//        
+//        // Convert the data (NSData) into a Dictionary object.
+//        let dataDictionary = NSKeyedUnarchiver.unarchiveObjectWithData(data!) as! NSDictionary
+//        
+//        if let message = dataDictionary["message"] as? String {
+//            messagesArray = []
+//            
+//            if message != "_end_chat_" {
+//                // Create a new dictionary and set the sender and the received message to it.
+//                
+////                print("Handle Receiving data")
+//                
+//                // Reload the tableview data and scroll to the bottom using the main thread.
+//                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+//                    self.personDesc.text = "\(fromPeer.displayName) is wearing \(message)"
+//                    self.otherPersonName = fromPeer.displayName
+//                
+//                })
+//                
+//                
+//            }
+//        }
+//        
+//        
+//    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

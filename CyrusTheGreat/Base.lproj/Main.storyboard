@@ -1381,12 +1381,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8bC-P1-6av">
-                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                                <connections>
-                                    <segue destination="z4o-XF-IxR" kind="embed" id="YOc-sB-pQI"/>
-                                </connections>
-                            </containerView>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Qcp-Zm-IKK">
                                 <rect key="frame" x="-60" y="-14" width="121" height="29"/>
                                 <segments>
@@ -1403,63 +1397,67 @@
                                     <segue destination="0mv-3b-yBT" kind="embed" identifier="meetWearingSegue" id="Xn0-tF-aXW"/>
                                 </connections>
                             </containerView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dop-a6-2n1">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                <connections>
+                                    <segue destination="BqG-d5-T11" kind="embed" identifier="mapSegue" id="YhX-Nw-XQp"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Qcp-Zm-IKK" firstAttribute="top" secondItem="LhD-oQ-GKb" secondAttribute="bottom" constant="26" id="2NX-aA-Sek"/>
-                            <constraint firstItem="8bC-P1-6av" firstAttribute="width" secondItem="LhD-oQ-GKb" secondAttribute="width" id="4ES-lL-GXF"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="8bC-P1-6av" secondAttribute="trailing" constant="-15" id="6a6-49-o0Y"/>
                             <constraint firstItem="LhD-oQ-GKb" firstAttribute="top" secondItem="drt-bm-bRc" secondAttribute="topMargin" constant="11" id="Jav-ld-0nB"/>
+                            <constraint firstItem="dop-a6-2n1" firstAttribute="leading" secondItem="LhD-oQ-GKb" secondAttribute="leading" id="KZE-Dl-tyd"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="LhD-oQ-GKb" secondAttribute="trailing" constant="-15" id="MO7-mE-hji"/>
+                            <constraint firstItem="dop-a6-2n1" firstAttribute="height" secondItem="LhD-oQ-GKb" secondAttribute="height" id="RE9-vH-fjt"/>
                             <constraint firstItem="LhD-oQ-GKb" firstAttribute="centerX" secondItem="drt-bm-bRc" secondAttribute="centerX" id="Rfq-Cy-Q36"/>
                             <constraint firstItem="LhD-oQ-GKb" firstAttribute="centerX" secondItem="Qcp-Zm-IKK" secondAttribute="centerX" id="YbZ-sN-S4g"/>
-                            <constraint firstItem="Qcp-Zm-IKK" firstAttribute="top" secondItem="8bC-P1-6av" secondAttribute="bottom" constant="20" id="lUd-dK-qHy"/>
+                            <constraint firstItem="dop-a6-2n1" firstAttribute="width" secondItem="LhD-oQ-GKb" secondAttribute="width" id="dEX-9e-hUD"/>
+                            <constraint firstItem="dop-a6-2n1" firstAttribute="top" secondItem="LhD-oQ-GKb" secondAttribute="top" id="nlT-3r-BaB"/>
                             <constraint firstItem="m7z-Rb-QXZ" firstAttribute="top" secondItem="Qcp-Zm-IKK" secondAttribute="bottom" constant="44" id="oTD-Xx-06p"/>
-                            <constraint firstItem="8bC-P1-6av" firstAttribute="height" secondItem="LhD-oQ-GKb" secondAttribute="height" id="vzD-RC-hc7">
-                                <variation key="heightClass=regular-widthClass=compact" constant="-48"/>
-                            </constraint>
-                            <constraint firstItem="8bC-P1-6av" firstAttribute="leading" secondItem="drt-bm-bRc" secondAttribute="leadingMargin" constant="-14" id="xG9-Kg-ezP"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
-                                <exclude reference="8bC-P1-6av"/>
                                 <exclude reference="Qcp-Zm-IKK"/>
                                 <exclude reference="LhD-oQ-GKb"/>
+                                <exclude reference="dop-a6-2n1"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="oTD-Xx-06p"/>
-                                <exclude reference="2NX-aA-Sek"/>
-                                <exclude reference="lUd-dK-qHy"/>
-                                <exclude reference="4ES-lL-GXF"/>
-                                <exclude reference="6a6-49-o0Y"/>
-                                <exclude reference="vzD-RC-hc7"/>
-                                <exclude reference="xG9-Kg-ezP"/>
                                 <exclude reference="Jav-ld-0nB"/>
+                                <exclude reference="MO7-mE-hji"/>
                                 <exclude reference="Rfq-Cy-Q36"/>
                                 <exclude reference="YbZ-sN-S4g"/>
+                                <exclude reference="KZE-Dl-tyd"/>
+                                <exclude reference="RE9-vH-fjt"/>
+                                <exclude reference="dEX-9e-hUD"/>
+                                <exclude reference="nlT-3r-BaB"/>
+                                <exclude reference="2NX-aA-Sek"/>
+                                <exclude reference="oTD-Xx-06p"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
                             <mask key="subviews">
-                                <include reference="8bC-P1-6av"/>
                                 <include reference="Qcp-Zm-IKK"/>
                                 <include reference="LhD-oQ-GKb"/>
+                                <include reference="dop-a6-2n1"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="oTD-Xx-06p"/>
-                                <include reference="2NX-aA-Sek"/>
-                                <include reference="lUd-dK-qHy"/>
-                                <include reference="4ES-lL-GXF"/>
-                                <include reference="6a6-49-o0Y"/>
-                                <include reference="vzD-RC-hc7"/>
-                                <include reference="xG9-Kg-ezP"/>
                                 <include reference="Jav-ld-0nB"/>
+                                <include reference="MO7-mE-hji"/>
                                 <include reference="Rfq-Cy-Q36"/>
                                 <include reference="YbZ-sN-S4g"/>
+                                <include reference="KZE-Dl-tyd"/>
+                                <include reference="RE9-vH-fjt"/>
+                                <include reference="dEX-9e-hUD"/>
+                                <include reference="nlT-3r-BaB"/>
+                                <include reference="2NX-aA-Sek"/>
+                                <include reference="oTD-Xx-06p"/>
                             </mask>
                         </variation>
                     </view>
                     <connections>
-                        <outlet property="locationContainer" destination="8bC-P1-6av" id="g9X-yb-nDP"/>
+                        <outlet property="locationContainer" destination="dop-a6-2n1" id="uFT-fQ-foE"/>
                         <outlet property="meetUpInfoContainer" destination="LhD-oQ-GKb" id="7Pc-kP-Gef"/>
                     </connections>
                 </viewController>
@@ -1724,42 +1722,6 @@
             </objects>
             <point key="canvasLocation" x="-2534.25" y="1132.125"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="Scn-7D-5Iz">
-            <objects>
-                <viewController id="KEc-4s-E1w" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="WiT-Qi-CJl"/>
-                        <viewControllerLayoutGuide type="bottom" id="Gtl-ND-NOd"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="BYW-W3-418">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="RBr-MA-fBK">
-                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="20" y="39" width="360" height="445"/>
-                                </variation>
-                            </mapView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <variation key="default">
-                            <mask key="subviews">
-                                <exclude reference="RBr-MA-fBK"/>
-                            </mask>
-                        </variation>
-                        <variation key="heightClass=regular-widthClass=compact">
-                            <mask key="subviews">
-                                <include reference="RBr-MA-fBK"/>
-                            </mask>
-                        </variation>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="hHy-xi-bY9" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-3193.5" y="2099.25"/>
-        </scene>
         <!--Location Tracker View Controller-->
         <scene sceneID="uc7-IG-RkW">
             <objects>
@@ -1775,6 +1737,9 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O1W-bk-zmn" customClass="GMSMapView">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="20" y="51" width="360" height="449"/>
+                                </variation>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1LP-CW-cLp">
                                 <rect key="frame" x="-42" y="-21" width="42" height="21"/>
@@ -1834,7 +1799,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9YI-FH-OYg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2522.5" y="1768.5"/>
+            <point key="canvasLocation" x="-3777" y="1980"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="yLV-b6-Pcy">
@@ -1853,6 +1818,41 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N7s-Gi-QkX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2667" y="447.75"/>
+        </scene>
+        <!--Map Track View Controller-->
+        <scene sceneID="cFC-2g-4ef">
+            <objects>
+                <viewController id="BqG-d5-T11" customClass="MapTrackViewController" customModule="CyrusTheGreat" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Iem-PW-axE">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="RBr-MA-fBK">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="10" y="45" width="360" height="445"/>
+                                </variation>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="RBr-MA-fBK"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact" ambiguous="YES">
+                            <rect key="frame" x="0.0" y="0.0" width="390" height="691"/>
+                            <mask key="subviews">
+                                <include reference="RBr-MA-fBK"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="theMap" destination="RBr-MA-fBK" id="9cr-77-q3s"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6tn-7a-P8k" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2941.5" y="1945.875"/>
         </scene>
     </scenes>
     <resources>

@@ -53,8 +53,8 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
        chatMsgPath = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(self.appDelegate.fireUID)/chatMsg")
        chatAcceptPath = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(self.appDelegate.fireUID)/chatAccept")
         chatAcceptPath.setValue("no")
-        
-        
+        appDelegate.userIdentifier = UIDevice.currentDevice().name
+    
     
         
 //        let initializeQuestion = appDelegate.meetUpFire.childByAppendingPath("questionController")
@@ -67,7 +67,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
             if(snapshot.value as! String == "yes") {
                 
                 NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
-                    
+                    print("called yes Segue")
                     self.performSegueWithIdentifier("yesSegue", sender: self)
                     
                 }
@@ -98,32 +98,37 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
         })
         
         
-//        chatMsgPath.observeEventType(.Value, withBlock: {
-//            snapshot in
-//            if let val = snapshot.value as? String {
-//                
-//                let sendMsg = val.componentsSeparatedByString("_value_")
-//                
-//                if (sendMsg.count > 0) {
-////                    if(sendMsg[0] == self.appDelegate.userIdentifier ){
-////                        self.iamSender = true
-////                        
-////                    } else {
-////                        self.iamSender = false
-////                    }
-//                    self.iamSender = true
-//                    print("time and date is \(sendMsg[1])")
-//                    self.messagesArray.append(sendMsg[1])
-//                    
-//                    self.updateTableView()
-//                }
-//                
-//            } else {
-//                print("Message path not set") 
-//            }
-//            
-//            
-//        })
+        chatMsgPath.observeEventType(.Value, withBlock: {
+            snapshot in
+            if let val = snapshot.value as? String {
+                
+                if (!val.isEmpty) {
+                    let sendMsg = val.componentsSeparatedByString("_value_")
+                    
+                    if (sendMsg.count > 0) {
+                        if(sendMsg[0] != self.appDelegate.userIdentifier ){
+                            self.iamSender = false
+                            
+                            self.messagesArray = [String]()
+                            var itemAdd = sendMsg[1].componentsSeparatedByString("\n")
+                            print(itemAdd[1])
+                            self.messagesArray.append(sendMsg[1])
+                            self.updateTableView()
+                            
+                        }
+                        
+                    }
+                    
+                } else {
+                    print("Message path not set") 
+                }
+                    
+                }
+                
+                
+            
+            
+        })
         
         
         
@@ -216,6 +221,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
         print("Declined")
         
         chatAcceptPath.setValue("no")
+        
         chatMsgPath.setValue(" ")
         self.updateTableView()
         
@@ -223,7 +229,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
     func cancel() {
         
         print ("cancelled was called from home")
-        
+                
     }
     
     
@@ -233,11 +239,11 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
 //        txtChat.text = address
 //        
 //    }
-    func selected(address: String) {
+    func selected(address: String,completeAddress:String) {
         print ("table view selected")
         txtChat.text = address
         sendButton.alpha = 1.0
-        chatMessage = address
+        chatMessage = address + "\n" + completeAddress
         updateChatDate()
         
     }
@@ -248,20 +254,24 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
             print(chatMessage)
         
             let toSendMessage = chatMessage + "\n" + chatDate
-        if messageCount < 11 {
+        if messageCount < 11 && !chatMessage.isEmpty {
             print("message to send \(toSendMessage)")
             chatMsgPath.setValue("\(appDelegate.userIdentifier)_value_\(toSendMessage)")
+            self.iamSender = true
             updateChatDate()
             messagesArray = [String]()
             messagesArray.append(toSendMessage)
-            tblChat.reloadData()
+            updateTableView()
             txtChat.text = ""
             
             
         } else {
-            print("Reached Chat Limit, Pls choose last sent location")
-            warningLabel.text = "Reached Chat Limit, Pls choose last sent location"
-            
+            if (chatMessage.isEmpty) {
+                warningLabel.text = "Cannot Send Empty String"
+            } else {
+                print("Reached Chat Limit, Pls choose last sent location")
+                warningLabel.text = "Reached Chat Limit, Pls choose last sent location"
+            }
         }
     }
     
@@ -290,14 +300,16 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
             
             let destVC = segue.destinationViewController as! MeetUpAndMapViewController
             
-            let messageInfo = messagesArray[0]
-            
+            let messageInfo = messagesArray.last!
             let messageInfoArray = messageInfo.componentsSeparatedByString("\n")
-            
-            destVC.time = messageInfoArray[1]
+            destVC.time = messageInfoArray[2]
+            destVC.placeAddress = messageInfoArray[1]
             destVC.destination = messageInfoArray[0]
+//            if (iamSender == true) {
+//                chatMsgPath.setValue("")
+//            }
             
-            
+
         }
         
         if (segue.identifier == "searchTableId") {
@@ -358,16 +370,15 @@ extension ChatViewController: UITableViewDataSource {
         return messagesArray.count
     }
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 100
+        return 250
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tblChat.dequeueReusableCellWithIdentifier("idCell")! as! ChatViewCell
-        //        cell.chatMessage.text = messagesArray[indexPath.row]["message"]
         cell.chatMessage.text = messagesArray[indexPath.row]
-//        cell.textLabel?.text = messagesArray[indexPath.row]
         cell.chatMessage.alpha = 1.0
+        cell.chatMessage.scrollEnabled = false
         
         print("Cell is being printed")
         print("count of message: \(messagesArray[indexPath.row])")
@@ -375,16 +386,13 @@ extension ChatViewController: UITableViewDataSource {
             print("I am displaying")
             //            print(iamSender!)
             if (iamSender! == true) {
-                cell.yesButton.alpha = 1.0
-                cell.noButton.alpha = 1.0
+                cell.yesButton.alpha = 0.0
+                cell.noButton.alpha = 0.0
             } else {
                 cell.yesButton.alpha = 1.0
                 cell.noButton.alpha = 1.0
             }
             
-        } else {
-            cell.yesButton.alpha = 0.0
-            cell.noButton.alpha = 0.0
         }
         cell.chatViewProtocol = self
         //        messagesArray = []
@@ -401,3 +409,4 @@ extension String {
         return self.rangeOfString(find) != nil
     }
 }
+

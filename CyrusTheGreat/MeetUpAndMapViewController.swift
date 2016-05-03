@@ -15,6 +15,7 @@ class MeetUpAndMapViewController: UIViewController {
     @IBOutlet weak var locationContainer: UIView!
     var time:String!
     var destination: String!
+    var placeAddress:String!
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -63,6 +64,13 @@ class MeetUpAndMapViewController: UIViewController {
             let childViewController = segue.destinationViewController as! MeetUpPageViewController
             childViewController.time = time
             childViewController.destination = destination
+            
+        }
+        
+        if (segue.identifier == "mapSegue") {
+            
+            let childViewController = segue.destinationViewController as! MapTrackViewController
+            childViewController.addressString = placeAddress
             
         }
     }

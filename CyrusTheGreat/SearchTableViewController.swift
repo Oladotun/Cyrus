@@ -13,7 +13,7 @@ import MapKit
 
 protocol SearchTableDelegate {
     func cancel()
-    func selected(address:String)
+    func selected(address:String,completeAddress:String)
 }
 
 class SearchTableViewController: UITableViewController,UISearchResultsUpdating {
@@ -58,32 +58,8 @@ class SearchTableViewController: UITableViewController,UISearchResultsUpdating {
         theMap = MKMapView()
         theMap.delegate = self
         
-//        searchProtocol = SearchTableDelegate()
-
-//        self.tableView.tableHeaderView = headerView
-//        self.tableView.tableHeaderView.size
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
-//    override func viewWillAppear(animated: Bool) {
-//        super.viewWillAppear(true)
-//        resultSearchController.searchBar.becomeFirstResponder()
-//    }
-    
-//    override func viewDidDisappear(animated: Bool) {
-//        self.viewDidDisappear(true)
-//        
-//        resultSearchController.searchBar.delegate = nil
-//        self.tableView.delegate = nil
-//        self.tableView.dataSource = nil
-//        theMap.delegate = nil
-//        appDelegate.locationManager.stopUpdatingLocation()
-//        
-//    }
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -110,13 +86,6 @@ class SearchTableViewController: UITableViewController,UISearchResultsUpdating {
             
         }
         
-//        if !searchController.active {
-//            print("Cancelled")
-////            self.itemsFound.removeAll() 
-////            searchProtocol?.cancel()
-//            self.dismissViewControllerAnimated(true, completion: {})
-////            tableView.reloadData()
-//        }
 
     }
     deinit {
@@ -192,7 +161,8 @@ class SearchTableViewController: UITableViewController,UISearchResultsUpdating {
             }
             let completeWord = itemsFound[indexPath.row].name!
             print("we are in did select row")
-            searchProtocol?.selected(completeWord)
+            print(addressJoined)
+            searchProtocol?.selected(completeWord,completeAddress: addressJoined)
             if (resultSearchController.searchBar.isFirstResponder()){
                  dismissViewControllerAnimated(true, completion: nil)
             }

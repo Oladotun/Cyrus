@@ -24,6 +24,7 @@ class ChatViewCell: UITableViewCell {
     
     @IBAction func acceptedInfo(sender: AnyObject) {
         chatViewProtocol?.yesTapped()
+        
     }
     
    

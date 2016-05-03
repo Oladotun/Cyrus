@@ -24,6 +24,8 @@ class LocationTrackerViewController: UIViewController {
     
     var locationFireBase: Firebase!
     var myLocationFireBase: Firebase!
+    
+    var locationCloseness: Firebase!
 
     @IBOutlet weak var durationLabel: UILabel!
     @IBOutlet weak var currMapView: GMSMapView!
@@ -34,6 +36,7 @@ class LocationTrackerViewController: UIViewController {
         
         locationFireBase = Firebase(url:"https://cyrusthegreat.firebaseio.com/location")
         myLocationFireBase = locationFireBase.childByAppendingPath("\(UIDevice.currentDevice().name)")
+        locationCloseness = locationFireBase.childByAppendingPath("arrived")
 //        myLocationFireBase.setValue("empty")
 //        locationFireBase.setValue("empty")
         
@@ -73,6 +76,7 @@ class LocationTrackerViewController: UIViewController {
                         
                         if (self.otherUserDestinationMarker != nil) {
                             self.otherUserDestinationMarker.map = nil
+                            self.clearOtherUser()
                             
                         }
                         self.otherUserDestinationMarker = GMSMarker(position: coordinate)
@@ -84,6 +88,7 @@ class LocationTrackerViewController: UIViewController {
                         print("Time of other user \(timeToDestinationOfOtherUser) away from destination")
                         self.durationLabel.text = "Other user is \(timeToDestinationOfOtherUser) away from destination"
                         print("appending other user info to marker array")
+                        
                         self.allMarkers.append(self.otherUserDestinationMarker)
                         self.drawBounds()
                         
@@ -110,9 +115,7 @@ class LocationTrackerViewController: UIViewController {
         locationManager.requestWhenInUseAuthorization()
         locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
         
-    }
-    
-    override func viewWillAppear(animated: Bool) {
+       
         
     }
 
@@ -134,14 +137,21 @@ class LocationTrackerViewController: UIViewController {
     
     func currRoute(origin:CLLocation) {
         origin.coordinate.longitude
-        self.mapTasks.getDirections("\(origin.coordinate.latitude),\(origin.coordinate.longitude)", destination: "3300 North Charles Street,Baltimore, MD 21218", waypoints: nil, travelMode: TravelModes.driving, completionHandler: { (status, success) -> Void in
+        self.mapTasks.getDirections("\(origin.coordinate.latitude),\(origin.coordinate.longitude)", destination: "3300 North Charles Street,Baltimore, MD 21218", waypoints: nil, travelMode: TravelModes.walking, completionHandler: { (status, success) -> Void in
             if success {
+                
                 self.configureMapAndMarkersForRoute()
                 self.drawRoute()
                 self.drawBounds()
                 self.myLocationFireBase.setValue("\(origin.coordinate.longitude),\(origin.coordinate.latitude)_duration_\(self.mapTasks.totalDuration)")
 //                self.displayRouteInfo()
                 print("Duration of from destination \(self.mapTasks.totalDuration)")
+//                self.mapTasks.totalDistance
+                print("Distance in km \(self.mapTasks.totalDistanceInMeters)")
+                if (self.mapTasks.totalDistanceInMeters < 5) {
+//                    self.locationCloseness.updateChildValues([self.appDelegate.userIdentifier : "yes"])
+                    
+                }
             }
             else {
                 print(status)
@@ -149,6 +159,9 @@ class LocationTrackerViewController: UIViewController {
         })
     }
     
+    func checkMap() -> Bool! {
+        return destinationMarker != nil
+    }
     
     func drawBounds() {
         
@@ -166,14 +179,18 @@ class LocationTrackerViewController: UIViewController {
     }
     
     func configureMapAndMarkersForRoute() {
-        currMapView.camera = GMSCameraPosition.cameraWithTarget(mapTasks.originCoordinate, zoom: 10.0)
+//        currMapView.camera = GMSCameraPosition.cameraWithTarget(mapTasks.originCoordinate, zoom: 10.0)
         
 //        originMarker = GMSMarker(position: self.mapTasks.originCoordinate)
 //        originMarker.map = self.currMapView
 //        originMarker.icon = GMSMarker.markerImageWithColor(UIColor.greenColor())
 //        originMarker.title = self.mapTasks.originAddress
         
+        
+        
         destinationMarker = GMSMarker(position: self.mapTasks.destinationCoordinate)
+        
+        print ("Destination coordinates are: \(self.mapTasks.destinationCoordinate)")
         
         destinationMarker.map = self.currMapView
         destinationMarker.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
@@ -198,15 +215,49 @@ class LocationTrackerViewController: UIViewController {
         routePolyline.map = currMapView
     }
     
+    func clearOtherUser() {
+        
+        if  (otherUserDestinationMarker != nil) {
+            self.allMarkers.removeObject(otherUserDestinationMarker)
+//            otherUserDestinationMarker.map = nil
+//            otherUserDestinationMarker = nil
+        }
+        
+    }
     
     func clearRoute() {
-        originMarker.map = nil
-        destinationMarker.map = nil
-        routePolyline.map = nil
+//         allMarkers = [GMSMarker]()
         
-        originMarker = nil
-        destinationMarker = nil
-        routePolyline = nil
+        if (self.originMarker != nil) {
+            
+            print("Removing origin Marker")
+            
+            self.allMarkers.removeObject(self.originMarker)
+            
+            print("After removing origin allMarkers is \(allMarkers.count)")
+            originMarker.map = nil
+            originMarker = nil
+        }
+        
+        
+        
+        if (destinationMarker != nil) {
+            
+            print("Removing destination Marker")
+            self.allMarkers.removeObject(destinationMarker)
+            
+            print("After removing destination allMarkers is \(allMarkers.count)")
+            
+            destinationMarker.map = nil
+            destinationMarker = nil
+        }
+        if (routePolyline != nil) {
+            routePolyline.map = nil
+            routePolyline = nil
+            
+        }
+        
+        
 
     }
 
@@ -226,76 +277,92 @@ extension LocationTrackerViewController: CLLocationManagerDelegate {
             
             currMapView.myLocationEnabled = true
             currMapView.settings.myLocationButton = true
+            
+            
+            let camera: GMSCameraPosition = GMSCameraPosition.cameraWithLatitude(48.857165, longitude: 2.354613, zoom: 8.0)
+            currMapView.camera = camera
+            
+//            currMapView.
+        
         }
     }
     
-//    // 6
-//    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//        print("Location Manager calleld")
-//        if let location = locations.last {
-//            
-////            let home = CLLocationCoordinate2DMake(39.3435, -75.5846)
-//            
-//            // 7
-//            currMapView.camera = GMSCameraPosition(target: location.coordinate, zoom: 12, bearing: 0, viewingAngle: 0)
-//            let markPosition = GMSMarker(position: location.coordinate)
-//            markPosition.title = "My Position"
-//            markPosition.map = currMapView
-//            
-////            currRoute(location)
-//            
-////            let otherPosition = GMSMarker(position: home)
-////            otherPosition.title = "Position Home"
-////            otherPosition.map = currMapView
-////            currMapView.camera = GMSCameraPosition(target: home, zoom: 5, bearing: 0, viewingAngle: 0)
-//            
-//            //8
+    // 6
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        print("Location Manager calleld")
+        if let location = locations.first {
+            
+            
+            self.clearRoute()
+            
+            
+            print("new location coordinate \(location.coordinate)")
+            
+            
+            print("number in allMarkers: \(allMarkers.count)")
+            
+            originMarker = GMSMarker(position: location.coordinate)
+            allMarkers.append(originMarker)
+            currRoute(location)
+            
+
+            
+            
+            
+            
+            
+            //8
 //            locationManager.stopUpdatingLocation()
+        }
+    }
+    
+    
+//    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+//        for location in locations as! [CLLocation] {
+//            if location.horizontalAccuracy < 20 {
+//                //update distance
+//                if self.locations.count > 0 {
+//                    distance += location.distanceFromLocation(self.locations.last)
+//                }
+//                
+//                //save location
+//                self.locations.append(location)
+//            }
 //        }
 //    }
     
-    func locationManager(manager: CLLocationManager, didUpdateToLocation newLocation: CLLocation, fromLocation oldLocation: CLLocation) {
-        
-       print("old coordinate \(oldLocation.coordinate)")
-        print("new coordinate \(newLocation.coordinate)")
-        
-        print ("\((oldLocation.coordinate.longitude != newLocation.coordinate.longitude) || (oldLocation.coordinate.latitude != newLocation.coordinate.latitude))")
-        
-        let longSub = oldLocation.coordinate.longitude - newLocation.coordinate.longitude
-        let latSub = oldLocation.coordinate.latitude - newLocation.coordinate.latitude
-        let stringLongSub = Double(String(format:"%.2f", longSub))
-        let stringLatSub = Double(String(format:"%.2f", latSub))
-        
-        print(stringLongSub)
-        print(stringLatSub)
-        
-        if (stringLongSub) > 0 || (stringLatSub) > 0 {
-            
-            print("Longitude subtraction \(oldLocation.coordinate.longitude - newLocation.coordinate.longitude)")
-            print("Latitude subtraction \(oldLocation.coordinate.latitude - newLocation.coordinate.latitude)")
-            
-            currMapView.camera = GMSCameraPosition(target: newLocation.coordinate, zoom: 5, bearing: 0, viewingAngle: 0)
-            // Set Location so other user can know
-//            print()
-//            myLocationFireBase.setValue("\(newLocation.coordinate.longitude),\(newLocation.coordinate.latitude)_duration_\(mapTasks.totalDuration)")
-            
-            originMarker = GMSMarker(position: newLocation.coordinate)
-            
-            
-            allMarkers.append(originMarker)
-//            let markPosition = GMSMarker(position: newLocation.coordinate)
-//            markPosition.title = "My Position"
-//            markPosition.map = currMapView
-            currRoute(newLocation)
-            
-//             drawBounds(newLocation.coordinate)
-            
-            print("Location Updated")
-            
-        }
-
-        
-    }
+    
+//    func locationManager(manager: CLLocationManager, didUpdateToLocation newLocation: CLLocation, fromLocation oldLocation: CLLocation) {
+//        
+////        if (stringLongSub) > 0 || (stringLatSub) > 0 {
+//        
+////            print("Longitude subtraction \(oldLocation.coordinate.longitude - newLocation.coordinate.longitude)")
+////            print("Latitude subtraction \(oldLocation.coordinate.latitude - newLocation.coordinate.latitude)")
+//        
+////            currMapView.camera = GMSCameraPosition(target: newLocation.coordinate, zoom: 5, bearing: 0, viewingAngle: 0)
+////        
+////         GMSCameraUpdate.setTarget(newLocation.coordinate, zoom: 10)
+//        // Set Location so other user can know
+////            print()
+////            myLocationFireBase.setValue("\(newLocation.coordinate.longitude),\(newLocation.coordinate.latitude)_duration_\(mapTasks.totalDuration)")
+//            
+//            originMarker = GMSMarker(position: newLocation.coordinate)
+//            
+//            
+//            allMarkers.append(originMarker)
+////            let markPosition = GMSMarker(position: newLocation.coordinate)
+////            markPosition.title = "My Position"
+////            markPosition.map = currMapView
+//            currRoute(newLocation)
+//            
+////             drawBounds(newLocation.coordinate)
+//            
+//            print("Location Updated")
+//            
+////        }
+//
+//        
+//    }
 }
 
 
@@ -315,5 +382,16 @@ extension LocationTrackerViewController: GMSMapViewDelegate {
     
     
     
+}
+
+// Array Extension
+extension Array where Element : Equatable {
+    
+    // Remove first collection element that is equal to the given `object`:
+    mutating func removeObject(object : Generator.Element) {
+        if let index = self.indexOf(object) {
+            self.removeAtIndex(index)
+        }
+    }
 }
 
