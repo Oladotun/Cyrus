@@ -13,7 +13,7 @@ import MapKit
 
 protocol SearchTableDelegate {
     func cancel()
-    func selected(address:String,completeAddress:String)
+    func selected(address:String,completeAddress:String,coordinate:CLLocationCoordinate2D)
 }
 
 class SearchTableViewController: UITableViewController,UISearchResultsUpdating {
@@ -162,7 +162,10 @@ class SearchTableViewController: UITableViewController,UISearchResultsUpdating {
             let completeWord = itemsFound[indexPath.row].name!
             print("we are in did select row")
             print(addressJoined)
-            searchProtocol?.selected(completeWord,completeAddress: addressJoined)
+            print(itemsFound[indexPath.row].placemark)
+            let coordinate = itemsFound[indexPath.row].placemark.coordinate
+            searchProtocol?.selected(completeWord,completeAddress: addressJoined,coordinate: coordinate)
+            print(itemsFound[indexPath.row].placemark.coordinate)
             if (resultSearchController.searchBar.isFirstResponder()){
                  dismissViewControllerAnimated(true, completion: nil)
             }

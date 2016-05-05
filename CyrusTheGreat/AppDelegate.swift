@@ -25,6 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var meetAccept: Bool!
     var userIdentifier:String! // uid from firebase
     var userFirstName: String!
+    var otherUserIdentifieir: String!
 
     var locationManager: CLLocationManager!
 

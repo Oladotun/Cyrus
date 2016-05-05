@@ -1082,7 +1082,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uQx-IT-aYC" id="Mvn-y6-OxZ">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="131"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lpy-HJ-9NF">
@@ -1103,7 +1103,6 @@
                                                     </variation>
                                                     <connections>
                                                         <action selector="acceptedInfo:" destination="uQx-IT-aYC" eventType="touchUpInside" id="g7u-xS-wsA"/>
-                                                        <segue destination="nev-X9-wU0" kind="show" identifier="yesSegue" id="RPr-OW-r3k"/>
                                                     </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Accept" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j1r-ff-tDB">
@@ -1329,6 +1328,7 @@
                         <outlet property="txtChat" destination="V4r-9B-cS2" id="w24-Fi-iZ9"/>
                         <outlet property="warningLabel" destination="0N3-gf-fGD" id="OYP-dn-TaX"/>
                         <segue destination="oR4-mZ-lNK" kind="show" identifier="searchTableId" id="RZt-dn-WV6"/>
+                        <segue destination="nev-X9-wU0" kind="show" identifier="yesSegue" id="p4a-L1-vEN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BMU-fB-EO2" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1424,6 +1424,8 @@
                                 <exclude reference="dop-a6-2n1"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="oTD-Xx-06p"/>
+                                <exclude reference="2NX-aA-Sek"/>
                                 <exclude reference="Jav-ld-0nB"/>
                                 <exclude reference="MO7-mE-hji"/>
                                 <exclude reference="Rfq-Cy-Q36"/>
@@ -1432,8 +1434,6 @@
                                 <exclude reference="RE9-vH-fjt"/>
                                 <exclude reference="dEX-9e-hUD"/>
                                 <exclude reference="nlT-3r-BaB"/>
-                                <exclude reference="2NX-aA-Sek"/>
-                                <exclude reference="oTD-Xx-06p"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
@@ -1443,6 +1443,8 @@
                                 <include reference="dop-a6-2n1"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="oTD-Xx-06p"/>
+                                <include reference="2NX-aA-Sek"/>
                                 <include reference="Jav-ld-0nB"/>
                                 <include reference="MO7-mE-hji"/>
                                 <include reference="Rfq-Cy-Q36"/>
@@ -1451,8 +1453,6 @@
                                 <include reference="RE9-vH-fjt"/>
                                 <include reference="dEX-9e-hUD"/>
                                 <include reference="nlT-3r-BaB"/>
-                                <include reference="2NX-aA-Sek"/>
-                                <include reference="oTD-Xx-06p"/>
                             </mask>
                         </variation>
                     </view>
@@ -1463,7 +1463,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rIl-G5-Lku" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3618" y="1241.25"/>
+            <point key="canvasLocation" x="-3295.5" y="1220.25"/>
         </scene>
         <!--Questions View Controller-->
         <scene sceneID="KlB-cV-ePG">
@@ -1722,85 +1722,6 @@
             </objects>
             <point key="canvasLocation" x="-2534.25" y="1132.125"/>
         </scene>
-        <!--Location Tracker View Controller-->
-        <scene sceneID="uc7-IG-RkW">
-            <objects>
-                <viewController id="z4o-XF-IxR" customClass="LocationTrackerViewController" customModule="CyrusTheGreat" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="4jJ-nl-ysU"/>
-                        <viewControllerLayoutGuide type="bottom" id="LWs-I5-mfA"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Ye5-It-04A">
-                        <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O1W-bk-zmn" customClass="GMSMapView">
-                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="20" y="51" width="360" height="449"/>
-                                </variation>
-                            </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1LP-CW-cLp">
-                                <rect key="frame" x="-42" y="-21" width="42" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="O1W-bk-zmn" firstAttribute="leading" secondItem="1LP-CW-cLp" secondAttribute="trailing" constant="-349" id="5Lm-XW-WMc"/>
-                            <constraint firstAttribute="leadingMargin" secondItem="1LP-CW-cLp" secondAttribute="leading" id="CYX-Y8-mFU"/>
-                            <constraint firstAttribute="leadingMargin" secondItem="O1W-bk-zmn" secondAttribute="leading" id="GWB-IG-v5u"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="1LP-CW-cLp" secondAttribute="trailing" id="KR6-ir-0zb"/>
-                            <constraint firstItem="1LP-CW-cLp" firstAttribute="top" secondItem="O1W-bk-zmn" secondAttribute="bottom" constant="45" id="cBc-Mi-QCd"/>
-                            <constraint firstItem="O1W-bk-zmn" firstAttribute="top" secondItem="4jJ-nl-ysU" secondAttribute="bottom" constant="51" id="dQP-p2-Den"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="O1W-bk-zmn" secondAttribute="trailing" id="paP-bi-R8H"/>
-                            <constraint firstItem="LWs-I5-mfA" firstAttribute="top" secondItem="1LP-CW-cLp" secondAttribute="bottom" constant="77" id="ygs-iX-hVK"/>
-                        </constraints>
-                        <variation key="default">
-                            <mask key="subviews">
-                                <exclude reference="O1W-bk-zmn"/>
-                                <exclude reference="1LP-CW-cLp"/>
-                            </mask>
-                            <mask key="constraints">
-                                <exclude reference="ygs-iX-hVK"/>
-                                <exclude reference="CYX-Y8-mFU"/>
-                                <exclude reference="KR6-ir-0zb"/>
-                                <exclude reference="cBc-Mi-QCd"/>
-                                <exclude reference="5Lm-XW-WMc"/>
-                                <exclude reference="GWB-IG-v5u"/>
-                                <exclude reference="dQP-p2-Den"/>
-                                <exclude reference="paP-bi-R8H"/>
-                            </mask>
-                        </variation>
-                        <variation key="heightClass=regular-widthClass=compact">
-                            <mask key="subviews">
-                                <include reference="O1W-bk-zmn"/>
-                                <include reference="1LP-CW-cLp"/>
-                            </mask>
-                            <mask key="constraints">
-                                <include reference="ygs-iX-hVK"/>
-                                <include reference="CYX-Y8-mFU"/>
-                                <include reference="KR6-ir-0zb"/>
-                                <include reference="cBc-Mi-QCd"/>
-                                <include reference="5Lm-XW-WMc"/>
-                                <include reference="GWB-IG-v5u"/>
-                                <include reference="dQP-p2-Den"/>
-                                <include reference="paP-bi-R8H"/>
-                            </mask>
-                        </variation>
-                    </view>
-                    <connections>
-                        <outlet property="currMapView" destination="O1W-bk-zmn" id="xR9-ZA-gwi"/>
-                        <outlet property="durationLabel" destination="1LP-CW-cLp" id="CCb-LQ-fFf"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="9YI-FH-OYg" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-3777" y="1980"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="yLV-b6-Pcy">
             <objects>
@@ -1823,7 +1744,12 @@
         <scene sceneID="cFC-2g-4ef">
             <objects>
                 <viewController id="BqG-d5-T11" customClass="MapTrackViewController" customModule="CyrusTheGreat" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Mkf-bM-sEn"/>
+                        <viewControllerLayoutGuide type="bottom" id="ydt-QN-qUI"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Iem-PW-axE">
+                        <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="RBr-MA-fBK">
@@ -1832,21 +1758,44 @@
                                     <rect key="frame" x="10" y="45" width="360" height="445"/>
                                 </variation>
                             </mapView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kWv-Ki-qAg">
+                                <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="20" y="523" width="350" height="21"/>
+                                </variation>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pkd-i2-tGt">
+                                <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="20" y="564" width="350" height="21"/>
+                                </variation>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="RBr-MA-fBK"/>
+                                <exclude reference="kWv-Ki-qAg"/>
+                                <exclude reference="Pkd-i2-tGt"/>
                             </mask>
                         </variation>
-                        <variation key="heightClass=regular-widthClass=compact" ambiguous="YES">
-                            <rect key="frame" x="0.0" y="0.0" width="390" height="691"/>
+                        <variation key="heightClass=regular-widthClass=compact">
                             <mask key="subviews">
                                 <include reference="RBr-MA-fBK"/>
+                                <include reference="kWv-Ki-qAg"/>
+                                <include reference="Pkd-i2-tGt"/>
                             </mask>
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="labelETA" destination="kWv-Ki-qAg" id="X2z-F2-1ms"/>
+                        <outlet property="myETALabel" destination="Pkd-i2-tGt" id="R0P-0T-Ysa"/>
                         <outlet property="theMap" destination="RBr-MA-fBK" id="9cr-77-q3s"/>
                     </connections>
                 </viewController>
@@ -1859,8 +1808,8 @@
         <image name="cyrus" width="350" height="350"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="Skj-pL-1Aw"/>
         <segue reference="KXb-Pi-882"/>
         <segue reference="HVS-kA-2F2"/>
-        <segue reference="Skj-pL-1Aw"/>
     </inferredMetricsTieBreakers>
 </document>

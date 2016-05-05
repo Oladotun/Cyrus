@@ -54,12 +54,12 @@
 		7C1155431CAD9A1E0041C012 /* QuestionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionsViewController.swift; sourceTree = "<group>"; };
 		7C17984C1CCF97B7004E31BE /* LoginPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginPageViewController.swift; sourceTree = "<group>"; };
 		7C3BF1DA1CC780940082AC03 /* MeetUpAndMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeetUpAndMapViewController.swift; sourceTree = "<group>"; };
-		7C3BF1DF1CC799F90082AC03 /* CyrusTheGreat-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CyrusTheGreat-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		7C6701171CD7822D0049C37E /* SearchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
 		7C7218A11CCCF6A80016C15B /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		7C7218A51CCCF8120016C15B /* CyrusTheGreat.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CyrusTheGreat.xcdatamodel; sourceTree = "<group>"; };
 		7C7218AB1CCD3CC80016C15B /* usa_uni.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = usa_uni.json; sourceTree = "<group>"; };
 		7CC3B1CD1CD8EB5400BB706A /* MapTrackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapTrackViewController.swift; sourceTree = "<group>"; };
+		7CC3B1CF1CDA6ACC00BB706A /* CyrusTheGreat-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CyrusTheGreat-Bridging-Header.h"; sourceTree = "<group>"; };
 		7CDC51951C88614F00D50F53 /* CollectionTwitterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionTwitterViewController.swift; sourceTree = "<group>"; };
 		7CDC51971C8862A600D50F53 /* CollectionTwitterCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionTwitterCollectionViewCell.swift; sourceTree = "<group>"; };
 		7CE313261C97027C00634900 /* ChatViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewCell.swift; sourceTree = "<group>"; };
@@ -109,6 +109,7 @@
 		7CED63561C7353CC0003B19A = {
 			isa = PBXGroup;
 			children = (
+				7CC3B1CF1CDA6ACC00BB706A /* CyrusTheGreat-Bridging-Header.h */,
 				7C7218A41CCCF8120016C15B /* CyrusTheGreat.xcdatamodeld */,
 				7CED63611C7353CD0003B19A /* CyrusTheGreat */,
 				7CED63771C7353CD0003B19A /* CyrusTheGreatTests */,
@@ -131,7 +132,6 @@
 			isa = PBXGroup;
 			children = (
 				7C7218AB1CCD3CC80016C15B /* usa_uni.json */,
-				7C3BF1DF1CC799F90082AC03 /* CyrusTheGreat-Bridging-Header.h */,
 				7C0320321C90B04100E299D2 /* Main.storyboard */,
 				7CED636B1C7353CD0003B19A /* Images.xcassets */,
 				7CED636D1C7353CD0003B19A /* LaunchScreen.xib */,

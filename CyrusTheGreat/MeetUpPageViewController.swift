@@ -12,7 +12,7 @@ import AudioToolbox
 import CoreBluetooth
 import Firebase
 
-class MeetUpPageViewController: UIViewController, UITextFieldDelegate { // ,CBCentralManagerDelegate
+class MeetUpPageViewController: UIViewController, UITextFieldDelegate, MapTrackerDelegate { // ,CBCentralManagerDelegate
     
     var pmanager: CBCentralManager!
     
@@ -58,7 +58,7 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate { // ,CBCe
         meetupDesc.text = "MeetUp Destination is at \(destination)"
         meetupTime.text = "Planned meetup time is \(time)"
         timeToMeetUpAlert.text = ""
-//        yesButton.alpha = 0.0
+        yesButton.alpha = 0.0
         timerInvalidate = false
         sessionDisconnected = false
         questionTime = false
@@ -232,6 +232,11 @@ class MeetUpPageViewController: UIViewController, UITextFieldDelegate { // ,CBCe
 //        
 //        
 //    }
+    
+    func arrived() {
+        print("Changing button")
+        yesButton.alpha = 1.0
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

@@ -32,13 +32,18 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
     var initiator = false
     
     var searChatControll: SearchTableViewController!
+    var handler:UInt!
     
 //    var otherUserUID:String!
     
     var iamSender:Bool!
     var chatMsgPath: Firebase!
     var chatAcceptPath: Firebase!
-
+    var userInvolved: Firebase!
+    
+    
+    var selectedCoordinate:CLLocationCoordinate2D!
+    var destinationLocation: CLLocation!
     
     @IBOutlet weak var sendButton: UIButton!
     
@@ -52,6 +57,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
         self.appDelegate.fireUID = "03d9149d-e014-4155-8b0a-0d1d8a74dfb4"
        chatMsgPath = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(self.appDelegate.fireUID)/chatMsg")
        chatAcceptPath = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(self.appDelegate.fireUID)/chatAccept")
+        userInvolved = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(self.appDelegate.fireUID)/names")
         chatAcceptPath.setValue("no")
         appDelegate.userIdentifier = UIDevice.currentDevice().name
     
@@ -59,6 +65,23 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
         
 //        let initializeQuestion = appDelegate.meetUpFire.childByAppendingPath("questionController")
 //        initializeQuestion.setValue("Not Set")
+        
+        let userName = [appDelegate.userIdentifier : appDelegate.userIdentifier]
+        
+        userInvolved.updateChildValues(userName)
+        
+        handler = userInvolved.observeEventType(.Value, withBlock: {
+            snapshot in
+            
+            for child in snapshot.children {
+                
+                if child.key != self.appDelegate.userIdentifier {
+                    self.appDelegate.otherUserIdentifieir = child.key
+                    
+                }
+                
+            }
+        })
         
         
         chatAcceptPath.observeEventType(.Value, withBlock: {
@@ -105,15 +128,46 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
                 if (!val.isEmpty) {
                     let sendMsg = val.componentsSeparatedByString("_value_")
                     
-                    if (sendMsg.count > 0) {
+                    if (sendMsg.count > 1) {
                         if(sendMsg[0] != self.appDelegate.userIdentifier ){
                             self.iamSender = false
                             
                             self.messagesArray = [String]()
-                            var itemAdd = sendMsg[1].componentsSeparatedByString("\n")
+                            if (sendMsg[1].contains("^_^")) {
+                            
+                            var itemAdd = sendMsg[1].componentsSeparatedByString("^_^")
                             print(itemAdd[1])
-                            self.messagesArray.append(sendMsg[1])
-                            self.updateTableView()
+                                
+                                if (itemAdd.count > 1) {
+                                    
+                                    if (itemAdd[1].contains("*_*")) {
+                                        
+                                        let coordinateString = itemAdd[1].componentsSeparatedByString("*_*")
+                                        
+                                        
+                                        let latString = coordinateString[0]
+                                        let longString = coordinateString[1]
+                                        
+                                        
+                                        let lat = (latString as NSString).doubleValue
+                                        let long = (longString as NSString).doubleValue
+                                        
+                                        let latDegrees: CLLocationDegrees = lat
+                                        let longDegrees: CLLocationDegrees = long
+                                        
+                                        self.destinationLocation = CLLocation(latitude: latDegrees, longitude: longDegrees)
+                                        
+                                        //Update view after everything
+                                        self.messagesArray.append(itemAdd[0])
+                                        self.updateTableView()
+                                        
+                                    }
+
+                                }
+                            
+                            
+                            }
+                            
                             
                         }
                         
@@ -239,24 +293,27 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
 //        txtChat.text = address
 //        
 //    }
-    func selected(address: String,completeAddress:String) {
+    func selected(address: String,completeAddress:String,coordinate:CLLocationCoordinate2D) {
         print ("table view selected")
         txtChat.text = address
         sendButton.alpha = 1.0
         chatMessage = address + "\n" + completeAddress
+        selectedCoordinate = coordinate
+        destinationLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
         updateChatDate()
         
     }
     
     @IBAction func sendButton(sender: AnyObject) {
-        
-            print(chatDate)
-            print(chatMessage)
-        
-            let toSendMessage = chatMessage + "\n" + chatDate
+    
+        print(chatDate)
+        print(chatMessage)
+    
+        let toSendMessage = chatMessage + "\n" + chatDate
+        let sendCoordinateString = "\(selectedCoordinate.latitude)*_*\(selectedCoordinate.longitude)"
         if messageCount < 11 && !chatMessage.isEmpty {
             print("message to send \(toSendMessage)")
-            chatMsgPath.setValue("\(appDelegate.userIdentifier)_value_\(toSendMessage)")
+            chatMsgPath.setValue("\(appDelegate.userIdentifier)_value_\(toSendMessage)^_^\(sendCoordinateString)")
             self.iamSender = true
             updateChatDate()
             messagesArray = [String]()
@@ -305,6 +362,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
             destVC.time = messageInfoArray[2]
             destVC.placeAddress = messageInfoArray[1]
             destVC.destination = messageInfoArray[0]
+            destVC.destinationLocation = destinationLocation
 //            if (iamSender == true) {
 //                chatMsgPath.setValue("")
 //            }
@@ -341,16 +399,7 @@ extension ChatViewController: UITextFieldDelegate {
         }
         
     }
-    func textFieldDidEndEditing(textField: UITextField) {
-        //        if (textField == localSearch) {
-        //
-        //            if let found = localSearch.text {
-        //                keyWordSearch = found
-        //                performSearch()
-        //
-        //            }
-        //        }
-    }
+
     
     
 }
