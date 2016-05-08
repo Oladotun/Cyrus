@@ -243,11 +243,6 @@ class FirebaseMeetupManager: NSObject {
                 
                 generated.updateChildValues(initiatorInfo)
                 
-                
-                
-                
-                
-                
             } else {
                 print ("user not found")
             }
@@ -282,8 +277,15 @@ class FirebaseMeetupManager: NSObject {
             print("location not set")
             return
         }
+        
+        var userArray = [String]()
+        
+        userArray.append("name:\(userObject.firstName)")
+        userArray.append("schoolName:\(userObject.schoolName)")
+        userArray.append("location:\(userObject.location.coordinate.latitude)_coordinate_\(userObject.location.coordinate.longitude)")
+        userArray.append("interests:\(userObject.interests)")
 
-        let userIdLocation = [myId:userObject]
+        let userIdLocation = [myId:userArray]
         userActiveUser.updateChildValues(userIdLocation)
         
     }
@@ -292,6 +294,11 @@ class FirebaseMeetupManager: NSObject {
         
         guard let myId = userId else {
             print("userId not set")
+            return
+        }
+        
+        guard let _ = userObject.location else {
+            print ("location is nil")
             return
         }
         

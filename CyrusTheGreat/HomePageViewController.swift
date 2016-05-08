@@ -43,6 +43,7 @@ class HomePageViewController: UIViewController, FirebaseDelegate, CLLocationMana
         appDelegate.mpcManager.initAttributes(interests)
         noOfPeer.text = ""
         firebaseManager.setUpCurrentUser(appDelegate.userIdentifier)
+        firebaseManager.updateUserState("Not Active")
         firebaseManager.fireBaseDelegate = self
         
         appDelegate.mpcManager.browser.startBrowsingForPeers()
@@ -50,7 +51,7 @@ class HomePageViewController: UIViewController, FirebaseDelegate, CLLocationMana
         
         locationManager.delegate = self
         locationManager.distanceFilter = 20
-        locationManager.startUpdatingLocation()
+        
         
         
         
@@ -81,7 +82,7 @@ class HomePageViewController: UIViewController, FirebaseDelegate, CLLocationMana
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         firebaseManager.updateUserLocation(locations.last!)
-//        firebaseManager.updateActiveUserFirebase()
+        firebaseManager.updateActiveUserFirebase()
         
     }
     
@@ -175,60 +176,60 @@ class HomePageViewController: UIViewController, FirebaseDelegate, CLLocationMana
         
     }
     
-    func connectedWithPeer(peerID: MCPeerID) {
-        print("Connecting from home \(peerID.displayName)")
-        
-        if(peerID.displayName == " ") {
-            
-            print("Could not connect delete cyrus firebase")
-            
-            
-            if (appDelegate.meetUpFire != nil) {
-                appDelegate.meetUpFire.unauth()
-            }
-            
-        } else if (peerID.displayName == "_use_firebase_chat_") {
-            
-            let meetPath = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(self.appDelegate.fireUID)/meetUp")
-            
-            print("meetPath in connection Page")
-            
-            print("\(meetPath.description)")
-//            appDelegate.mpcManager.advertiser.stopAdvertisingPeer()
-            meetPath.observeEventType(.Value, withBlock: {
-                snapshot in
-                if (snapshot.value is NSNull) {
-                    
-                    print("We have a problem")
-                    
-                } else {
-                    NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
-                        
-                        self.performSegueWithIdentifier("idSegueChat", sender: self)
-                        
-                    }
-                }
-            })
-            
-            
-            
-//            print("Both users connected")
-            
-        } 
-        
-        
-//        else {
+//    func connectedWithPeer(peerID: MCPeerID) {
+//        print("Connecting from home \(peerID.displayName)")
+//        
+//        if(peerID.displayName == " ") {
 //            
-//            NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
-//                
-//                self.performSegueWithIdentifier("idSegueChat", sender: self)
-//                
+//            print("Could not connect delete cyrus firebase")
+//            
+//            
+//            if (appDelegate.meetUpFire != nil) {
+//                appDelegate.meetUpFire.unauth()
 //            }
 //            
-//        }
-        
-       
-    }
+//        } else if (peerID.displayName == "_use_firebase_chat_") {
+//            
+//            let meetPath = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(self.appDelegate.fireUID)/meetUp")
+//            
+//            print("meetPath in connection Page")
+//            
+//            print("\(meetPath.description)")
+////            appDelegate.mpcManager.advertiser.stopAdvertisingPeer()
+//            meetPath.observeEventType(.Value, withBlock: {
+//                snapshot in
+//                if (snapshot.value is NSNull) {
+//                    
+//                    print("We have a problem")
+//                    
+//                } else {
+//                    NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+//                        
+//                        self.performSegueWithIdentifier("idSegueChat", sender: self)
+//                        
+//                    }
+//                }
+//            })
+//            
+//            
+//            
+////            print("Both users connected")
+//            
+//        } 
+//        
+//        
+////        else {
+////            
+////            NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+////                
+////                self.performSegueWithIdentifier("idSegueChat", sender: self)
+////                
+////            }
+////            
+////        }
+//        
+//       
+//    }
     
     
 
@@ -241,13 +242,15 @@ class HomePageViewController: UIViewController, FirebaseDelegate, CLLocationMana
         if switchState.on {
             currAvailability.text = "Online"
             firebaseManager.updateUserState("Active")
+            locationManager.startUpdatingLocation()
 //            self.appDelegate.mpcManager.advertiser.startAdvertisingPeer()
             
         } else {
             currAvailability.text = "Offline"
-            firebaseManager.updateUserState("Offline")
+            firebaseManager.updateUserState("Not Active")
             firebaseManager.removeActiveUser(appDelegate.userIdentifier)
             firebaseManager.userObject.status = "Not Active"
+            locationManager.stopUpdatingLocation()
 //            self.appDelegate.mpcManager.advertiser.stopAdvertisingPeer()
         }
     }
@@ -371,7 +374,7 @@ class HomePageViewController: UIViewController, FirebaseDelegate, CLLocationMana
 //            self.appDelegate.mpcManager.invitationHandler(false,MCSession())
             
             // Not connecting and end
-            self.connectedWithPeer(MCPeerID(displayName: " "))
+//            self.connectedWithPeer(MCPeerID(displayName: " "))
         }
         
         alertInvite.addAction(acceptAction)
