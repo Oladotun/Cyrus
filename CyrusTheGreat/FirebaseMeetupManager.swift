@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import SwiftyJSON
 
 class User: NSObject {
     var userId:String!
@@ -44,6 +45,7 @@ class FirebaseMeetupManager: NSObject {
     var meetPathWay: Firebase!
     var fireBaseDelegate: FirebaseDelegate?
     var foundCount = 0
+    var setReceiver = false
     
     
     
@@ -100,7 +102,7 @@ class FirebaseMeetupManager: NSObject {
         userState = Firebase(url:"https://cyrusthegreat.firebaseio.com/users/\(myId)/status")
         userState.setValue(userStatus)
         userObject.status = userStatus
-        
+        userStateObserve()
     }
     
     func userStateObserve() {
@@ -108,10 +110,11 @@ class FirebaseMeetupManager: NSObject {
             snapshot in
             
             if let value = snapshot.value as? String {
-                if (value != self.userObject.status) {
+//                if (value != self.userObject.status) {
                     self.userObject.status = value
-                    
-                    if (value == ("inviting")) {
+                    print(self.userObject.status)
+                    print(value == "Inviting")
+                    if (value == "Inviting") {
                         
                         print ("You are getting an invite")
                     }
@@ -119,11 +122,11 @@ class FirebaseMeetupManager: NSObject {
                     if (value.contains("_meetup_")) {
                         let meetUpInfo = value.componentsSeparatedByString("_meetup_")
                         let meetUpPath = meetUpInfo[1]
-                        
+                        print("abouta call meet path way")
                         self.meetPathWay = Firebase(url: meetUpPath)
                         self.observeMeetPath()
                     }
-                }
+//                }
             }
         })
     }
@@ -138,23 +141,30 @@ class FirebaseMeetupManager: NSObject {
     }
     
     private func observeMeetPath() {
-        var setReceiver = false
+        
         meetPathWay.observeEventType(.Value, withBlock: {
             snapshot in
-            
+            print("meet path observed")
             for child in snapshot.children {
+                print("child key is \(child.key)")
                 if (child.key == "initiator") {
-                    let childSnapshot = child.childSnapshotForPath(child.key)
                     
+                    print("child key is \(child.key) found inside")
+                    let childSnapshot = snapshot.childSnapshotForPath(child.key)
+                    print(childSnapshot.value)
+                    print(self.userObject.userId)
                     if let snap = childSnapshot.value as? String {
                         
                         if (snap != self.userObject.userId) {
                             
 //                            Print meetUp Info with alert view
+                            print("Observer for meet was called")
                             
-                            if (!setReceiver) {
-                                setReceiver = true
+                            if (!self.setReceiver) {
+                                self.setReceiver = true
                                 let receiverInfo = ["receiver": "\(self.userObject.userId)"]
+                                print ("receiveInvite called")
+                                
                                 self.fireBaseDelegate?.receiveInvite(snap)
                                 
                                 self.meetPathWay.updateChildValues(receiverInfo)
@@ -211,26 +221,91 @@ class FirebaseMeetupManager: NSObject {
        
         
     }
-    
+//    func fireBaseCheck(otherUser:Firebase,inout found:Bool) {
+//        otherUser.observeSingleEventOfType(.Value, withBlock: {
+//            snapshot in
+//            
+//            let otherUserStatus = snapshot.value as! String
+//            
+//            
+//            if (otherUserStatus == "Active") {
+//                otherUser.setValue("Inviting")
+//                found = true
+//                print("I am in obsering single block")
+//            }
+//            
+//        })
+//        
+//    }
     
     func meetUpClicked() {
         
         if (self.userObject.status == "Active") {
             var found = false
             var otherUser: Firebase!
+            var otherUserUrl:String!
             for user in allFound {
                 
-                otherUser = Firebase(url:"https://cyrusthegreat.firebaseio.com/users/\(user.user.userId)")
-                let otherUserStatus = otherUser.valueForKey("status") as! String
+                otherUser = Firebase(url:"https://cyrusthegreat.firebaseio.com/users/\(user.user.userId)/status")
+                otherUserUrl = "https://cyrusthegreat.firebaseio.com/users/\(user.user.userId)/status.json"
+                print(otherUserUrl)
                 
-                if (otherUserStatus == "Active") {
-                    otherUser.setValue("Inviting", forKey: "status")
+                let url = NSURL(string:otherUserUrl)
+                let data = NSData(contentsOfURL: url!)
+                print(data)
+                
+                let otherUserStatus = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print(otherUserStatus!)
+                let otherUserString = otherUserStatus!.stringByReplacingOccurrencesOfString("\"", withString: "")
+//                let otherUserString = String(otherUserStatus!)
+                let realString = otherUserString.stringByReplacingOccurrencesOfString("\"", withString:"")
+                print(realString == "Active")
+                if (otherUserString == "Active") {
+                    print("found other user and breaking out")
+                    otherUser.setValue("Inviting")
                     found = true
                     break
+                    
+                    
                 }
                 
+                
+                
+//                let json = JSON(data!)
+//                print(json)
+//                if json["metadata"]["responseInfo"]["status"].intValue == 200 {
+//                    // we're OK to parse!
+//                    print(json)
+//                }
+                
+                
+//            NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+//                otherUser.observeSingleEventOfType(.Value, withBlock: {
+//                    snapshot in
+//                    
+//                    let otherUserStatus = snapshot.value as! String
+//                    
+//                    
+//                    if (otherUserStatus == "Active") {
+//                        otherUser.setValue("Inviting")
+//                        found = true
+//                        print("I am in obsering single block")
+//                    }
+//                    
+//                })
+//                
+//                if (found) {
+//                    print("I am breaking because found")
+//                    break
+//                }
+//            }
+                
+                
+                
+                
+                
             }
-            
+//            
             if (found) {
                 print("user found")
                 updateUserState("Inviting")
@@ -241,7 +316,7 @@ class FirebaseMeetupManager: NSObject {
                 let id = generated.description
                 
                 updateUserState("Inviting_meetup_\(id)")
-                otherUser.setValue("Inviting_meetup_\(id)", forKey: "status")
+                otherUser.setValue("Inviting_meetup_\(id)")
                 
                 let initiatorInfo = ["initiator": "\(userObject.userId)"]
                 
@@ -271,7 +346,7 @@ class FirebaseMeetupManager: NSObject {
     
     // Call after everything is called
     func updateActiveUserFirebase() {
-        
+        print("Update active user called")
         guard let myId = userId else {
             print("userId not set")
             return
@@ -284,6 +359,7 @@ class FirebaseMeetupManager: NSObject {
         
         var userArray = [String]()
         
+        userArray.append("user_id_<separator>_\(userObject.userId)")
         userArray.append("name_<separator>_\(userObject.firstName)")
         userArray.append("schoolName_<separator>_\(userObject.schoolName)")
         userArray.append("location_<separator>_\(userObject.location.coordinate.latitude)_coordinate_\(userObject.location.coordinate.longitude)")
@@ -291,6 +367,7 @@ class FirebaseMeetupManager: NSObject {
         userArray.append("interests_<separator>_\(interests)")
 
         let userIdLocation = [myId:userArray]
+         print("Update active user called")
         userActiveUser.updateChildValues(userIdLocation)
         
     }
@@ -322,6 +399,11 @@ class FirebaseMeetupManager: NSObject {
                             for userProp in childValue {
                                 
                                 let propInfo = userProp.componentsSeparatedByString("_<separator>_")
+                                
+                                if (userProp.contains("user_id")) {
+                                    newFound.user.userId = propInfo[1]
+                                    
+                                }
                                 
                                 if (userProp.contains("name")) {
                                     newFound.user.firstName = propInfo[1]

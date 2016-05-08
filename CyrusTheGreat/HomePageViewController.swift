@@ -110,6 +110,7 @@ class HomePageViewController: UIViewController, FirebaseDelegate, CLLocationMana
             firebaseManager.updateActiveUserFirebase()
         }
         if (!userActiveOberverSet) {
+            print("setting users up")
             firebaseManager.activateUserObserver()
             userActiveOberverSet = true
             
@@ -145,7 +146,7 @@ class HomePageViewController: UIViewController, FirebaseDelegate, CLLocationMana
     }
     
     func receiveInvite(inviter: String) {
-        
+        print("Invite was received")
         alertInvite = UIAlertController(title: "", message: "\(inviter) wants to chat with you", preferredStyle: UIAlertControllerStyle.Alert)
         
         let acceptAction: UIAlertAction = UIAlertAction(title: "Accept", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
