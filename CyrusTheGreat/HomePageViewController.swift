@@ -23,10 +23,11 @@ class HomePageViewController: UIViewController, FirebaseDelegate, CLLocationMana
     var alertInvite:UIAlertController!
     var locationManager:CLLocationManager!
     var firebaseManager:FirebaseMeetupManager!
-    
+    var userActiveOberverSet = false
     
     
     var findMorePeer = true
+    var switchState = false
     
     override func viewDidLoad() {
         
@@ -46,16 +47,16 @@ class HomePageViewController: UIViewController, FirebaseDelegate, CLLocationMana
         firebaseManager.updateUserState("Not Active")
         firebaseManager.fireBaseDelegate = self
         
-        appDelegate.mpcManager.browser.startBrowsingForPeers()
+//        appDelegate.mpcManager.browser.startBrowsingForPeers()
         appDelegate.interests = interests
         
         locationManager.delegate = self
         locationManager.distanceFilter = 20
+        locationManager.startUpdatingLocation()
         
         
         
-        
-        
+        foundDisplay()
 //        appDelegate.userFirebaseManager
         
         
@@ -79,10 +80,41 @@ class HomePageViewController: UIViewController, FirebaseDelegate, CLLocationMana
 
     }
     
+    func switched(switchState: UISwitch) {
+        if switchState.on {
+            currAvailability.text = "Online"
+            firebaseManager.updateUserState("Active")
+            firebaseManager.updateActiveUserFirebase()
+            self.switchState = true
+//            locationManager.startUpdatingLocation()
+            
+            
+            //            self.appDelegate.mpcManager.advertiser.startAdvertisingPeer()
+            
+        } else {
+            currAvailability.text = "Offline"
+            firebaseManager.updateUserState("Not Active")
+            firebaseManager.removeActiveUser(appDelegate.userIdentifier)
+            firebaseManager.userObject.status = "Not Active"
+            self.switchState = false
+            locationManager.stopUpdatingLocation()
+            //            self.appDelegate.mpcManager.advertiser.stopAdvertisingPeer()
+        }
+    }
+    
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         firebaseManager.updateUserLocation(locations.last!)
-        firebaseManager.updateActiveUserFirebase()
+        print ("user observer is \(userActiveOberverSet)")
+        if (switchState == true) {
+            firebaseManager.updateActiveUserFirebase()
+        }
+        if (!userActiveOberverSet) {
+            firebaseManager.activateUserObserver()
+            userActiveOberverSet = true
+            
+        }
+        
         
     }
     
@@ -146,11 +178,13 @@ class HomePageViewController: UIViewController, FirebaseDelegate, CLLocationMana
             self.presentViewController(self.alertInvite, animated: true, completion: nil)
         }
         
+
         
         
-        
-        
-        
+    }
+    
+    func foundDisplay() {
+        noOfPeer.text = "\(firebaseManager.foundCount)"
         
     }
     
@@ -238,22 +272,7 @@ class HomePageViewController: UIViewController, FirebaseDelegate, CLLocationMana
         // Dispose of any resources that can be recreated.
     }
     
-    func switched(switchState: UISwitch) {
-        if switchState.on {
-            currAvailability.text = "Online"
-            firebaseManager.updateUserState("Active")
-            locationManager.startUpdatingLocation()
-//            self.appDelegate.mpcManager.advertiser.startAdvertisingPeer()
-            
-        } else {
-            currAvailability.text = "Offline"
-            firebaseManager.updateUserState("Not Active")
-            firebaseManager.removeActiveUser(appDelegate.userIdentifier)
-            firebaseManager.userObject.status = "Not Active"
-            locationManager.stopUpdatingLocation()
-//            self.appDelegate.mpcManager.advertiser.stopAdvertisingPeer()
-        }
-    }
+
     
 
     @IBAction func meetUpClicked(sender: AnyObject) {

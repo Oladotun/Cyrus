@@ -30,6 +30,7 @@ protocol FirebaseDelegate {
     func receiveInvite(inviter:String)
     func declineInvite()
     func segueToNextPage()
+    func foundDisplay()
 }
 
 class FirebaseMeetupManager: NSObject {
@@ -42,6 +43,7 @@ class FirebaseMeetupManager: NSObject {
     var allFound = [userProfile]()
     var meetPathWay: Firebase!
     var fireBaseDelegate: FirebaseDelegate?
+    var foundCount = 0
     
     
     
@@ -72,6 +74,8 @@ class FirebaseMeetupManager: NSObject {
                 
                 if (child.key == "interests") {
                     self.userObject.interests = childSnapshot.value as! [String]
+                    print("my interest:")
+                    print (self.userObject.interests)
                 }
                 
                 if (child.key == "school_name") {
@@ -280,27 +284,24 @@ class FirebaseMeetupManager: NSObject {
         
         var userArray = [String]()
         
-        userArray.append("name:\(userObject.firstName)")
-        userArray.append("schoolName:\(userObject.schoolName)")
-        userArray.append("location:\(userObject.location.coordinate.latitude)_coordinate_\(userObject.location.coordinate.longitude)")
-        userArray.append("interests:\(userObject.interests)")
+        userArray.append("name_<separator>_\(userObject.firstName)")
+        userArray.append("schoolName_<separator>_\(userObject.schoolName)")
+        userArray.append("location_<separator>_\(userObject.location.coordinate.latitude)_coordinate_\(userObject.location.coordinate.longitude)")
+        let interests = userObject.interests.joinWithSeparator(",")
+        userArray.append("interests_<separator>_\(interests)")
 
         let userIdLocation = [myId:userArray]
         userActiveUser.updateChildValues(userIdLocation)
         
     }
     
-    func activeUserObserver() {
+    func activateUserObserver() {
         
         guard let myId = userId else {
             print("userId not set")
             return
         }
-        
-        guard let _ = userObject.location else {
-            print ("location is nil")
-            return
-        }
+    
         
         userActiveUser.observeEventType(.Value, withBlock: {
             snapshot in
@@ -314,36 +315,74 @@ class FirebaseMeetupManager: NSObject {
                     if child.key != myId {
                         let childSnapshot = snapshot.childSnapshotForPath(child.key)
                         
-                        if let childValue = childSnapshot.value as? User {
+                        if let childValue = childSnapshot.value as? [String] {
+                            let newFound = userProfile()
+                            newFound.user = User()
                             
-                            if (childValue.schoolName == self.userObject.schoolName) {
+                            for userProp in childValue {
                                 
-                                let distance = childValue.location.distanceFromLocation(self.userObject.location)
+                                let propInfo = userProp.componentsSeparatedByString("_<separator>_")
                                 
-                                if (distance < 2000) {
-                                  let matchTopics =  self.findMatches(childValue.interests)
-                                    
-                                    if (matchTopics.count > 0) {
-                                        let newFound = userProfile()
-                                        newFound.user = childValue
-                                        newFound.userDistance = distance
-                                        newFound.userMatchedCount = matchTopics.count
-                                        newFound.userMatchedInterest = matchTopics
-                                        
-                                        self.allFound.append(newFound)
-                                    }
+                                if (userProp.contains("name")) {
+                                    newFound.user.firstName = propInfo[1]
                                 }
+                                if (userProp.contains("schoolName")) {
+                                    newFound.user.schoolName = propInfo[1]
+                                }
+                                if (userProp.contains("interests")){
+                                    let interestString = propInfo[1]
+                                    let interests = interestString.componentsSeparatedByString(",")
+                                    newFound.user.interests = interests
+
+                                }
+                                
+                                if (userProp.contains("location")){
+                                    let coordinateInString = propInfo[1]
+                                    
+                                    let coordinateString = coordinateInString.componentsSeparatedByString("_coordinate_")
+                                    
+                                    let latString = coordinateString[0]
+                                    let longString = coordinateString[1]
+                                    
+                                    let lat = (latString as NSString).doubleValue
+                                    let long = (longString as NSString).doubleValue
+                                    
+                                    let latDegrees: CLLocationDegrees = lat
+                                    let longDegrees: CLLocationDegrees = long
+                                    newFound.user.location = CLLocation(latitude: latDegrees, longitude: longDegrees)
+                                    
+                                }
+                                
+                            }
+                            
+                            if (newFound.user.schoolName == self.userObject.schoolName) {
+                                
+                                print ("Found other user with same institution")
+                                let distance = newFound.user.location.distanceFromLocation(self.userObject.location)
+                                print("distance is \(distance) from each other")
+                                if (distance < 2000) {
+                                    print (newFound.user.interests)
+                                     let matchTopics =  self.findMatches(newFound.user.interests)
+                                    print ("matched topics cout is \(matchTopics.count)")
+                                    if (matchTopics.count > 0) {
+                                      self.allFound.append(newFound)
+                                    }
+                                    
+                                }
+                                
                             }
 
                         }
 
                     }
-                    
-                    
+
                 }
                 
                 self.sortAllFound()
             }
+            self.foundCount = self.allFound.count
+            self.fireBaseDelegate?.foundDisplay()
+            print(self.allFound.count)
 
         })
     }
