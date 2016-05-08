@@ -28,6 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var otherUserIdentifieir: String!
 
     var locationManager: CLLocationManager!
+    var userFirebaseManager: FirebaseMeetupManager!
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -35,6 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        mpcManager = MPCManager()
         userFire = Firebase(url: "https://cyrusthegreat.firebaseio.com/")
         meetAccept = false
+        userFirebaseManager = FirebaseMeetupManager()
 //        userFire.authAnonymouslyWithCompletionBlock { error, authData in
 //            if error != nil {
 //                // There was an error logging in anonymously

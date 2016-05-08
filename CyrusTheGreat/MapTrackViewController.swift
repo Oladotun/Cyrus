@@ -75,7 +75,6 @@ class MapTrackViewController: UIViewController {
         destinationAnnotation = initializeAnnotations("Destination", color: UIColor.greenColor())
         sourceAnnotation = initializeAnnotations("Current Location", color: UIColor.blueColor())
         otherUserAnnotation = initializeAnnotations("Other User Location", color: UIColor.purpleColor())
-        
         destinationAnnotation.coordinate = destinationLocation.coordinate
         
         
@@ -193,7 +192,6 @@ extension MapTrackViewController {
                 if (coordinateString.count > 1) {
                     let latString = coordinateString[0]
                     let longString = coordinateString[1]
-                    
                     
                     let lat = (latString as NSString).doubleValue
                     let long = (longString as NSString).doubleValue
@@ -333,8 +331,7 @@ extension MapTrackViewController: MKMapViewDelegate {
                 if (toRemove != nil) {
                     self.theMap.removeOverlay(toRemove)
                 }
-                
-                
+
             } else {
                 print ("could not display routes")
             }

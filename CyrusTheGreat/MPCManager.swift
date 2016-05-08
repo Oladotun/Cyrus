@@ -142,32 +142,6 @@ class MPCManager: NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, M
         print(error.localizedDescription)
     }
     
-//    private func checkMatch(topics: String) -> Bool {
-//        
-//        let otherArrayTopics = topics.componentsSeparatedByString(",")
-//        
-//        presentTopic = false
-//        for topic in peerTopics {
-//            if (otherArrayTopics.contains(topic)) {
-//                presentTopic = true
-//                break
-//            }
-//        }
-//        return presentTopic
-//    }
-    
-//    func appendMatchedTopics(userTopics: [String]) -> [String]{
-//        presentTopic = false
-//        for topic in peerTopics {
-//            if (userTopics.contains(topic)) {
-//                presentTopic = true
-//                matchTopics.append(topic)
-//            }
-//        }
-//        
-//        return matchTopics
-//        
-//    }
 //    
     
     func browser(browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
