@@ -10,7 +10,7 @@ import UIKit
 import MultipeerConnectivity
 import Firebase
 
-class HomePageViewController: UIViewController, FirebaseDelegate, CLLocationManagerDelegate { // MPCManagerDelegate
+class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocationManagerDelegate { // MPCManagerDelegate
     
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     @IBOutlet weak var currAvailability: UILabel!
@@ -22,7 +22,7 @@ class HomePageViewController: UIViewController, FirebaseDelegate, CLLocationMana
     var chatInitiator:Bool!
     var alertInvite:UIAlertController!
     var locationManager:CLLocationManager!
-    var firebaseManager:FirebaseMeetupManager!
+    var firebaseManager:FirebaseManager!
     var userActiveOberverSet = false
     
     
@@ -36,19 +36,13 @@ class HomePageViewController: UIViewController, FirebaseDelegate, CLLocationMana
         locationManager =  appDelegate.locationManager
         firebaseManager = appDelegate.userFirebaseManager
         
-        chatInitiator = false
         availSwitch.setOn(false, animated:true)
         currAvailability.text = "Offline"
         availSwitch.addTarget(self, action: Selector("switched:"), forControlEvents: UIControlEvents.ValueChanged)
-//        appDelegate.mpcManager.delegate = self
-        appDelegate.mpcManager.initAttributes(interests)
-        noOfPeer.text = ""
+      
         firebaseManager.setUpCurrentUser(appDelegate.userIdentifier)
         firebaseManager.updateUserState("Not Active")
         firebaseManager.fireBaseDelegate = self
-        
-//        appDelegate.mpcManager.browser.startBrowsingForPeers()
-        appDelegate.interests = interests
         
         locationManager.delegate = self
         locationManager.distanceFilter = 20
@@ -57,25 +51,6 @@ class HomePageViewController: UIViewController, FirebaseDelegate, CLLocationMana
         
         
         foundDisplay()
-//        appDelegate.userFirebaseManager
-        
-        
-//        let userInfo = Firebase(url: "https://cyrusthegreat.firebaseio.com/users/\(appDelegate.userIdentifier)/first_name")
-//        
-//        userInfo.observeEventType(.Value, withBlock: {
-//            snapshot in
-//            
-//            if (snapshot.value is NSNull) {
-//                print("We have a problem")
-//            } else {
-//               self.appDelegate.userFirstName =  (snapshot.value as! String)
-//            }
-//            
-//        })
-        
-//        appDelegate.mpcManager.sortFoundUserByScore(appDelegate.mpcManager.peer)
-        
-        // Set up alert view
         alertInvite = nil
 
     }
@@ -86,10 +61,6 @@ class HomePageViewController: UIViewController, FirebaseDelegate, CLLocationMana
             firebaseManager.updateUserState("Active")
             firebaseManager.updateActiveUserFirebase()
             self.switchState = true
-//            locationManager.startUpdatingLocation()
-            
-            
-            //            self.appDelegate.mpcManager.advertiser.startAdvertisingPeer()
             
         } else {
             currAvailability.text = "Offline"
@@ -98,12 +69,12 @@ class HomePageViewController: UIViewController, FirebaseDelegate, CLLocationMana
             firebaseManager.userObject.status = "Not Active"
             self.switchState = false
             locationManager.stopUpdatingLocation()
-            //            self.appDelegate.mpcManager.advertiser.stopAdvertisingPeer()
         }
     }
     
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        print("user location update called")
         firebaseManager.updateUserLocation(locations.last!)
         print ("user observer is \(userActiveOberverSet)")
         if (switchState == true) {
@@ -155,21 +126,16 @@ class HomePageViewController: UIViewController, FirebaseDelegate, CLLocationMana
             
             NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
                 // Set up fire UID of user
+                self.firebaseManager.updateChatMeetUp("Yes")
                 
                 
             }
-            
-            
-            
-            
+
         }
         
         let declineAction: UIAlertAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel) { (alertAction) -> Void in
-            
-            //            self.appDelegate.mpcManager.invitationHandler(false,MCSession())
-            
-            // Not connecting and end
-//            self.connectedWithPeer(MCPeerID(displayName: " "))
+            self.firebaseManager.updateChatMeetUp("No")
+  
         }
         
         alertInvite.addAction(acceptAction)
@@ -196,78 +162,9 @@ class HomePageViewController: UIViewController, FirebaseDelegate, CLLocationMana
     
     func segueToNextPage() {
         print ("going to next page")
+        performSegueWithIdentifier("idSegueChat", sender: self)
     }
     
-    func foundPeer() {
-        
-        noOfPeer.text = "0"
-        
-    }
-    
-    func lostPeer() {
-        print ("Lost Peer called in home page")
-        
-        noOfPeer.text = "0"
-        
-    }
-    
-//    func connectedWithPeer(peerID: MCPeerID) {
-//        print("Connecting from home \(peerID.displayName)")
-//        
-//        if(peerID.displayName == " ") {
-//            
-//            print("Could not connect delete cyrus firebase")
-//            
-//            
-//            if (appDelegate.meetUpFire != nil) {
-//                appDelegate.meetUpFire.unauth()
-//            }
-//            
-//        } else if (peerID.displayName == "_use_firebase_chat_") {
-//            
-//            let meetPath = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(self.appDelegate.fireUID)/meetUp")
-//            
-//            print("meetPath in connection Page")
-//            
-//            print("\(meetPath.description)")
-////            appDelegate.mpcManager.advertiser.stopAdvertisingPeer()
-//            meetPath.observeEventType(.Value, withBlock: {
-//                snapshot in
-//                if (snapshot.value is NSNull) {
-//                    
-//                    print("We have a problem")
-//                    
-//                } else {
-//                    NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
-//                        
-//                        self.performSegueWithIdentifier("idSegueChat", sender: self)
-//                        
-//                    }
-//                }
-//            })
-//            
-//            
-//            
-////            print("Both users connected")
-//            
-//        } 
-//        
-//        
-////        else {
-////            
-////            NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
-////                
-////                self.performSegueWithIdentifier("idSegueChat", sender: self)
-////                
-////            }
-////            
-////        }
-//        
-//       
-//    }
-    
-    
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -285,127 +182,7 @@ class HomePageViewController: UIViewController, FirebaseDelegate, CLLocationMana
         } else {
             firebaseManager.meetUpClicked()
         }
-        
-        
-//        print(appDelegate.mpcManager.foundPeers.count)
-//        
-////        print("Find more peer now set as \(findMorePeer)")
-//    
-//        // Process all the foundPEERS here
-//        
-//        if  appDelegate.mpcManager.foundPeers.count > 0 {
-//            
-//            setUpDisplayView()
-//            let selectedPeer = appDelegate.mpcManager.selectedPeer as MCPeerID
-//            
-//            var contentCreated = [String: [String]]()
-//            
-//            // Setting up firebase connection
-//            self.appDelegate.userFire.authAnonymouslyWithCompletionBlock { error, authData in
-//                if error != nil {
-//                    // There was an error logging in anonymously
-//                    print(error)
-//                    
-//                } else {
-//                    // We are now logged in
-//                    
-//                    let currData = authData as FAuthData
-//                    print(currData.uid)
-//                    self.appDelegate.fireUID = currData.uid
-//
-//                    self.appDelegate.meetUpFire = self.appDelegate.userFire.childByAppendingPath("\(currData.uid)")
-//                        
-////                        Firebase(url: "https://cyrusthegreat.firebaseio.com/\(currData.uid)")
-//                    
-////                    self.appDelegate.meetUpFire
-//                    
-//                    // send data to other user on connection
-//                    
-//                    contentCreated["topics"] = self.appDelegate.mpcManager.foundPeerMatchTopics[self.appDelegate.mpcManager.selectedPeer.displayName]
-//                    contentCreated["chatUid"] = [self.appDelegate.fireUID]
-//                    
-////                    print("Sent content")
-////                    print(contentCreated)
-//                    
-//                    let dataExample : NSData = NSKeyedArchiver.archivedDataWithRootObject(contentCreated)
-//                    self.chatInitiator = true
-//                    
-//                    print("Going to connect from Meet Up page")
-//                    print("selected peer is \(selectedPeer.displayName)")
-////                    print(dataExample)
-//                    self.appDelegate.mpcManager.browser.invitePeer(selectedPeer, toSession: self.appDelegate.mpcManager.session, withContext: dataExample, timeout: 20)
-//                    
-//                }
-//            }
-//            
-//            
-//            
-//            
-//            displayView.removeFromSuperview()
-//            
-//            
-//        }
-        
-        
-        
-    }
-    
-    func invitationWasReceived(fromPeer: String, topic:String ) {
-        
-        print("Current fireUID in receiver is \(self.appDelegate.fireUID)")
-        
-       
-        
-//        print("I got called yeah")
-        alertInvite = UIAlertController(title: "", message: "\(fromPeer) wants to chat with you on \(topic)", preferredStyle: UIAlertControllerStyle.Alert)
-        
-        let acceptAction: UIAlertAction = UIAlertAction(title: "Accept", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
-            
-            
-            
-            NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
-                // Set up fire UID of user
-                
-                self.appDelegate.meetUpFire = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(self.appDelegate.fireUID)")
-                let meetPath =  Firebase(url: "https://cyrusthegreat.firebaseio.com/\(self.appDelegate.fireUID)/meetUp")
-                
-                
-                
-                // Set up firebase for questions page
-                
-//                print("Setting meet up Online")
-                
-                self.appDelegate.meetUpFire.childByAppendingPath("chatMsg")
-                self.appDelegate.meetUpFire.childByAppendingPath("chatAccept").setValue("false")
-                
-                meetPath.setValue("true")
-                
-                self.appDelegate.mpcManager.invitationHandler(true, self.appDelegate.mpcManager.session)
-                
-            }
-            
-            
-            
-            
-        }
-        
-        let declineAction: UIAlertAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel) { (alertAction) -> Void in
-            
-//            self.appDelegate.mpcManager.invitationHandler(false,MCSession())
-            
-            // Not connecting and end
-//            self.connectedWithPeer(MCPeerID(displayName: " "))
-        }
-        
-        alertInvite.addAction(acceptAction)
-        alertInvite.addAction(declineAction)
-        
-        NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
-            self.presentViewController(self.alertInvite, animated: true, completion: nil)
-        }
-        
-        
-        
+ 
         
     }
     
@@ -422,6 +199,7 @@ class HomePageViewController: UIViewController, FirebaseDelegate, CLLocationMana
         if segue.identifier == "idSegueChat" {
             
             let destinationVC = segue.destinationViewController as! ChatViewController
+            self.chatInitiator = !self.firebaseManager.setReceiver
             if (self.chatInitiator == true) {
                destinationVC.initiator = self.chatInitiator
             }

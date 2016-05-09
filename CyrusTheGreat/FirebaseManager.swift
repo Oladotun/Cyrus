@@ -27,14 +27,19 @@ class userProfile {
     var userMatchedCount:Int!
 }
 
-protocol FirebaseDelegate {
+protocol FirebaseHomeDelegate {
     func receiveInvite(inviter:String)
     func declineInvite()
     func segueToNextPage()
     func foundDisplay()
 }
 
-class FirebaseMeetupManager: NSObject {
+protocol FirebaseChatDelegate {
+    func updateChat(chatMsg:String, location:CLLocation)
+    var iamSender : Bool! {get set}
+}
+
+class FirebaseManager: NSObject {
     
     var userState:Firebase!
     var userActiveUser = Firebase(url:"https://cyrusthegreat.firebaseio.com/activeusers/")
@@ -43,10 +48,14 @@ class FirebaseMeetupManager: NSObject {
     var userFirebase:Firebase!
     var allFound = [userProfile]()
     var meetPathWay: Firebase!
-    var fireBaseDelegate: FirebaseDelegate?
+    var fireBaseDelegate: FirebaseHomeDelegate?
+    var fireBaseChatDelegate: FirebaseChatDelegate?
     var foundCount = 0
     var setReceiver = false
-    
+    var meetUpSet = false
+    var connectedUserInfo:userProfile!
+    var chatMessagePathFirebase:Firebase!
+    var meetPathHandler:UInt!
     
     
     func setUpCurrentUser(userId:String) {
@@ -110,7 +119,6 @@ class FirebaseMeetupManager: NSObject {
             snapshot in
             
             if let value = snapshot.value as? String {
-//                if (value != self.userObject.status) {
                     self.userObject.status = value
                     print(self.userObject.status)
                     print(value == "Inviting")
@@ -119,14 +127,15 @@ class FirebaseMeetupManager: NSObject {
                         print ("You are getting an invite")
                     }
                     
-                    if (value.contains("_meetup_")) {
+                    if (value.contains("_meetup_") && self.meetUpSet == false) {
                         let meetUpInfo = value.componentsSeparatedByString("_meetup_")
                         let meetUpPath = meetUpInfo[1]
                         print("abouta call meet path way")
+                        
                         self.meetPathWay = Firebase(url: meetUpPath)
+                        self.meetUpSet = true
                         self.observeMeetPath()
                     }
-//                }
             }
         })
     }
@@ -140,9 +149,80 @@ class FirebaseMeetupManager: NSObject {
         self.meetPathWay.updateChildValues(chatStatus)
     }
     
+    func removeMeetHandler() {
+        guard let _ = meetPathHandler else {
+            
+            print("handler was not set")
+            return
+        }
+        
+        meetPathWay.removeObserverWithHandle(meetPathHandler)
+    }
+    
+    func observeChatMsgPath() {
+        guard let _ = self.chatMessagePathFirebase else {
+            print("chat message path not set")
+            return
+        }         
+        chatMessagePathFirebase.observeEventType(.Value, withBlock: {
+            snapshot in
+            if let val = snapshot.value as? String {
+                
+                if (!val.isEmpty) {
+                    let sendMsg = val.componentsSeparatedByString("_value_")
+                    
+                    if (sendMsg.count > 1) {
+                        if(sendMsg[0] != self.userId ){
+                            self.fireBaseChatDelegate?.iamSender = false
+                            
+                            if (sendMsg[1].contains("^_^")) {
+                                
+                                var itemAdd = sendMsg[1].componentsSeparatedByString("^_^")
+                                print(itemAdd[1])
+                                
+                                if (itemAdd.count > 1) {
+                                    
+                                    if (itemAdd[1].contains("*_*")) {
+                                        
+                                        let coordinateString = itemAdd[1].componentsSeparatedByString("*_*")
+                                        let latString = coordinateString[0]
+                                        let longString = coordinateString[1]
+                                        let lat = (latString as NSString).doubleValue
+                                        let long = (longString as NSString).doubleValue
+                                        
+                                        let latDegrees: CLLocationDegrees = lat
+                                        let longDegrees: CLLocationDegrees = long
+                                        let destinationLocation = CLLocation(latitude: latDegrees, longitude: longDegrees)
+                                        
+                                        //Update view after everything
+                                        self.fireBaseChatDelegate?.updateChat(itemAdd[0],location: destinationLocation)
+                                        
+                                    }
+                                    
+                                }
+ 
+                            }
+ 
+                        } 
+                        
+                    }
+                    
+                } else {
+                    print("Message path not set")
+                }
+                
+            }
+        })
+        
+    }
+    
+    func updateChatMsgPath(msg:String) {
+        chatMessagePathFirebase.setValue(msg)
+    }
+    
     private func observeMeetPath() {
         
-        meetPathWay.observeEventType(.Value, withBlock: {
+        meetPathHandler = meetPathWay.observeEventType(.Value, withBlock: {
             snapshot in
             print("meet path observed")
             for child in snapshot.children {
@@ -164,8 +244,13 @@ class FirebaseMeetupManager: NSObject {
                                 self.setReceiver = true
                                 let receiverInfo = ["receiver": "\(self.userObject.userId)"]
                                 print ("receiveInvite called")
-                                
                                 self.fireBaseDelegate?.receiveInvite(snap)
+                                
+                                for curr in self.allFound {
+                                    if (curr.user.userId == snap ) {
+                                        self.connectedUserInfo = curr
+                                    }
+                                }
                                 
                                 self.meetPathWay.updateChildValues(receiverInfo)
                                 
@@ -173,22 +258,21 @@ class FirebaseMeetupManager: NSObject {
                             
                         }
                     }
-                    
-                    
-                    
+ 
                 }
                 
                 if (child.key == "chatMeetup") {
                     // print receiver info
                     
-                    let childSnapshot = child.childSnapshotForPath(child.key)
+                    let childSnapshot = snapshot.childSnapshotForPath(child.key)
                     
                     if let snap = childSnapshot.value as? String {
                         
                         if (snap == "Yes") {
                             // Segue to next page
+                            self.chatMessagePathFirebase = self.chatMessagePath()
                             self.fireBaseDelegate?.segueToNextPage()
-//                            let userUpdate = [self.userObject.userId :nil]
+                            self.observeChatMsgPath()
                             self.removeActiveUser(self.userId!)
                             
                             
@@ -210,6 +294,9 @@ class FirebaseMeetupManager: NSObject {
         })
     }
     
+    
+    
+    
     func removeActiveUser(userId:String) {
         let userExactPath = Firebase(url:"https://cyrusthegreat.firebaseio.com/activeusers/\(userId)")
         
@@ -221,22 +308,6 @@ class FirebaseMeetupManager: NSObject {
        
         
     }
-//    func fireBaseCheck(otherUser:Firebase,inout found:Bool) {
-//        otherUser.observeSingleEventOfType(.Value, withBlock: {
-//            snapshot in
-//            
-//            let otherUserStatus = snapshot.value as! String
-//            
-//            
-//            if (otherUserStatus == "Active") {
-//                otherUser.setValue("Inviting")
-//                found = true
-//                print("I am in obsering single block")
-//            }
-//            
-//        })
-//        
-//    }
     
     func meetUpClicked() {
         
@@ -257,53 +328,15 @@ class FirebaseMeetupManager: NSObject {
                 let otherUserStatus = NSString(data: data!, encoding: NSUTF8StringEncoding)
                 print(otherUserStatus!)
                 let otherUserString = otherUserStatus!.stringByReplacingOccurrencesOfString("\"", withString: "")
-//                let otherUserString = String(otherUserStatus!)
-                let realString = otherUserString.stringByReplacingOccurrencesOfString("\"", withString:"")
-                print(realString == "Active")
+                
                 if (otherUserString == "Active") {
                     print("found other user and breaking out")
                     otherUser.setValue("Inviting")
+                    self.connectedUserInfo = user
                     found = true
                     break
-                    
-                    
+  
                 }
-                
-                
-                
-//                let json = JSON(data!)
-//                print(json)
-//                if json["metadata"]["responseInfo"]["status"].intValue == 200 {
-//                    // we're OK to parse!
-//                    print(json)
-//                }
-                
-                
-//            NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
-//                otherUser.observeSingleEventOfType(.Value, withBlock: {
-//                    snapshot in
-//                    
-//                    let otherUserStatus = snapshot.value as! String
-//                    
-//                    
-//                    if (otherUserStatus == "Active") {
-//                        otherUser.setValue("Inviting")
-//                        found = true
-//                        print("I am in obsering single block")
-//                    }
-//                    
-//                })
-//                
-//                if (found) {
-//                    print("I am breaking because found")
-//                    break
-//                }
-//            }
-                
-                
-                
-                
-                
             }
 //            
             if (found) {
@@ -317,7 +350,7 @@ class FirebaseMeetupManager: NSObject {
                 
                 updateUserState("Inviting_meetup_\(id)")
                 otherUser.setValue("Inviting_meetup_\(id)")
-                
+                self.chatMessagePathFirebase = self.chatMessagePath()
                 let initiatorInfo = ["initiator": "\(userObject.userId)"]
                 
                 generated.updateChildValues(initiatorInfo)
@@ -340,9 +373,14 @@ class FirebaseMeetupManager: NSObject {
     }
     
     
-    
-    
-    
+    func chatMessagePath() -> Firebase! {
+        guard let _ = meetPathWay else {
+            print("meet up not set")
+            return nil
+        }
+        return meetPathWay.childByAppendingPath("chatMsg")
+    }
+
     
     // Call after everything is called
     func updateActiveUserFirebase() {
@@ -501,6 +539,13 @@ class FirebaseMeetupManager: NSObject {
     }
     
 
+}
+
+extension Array {
+    func randomItem() -> Element {
+        let index = Int(arc4random_uniform(UInt32(self.count)))
+        return self[index]
+    }
 }
 
 

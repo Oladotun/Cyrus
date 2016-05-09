@@ -55,7 +55,7 @@ class LoginPageViewController: UIViewController, UITextFieldDelegate {
                         self.appDelegate.userIdentifier = authData.uid
                        
                         // Initialize mpc manager with user identifier
-                        self.appDelegate.mpcManager = MPCManager()
+//                        self.appDelegate.mpcManager = MPCManager()
                         
                         // Get the user interests from firebase
                         let userInterests = Firebase(url:  "https://cyrusthegreat.firebaseio.com/users/\(authData.uid)/interests")

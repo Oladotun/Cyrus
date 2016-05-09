@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7C03202B1C90A06900E299D2 /* MPCManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C03202A1C90A06900E299D2 /* MPCManager.swift */; };
 		7C03202D1C90A09A00E299D2 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C03202C1C90A09A00E299D2 /* ChatViewController.swift */; };
 		7C0320311C90A6BF00E299D2 /* HomePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0320301C90A6BF00E299D2 /* HomePageViewController.swift */; };
 		7C0320341C90B04100E299D2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7C0320321C90B04100E299D2 /* Main.storyboard */; };
@@ -24,7 +23,7 @@
 		7CDC51961C88614F00D50F53 /* CollectionTwitterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDC51951C88614F00D50F53 /* CollectionTwitterViewController.swift */; };
 		7CDC51981C8862A700D50F53 /* CollectionTwitterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDC51971C8862A600D50F53 /* CollectionTwitterCollectionViewCell.swift */; };
 		7CE313271C97027C00634900 /* ChatViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE313261C97027C00634900 /* ChatViewCell.swift */; };
-		7CE6A4231CDCCAB600C86EDE /* FirebaseMeetupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE6A4221CDCCAB600C86EDE /* FirebaseMeetupManager.swift */; };
+		7CE6A4231CDCCAB600C86EDE /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE6A4221CDCCAB600C86EDE /* FirebaseManager.swift */; };
 		7CED63651C7353CD0003B19A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CED63641C7353CD0003B19A /* AppDelegate.swift */; };
 		7CED636C1C7353CD0003B19A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7CED636B1C7353CD0003B19A /* Images.xcassets */; };
 		7CED636F1C7353CD0003B19A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CED636D1C7353CD0003B19A /* LaunchScreen.xib */; };
@@ -46,7 +45,6 @@
 
 /* Begin PBXFileReference section */
 		2F50F7BDD3C88199EE36B4AB /* Pods_CyrusTheGreat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CyrusTheGreat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		7C03202A1C90A06900E299D2 /* MPCManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MPCManager.swift; sourceTree = "<group>"; };
 		7C03202C1C90A09A00E299D2 /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		7C0320301C90A6BF00E299D2 /* HomePageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePageViewController.swift; sourceTree = "<group>"; };
 		7C0320331C90B04100E299D2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -64,7 +62,7 @@
 		7CDC51951C88614F00D50F53 /* CollectionTwitterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionTwitterViewController.swift; sourceTree = "<group>"; };
 		7CDC51971C8862A600D50F53 /* CollectionTwitterCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionTwitterCollectionViewCell.swift; sourceTree = "<group>"; };
 		7CE313261C97027C00634900 /* ChatViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewCell.swift; sourceTree = "<group>"; };
-		7CE6A4221CDCCAB600C86EDE /* FirebaseMeetupManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseMeetupManager.swift; sourceTree = "<group>"; };
+		7CE6A4221CDCCAB600C86EDE /* FirebaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		7CED635F1C7353CD0003B19A /* CyrusTheGreat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CyrusTheGreat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7CED63631C7353CD0003B19A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7CED63641C7353CD0003B19A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -142,12 +140,11 @@
 				7CED63851C7355DC0003B19A /* FrontPageViewController.swift */,
 				7CED63871C75FC110003B19A /* SignUpPageViewController.swift */,
 				7C17984C1CCF97B7004E31BE /* LoginPageViewController.swift */,
-				7CE6A4221CDCCAB600C86EDE /* FirebaseMeetupManager.swift */,
 				7C0661AD1C876670003C04BD /* ApiConnectorViewController.swift */,
 				7CDC51951C88614F00D50F53 /* CollectionTwitterViewController.swift */,
 				7CDC51971C8862A600D50F53 /* CollectionTwitterCollectionViewCell.swift */,
 				7C0320301C90A6BF00E299D2 /* HomePageViewController.swift */,
-				7C03202A1C90A06900E299D2 /* MPCManager.swift */,
+				7CE6A4221CDCCAB600C86EDE /* FirebaseManager.swift */,
 				7C03202C1C90A09A00E299D2 /* ChatViewController.swift */,
 				7C6701171CD7822D0049C37E /* SearchTableViewController.swift */,
 				7CE313261C97027C00634900 /* ChatViewCell.swift */,
@@ -349,7 +346,6 @@
 			files = (
 				7C17984D1CCF97B7004E31BE /* LoginPageViewController.swift in Sources */,
 				7CED63881C75FC110003B19A /* SignUpPageViewController.swift in Sources */,
-				7C03202B1C90A06900E299D2 /* MPCManager.swift in Sources */,
 				7C1155441CAD9A1F0041C012 /* QuestionsViewController.swift in Sources */,
 				7CC3B1CE1CD8EB5400BB706A /* MapTrackViewController.swift in Sources */,
 				7CDC51981C8862A700D50F53 /* CollectionTwitterCollectionViewCell.swift in Sources */,
@@ -363,7 +359,7 @@
 				7C7218A61CCCF8120016C15B /* CyrusTheGreat.xcdatamodeld in Sources */,
 				7C3BF1DB1CC780940082AC03 /* MeetUpAndMapViewController.swift in Sources */,
 				7C03202D1C90A09A00E299D2 /* ChatViewController.swift in Sources */,
-				7CE6A4231CDCCAB600C86EDE /* FirebaseMeetupManager.swift in Sources */,
+				7CE6A4231CDCCAB600C86EDE /* FirebaseManager.swift in Sources */,
 				7CDC51961C88614F00D50F53 /* CollectionTwitterViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

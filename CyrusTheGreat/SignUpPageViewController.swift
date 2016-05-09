@@ -110,7 +110,7 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate {
                                         .childByAppendingPath(authData.uid).setValue(newUser)
                                     
                                     // Initialize mpc manager with user identifier
-                                    self.appDelegate.mpcManager = MPCManager()
+//                                    self.appDelegate.mpcManager = MPCManager()
                                     self.performSegueWithIdentifier("connectTwitter", sender: self)
 
                                 }
