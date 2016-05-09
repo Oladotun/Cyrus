@@ -59,15 +59,14 @@ class MapTrackViewController: UIViewController {
         theMap.delegate = self
         theMap.mapType = MKMapType.Standard
         
-        locationFireBase = Firebase(url:"https://cyrusthegreat.firebaseio.com/location")
-        locationExactBase = locationFireBase.childByAppendingPath(appDelegate.otherUserIdentifieir)
-        locationArrived = locationFireBase.childByAppendingPath("arrived")
+        appDelegate.userFirebaseManager.fireBaseOtherUserLocationDelegate = self
+        appDelegate.userFirebaseManager.observeEtaOtherUser()
+        appDelegate.userFirebaseManager.observeLocationOtherUser()
         destinationPlacemark = MKPlacemark(coordinate: destinationLocation.coordinate, addressDictionary: nil)
         
         myArrival = false
         userArrival = false
-        
-        self.fireBaseBusiness()
+
         theMap.showsUserLocation = true
         appDelegate.locationManager!.startUpdatingLocation()
         // Do any additional setup after loading the view.
@@ -111,7 +110,7 @@ class MapTrackViewController: UIViewController {
         if (title == "first") {
             
             let userInfo = [self.appDelegate.userIdentifier: ETA]
-            locationArrived.updateChildValues(userInfo)
+            appDelegate.userFirebaseManager.etaPathFirebase.updateChildValues(userInfo)
             myETA = ETA
             let myETAString = myETA.stringFromTimeInterval(myETA)
             myETALabel.text = "I am \(myETAString) from destination"
@@ -157,65 +156,31 @@ class MapTrackViewController: UIViewController {
 
 }
 
-extension MapTrackViewController {
+extension MapTrackViewController: FirebaseMapDelegate {
     
-    func fireBaseBusiness() {
+    func updateOtherUserLocation(location:CLLocation) {
         
-        locationArrived.observeEventType(.Value, withBlock: {
-            snapshot in
+        self.otherUserLocation = location
+        self.drawMap(self.myLocation, otherUserLocation: self.otherUserLocation, destinationLocation: self.destinationLocation)
+        let itemDist = self.otherUserLocation.distanceFromLocation(self.destinationLocation)
         
-                for youngChild in snapshot.children {
-                    
-                    if youngChild.key != UIDevice.currentDevice().name {
-                        
-                        let youngChildSnapshot = snapshot.childSnapshotForPath(youngChild.key)
-                        
-                        if let youngChildETA = youngChildSnapshot.value as? NSTimeInterval {
-                            let ETAString = youngChildETA.stringFromTimeInterval(youngChildETA)
-                            self.labelETA.text = "Other user is \(ETAString) from destination"
-                            self.userArrival = self.calculateArrival(youngChildETA)
-                            self.checkIfBothUserArrived()
-                        }
-                        
-                    }
-                    
-                }
-
-        })
+        if (itemDist < 200) {
+            self.findDist(MKPlacemark(coordinate: self.otherUserLocation.coordinate, addressDictionary: nil), destination: self.destinationPlacemark, requestType: .Walking, title: "second")
+        } else {
+            self.findDist(MKPlacemark(coordinate: self.otherUserLocation.coordinate, addressDictionary: nil), destination: self.destinationPlacemark, requestType: .Automobile, title: "second")
+        }
+        self.otherUserAnnotation.coordinate = self.otherUserLocation.coordinate
         
-        locationExactBase.observeEventType(.Value, withBlock: {
-            snapshot in
-
-            if let coordinateDistanceInString = snapshot.value as? String {
-                let coordinateString = coordinateDistanceInString.componentsSeparatedByString("_coordinate_")
-                
-                if (coordinateString.count > 1) {
-                    let latString = coordinateString[0]
-                    let longString = coordinateString[1]
-                    
-                    let lat = (latString as NSString).doubleValue
-                    let long = (longString as NSString).doubleValue
-                    
-                    let latDegrees: CLLocationDegrees = lat
-                    let longDegrees: CLLocationDegrees = long
-                    self.otherUserLocation = CLLocation(latitude: latDegrees, longitude: longDegrees)
-                    
-                    self.drawMap(self.myLocation, otherUserLocation: self.otherUserLocation, destinationLocation: self.destinationLocation)
-                    
-//                    print("Destination marker called")
-                    let itemDist = self.otherUserLocation.distanceFromLocation(self.destinationLocation)
-                    if (itemDist < 200) {
-                        self.findDist(MKPlacemark(coordinate: self.otherUserLocation.coordinate, addressDictionary: nil), destination: self.destinationPlacemark, requestType: .Walking, title: "second")
-                    } else {
-                        self.findDist(MKPlacemark(coordinate: self.otherUserLocation.coordinate, addressDictionary: nil), destination: self.destinationPlacemark, requestType: .Automobile, title: "second")
-                    }
-                    self.otherUserAnnotation.coordinate = self.otherUserLocation.coordinate
-
-                }
-            }
-
-        })
     }
+    
+    func updateETAInfo(ETA:NSTimeInterval) {
+        let ETAString = ETA.stringFromTimeInterval(ETA)
+        self.labelETA.text = "Other user is \(ETAString) from destination"
+        self.userArrival = self.calculateArrival(ETA)
+        self.checkIfBothUserArrived()
+        
+    }
+    
     
 }
 
@@ -225,7 +190,8 @@ extension MapTrackViewController: CLLocationManagerDelegate {
         self.drawMap(self.myLocation, otherUserLocation: self.otherUserLocation, destinationLocation: self.destinationLocation)
         
         let userInfo = [self.appDelegate.userIdentifier: "\(myLocation.coordinate.latitude)_coordinate_\(myLocation.coordinate.longitude)"]
-        self.locationFireBase.updateChildValues(userInfo)
+        
+        appDelegate.userFirebaseManager.myLocationPath.updateChildValues(userInfo)
         
         if let destination = destinationLocation {
             

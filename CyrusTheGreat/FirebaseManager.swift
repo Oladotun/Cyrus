@@ -41,6 +41,11 @@ protocol FirebaseChatDelegate {
     func meetUpCancelled(canceller:String)
 }
 
+protocol FirebaseMapDelegate {
+    func updateOtherUserLocation(location:CLLocation)
+    func updateETAInfo(ETA:NSTimeInterval)
+}
+
 class FirebaseManager: NSObject {
     
     var userState:Firebase!
@@ -52,12 +57,16 @@ class FirebaseManager: NSObject {
     var meetPathWay: Firebase!
     var fireBaseDelegate: FirebaseHomeDelegate?
     var fireBaseChatDelegate: FirebaseChatDelegate?
+    var fireBaseOtherUserLocationDelegate: FirebaseMapDelegate?
     var foundCount = 0
     var setReceiver = false
     var meetUpSet = false
     var connectedUserInfo:userProfile!
     var chatMessagePathFirebase:Firebase!
     var chatAcceptPathFirebase:Firebase!
+    var myLocationPath:Firebase!
+    var locationPathOtherUserFirebase:Firebase!
+    var etaPathFirebase:Firebase!
     var meetPathHandler:UInt!
     
     
@@ -224,6 +233,86 @@ class FirebaseManager: NSObject {
         chatMessagePathFirebase.setValue(msg)
     }
     
+    func meetUpPropInitialize() {
+        self.chatMessagePathFirebase = self.chatMessagePath()
+        self.chatAcceptPathFirebase = self.chatAcceptPath()
+        self.locationPathOtherUserFirebase = myLocationUserFirebase()
+        self.myLocationPath = meetPathWay.childByAppendingPath("location")
+        self.etaPathFirebase = self.etaToDestination()
+        self.fireBaseDelegate?.segueToNextPage()
+        self.observeChatMsgPath()
+        self.observeChatAcceptPathObserve()
+        self.removeActiveUser(self.userId!)
+    }
+    
+    func locationOtherUserFirebase() -> Firebase! {
+        
+        return meetPathWay.childByAppendingPath("location").childByAppendingPath(connectedUserInfo.user.userId)
+    }
+    
+    func myLocationUserFirebase() -> Firebase! {
+        
+        return meetPathWay.childByAppendingPath("location").childByAppendingPath(self.userId)
+        
+    }
+    
+    func etaToDestination() -> Firebase! {
+        return meetPathWay.childByAppendingPath("etaToDestination")
+    }
+    
+    func observeEtaOtherUser() {
+        print("observing eta other user")
+        etaPathFirebase.observeEventType(.Value, withBlock: {
+            snapshot in
+            
+            for youngChild in snapshot.children {
+                
+                print(youngChild.key)
+                print(self.userId)
+                if youngChild.key != self.userId {
+                    print("I got called out")
+                    let youngChildSnapshot = snapshot.childSnapshotForPath(youngChild.key)
+                    
+                    if let youngChildETA = youngChildSnapshot.value as? NSTimeInterval {
+                        
+                        self.fireBaseOtherUserLocationDelegate?.updateETAInfo(youngChildETA)
+                    }
+                    
+                }
+                
+            }
+        })
+    }
+    
+    func observeLocationOtherUser() {
+        
+        locationPathOtherUserFirebase.observeEventType(.Value, withBlock: {
+            snapshot in
+            
+            if let coordinateDistanceInString = snapshot.value as? String {
+                let coordinateString = coordinateDistanceInString.componentsSeparatedByString("_coordinate_")
+                
+                if (coordinateString.count > 1) {
+                    let latString = coordinateString[0]
+                    let longString = coordinateString[1]
+                    
+                    let lat = (latString as NSString).doubleValue
+                    let long = (longString as NSString).doubleValue
+                    
+                    let latDegrees: CLLocationDegrees = lat
+                    let longDegrees: CLLocationDegrees = long
+                    
+                    let otherUserLocation = CLLocation(latitude: latDegrees, longitude: longDegrees)
+                    
+                    self.fireBaseOtherUserLocationDelegate?.updateOtherUserLocation(otherUserLocation)
+                    
+                }
+            }
+            
+        })
+        
+    }
+    
     private func observeMeetPath() {
         
         meetPathHandler = meetPathWay.observeEventType(.Value, withBlock: {
@@ -273,13 +362,8 @@ class FirebaseManager: NSObject {
                     if let snap = childSnapshot.value as? String {
                         
                         if (snap == "Yes") {
-                            // Segue to next page
-                            self.chatMessagePathFirebase = self.chatMessagePath()
-                            self.chatAcceptPathFirebase = self.chatAcceptPath()
-                            self.fireBaseDelegate?.segueToNextPage()
-                            self.observeChatMsgPath()
-                            self.observeChatAcceptPathObserve()
-                            self.removeActiveUser(self.userId!)
+                            // Initialize and Segue to next page
+                            self.meetUpPropInitialize()
 
                         }
                         
@@ -467,6 +551,10 @@ class FirebaseManager: NSObject {
         userActiveUser.updateChildValues(userIdLocation)
         
     }
+    
+    
+    
+    
     
     func activateUserObserver() {
         
