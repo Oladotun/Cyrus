@@ -42,8 +42,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
     var userInvolved: Firebase!
     
     var firebaseManager: FirebaseManager!
-    
-    
     var selectedCoordinate:CLLocationCoordinate2D!
     var destinationLocation: CLLocation!
     
@@ -65,141 +63,11 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
         iamSender = false
         firebaseManager = appDelegate.userFirebaseManager
         firebaseManager.fireBaseChatDelegate = self
-//        print("initiator is \(initiator)")
-//        print("We are setting up to initiate")
-        self.appDelegate.fireUID = "03d9149d-e014-4155-8b0a-0d1d8a74dfb4"
-//       chatMsgPath = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(self.appDelegate.fireUID)/chatMsg")
-       chatAcceptPath = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(self.appDelegate.fireUID)/chatAccept")
-        userInvolved = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(self.appDelegate.fireUID)/names")
-        chatAcceptPath.setValue("no")
+        
         self.appDelegate.otherUserIdentifieir = firebaseManager.connectedUserInfo.user.userId
         appDelegate.userIdentifier = firebaseManager.userId
-    
-    
-        
-//        let initializeQuestion = appDelegate.meetUpFire.childByAppendingPath("questionController")
-//        initializeQuestion.setValue("Not Set")
-        
-//        let userName = [appDelegate.userIdentifier : appDelegate.userIdentifier]
-//        
-//        userInvolved.updateChildValues(userName)
-//        
-//        handler = userInvolved.observeEventType(.Value, withBlock: {
-//            snapshot in
-//            
-//            for child in snapshot.children {
-//                
-//                if child.key != self.appDelegate.userIdentifier {
-//                    self.appDelegate.otherUserIdentifieir = child.key
-//                    
-//                }
-//                
-//            }
-//        })
-        
-        
-        chatAcceptPath.observeEventType(.Value, withBlock: {
-            snapshot in
-            
-            if(snapshot.value as! String == "yes") {
-                
-                NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
-                    print("called yes Segue")
-                    self.performSegueWithIdentifier("yesSegue", sender: self)
-                    
-                }
-                
-            }
-            
-            if((snapshot.value as! String).contains("_end_chat_")) {
-                
-                let endWord = snapshot.value as! String
-                
-                let splitEndWord = endWord.componentsSeparatedByString("*_*")
-                
-                let alert = UIAlertController(title:"",message: "\(splitEndWord[0]) Ended the chat", preferredStyle: UIAlertControllerStyle.Alert)
-                
-                let doneAction: UIAlertAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
-                    self.dismissViewControllerAnimated(true, completion: nil)
-                }
-                
-                alert.addAction(doneAction)
-                
-                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                    self.presentViewController(alert, animated: true, completion: nil)
-                })
-                
-            }
-            
-            
-        })
-        
-        
-//        chatMsgPath.observeEventType(.Value, withBlock: {
-//            snapshot in
-//            if let val = snapshot.value as? String {
-//                
-//                if (!val.isEmpty) {
-//                    let sendMsg = val.componentsSeparatedByString("_value_")
-//                    
-//                    if (sendMsg.count > 1) {
-//                        if(sendMsg[0] != self.appDelegate.userIdentifier ){
-//                            self.iamSender = false
-//                            
-//                            self.messagesArray = [String]()
-//                            if (sendMsg[1].contains("^_^")) {
-//                            
-//                            var itemAdd = sendMsg[1].componentsSeparatedByString("^_^")
-//                            print(itemAdd[1])
-//                                
-//                                if (itemAdd.count > 1) {
-//                                    
-//                                    if (itemAdd[1].contains("*_*")) {
-//                                        
-//                                        let coordinateString = itemAdd[1].componentsSeparatedByString("*_*")
-//                                        
-//                                        
-//                                        let latString = coordinateString[0]
-//                                        let longString = coordinateString[1]
-//                                        
-//                                        
-//                                        let lat = (latString as NSString).doubleValue
-//                                        let long = (longString as NSString).doubleValue
-//                                        
-//                                        let latDegrees: CLLocationDegrees = lat
-//                                        let longDegrees: CLLocationDegrees = long
-//                                        
-//                                        self.destinationLocation = CLLocation(latitude: latDegrees, longitude: longDegrees)
-//                                        
-//                                        //Update view after everything
-//                                        self.messagesArray.append(itemAdd[0])
-//                                        self.updateTableView()
-//                                        
-//                                    }
-//
-//                                }
-//                            
-//                            
-//                            }
-//                            
-//                            
-//                        }
-//                        
-//                    }
-//                    
-//                } else {
-//                    print("Message path not set") 
-//                }
-//                    
-//                }
-//                
-//                
-//            
-//            
-//        })
-        
-        
-        
+
+
         // Do any additional setup after loading the view.
         tblChat.delegate = self
         tblChat.dataSource = self
@@ -216,9 +84,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
         messageCount = 0
         warningLabel.text = ""
         warningLabel.textColor = UIColor.redColor()
-        
-        
-        
         
         
     }
@@ -246,24 +111,16 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
     // MARK: IBAction method implementation
     
     @IBAction func endChat(sender: AnyObject) {
-       
         
         alertEndChat = UIAlertController(title: "", message: "Are you sure you want to end chat and meet up", preferredStyle: UIAlertControllerStyle.Alert)
         
         let acceptAction: UIAlertAction = UIAlertAction(title: "Accept", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
-            
-                NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
-                        // Set up fire UID of user
-                         self.chatAcceptPath.setValue("\(self.appDelegate.userIdentifier)*_*_end_chat_")
-                }
+            self.firebaseManager.updateChatAccept("\(self.firebaseManager.userObject.firstName)*_*_end_chat_")
         }
         
         let declineAction: UIAlertAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel) { (alertAction) -> Void in
-            
-            //            self.appDelegate.mpcManager.invitationHandler(false,MCSession())
-            
-            // Not connecting and end
-            
+            self.alertEndChat.dismissViewControllerAnimated(true, completion: nil)
+
         }
         
         self.alertEndChat.addAction(acceptAction)
@@ -274,24 +131,17 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
         }
     }
     
+    // Close chat and go to another page with time and meet up location
+    // If user opens app, it should go to a page with time and meet up location info
+    // When the time for meet up, we ask the user if there have met up with this user
+    
     func yesTapped() {
-        print("Accepted")
-        
-        // Close chat and go to another page with time and meet up location
-        // If user opens app, it should go to a page with time and meet up location info
-        // When the time for meet up, we ask the user if there have met up with this user
-        
-        chatAcceptPath.setValue("yes")
+        firebaseManager.updateChatAccept("Yes")
     }
     
     func noTapped() {
-        print("Declined")
-        
-        chatAcceptPath.setValue("no")
-        
-//        chatMsgPath.setValue(" ")
-        firebaseManager.updateChatMsgPath("")
-        self.updateTableView()
+//        firebaseManager.updateChatMsgPath("No")
+//        self.updateTableView()
         
     }
     func cancel() {
@@ -300,13 +150,27 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
                 
     }
     
+    func segueToNextPage() {
+        performSegueWithIdentifier("yesSegue", sender: self)
+    }
     
+    func meetUpCancelled(canceller: String) {
+        firebaseManager.meetPathWay.removeValue()
+        let alert = UIAlertController(title:"",message: "\(canceller) Ended the chat", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        let doneAction: UIAlertAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
+            
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
+        
+        alert.addAction(doneAction)
+        
+        NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+            self.presentViewController(alert, animated: true, completion: nil)
+        })
+        
+    }
     
-//    func selected(address:String) {
-//        print("Passed address \(address)")
-//        txtChat.text = address
-//        
-//    }
     func selected(address: String,completeAddress:String,coordinate:CLLocationCoordinate2D) {
         print ("table view selected")
         txtChat.text = address
@@ -327,13 +191,9 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
         let sendCoordinateString = "\(selectedCoordinate.latitude)*_*\(selectedCoordinate.longitude)"
         if messageCount < 11 && !chatMessage.isEmpty {
             print("message to send \(toSendMessage)")
-//            chatMsgPath.setValue("\(appDelegate.userIdentifier)_value_\(toSendMessage)^_^\(sendCoordinateString)")
             updateChatDate()
             
             self.updateChat(toSendMessage, location: destinationLocation)
-//            messagesArray = [String]()
-//            messagesArray.append(toSendMessage)
-//            updateTableView()
             iamSender = true
             firebaseManager.updateChatMsgPath("\(appDelegate.userIdentifier)_value_\(toSendMessage)^_^\(sendCoordinateString)")
             txtChat.text = ""
@@ -380,20 +240,13 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
             destVC.placeAddress = messageInfoArray[1]
             destVC.destination = messageInfoArray[0]
             destVC.destinationLocation = destinationLocation
-//            if (iamSender == true) {
-//                chatMsgPath.setValue("")
-//            }
-            
 
         }
         
         if (segue.identifier == "searchTableId") {
-            
             let nav = segue.destinationViewController as! UINavigationController
-            
             let destVC = nav.topViewController as! SearchTableViewController
             destVC.searchProtocol = self
-            
         }
         
         
@@ -409,12 +262,8 @@ extension ChatViewController: UITextFieldDelegate {
             txtChat.text = ""
             txtChat.resignFirstResponder()
             performSegueWithIdentifier("searchTableId", sender: self)
-//            searchChat.becomeFirstResponder()
-            
-        } else {
-            
+
         }
-        
     }
 
     
@@ -461,7 +310,6 @@ extension ChatViewController: UITableViewDataSource {
             
         }
         cell.chatViewProtocol = self
-        //        messagesArray = []
         
         return cell
     }

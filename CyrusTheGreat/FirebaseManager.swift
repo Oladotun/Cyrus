@@ -37,6 +37,8 @@ protocol FirebaseHomeDelegate {
 protocol FirebaseChatDelegate {
     func updateChat(chatMsg:String, location:CLLocation)
     var iamSender : Bool! {get set}
+    func segueToNextPage()
+    func meetUpCancelled(canceller:String)
 }
 
 class FirebaseManager: NSObject {
@@ -55,6 +57,7 @@ class FirebaseManager: NSObject {
     var meetUpSet = false
     var connectedUserInfo:userProfile!
     var chatMessagePathFirebase:Firebase!
+    var chatAcceptPathFirebase:Firebase!
     var meetPathHandler:UInt!
     
     
@@ -94,8 +97,6 @@ class FirebaseManager: NSObject {
                 }
             }
             
-            print ("\(self.userObject.firstName) \(self.userObject.schoolName)")
-            
         })
         
     }
@@ -115,8 +116,11 @@ class FirebaseManager: NSObject {
     }
     
     func userStateObserve() {
+//        var count = 0
         userState.observeEventType(.Value, withBlock: {
             snapshot in
+//            count = count + 1
+//            print ("number of times called \(count)")
             
             if let value = snapshot.value as? String {
                     self.userObject.status = value
@@ -271,11 +275,12 @@ class FirebaseManager: NSObject {
                         if (snap == "Yes") {
                             // Segue to next page
                             self.chatMessagePathFirebase = self.chatMessagePath()
+                            self.chatAcceptPathFirebase = self.chatAcceptPath()
                             self.fireBaseDelegate?.segueToNextPage()
                             self.observeChatMsgPath()
+                            self.observeChatAcceptPathObserve()
                             self.removeActiveUser(self.userId!)
-                            
-                            
+
                         }
                         
                         if (snap == "No" ) {
@@ -292,6 +297,59 @@ class FirebaseManager: NSObject {
  
             
         })
+    }
+    
+    func updateChatAccept(value:String) {
+        chatAcceptPathFirebase.setValue(value)
+    }
+    
+    func observeChatAcceptPathObserve() {
+        
+        var yesCalled = false
+        
+        chatAcceptPathFirebase.observeEventType(.Value, withBlock: {
+            snapshot in
+            
+            if (!snapshot.value.isEqual(NSNull()) ) {
+                
+                if(snapshot.value as! String == "Yes") && !yesCalled {
+                    
+                    self.fireBaseChatDelegate?.segueToNextPage()
+                    yesCalled = true
+                    
+                }
+                
+                if(snapshot.value as! String == "No") {
+                    
+                }
+                
+                if((snapshot.value as! String).contains("_end_chat_")) {
+                    
+                    let endWord = snapshot.value as! String
+                    
+                    let splitEndWord = endWord.componentsSeparatedByString("*_*")
+                    // user x ended the chat
+                    print("\(splitEndWord)")
+                    self.fireBaseChatDelegate?.meetUpCancelled(splitEndWord[0])
+                
+                    
+                }
+            }
+            
+
+            
+            
+        })
+        
+    }
+    
+    func chatAcceptPath() -> Firebase! {
+        guard let _ = meetPathWay else {
+            print("meet up not set")
+            return nil
+        }
+        return meetPathWay.childByAppendingPath("chatAccept")
+        
     }
     
     

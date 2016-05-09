@@ -29,6 +29,8 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     var findMorePeer = true
     var switchState = false
     
+    var returned = false
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -47,12 +49,33 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         locationManager.delegate = self
         locationManager.distanceFilter = 20
         locationManager.startUpdatingLocation()
-        
-        
-        
+
         foundDisplay()
         alertInvite = nil
 
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+        // When we return back from another page
+        // create new instance of firebase manager
+        if (returned) {
+            availSwitch.setOn(false, animated:true)
+            
+            
+            appDelegate.userFirebaseManager = FirebaseManager()
+            firebaseManager = appDelegate.userFirebaseManager
+            firebaseManager.setUpCurrentUser(appDelegate.userIdentifier)
+            firebaseManager.updateUserState("Not Active")
+            firebaseManager.fireBaseDelegate = self
+            userActiveOberverSet = false
+            currAvailability.text = "Offline"
+            locationManager.startUpdatingLocation()
+            foundDisplay()
+            
+        }
+        
+        
     }
     
     func switched(switchState: UISwitch) {
@@ -78,6 +101,7 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         firebaseManager.updateUserLocation(locations.last!)
         print ("user observer is \(userActiveOberverSet)")
         if (switchState == true) {
+            print("Adding to activeUser")
             firebaseManager.updateActiveUserFirebase()
         }
         if (!userActiveOberverSet) {
@@ -200,6 +224,12 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
             
             let destinationVC = segue.destinationViewController as! ChatViewController
             self.chatInitiator = !self.firebaseManager.setReceiver
+            firebaseManager.removeMeetHandler()
+            firebaseManager.meetUpSet = false
+            returned = true
+            locationManager.stopUpdatingLocation()
+            
+            self.switchState = false
             if (self.chatInitiator == true) {
                destinationVC.initiator = self.chatInitiator
             }
