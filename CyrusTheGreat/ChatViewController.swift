@@ -9,6 +9,7 @@
 import UIKit
 import MultipeerConnectivity
 import Firebase
+import CoreLocation
 
 
 class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegate, SearchTableDelegate,FirebaseChatDelegate {

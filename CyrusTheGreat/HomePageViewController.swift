@@ -9,6 +9,7 @@
 import UIKit
 import MultipeerConnectivity
 import Firebase
+import CoreLocation
 
 class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocationManagerDelegate { // MPCManagerDelegate
     

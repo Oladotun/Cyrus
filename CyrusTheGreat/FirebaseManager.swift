@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import SwiftyJSON
+import CoreLocation
 
 class User: NSObject {
     var userId:String!
