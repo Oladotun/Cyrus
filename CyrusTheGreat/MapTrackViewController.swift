@@ -101,6 +101,7 @@ class MapTrackViewController: UIViewController {
         if (myArrival == true && userArrival == true && protocolCalled == 0) {
             protocolCalled = protocolCalled + 1
             mapProtocol?.arrived()
+            appDelegate.locationManager.delegate = nil
         }
         
     }
@@ -118,7 +119,10 @@ class MapTrackViewController: UIViewController {
             
             if(myArrival == true) {
                 print("I will stop updating location")
-                appDelegate.locationManager.stopUpdatingLocation()
+                if (protocolCalled == 0) {
+                    appDelegate.locationManager.stopUpdatingLocation()
+                }
+               
             }
             checkIfBothUserArrived()
         

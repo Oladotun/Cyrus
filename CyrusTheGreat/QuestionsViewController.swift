@@ -24,6 +24,7 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
     var endButtonPressed:Bool!
     
     @IBOutlet weak var questionButton: UIButton!
+    @IBOutlet weak var doneButton: UIButton!
     var firebaseManager:FirebaseManager!
      var seenTopics = [String]()
     
@@ -34,10 +35,13 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
         firebaseManager = appDelegate.userFirebaseManager
         firebaseManager.observeQuestionFirebase()
         firebaseManager.fireBaseQuestDelegate = self
+        doneButton.alpha = 0.0
         if (firebaseManager.iamInitiator) {
             questionButton.alpha = 1.0
+            
         } else {
             questionButton.alpha = 0.0
+            
         }
         interestMatchLabel.text = "Press the next question button to start"
         interestMatchLabel.preferredMaxLayoutWidth = 350
@@ -51,6 +55,67 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
         interestMatchLabel.text = question
         
     }
+    
+    func meetUpCancelled(canceller:String) {
+        
+        firebaseManager.meetPathWay.removeValue()
+        let alert = UIAlertController(title:"",message: "\(canceller) ended meetings", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        let doneAction: UIAlertAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
+            
+            self.performSegueWithIdentifier("unWindHome", sender: self)
+        }
+        
+        alert.addAction(doneAction)
+        
+        NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+            self.presentViewController(alert, animated: true, completion: nil)
+        })
+        
+    }
+    
+    func chattingDone() {
+        firebaseManager.meetPathWay.removeValue()
+        let alert = UIAlertController(title:"",message: "Meet Up Chat Done", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        let doneAction: UIAlertAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
+            
+            self.performSegueWithIdentifier("unWindHome", sender: self)
+        }
+        
+        alert.addAction(doneAction)
+        
+        NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+            self.presentViewController(alert, animated: true, completion: nil)
+        })
+    }
+    
+    @IBAction func doneButtonHit(sender: AnyObject) {
+        
+        
+        let alert = UIAlertController(title: "", message: "Done Chatting ?", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        let acceptAction: UIAlertAction = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
+            
+            self.firebaseManager.questionPathFirebase.setValue("_Done_")
+            self.performSegueWithIdentifier("unWindHome", sender: self)
+            
+            
+        }
+        
+        let declineAction: UIAlertAction = UIAlertAction(title: "No", style: UIAlertActionStyle.Cancel) { (alertAction) -> Void in
+            
+        }
+        
+        alert.addAction(acceptAction)
+        alert.addAction(declineAction)
+        
+        NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
+        
+    }
+    
     
     func questTime() {
         var userName = ""
@@ -67,6 +132,10 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
         
         if (countQuestions == 2 || countQuestions == 5) {
             question = fieldQuestion
+            
+            if (countQuestions == 5) {
+                doneButton.alpha = 1.0
+            }
         }
         
         let completeQuestion = userName + "," + question
@@ -76,8 +145,7 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
             updateQuestionLabel(completeQuestion)
             
         }
-        
-        
+
         
     }
 
@@ -98,8 +166,8 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
         
         let acceptAction: UIAlertAction = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
             
-            self.appDelegate.fireConnect.setValue("_end_chat_")
-            self.endButtonPressed = true
+            self.firebaseManager.questionPathFirebase.setValue("\(self.firebaseManager.userObject.firstName)_end_chat_")
+//            self.performSegueWithIdentifier("unwindExitQuestionHome", sender: self)
             
             
         }

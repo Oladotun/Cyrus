@@ -48,6 +48,8 @@ protocol FirebaseMapDelegate {
 
 protocol FirebaseQuestionDelegate {
     func updateQuestionLabel(question:String)
+    func chattingDone()
+    func meetUpCancelled(canceller:String)
 }
 
 class FirebaseManager: NSObject {
@@ -262,11 +264,25 @@ class FirebaseManager: NSObject {
         questionPathFirebase.observeEventType(.Value, withBlock: {
             snapshot in
             
-            if (!self.iamInitiator) {
+            
                 
                 if let value = snapshot.value as? String {
-                    print("\(value)") // call  question delegate
-                    self.fireBaseQuestDelegate?.updateQuestionLabel(value)
+                    
+                    if (value.contains("_end_chat_")) {
+                        let userInfo = value.componentsSeparatedByString("_end_chat_")
+                        self.fireBaseQuestDelegate?.meetUpCancelled(userInfo[0])
+                    }
+                    
+                if (!self.iamInitiator) {
+                    if (value.contains("_Done_")) {
+                        self.fireBaseQuestDelegate?.chattingDone()
+                    
+                    } else {
+                        print("\(value)") // call  question delegate
+                        self.fireBaseQuestDelegate?.updateQuestionLabel(value)
+                    
+                    }
+
                 }
                 
             }

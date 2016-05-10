@@ -70,6 +70,7 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
             firebaseManager.fireBaseDelegate = self
             userActiveOberverSet = false
             currAvailability.text = "Offline"
+            locationManager.delegate = self
             locationManager.startUpdatingLocation()
             foundDisplay()
             
@@ -208,6 +209,10 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         }
  
         
+    }
+    
+    @IBAction func unwindHomePageController(segue: UIStoryboardSegue) {
+//        print("Unwind to Root View Controller")
     }
     
 
