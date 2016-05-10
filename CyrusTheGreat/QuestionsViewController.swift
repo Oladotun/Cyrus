@@ -9,197 +9,73 @@
 import UIKit
 import Firebase
 
-class QuestionsViewController: UIViewController {
+class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
     
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-    var interestsCollected: String!
-//    var interestDictionary = Dictionary<String, Int>()
-    var interestSameArray: [String]!
+   
     
-    let questionPrelude:[String] = ["What are your favorite memories about ","Why do you like " ,"Why did you get into "]
-
+    let questionPrelude:[String] = ["Tell us your favorite memories about","Share a story on why you like" ,"Tell us why you got into"]
+    let fieldQuestion = "Tell us why you got into your field of study ?"
+    
     @IBOutlet weak var interestMatchLabel: UILabel!
     
-    var timer = NSTimer() //make a timer variable, but do not do anything yet
-    let timeInterval:NSTimeInterval = 1.0
-    
-    var numOfQuestions:Int = 1
-    
+    var countQuestions:Int = 0
+
     var endButtonPressed:Bool!
-    var firstTopicFire:Firebase!
-    var getMatchedTopicsFire:Firebase!
-    var firstTopic:String!
-    var questionController: Firebase!
-    var nextQuestionFire:Firebase!
-    var messageSetter:Bool!
-    var nextQuestionSelected:Bool!
+    
+    @IBOutlet weak var questionButton: UIButton!
+    var firebaseManager:FirebaseManager!
      var seenTopics = [String]()
+    
    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        endButtonPressed = false
-//        NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
-//            
-//            self.fireBaseBusiness()
-//            
-//        }
-//       
-//        interestMatchLabel.text = "What is your favorite thing about \(appDelegate.matchedTopic) ?"
-//        timer = NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: "questTime", userInfo: nil, repeats: true)
-        
-        // Do any additional setup after loading the view.
-        
-        messageSetter  = false
-        nextQuestionSelected = false
+        firebaseManager = appDelegate.userFirebaseManager
+        firebaseManager.observeQuestionFirebase()
+        firebaseManager.fireBaseQuestDelegate = self
+        if (firebaseManager.iamInitiator) {
+            questionButton.alpha = 1.0
+        } else {
+            questionButton.alpha = 0.0
+        }
+        interestMatchLabel.text = "Press the next question button to start"
+        interestMatchLabel.preferredMaxLayoutWidth = 350
         
         
-        firstTopicFire = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(self.appDelegate.fireUID)/firstTopic")
-        var questionAskedCount = 0
         
-        
-        firstTopicFire.observeEventType(.Value, withBlock: {
-            snapshot in
-            
-            if (snapshot.value is NSNull) {
-                print("we have a problem")
-            } else {
-                let receiveSentence = (snapshot.value as! String)
-//                let prelude = self.questionPrelude.randomItem()
-                
-                let splitSent = receiveSentence.componentsSeparatedByString("_/|")
-                print(splitSent)
-                questionAskedCount = questionAskedCount + 1
-                
-                if (splitSent.count > 1) {
-                    self.interestMatchLabel.text = "\(splitSent[0]) \(splitSent[1]) ?"
-                    
-                } else {
-                    self.interestMatchLabel.text = "Why do you like \(receiveSentence) ?"
-                    self.firstTopic = receiveSentence
-                    
-                }
-//                let preludePresent = self.firstTopic
-                
-                
-//                self.timer = NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: "questTime", userInfo: nil, repeats: true)
-                
-            }
-            
-        })
-        
-        
-        getMatchedTopicsFire = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(self.appDelegate.fireUID)/matchedTopics")
-        
-        getMatchedTopicsFire.observeEventType(.Value, withBlock: {
-            snapshot in
-            
-            if(snapshot.value is NSNull) {
-                print("Problem getting matched topics from question page")
-            } else {
-                self.interestSameArray = (snapshot.value as! [String])
-                
-            }
-        })
-        
-        questionController = Firebase(url: "https://cyrusthegreat.firebaseio.com/\(self.appDelegate.fireUID)/questionController")
-        
-        questionController.observeEventType(.Value, withBlock: {
-            snapshot in
-            
-            if(snapshot.value is NSNull) {
-                print("Problem present in extracting question")
-            } else {
-                
-                let questionAsker = (snapshot.value as! String)
-                
-                if (questionAsker == "Not Set"){
-                    self.questionController.setValue(self.appDelegate.userIdentifier)
-                    
-                } else {
-                    
-                    if (questionAsker == self.appDelegate.userIdentifier) {
-                        self.messageSetter = true
-                    }
-                    
-                    
-                }
-            }
-        })
-        
-        nextQuestionFire = appDelegate.meetUpFire.childByAppendingPath("nextQuestion")
-        let nextQuestion = [appDelegate.userIdentifier: "no"]
-        
-        nextQuestionFire.updateChildValues(nextQuestion)
-        
-        
-        nextQuestionFire.observeEventType(.Value, withBlock: {
-            snapshot in
-            if (snapshot.childrenCount > 0) {
-                
-                for child in snapshot.children {
-                    
-                    if child.key != self.appDelegate.userIdentifier {
-                        
-                        let childSnapshot = snapshot.childSnapshotForPath(child.key)
-                        
-                         if let nextQuestionSelectedValue = childSnapshot.value as? String {
-                            
-                            if (nextQuestionSelectedValue == "yes" && self.nextQuestionSelected == true) {
-                             
-                                self.seenTopics.append(self.firstTopic)
-                                if (self.messageSetter == true) {
-                                
-                                    if (self.interestSameArray.count < 5 && (self.seenTopics.count == self.interestSameArray.count) ) {
-                                        
-                                        self.firstTopicFire.setValue("Share the Story of why you_/|decided to go into your field of study")
-                                        
-                                    } else {
-                                        
-                                        if (self.seenTopics.count == 5) {
-                                           self.firstTopicFire.setValue("Share the Story of why you_/|decided to go into your field of study")
-                                        } else {
-                                            
-                                            var interest: String!
-                                            var topicFound = false
-                                            
-                                            repeat {
-                                                interest = self.interestSameArray.randomItem()
-                                                for seenTopic in self.seenTopics {
-                                                    if (interest == seenTopic) {
-                                                        topicFound = true
-                                                    }
-                                                }
-                                                
-                                            } while(topicFound == true)
-                                            self.seenTopics.append(interest)
-                                            
-                                            let prelude = self.questionPrelude.randomItem()
-                                            let topicToSend = "\(prelude)_/|\(interest)"
-                                            
-                                            
-                                            self.firstTopicFire.setValue(topicToSend)
-                                            
-                                        }
-                                        
-                                        
-                                        
-                                    }
-                                
-                                }
-                                
 
-                                self.nextQuestionSelected = false
-                                self.nextQuestionFire.updateChildValues(nextQuestion)
-                                
-                            }
-
-                        }
-                    }
-                }
-            }
-        })
+    }
+    
+    func updateQuestionLabel(question: String) {
+        interestMatchLabel.text = question
         
+    }
+    
+    func questTime() {
+        var userName = ""
+        var question = ""
+        
+        if (countQuestions % 2 == 0) {
+            userName = firebaseManager.userObject.firstName
+            
+        } else {
+            userName = firebaseManager.connectedUserInfo.user.firstName
+        }
+        
+        question = questionPrelude.randomItem() + " " + firebaseManager.connectedUserInfo.userMatchedInterest.randomItem() + "?"
+        
+        if (countQuestions == 2 || countQuestions == 5) {
+            question = fieldQuestion
+        }
+        
+        let completeQuestion = userName + "," + question
+        firebaseManager.questionPathFirebase.setValue(completeQuestion)
+        
+        if (firebaseManager.iamInitiator) {
+            updateQuestionLabel(completeQuestion)
+            
+        }
         
         
         
@@ -211,13 +87,9 @@ class QuestionsViewController: UIViewController {
     }
     
     @IBAction func nextQuestion(sender: AnyObject) {
-        self.nextQuestionSelected = true
-        
-        let nextQuestion = [appDelegate.userIdentifier: "yes"]
-        
-        nextQuestionFire.updateChildValues(nextQuestion)
-        
-        
+
+        questTime()
+        countQuestions = countQuestions + 1
     }
     
     @IBAction func exitButton(sender: AnyObject) {
@@ -244,39 +116,6 @@ class QuestionsViewController: UIViewController {
         }
     }
     
-    
-    
-    @IBAction func lastQuestion(sender: AnyObject) {
-    }
-    
-    func questTime() {
-        if (numOfQuestions >= 4) {
-            timer.invalidate()
-        } else {
-            if (numOfQuestions < 3) {
-                
-                let prelude = questionPrelude.randomItem()
-                var interest = interestSameArray.randomItem()
-                
-                while (interest == firstTopic) {
-                    interest = interestSameArray.randomItem()
-                }
-                
-                interestMatchLabel.text = "\(prelude) \(interest) ?"
-                
-            } else {
-                interestMatchLabel.text = "\(questionPrelude[2]) Engineering ?"
-            }
-            
-
-        }
-        
-         numOfQuestions = numOfQuestions + 1
-        
-        
-        
-        
-    }
 
     /*
     // MARK: - Navigation

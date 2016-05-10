@@ -46,6 +46,10 @@ protocol FirebaseMapDelegate {
     func updateETAInfo(ETA:NSTimeInterval)
 }
 
+protocol FirebaseQuestionDelegate {
+    func updateQuestionLabel(question:String)
+}
+
 class FirebaseManager: NSObject {
     
     var userState:Firebase!
@@ -58,6 +62,7 @@ class FirebaseManager: NSObject {
     var fireBaseDelegate: FirebaseHomeDelegate?
     var fireBaseChatDelegate: FirebaseChatDelegate?
     var fireBaseOtherUserLocationDelegate: FirebaseMapDelegate?
+    var fireBaseQuestDelegate: FirebaseQuestionDelegate?
     var foundCount = 0
     var setReceiver = false
     var meetUpSet = false
@@ -67,7 +72,9 @@ class FirebaseManager: NSObject {
     var myLocationPath:Firebase!
     var locationPathOtherUserFirebase:Firebase!
     var etaPathFirebase:Firebase!
+    var questionPathFirebase: Firebase!
     var meetPathHandler:UInt!
+    var iamInitiator = false
     
     
     func setUpCurrentUser(userId:String) {
@@ -239,10 +246,32 @@ class FirebaseManager: NSObject {
         self.locationPathOtherUserFirebase = myLocationUserFirebase()
         self.myLocationPath = meetPathWay.childByAppendingPath("location")
         self.etaPathFirebase = self.etaToDestination()
+        self.questionPathFirebase = self.questionUserFirebase()
         self.fireBaseDelegate?.segueToNextPage()
         self.observeChatMsgPath()
         self.observeChatAcceptPathObserve()
+//        self.observeQuestionFirebase()
         self.removeActiveUser(self.userId!)
+    }
+    
+    func questionUserFirebase() -> Firebase! {
+        return meetPathWay.childByAppendingPath("question")
+    }
+    
+    func observeQuestionFirebase() {
+        questionPathFirebase.observeEventType(.Value, withBlock: {
+            snapshot in
+            
+            if (!self.iamInitiator) {
+                
+                if let value = snapshot.value as? String {
+                    print("\(value)") // call  question delegate
+                    self.fireBaseQuestDelegate?.updateQuestionLabel(value)
+                }
+                
+            }
+            
+        })
     }
     
     func locationOtherUserFirebase() -> Firebase! {
@@ -494,6 +523,7 @@ class FirebaseManager: NSObject {
                 otherUser.setValue("Inviting_meetup_\(id)")
                 self.chatMessagePathFirebase = self.chatMessagePath()
                 let initiatorInfo = ["initiator": "\(userObject.userId)"]
+                self.iamInitiator = true
                 
                 generated.updateChildValues(initiatorInfo)
                 
@@ -631,6 +661,9 @@ class FirebaseManager: NSObject {
                                      let matchTopics =  self.findMatches(newFound.user.interests)
                                     print ("matched topics cout is \(matchTopics.count)")
                                     if (matchTopics.count > 0) {
+                                        newFound.userMatchedInterest = matchTopics
+                                        newFound.userMatchedCount = matchTopics.count
+                                        newFound.userDistance = distance
                                       self.allFound.append(newFound)
                                     }
                                     
