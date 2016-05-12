@@ -883,6 +883,9 @@
                                 <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
                                     <rect key="frame" x="121" y="472" width="51" height="31"/>
                                 </variation>
+                                <connections>
+                                    <action selector="switchChanged:" destination="FPe-MW-7Ug" eventType="valueChanged" id="aoF-zL-1rh"/>
+                                </connections>
                             </switch>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Availabilty:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Py8-6M-M26">
                                 <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
@@ -1504,7 +1507,7 @@
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                 <state key="normal" title="Next Question"/>
                                 <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="44" y="351" width="130" height="30"/>
+                                    <rect key="frame" x="44" y="272" width="130" height="30"/>
                                 </variation>
                                 <connections>
                                     <action selector="nextQuestion:" destination="DDq-FN-vDe" eventType="touchUpInside" id="DZE-wo-ai0"/>
@@ -1514,7 +1517,7 @@
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                 <state key="normal" title="Done"/>
                                 <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="216" y="351" width="130" height="30"/>
+                                    <rect key="frame" x="216" y="272" width="130" height="30"/>
                                 </variation>
                                 <connections>
                                     <action selector="doneButtonHit:" destination="DDq-FN-vDe" eventType="touchUpInside" id="MYx-FM-bmK"/>

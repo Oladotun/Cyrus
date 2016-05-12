@@ -71,14 +71,19 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         
     }
     
-    func switched(switchState: UISwitch) {
-        if switchState.on {
+    
+    @IBAction func switchChanged(sender: AnyObject) {
+        
+        let swh : UISwitch = sender as! UISwitch
+        if(swh.on){
+            swh.setOn(true, animated: true)//But it will already do it.
             currAvailability.text = "Online"
             firebaseManager.updateUserState("Active")
             firebaseManager.updateActiveUserFirebase()
             self.switchState = true
-            
-        } else {
+        }
+        else{
+            swh.setOn(false, animated: true)
             currAvailability.text = "Offline"
             firebaseManager.updateUserState("Not Active")
             firebaseManager.removeActiveUser(appDelegate.userIdentifier)

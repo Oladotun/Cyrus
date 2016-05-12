@@ -155,7 +155,7 @@ class FirebaseManager: NSObject {
                     if (value.contains("_meetup_") && self.meetUpSet == false) {
                         let meetUpInfo = value.componentsSeparatedByString("_meetup_")
                         let meetUpPath = meetUpInfo[1]
-                        print("abouta call meet path way")
+                        print("abouta call meet path way from userStateObserve")
                         
                         self.meetPathWay = Firebase(url: meetUpPath)
 //                        self.meetPathWay.onDisconnectRemoveValue() // Removef
@@ -192,58 +192,30 @@ class FirebaseManager: NSObject {
         }         
         chatMessagePathFirebase.observeEventType(.Value, withBlock: {
             snapshot in
-            if let val = snapshot.value as? String {
-                
-                if (!val.isEmpty) {
-                    let sendMsg = val.componentsSeparatedByString("_value_")
-                    
-                    if (sendMsg.count > 1) {
-                        if(sendMsg[0] != self.userId ){
-                            self.fireBaseChatDelegate?.iamSender = false
-                            
-                            if (sendMsg[1].contains("^_^")) {
-                                
-                                var itemAdd = sendMsg[1].componentsSeparatedByString("^_^")
-                                print(itemAdd[1])
-                                
-                                if (itemAdd.count > 1) {
-                                    
-                                    if (itemAdd[1].contains("*_*")) {
-                                        
-                                        let coordinateString = itemAdd[1].componentsSeparatedByString("*_*")
-                                        let latString = coordinateString[0]
-                                        let longString = coordinateString[1]
-                                        let lat = (latString as NSString).doubleValue
-                                        let long = (longString as NSString).doubleValue
-                                        
-                                        let latDegrees: CLLocationDegrees = lat
-                                        let longDegrees: CLLocationDegrees = long
-                                        let destinationLocation = CLLocation(latitude: latDegrees, longitude: longDegrees)
-                                        
-                                        //Update view after everything
-                                        self.fireBaseChatDelegate?.updateChat(itemAdd[0],location: destinationLocation)
-                                        
-                                    }
-                                    
-                                }
- 
-                            }
- 
-                        } 
+            
+            for child in snapshot.children {
+                let childSnapshot = snapshot.childSnapshotForPath(child.key)
+                if (child.key != self.userId) {
+                    if let value = childSnapshot.value as? [String:String] {
+                        self.fireBaseChatDelegate?.iamSender = false
+                        let destinationLocation = (value["location"])?.stringToCLLocation()
+                        let chatMsg = value["message"]
                         
+                        self.fireBaseChatDelegate?.updateChat(chatMsg!,location: destinationLocation!)
                     }
                     
-                } else {
-                    print("Message path not set")
                 }
                 
             }
+
         })
         
     }
     
-    func updateChatMsgPath(msg:String) {
-        chatMessagePathFirebase.setValue(msg)
+    func updateChatMsgPath(msg:String,toSend:[String:String]) {
+        
+        let info = [msg : toSend]
+        chatMessagePathFirebase.setValue(info)
     }
     
     func meetUpPropInitialize() {
@@ -268,8 +240,6 @@ class FirebaseManager: NSObject {
         questionPathFirebase.observeEventType(.Value, withBlock: {
             snapshot in
             
-            
-                
                 if let value = snapshot.value as? String {
                     
                     if (value.contains("_end_chat_")) {
@@ -465,7 +435,7 @@ class FirebaseManager: NSObject {
     
     func chatAcceptPath() -> Firebase! {
         guard let _ = meetPathWay else {
-            NSException(name: "Meet up not set", reason: "Meet up info not set", userInfo: nil).raise()
+            NSException(name: "Meet up not set in Chat Accept", reason: "Meet up info not set", userInfo: nil).raise()
             return nil
         }
         return meetPathWay.childByAppendingPath("chatAccept")
@@ -524,9 +494,9 @@ class FirebaseManager: NSObject {
                 updateUserState("Inviting")
                 
                 
-                let generated = createMeetUp()
+                self.meetPathWay = createMeetUp()
                 
-                let id = generated.description
+                let id = self.meetPathWay.description
                 
                 updateUserState("Inviting_meetup_\(id)")
                 otherUser.setValue("Inviting_meetup_\(id)")
@@ -534,7 +504,7 @@ class FirebaseManager: NSObject {
                 let initiatorInfo = ["initiator": "\(userObject.userId)"]
                 self.iamInitiator = true
                 
-                generated.updateChildValues(initiatorInfo)
+                self.meetPathWay.updateChildValues(initiatorInfo)
                 
             } else {
                 print ("user not found")
@@ -578,8 +548,8 @@ class FirebaseManager: NSObject {
         
 //        var userArray = [String]()
         var userArray = [String : String]()
-        userArray ["user_id"] = userObject.userId
-        userArray["name"] = userObject.firstName
+        userArray ["userId"] = userObject.userId
+        userArray["firstName"] = userObject.firstName
         userArray["schoolName"] = userObject.schoolName
         userArray["location"] = "\(userObject.location.coordinate.latitude) \(userObject.location.coordinate.longitude)"
         userArray["interests"] = userObject.interests.joinWithSeparator(",")
@@ -628,7 +598,7 @@ class FirebaseManager: NSObject {
                             
                             if (newFound.user.schoolName == self.userObject.schoolName) {
                                 
-                                newFound.user.userId = childValue["user_id"]
+                                newFound.user.userId = childValue["userId"]
                                 newFound.user.firstName = childValue["firstName"]
                                 let coordinateInString = childValue["location"]
                                 newFound.user.location = coordinateInString!.stringToCLLocation()
@@ -663,11 +633,6 @@ class FirebaseManager: NSObject {
 
         })
         
-//            userActiveUser.onDisconnectRemoveValueWithCompletionBlock({ error, user in
-//            if error != nil {
-//                println("Could not establish onDisconnect event: \(error)")
-//            }
-//        })
     }
     
     
