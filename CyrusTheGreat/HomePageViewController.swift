@@ -24,7 +24,12 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     var alertInvite:UIAlertController!
     var locationManager:CLLocationManager!
     var firebaseManager:FirebaseManager!
+    var firebaseHomeManager:FirebaseHomeManager!
     var userActiveOberverSet = false
+    
+    let invitingString = "Inviting"
+    let activeString = "Active"
+    let notActiveString = "Not Active"
     
     
     var findMorePeer = true
@@ -36,7 +41,17 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         
         super.viewDidLoad()
         locationManager =  appDelegate.locationManager
-        initialSetup()
+//        initialSetup()
+        availSwitch.setOn(false, animated:true)
+        firebaseHomeManager = FirebaseHomeManager()
+        firebaseHomeManager.setUpCurrentUser(appDelegate.userIdentifier)
+        firebaseHomeManager.updateUserState(notActiveString)
+        firebaseHomeManager.activateUserObserver()
+        userActiveOberverSet = false
+        currAvailability.text = "Offline"
+        locationManager.delegate = self
+        locationManager.distanceFilter = 20
+        locationManager.startUpdatingLocation()
 
 
     }
@@ -59,7 +74,7 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         appDelegate.userFirebaseManager = FirebaseManager()
         firebaseManager = appDelegate.userFirebaseManager
         firebaseManager.setUpCurrentUser(appDelegate.userIdentifier)
-        firebaseManager.updateUserState("Not Active")
+        firebaseManager.updateUserState(notActiveString)
         firebaseManager.activateUserObserver()
         firebaseManager.fireBaseDelegate = self
         userActiveOberverSet = false
@@ -78,16 +93,16 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         if(swh.on){
             swh.setOn(true, animated: true)//But it will already do it.
             currAvailability.text = "Online"
-            firebaseManager.updateUserState("Active")
-            firebaseManager.updateActiveUserFirebase()
+            firebaseHomeManager.updateUserState(activeString)
+            firebaseHomeManager.updateActiveUserFirebase()
             self.switchState = true
         }
         else{
             swh.setOn(false, animated: true)
             currAvailability.text = "Offline"
-            firebaseManager.updateUserState("Not Active")
-            firebaseManager.removeActiveUser(appDelegate.userIdentifier)
-            firebaseManager.userObject.status = "Not Active"
+            firebaseHomeManager.updateUserState(notActiveString)
+            firebaseHomeManager.removeActiveUser(appDelegate.userIdentifier)
+            firebaseHomeManager.userObject.status = notActiveString
             self.switchState = false
             locationManager.stopUpdatingLocation()
         }
@@ -96,11 +111,11 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         print("user location update called")
-        firebaseManager.updateUserLocation(locations.last!)
+        firebaseHomeManager.updateUserLocation(locations.last!)
         print ("user observer is \(userActiveOberverSet)")
         if (switchState == true) {
             print("Adding to activeUser")
-            firebaseManager.updateActiveUserFirebase()
+            firebaseHomeManager.updateActiveUserFirebase()
         }
         
     }

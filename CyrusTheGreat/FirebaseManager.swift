@@ -11,9 +11,6 @@ import Firebase
 import SwiftyJSON
 import CoreLocation
 
-
-
-
 protocol FirebaseHomeDelegate {
     func receiveInvite(inviter:String)
     func declineInvite()
@@ -561,8 +558,7 @@ class FirebaseManager: NSObject {
             print("userId not set")
             return
         }
-    
-        
+
         userActiveUser.observeEventType(.Value, withBlock: {
             snapshot in
             

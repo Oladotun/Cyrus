@@ -23,6 +23,7 @@
 		7CC3B1CE1CD8EB5400BB706A /* MapTrackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC3B1CD1CD8EB5400BB706A /* MapTrackViewController.swift */; };
 		7CCBAC2F1CE4CEA60094A511 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBAC2E1CE4CEA60094A511 /* User.swift */; };
 		7CCBAC311CE4CEB70094A511 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBAC301CE4CEB70094A511 /* UserProfile.swift */; };
+		7CCBAC331CE4CF930094A511 /* FirebaseHomeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBAC321CE4CF930094A511 /* FirebaseHomeManager.swift */; };
 		7CDC51961C88614F00D50F53 /* CollectionTwitterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDC51951C88614F00D50F53 /* CollectionTwitterViewController.swift */; };
 		7CDC51981C8862A700D50F53 /* CollectionTwitterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDC51971C8862A600D50F53 /* CollectionTwitterCollectionViewCell.swift */; };
 		7CE313271C97027C00634900 /* ChatViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE313261C97027C00634900 /* ChatViewCell.swift */; };
@@ -64,6 +65,7 @@
 		7CC3B1CD1CD8EB5400BB706A /* MapTrackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapTrackViewController.swift; sourceTree = "<group>"; };
 		7CCBAC2E1CE4CEA60094A511 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		7CCBAC301CE4CEB70094A511 /* UserProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
+		7CCBAC321CE4CF930094A511 /* FirebaseHomeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseHomeManager.swift; sourceTree = "<group>"; };
 		7CDC51951C88614F00D50F53 /* CollectionTwitterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionTwitterViewController.swift; sourceTree = "<group>"; };
 		7CDC51971C8862A600D50F53 /* CollectionTwitterCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionTwitterCollectionViewCell.swift; sourceTree = "<group>"; };
 		7CE313261C97027C00634900 /* ChatViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewCell.swift; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 				7CCBAC2E1CE4CEA60094A511 /* User.swift */,
 				7CCBAC301CE4CEB70094A511 /* UserProfile.swift */,
 				7CE6A4221CDCCAB600C86EDE /* FirebaseManager.swift */,
+				7CCBAC321CE4CF930094A511 /* FirebaseHomeManager.swift */,
 				7C03202C1C90A09A00E299D2 /* ChatViewController.swift */,
 				7C6701171CD7822D0049C37E /* SearchTableViewController.swift */,
 				7CE313261C97027C00634900 /* ChatViewCell.swift */,
@@ -349,6 +352,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7C17984D1CCF97B7004E31BE /* LoginPageViewController.swift in Sources */,
+				7CCBAC331CE4CF930094A511 /* FirebaseHomeManager.swift in Sources */,
 				7CED63881C75FC110003B19A /* SignUpPageViewController.swift in Sources */,
 				7C1155441CAD9A1F0041C012 /* QuestionsViewController.swift in Sources */,
 				7CC3B1CE1CD8EB5400BB706A /* MapTrackViewController.swift in Sources */,
