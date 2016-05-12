@@ -78,6 +78,7 @@ class FirebaseManager: NSObject {
     var questionPathFirebase: Firebase!
     var meetPathHandler:UInt!
     var iamInitiator = false
+    var userActiveFirebasePath:Firebase!
     
     
     func setUpCurrentUser(userId:String) {
@@ -131,6 +132,7 @@ class FirebaseManager: NSObject {
         userState = Firebase(url:"https://cyrusthegreat.firebaseio.com/users/\(myId)/status")
         userState.setValue(userStatus)
         userObject.status = userStatus
+        userState.onDisconnectSetValue("Not Active")
         userStateObserve()
     }
     
@@ -491,7 +493,9 @@ class FirebaseManager: NSObject {
         if (userExactPath == nil) {
             print ("not present")
         } else {
-             userExactPath.removeValue()
+ 
+                userExactPath.removeValue()
+            
         }
        
         
@@ -584,20 +588,24 @@ class FirebaseManager: NSObject {
             return
         }
         
-        var userArray = [String]()
+//        var userArray = [String]()
+        var userArray = [String : String]()
+        userArray ["user_id"] = userObject.userId
+        userArray["name"] = userObject.firstName
+        userArray["schoolName"] = userObject.schoolName
+        userArray["location"] = "\(userObject.location.coordinate.latitude) \(userObject.location.coordinate.longitude)"
         
-        userArray.append("user_id_<separator>_\(userObject.userId)")
-        userArray.append("name_<separator>_\(userObject.firstName)")
-        userArray.append("schoolName_<separator>_\(userObject.schoolName)")
-        userArray.append("location_<separator>_\(userObject.location.coordinate.latitude)_coordinate_\(userObject.location.coordinate.longitude)")
-        let interests = userObject.interests.joinWithSeparator(",")
-        userArray.append("interests_<separator>_\(interests)")
 
         let userIdLocation = [myId:userArray]
          print("Update active user called")
-        userActiveUser.updateChildValues(userIdLocation)
+         userActiveUser.updateChildValues(userIdLocation)
         
+        userActiveFirebasePath = userActiveUser.childByAppendingPath(userId)
+         userActiveFirebasePath.onDisconnectRemoveValue()
+
+    
     }
+    
     
     
     
@@ -623,71 +631,77 @@ class FirebaseManager: NSObject {
                     if child.key != myId {
                         let childSnapshot = snapshot.childSnapshotForPath(child.key)
                         
-                        if let childValue = childSnapshot.value as? [String] {
+                    if let childValue = childSnapshot.value as? [String:String] {
+                        
+                            print(childValue)
                             let newFound = userProfile()
                             newFound.user = User()
-                            
-                            for userProp in childValue {
-                                
-                                let propInfo = userProp.componentsSeparatedByString("_<separator>_")
-                                
-                                if (userProp.contains("user_id")) {
-                                    newFound.user.userId = propInfo[1]
-                                    
-                                }
-                                
-                                if (userProp.contains("name")) {
-                                    newFound.user.firstName = propInfo[1]
-                                }
-                                if (userProp.contains("schoolName")) {
-                                    newFound.user.schoolName = propInfo[1]
-                                }
-                                if (userProp.contains("interests")){
-                                    let interestString = propInfo[1]
-                                    let interests = interestString.componentsSeparatedByString(",")
-                                    newFound.user.interests = interests
-
-                                }
-                                
-                                if (userProp.contains("location")){
-                                    let coordinateInString = propInfo[1]
-                                    
-                                    let coordinateString = coordinateInString.componentsSeparatedByString("_coordinate_")
-                                    
-                                    let latString = coordinateString[0]
-                                    let longString = coordinateString[1]
-                                    
-                                    let lat = (latString as NSString).doubleValue
-                                    let long = (longString as NSString).doubleValue
-                                    
-                                    let latDegrees: CLLocationDegrees = lat
-                                    let longDegrees: CLLocationDegrees = long
-                                    newFound.user.location = CLLocation(latitude: latDegrees, longitude: longDegrees)
-                                    
-                                }
-                                
-                            }
-                            
-                            if (newFound.user.schoolName == self.userObject.schoolName) {
-                                
-                                print ("Found other user with same institution")
-                                let distance = newFound.user.location.distanceFromLocation(self.userObject.location)
-                                print("distance is \(distance) from each other")
-                                if (distance < 2000) {
-                                    print (newFound.user.interests)
-                                     let matchTopics =  self.findMatches(newFound.user.interests)
-                                    print ("matched topics cout is \(matchTopics.count)")
-                                    if (matchTopics.count > 0) {
-                                        newFound.userMatchedInterest = matchTopics
-                                        newFound.userMatchedCount = matchTopics.count
-                                        newFound.userDistance = distance
-                                      self.allFound.append(newFound)
-                                    }
-                                    
-                                }
-                                
-                            }
-
+                            newFound.user.userId = childValue["user_id"]
+                            newFound.user.firstName = childValue["firstName"]
+                            newFound.user.schoolName = childValue["schoolName"]
+                        
+//
+//                            for userProp in childValue {
+//                                
+//                                let propInfo = userProp.componentsSeparatedByString("_<separator>_")
+//                                
+//                                if (userProp.contains("user_id")) {
+//                                    newFound.user.userId = propInfo[1]
+//                                    
+//                                }
+//                                
+//                                if (userProp.contains("name")) {
+//                                    newFound.user.firstName = propInfo[1]
+//                                }
+//                                if (userProp.contains("schoolName")) {
+//                                    newFound.user.schoolName = propInfo[1]
+//                                }
+//                                if (userProp.contains("interests")){
+//                                    let interestString = propInfo[1]
+//                                    let interests = interestString.componentsSeparatedByString(",")
+//                                    newFound.user.interests = interests
+//
+//                                }
+//                                
+//                                if (userProp.contains("location")){
+//                                    let coordinateInString = propInfo[1]
+//                                    
+//                                    let coordinateString = coordinateInString.componentsSeparatedByString("_coordinate_")
+//                                    
+//                                    let latString = coordinateString[0]
+//                                    let longString = coordinateString[1]
+//                                    
+//                                    let lat = (latString as NSString).doubleValue
+//                                    let long = (longString as NSString).doubleValue
+//                                    
+//                                    let latDegrees: CLLocationDegrees = lat
+//                                    let longDegrees: CLLocationDegrees = long
+//                                    newFound.user.location = CLLocation(latitude: latDegrees, longitude: longDegrees)
+//                                    
+//                                }
+//                                
+//                            }
+//                            
+//                            if (newFound.user.schoolName == self.userObject.schoolName) {
+//                                
+//                                print ("Found other user with same institution")
+//                                let distance = newFound.user.location.distanceFromLocation(self.userObject.location)
+//                                print("distance is \(distance) from each other")
+//                                if (distance < 2000) {
+//                                    print (newFound.user.interests)
+//                                     let matchTopics =  self.findMatches(newFound.user.interests)
+//                                    print ("matched topics cout is \(matchTopics.count)")
+//                                    if (matchTopics.count > 0) {
+//                                        newFound.userMatchedInterest = matchTopics
+//                                        newFound.userMatchedCount = matchTopics.count
+//                                        newFound.userDistance = distance
+//                                      self.allFound.append(newFound)
+//                                    }
+//                                    
+//                                }
+//                                
+//                            }
+//
                         }
 
                     }
@@ -701,6 +715,12 @@ class FirebaseManager: NSObject {
             print(self.allFound.count)
 
         })
+        
+//            userActiveUser.onDisconnectRemoveValueWithCompletionBlock({ error, user in
+//            if error != nil {
+//                println("Could not establish onDisconnect event: \(error)")
+//            }
+//        })
     }
     
     

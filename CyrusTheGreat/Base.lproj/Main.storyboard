@@ -1493,7 +1493,8 @@
                                         <exclude reference="c5z-XP-Gbx"/>
                                     </mask>
                                 </variation>
-                                <variation key="heightClass=regular-widthClass=compact">
+                                <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="20" y="147" width="350" height="21"/>
                                     <mask key="constraints">
                                         <include reference="c5z-XP-Gbx"/>
                                     </mask>
@@ -1502,6 +1503,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="ohG-vI-Q98">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                 <state key="normal" title="Next Question"/>
+                                <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="44" y="351" width="130" height="30"/>
+                                </variation>
                                 <connections>
                                     <action selector="nextQuestion:" destination="DDq-FN-vDe" eventType="touchUpInside" id="DZE-wo-ai0"/>
                                 </connections>
@@ -1509,6 +1513,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dm2-Kf-s2N">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                 <state key="normal" title="Done"/>
+                                <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="216" y="351" width="130" height="30"/>
+                                </variation>
                                 <connections>
                                     <action selector="doneButtonHit:" destination="DDq-FN-vDe" eventType="touchUpInside" id="MYx-FM-bmK"/>
                                 </connections>
@@ -1536,18 +1543,18 @@
                                 <exclude reference="Dm2-Kf-s2N"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="Jwd-yx-TmL"/>
-                                <exclude reference="MMv-E4-ach"/>
-                                <exclude reference="bXu-uy-dHJ"/>
+                                <exclude reference="JRm-RD-CCz"/>
+                                <exclude reference="jKT-C2-Cgo"/>
+                                <exclude reference="H8L-6b-C2h"/>
+                                <exclude reference="IXH-xM-WcP"/>
+                                <exclude reference="xO2-fz-ldA"/>
                                 <exclude reference="jjQ-Cl-RIG"/>
                                 <exclude reference="kkd-fQ-d6m"/>
                                 <exclude reference="mkV-Qr-bIh"/>
                                 <exclude reference="ul4-5p-6SI"/>
-                                <exclude reference="H8L-6b-C2h"/>
-                                <exclude reference="IXH-xM-WcP"/>
-                                <exclude reference="xO2-fz-ldA"/>
-                                <exclude reference="JRm-RD-CCz"/>
-                                <exclude reference="jKT-C2-Cgo"/>
+                                <exclude reference="Jwd-yx-TmL"/>
+                                <exclude reference="MMv-E4-ach"/>
+                                <exclude reference="bXu-uy-dHJ"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
@@ -1557,18 +1564,18 @@
                                 <include reference="Dm2-Kf-s2N"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="Jwd-yx-TmL"/>
-                                <include reference="MMv-E4-ach"/>
-                                <include reference="bXu-uy-dHJ"/>
+                                <include reference="JRm-RD-CCz"/>
+                                <include reference="jKT-C2-Cgo"/>
+                                <include reference="H8L-6b-C2h"/>
+                                <include reference="IXH-xM-WcP"/>
+                                <include reference="xO2-fz-ldA"/>
                                 <include reference="jjQ-Cl-RIG"/>
                                 <include reference="kkd-fQ-d6m"/>
                                 <include reference="mkV-Qr-bIh"/>
                                 <include reference="ul4-5p-6SI"/>
-                                <include reference="H8L-6b-C2h"/>
-                                <include reference="IXH-xM-WcP"/>
-                                <include reference="xO2-fz-ldA"/>
-                                <include reference="JRm-RD-CCz"/>
-                                <include reference="jKT-C2-Cgo"/>
+                                <include reference="Jwd-yx-TmL"/>
+                                <include reference="MMv-E4-ach"/>
+                                <include reference="bXu-uy-dHJ"/>
                             </mask>
                         </variation>
                     </view>

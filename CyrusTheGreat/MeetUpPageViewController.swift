@@ -37,7 +37,7 @@ class MeetUpPageViewController: UIViewController, MapTrackerDelegate { // ,CBCen
         meetupDesc.text = "MeetUp Destination is at \(destination)"
         meetupTime.text = "Planned meetup time is \(time)"
         timeToMeetUpAlert.text = ""
-        yesButton.alpha = 0.0
+        yesButton.alpha = 1.0
         firebaseManager = appDelegate.userFirebaseManager
         
         segueToQuestionNode = firebaseManager.meetPathWay.childByAppendingPath("segueToQuestion")

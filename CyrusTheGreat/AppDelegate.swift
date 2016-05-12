@@ -63,22 +63,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        if (userFirebaseManager.meetPathWay != nil) {
-          self.userFirebaseManager.meetPathWay.removeValue()
-        }
-        if (userFirebaseManager.userId != nil) {
-            self.userFirebaseManager.removeActiveUser(userFirebaseManager.userId!)
-        }
+//        userFirebaseManager.updateUserState("InActive")
+        
+//        let userExactPath = Firebase(url:"https://cyrusthegreat.firebaseio.com/activeusers/\(userFirebaseManager.userId)")
+//        userFirebaseManager.updateUserState("Not Active")
+//        userFirebaseManager.disConnect(true)
+       
         
     }
-    
-    
-
-    
-    
-    
-    
-    
 
 
 }
