@@ -11,12 +11,12 @@ import Firebase
 import SwiftyJSON
 import CoreLocation
 
-protocol FirebaseHomeDelegate {
-    func receiveInvite(inviter:String)
-    func declineInvite()
-    func segueToNextPage()
-    func foundDisplay()
-}
+//protocol FirebaseHomeDelegate {
+//    func receiveInvite(inviter:String)
+//    func declineInvite()
+//    func segueToNextPage()
+//    func foundDisplay()
+//}
 
 protocol FirebaseChatDelegate {
     func updateChat(chatMsg:String, location:CLLocation)

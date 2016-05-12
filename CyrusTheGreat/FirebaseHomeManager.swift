@@ -10,6 +10,13 @@ import UIKit
 import Firebase
 import CoreLocation
 
+protocol FirebaseHomeDelegate {
+    func receiveInvite(inviter:String)
+    func declineInvite()
+    func segueToNextPage()
+    func foundDisplay()
+}
+
 class FirebaseHomeManager: NSObject {
     
     let cyrusUrl:String! = "https://cyrusthegreat.firebaseio.com/"
@@ -30,6 +37,7 @@ class FirebaseHomeManager: NSObject {
     var iamInitiator:Bool!
     var connectedUserInfo:UserProfile!
     var allFound = [UserProfile]() // found profiles
+    var delegate: FirebaseHomeDelegate?
     
 //    var userActiveUser = Firebase(url:"https://cyrusthegreat.firebaseio.com/activeusers/")
     
@@ -145,13 +153,14 @@ class FirebaseHomeManager: NSObject {
                                 self.setReceiver = true
                                 let receiverInfo = ["receiver": "\(self.userObject.userId)"]
 //                                print ("receiveInvite called")
-//                                self.fireBaseDelegate?.receiveInvite(snap)
+                               
                                 
-//                                for curr in self.allFound {
-//                                    if (curr.user.userId == snap ) {
-//                                        self.connectedUserInfo = curr
-//                                    }
-//                                }
+                                for curr in self.allFound {
+                                    if (curr.user.userId == snap ) {
+                                         self.delegate?.receiveInvite(curr.user.firstName)
+                                        self.connectedUserInfo = curr
+                                    }
+                                }
                                 
                                 self.meetUpPathWay.updateChildValues(receiverInfo)
                                 
@@ -248,8 +257,8 @@ class FirebaseHomeManager: NSObject {
                 self.sortAllFound()
             }
 //            self.foundCount = self.allFound.count
-//            self.fireBaseDelegate?.foundDisplay()
-            print(self.allFound.count)
+            self.delegate?.foundDisplay()
+//            print(self.allFound.count)
             
         })
         

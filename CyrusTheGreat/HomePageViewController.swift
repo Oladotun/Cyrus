@@ -52,6 +52,7 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         locationManager.delegate = self
         locationManager.distanceFilter = 20
         locationManager.startUpdatingLocation()
+        firebaseHomeManager.delegate = self
 
 
     }
@@ -110,11 +111,8 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print("user location update called")
         firebaseHomeManager.updateUserLocation(locations.last!)
-        print ("user observer is \(userActiveOberverSet)")
         if (switchState == true) {
-            print("Adding to activeUser")
             firebaseHomeManager.updateActiveUserFirebase()
         }
         
@@ -181,7 +179,7 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     }
     
     func foundDisplay() {
-        noOfPeer.text = "\(firebaseManager.foundCount)"
+        noOfPeer.text = "\(firebaseHomeManager.allFound.count)"
         
     }
     
@@ -205,12 +203,12 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
 
     @IBAction func meetUpClicked(sender: AnyObject) {
 //         availSwitch.setOn(true, animated:true)
-        if (firebaseManager.userObject.status == "Not Active") {
+        if (firebaseHomeManager.userObject.status == notActiveString) {
             
             print ("Go online")
             
         } else {
-            firebaseManager.meetUpClicked()
+            firebaseHomeManager.meetUpClicked()
         }
  
         
