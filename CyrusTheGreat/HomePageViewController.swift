@@ -35,48 +35,39 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        
         locationManager =  appDelegate.locationManager
-        firebaseManager = appDelegate.userFirebaseManager
-        
-        availSwitch.setOn(false, animated:true)
-        currAvailability.text = "Offline"
-        availSwitch.addTarget(self, action: Selector("switched:"), forControlEvents: UIControlEvents.ValueChanged)
-      
-        firebaseManager.setUpCurrentUser(appDelegate.userIdentifier)
-        firebaseManager.updateUserState("Not Active")
-        firebaseManager.fireBaseDelegate = self
-        
-        locationManager.delegate = self
-        locationManager.distanceFilter = 20
-        locationManager.startUpdatingLocation()
+        initialSetup()
 
-        foundDisplay()
-        alertInvite = nil
 
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         // When we return back from another page
-        // create new instance of firebase manager
+        // Re-initialize
         if (returned) {
-            availSwitch.setOn(false, animated:true)
-            
-            
-            appDelegate.userFirebaseManager = FirebaseManager()
-            firebaseManager = appDelegate.userFirebaseManager
-            firebaseManager.setUpCurrentUser(appDelegate.userIdentifier)
-            firebaseManager.updateUserState("Not Active")
-            firebaseManager.fireBaseDelegate = self
-            userActiveOberverSet = false
-            currAvailability.text = "Offline"
-            locationManager.delegate = self
-            locationManager.startUpdatingLocation()
-            foundDisplay()
+            initialSetup()
             
         }
         
+        
+    }
+    
+    func initialSetup() {
+        
+        availSwitch.setOn(false, animated:true)
+        appDelegate.userFirebaseManager = FirebaseManager()
+        firebaseManager = appDelegate.userFirebaseManager
+        firebaseManager.setUpCurrentUser(appDelegate.userIdentifier)
+        firebaseManager.updateUserState("Not Active")
+        firebaseManager.activateUserObserver()
+        firebaseManager.fireBaseDelegate = self
+        userActiveOberverSet = false
+        currAvailability.text = "Offline"
+        locationManager.delegate = self
+        locationManager.distanceFilter = 20
+        locationManager.startUpdatingLocation()
+        foundDisplay()
         
     }
     
@@ -106,13 +97,6 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
             print("Adding to activeUser")
             firebaseManager.updateActiveUserFirebase()
         }
-        if (!userActiveOberverSet) {
-            print("setting users up")
-            firebaseManager.activateUserObserver()
-            userActiveOberverSet = true
-            
-        }
-        
         
     }
     

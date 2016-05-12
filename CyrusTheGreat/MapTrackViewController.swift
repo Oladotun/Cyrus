@@ -193,7 +193,7 @@ extension MapTrackViewController: CLLocationManagerDelegate {
         myLocation = locations.last!
         self.drawMap(self.myLocation, otherUserLocation: self.otherUserLocation, destinationLocation: self.destinationLocation)
         
-        let userInfo = [self.appDelegate.userIdentifier: "\(myLocation.coordinate.latitude)_coordinate_\(myLocation.coordinate.longitude)"]
+        let userInfo = [self.appDelegate.userIdentifier: "\(myLocation.coordinate.latitude) \(myLocation.coordinate.longitude)"]
         
         appDelegate.userFirebaseManager.myLocationPath.updateChildValues(userInfo)
         

@@ -158,6 +158,7 @@ class FirebaseManager: NSObject {
                         print("abouta call meet path way")
                         
                         self.meetPathWay = Firebase(url: meetUpPath)
+//                        self.meetPathWay.onDisconnectRemoveValue() // Removef
                         self.meetUpSet = true
                         self.observeMeetPath()
                     }
@@ -338,24 +339,12 @@ class FirebaseManager: NSObject {
             snapshot in
             
             if let coordinateDistanceInString = snapshot.value as? String {
-                let coordinateString = coordinateDistanceInString.componentsSeparatedByString("_coordinate_")
                 
-                if (coordinateString.count > 1) {
-                    let latString = coordinateString[0]
-                    let longString = coordinateString[1]
-                    
-                    let lat = (latString as NSString).doubleValue
-                    let long = (longString as NSString).doubleValue
-                    
-                    let latDegrees: CLLocationDegrees = lat
-                    let longDegrees: CLLocationDegrees = long
-                    
-                    let otherUserLocation = CLLocation(latitude: latDegrees, longitude: longDegrees)
-                    
+                    let otherUserLocation = coordinateDistanceInString.stringToCLLocation()
                     self.fireBaseOtherUserLocationDelegate?.updateOtherUserLocation(otherUserLocation)
-                    
+                
                 }
-            }
+            
             
         })
         
@@ -421,8 +410,7 @@ class FirebaseManager: NSObject {
                         }
 
                     }
-                    
-                    
+  
                 }
   
             }
@@ -477,7 +465,7 @@ class FirebaseManager: NSObject {
     
     func chatAcceptPath() -> Firebase! {
         guard let _ = meetPathWay else {
-            print("meet up not set")
+            NSException(name: "Meet up not set", reason: "Meet up info not set", userInfo: nil).raise()
             return nil
         }
         return meetPathWay.childByAppendingPath("chatAccept")
@@ -568,7 +556,7 @@ class FirebaseManager: NSObject {
     
     func chatMessagePath() -> Firebase! {
         guard let _ = meetPathWay else {
-            print("meet up not set")
+            NSException(name: "Meet up not set", reason: "Meet up info not set", userInfo: nil).raise()
             return nil
         }
         return meetPathWay.childByAppendingPath("chatMsg")
@@ -579,7 +567,7 @@ class FirebaseManager: NSObject {
     func updateActiveUserFirebase() {
         print("Update active user called")
         guard let myId = userId else {
-            print("userId not set")
+            NSException(name: "User ID not set", reason: "UserId has not been set properly", userInfo: nil).raise()
             return
         }
         
@@ -594,7 +582,7 @@ class FirebaseManager: NSObject {
         userArray["name"] = userObject.firstName
         userArray["schoolName"] = userObject.schoolName
         userArray["location"] = "\(userObject.location.coordinate.latitude) \(userObject.location.coordinate.longitude)"
-        
+        userArray["interests"] = userObject.interests.joinWithSeparator(",")
 
         let userIdLocation = [myId:userArray]
          print("Update active user called")
@@ -631,82 +619,41 @@ class FirebaseManager: NSObject {
                     if child.key != myId {
                         let childSnapshot = snapshot.childSnapshotForPath(child.key)
                         
-                    if let childValue = childSnapshot.value as? [String:String] {
-                        
+                        if let childValue = childSnapshot.value as? [String:String] {
+                            
                             print(childValue)
                             let newFound = userProfile()
                             newFound.user = User()
-                            newFound.user.userId = childValue["user_id"]
-                            newFound.user.firstName = childValue["firstName"]
                             newFound.user.schoolName = childValue["schoolName"]
-                        
-//
-//                            for userProp in childValue {
-//                                
-//                                let propInfo = userProp.componentsSeparatedByString("_<separator>_")
-//                                
-//                                if (userProp.contains("user_id")) {
-//                                    newFound.user.userId = propInfo[1]
-//                                    
-//                                }
-//                                
-//                                if (userProp.contains("name")) {
-//                                    newFound.user.firstName = propInfo[1]
-//                                }
-//                                if (userProp.contains("schoolName")) {
-//                                    newFound.user.schoolName = propInfo[1]
-//                                }
-//                                if (userProp.contains("interests")){
-//                                    let interestString = propInfo[1]
-//                                    let interests = interestString.componentsSeparatedByString(",")
-//                                    newFound.user.interests = interests
-//
-//                                }
-//                                
-//                                if (userProp.contains("location")){
-//                                    let coordinateInString = propInfo[1]
-//                                    
-//                                    let coordinateString = coordinateInString.componentsSeparatedByString("_coordinate_")
-//                                    
-//                                    let latString = coordinateString[0]
-//                                    let longString = coordinateString[1]
-//                                    
-//                                    let lat = (latString as NSString).doubleValue
-//                                    let long = (longString as NSString).doubleValue
-//                                    
-//                                    let latDegrees: CLLocationDegrees = lat
-//                                    let longDegrees: CLLocationDegrees = long
-//                                    newFound.user.location = CLLocation(latitude: latDegrees, longitude: longDegrees)
-//                                    
-//                                }
-//                                
-//                            }
-//                            
-//                            if (newFound.user.schoolName == self.userObject.schoolName) {
-//                                
-//                                print ("Found other user with same institution")
-//                                let distance = newFound.user.location.distanceFromLocation(self.userObject.location)
-//                                print("distance is \(distance) from each other")
-//                                if (distance < 2000) {
-//                                    print (newFound.user.interests)
-//                                     let matchTopics =  self.findMatches(newFound.user.interests)
-//                                    print ("matched topics cout is \(matchTopics.count)")
-//                                    if (matchTopics.count > 0) {
-//                                        newFound.userMatchedInterest = matchTopics
-//                                        newFound.userMatchedCount = matchTopics.count
-//                                        newFound.userDistance = distance
-//                                      self.allFound.append(newFound)
-//                                    }
-//                                    
-//                                }
-//                                
-//                            }
-//
+                            
+                            if (newFound.user.schoolName == self.userObject.schoolName) {
+                                
+                                newFound.user.userId = childValue["user_id"]
+                                newFound.user.firstName = childValue["firstName"]
+                                let coordinateInString = childValue["location"]
+                                newFound.user.location = coordinateInString!.stringToCLLocation()
+                                
+                                let distance = newFound.user.location.distanceFromLocation(self.userObject.location)
+                                
+                                if (distance < 2000) {
+                                    newFound.user.interests = (childValue["interests"])?.componentsSeparatedByString(",")
+                                    let matchTopics =  self.findMatches(newFound.user.interests)
+                                    print ("matched topics cout is \(matchTopics.count)")
+                                    if (matchTopics.count > 0) {
+                                        newFound.userMatchedInterest = matchTopics
+                                        newFound.userMatchedCount = matchTopics.count
+                                        newFound.userDistance = distance
+                                      self.allFound.append(newFound)
+                                    }
+                                    
+                                }
+                                
+                            }
                         }
 
-                    }
-
                 }
+
+            }
                 
                 self.sortAllFound()
             }
@@ -755,6 +702,28 @@ class FirebaseManager: NSObject {
     }
     
 
+}
+
+extension String {
+    func stringToCLLocation() -> CLLocation{
+        let coordinateString = self.componentsSeparatedByString(" ")
+        
+        if (coordinateString.count < 2) {
+            NSException(name: "Coordinate String Array Error", reason: "The coordinate string after split contains 1 or less elements", userInfo: nil).raise()
+        }
+        
+        let latString = coordinateString[0]
+        let longString = coordinateString[1]
+        
+        let lat = (latString as NSString).doubleValue
+        let long = (longString as NSString).doubleValue
+        
+        let latDegrees: CLLocationDegrees = lat
+        let longDegrees: CLLocationDegrees = long
+        
+        return CLLocation(latitude: latDegrees, longitude: longDegrees)
+        
+    }
 }
 
 extension Array {

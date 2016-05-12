@@ -190,12 +190,16 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
     
         let toSendMessage = chatMessage + "\n" + chatDate
         let sendCoordinateString = "\(selectedCoordinate.latitude)*_*\(selectedCoordinate.longitude)"
+        
         if messageCount < 11 && !chatMessage.isEmpty {
             print("message to send \(toSendMessage)")
             updateChatDate()
             
             self.updateChat(toSendMessage, location: destinationLocation)
             iamSender = true
+            
+//            let userMessageToSend = [String:String]()
+//            userMessageToSend["message"] = ""
             firebaseManager.updateChatMsgPath("\(appDelegate.userIdentifier)_value_\(toSendMessage)^_^\(sendCoordinateString)")
             txtChat.text = ""
             
