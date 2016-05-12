@@ -30,6 +30,8 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     let invitingString = "Inviting"
     let activeString = "Active"
     let notActiveString = "Not Active"
+    let yesString = "Yes"
+    let noString = "No"
     
     
     var findMorePeer = true
@@ -150,11 +152,9 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         
         let acceptAction: UIAlertAction = UIAlertAction(title: "Accept", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
             
-            
-            
             NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
                 // Set up fire UID of user
-                self.firebaseManager.updateChatMeetUp("Yes")
+                self.firebaseHomeManager.updateChatMeetUp(self.yesString)
                 
                 
             }
@@ -162,7 +162,7 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         }
         
         let declineAction: UIAlertAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel) { (alertAction) -> Void in
-            self.firebaseManager.updateChatMeetUp("No")
+            self.firebaseHomeManager.updateChatMeetUp(self.noString)
   
         }
         
@@ -231,9 +231,13 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         if segue.identifier == "idSegueChat" {
             
             let destinationVC = segue.destinationViewController as! ChatViewController
-            self.chatInitiator = !self.firebaseManager.setReceiver
-            firebaseManager.removeMeetHandler()
-            firebaseManager.meetUpSet = false
+            self.chatInitiator = !self.firebaseHomeManager.setReceiver
+            
+            destinationVC.firebaseChatManager = FirebaseChatManager(meetUpPath: self.firebaseHomeManager.meetUpPathWay,currUserId: appDelegate.userIdentifier)
+            appDelegate.otherUserIdentifieir = firebaseHomeManager.connectedUserInfo.user.userId
+            
+            firebaseHomeManager.removeMeetHandler()
+            firebaseHomeManager.meetUpSet = false
             returned = true
             locationManager.stopUpdatingLocation()
             
@@ -248,3 +252,4 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
 
 
 }
+

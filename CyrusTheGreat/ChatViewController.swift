@@ -43,6 +43,9 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
     var userInvolved: Firebase!
     
     var firebaseManager: FirebaseManager!
+    
+    var firebaseChatManager: FirebaseChatManager!
+    
     var selectedCoordinate:CLLocationCoordinate2D!
     var destinationLocation: CLLocation!
     
@@ -62,12 +65,14 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
         super.viewDidLoad()
         
         iamSender = false
-        firebaseManager = appDelegate.userFirebaseManager
-        firebaseManager.fireBaseChatDelegate = self
+//        firebaseManager = appDelegate.userFirebaseManager
+//        firebaseManager.fireBaseChatDelegate = self
+//        
+//        self.appDelegate.otherUserIdentifieir = firebaseManager.connectedUserInfo.user.userId
+//        appDelegate.userIdentifier = firebaseManager.userId
         
-        self.appDelegate.otherUserIdentifieir = firebaseManager.connectedUserInfo.user.userId
-        appDelegate.userIdentifier = firebaseManager.userId
-
+        firebaseChatManager.userId = appDelegate.userIdentifier
+        firebaseChatManager.delegate = self
 
         // Do any additional setup after loading the view.
         tblChat.delegate = self
@@ -156,7 +161,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
     }
     
     func meetUpCancelled(canceller: String) {
-        firebaseManager.meetPathWay.removeValue()
+        firebaseChatManager.meetUpPathWay.removeValue()
         let alert = UIAlertController(title:"",message: "\(canceller) Ended the chat", preferredStyle: UIAlertControllerStyle.Alert)
         
         let doneAction: UIAlertAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
@@ -201,7 +206,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
             var userMessageToSend = [String:String]()
             userMessageToSend["message"] = toSendMessage
             userMessageToSend["location"] = sendCoordinateString
-            firebaseManager.updateChatMsgPath(appDelegate.userIdentifier,toSend: userMessageToSend)
+            firebaseChatManager.updateChatMsgPath(appDelegate.userIdentifier,toSend: userMessageToSend)
             txtChat.text = ""
             
             

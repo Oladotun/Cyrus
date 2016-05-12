@@ -18,12 +18,12 @@ import CoreLocation
 //    func foundDisplay()
 //}
 
-protocol FirebaseChatDelegate {
-    func updateChat(chatMsg:String, location:CLLocation)
-    var iamSender : Bool! {get set}
-    func segueToNextPage()
-    func meetUpCancelled(canceller:String)
-}
+//protocol FirebaseChatDelegate {
+//    func updateChat(chatMsg:String, location:CLLocation)
+//    var iamSender : Bool! {get set}
+//    func segueToNextPage()
+//    func meetUpCancelled(canceller:String)
+//}
 
 protocol FirebaseMapDelegate {
     func updateOtherUserLocation(location:CLLocation)
@@ -651,27 +651,7 @@ class FirebaseManager: NSObject {
 
 }
 
-extension String {
-    func stringToCLLocation() -> CLLocation{
-        let coordinateString = self.componentsSeparatedByString(" ")
-        
-        if (coordinateString.count < 2) {
-            NSException(name: "Coordinate String Array Error", reason: "The coordinate string after split contains 1 or less elements", userInfo: nil).raise()
-        }
-        
-        let latString = coordinateString[0]
-        let longString = coordinateString[1]
-        
-        let lat = (latString as NSString).doubleValue
-        let long = (longString as NSString).doubleValue
-        
-        let latDegrees: CLLocationDegrees = lat
-        let longDegrees: CLLocationDegrees = long
-        
-        return CLLocation(latitude: latDegrees, longitude: longDegrees)
-        
-    }
-}
+
 
 extension Array {
     func randomItem() -> Element {

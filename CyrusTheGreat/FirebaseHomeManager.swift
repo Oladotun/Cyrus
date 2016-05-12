@@ -24,7 +24,17 @@ class FirebaseHomeManager: NSObject {
     let invitingString = "Inviting"
     let activeString = "Active"
     let notActiveString = "Not Active"
+    let chatMeetupString = "chatMeetup"
+    let firstNameString = "firstName"
+    let userIdString = "userId"
+    let interestString = "interests"
+    let locationString = "location"
+    let schoolNameString = "schoolName"
+    
+    
+    
     var userObject:User!
+    var meetPathHandler:UInt!
     var userFirebase:Firebase!
     var allActiveUsers:Firebase!
     var userActiveFirebasePath:Firebase!
@@ -71,7 +81,7 @@ class FirebaseHomeManager: NSObject {
                 
                 if (child.key == "interests") {
                     self.userObject.interests = childSnapshot.value as! [String]
-                    print("my interest:")
+//                    print("my interest:")
                     print (self.userObject.interests)
                 }
                 
@@ -115,7 +125,7 @@ class FirebaseHomeManager: NSObject {
                 
                 for child in snapshot.children {
                     
-                    if (child.key == self.invitingString) {
+                    if (child.key == self.invitingString && self.meetUpSet == false) {
                         let childSnapshot = snapshot.childSnapshotForPath(child.key)
                         
                         if let meetUpPath = childSnapshot.value as? String {
@@ -136,7 +146,7 @@ class FirebaseHomeManager: NSObject {
     
     func observeMeetPath() {
         
-        meetUpPathWay.observeEventType(.Value, withBlock: {
+        meetPathHandler = meetUpPathWay.observeEventType(.Value, withBlock: {
             snapshot in
 
             for child in snapshot.children {
@@ -171,7 +181,7 @@ class FirebaseHomeManager: NSObject {
                     
                 }
                 
-                if (child.key == "chatMeetup") {
+                if (child.key == self.chatMeetupString) {
                     // print receiver info
                     
                     let childSnapshot = snapshot.childSnapshotForPath(child.key)
@@ -180,6 +190,8 @@ class FirebaseHomeManager: NSObject {
                         
                         if (snap == "Yes") {
                             // Initialize and Segue to next page
+//                            print("Chat accepted")
+                            self.delegate?.segueToNextPage()
 //                            self.meetUpPropInitialize()
                             
                         }
@@ -199,10 +211,15 @@ class FirebaseHomeManager: NSObject {
         })
     }
     
+    func updateChatMeetUp(status:String) {
+        let chatStatus = [chatMeetupString: status ]
+        self.meetUpPathWay.updateChildValues(chatStatus)
+    }
+    
     func activateUserObserver() {
         
         guard let myId = userId else {
-            print("userId not set")
+            NSException(name: "User ID not set", reason: "UserId has not been set properly", userInfo: nil).raise()
             return
         }
         
@@ -223,21 +240,21 @@ class FirebaseHomeManager: NSObject {
                             print(childValue)
                             let newFound = UserProfile()
                             newFound.user = User()
-                            newFound.user.schoolName = childValue["schoolName"]
+                            newFound.user.schoolName = childValue[self.schoolNameString]
                             
                             if (newFound.user.schoolName == self.userObject.schoolName) {
                                 
-                                newFound.user.userId = childValue["userId"]
-                                newFound.user.firstName = childValue["firstName"]
-                                let coordinateInString = childValue["location"]
+                                newFound.user.userId = childValue[self.userIdString]
+                                newFound.user.firstName = childValue[self.firstNameString]
+                                let coordinateInString = childValue[self.locationString]
                                 newFound.user.location = coordinateInString!.stringToCLLocation()
                                 
                                 let distance = newFound.user.location.distanceFromLocation(self.userObject.location)
                                 
                                 if (distance < 2000) {
-                                    newFound.user.interests = (childValue["interests"])?.componentsSeparatedByString(",")
+                                    newFound.user.interests = (childValue[self.interestString])?.componentsSeparatedByString(",")
                                     let matchTopics =  self.findMatches(newFound.user.interests)
-                                    print ("matched topics cout is \(matchTopics.count)")
+
                                     if (matchTopics.count > 0) {
                                         newFound.userMatchedInterest = matchTopics
                                         newFound.userMatchedCount = matchTopics.count
@@ -256,9 +273,8 @@ class FirebaseHomeManager: NSObject {
                 
                 self.sortAllFound()
             }
-//            self.foundCount = self.allFound.count
+            
             self.delegate?.foundDisplay()
-//            print(self.allFound.count)
             
         })
         
@@ -360,14 +376,14 @@ class FirebaseHomeManager: NSObject {
     }
     // Call after everything is called
     func updateActiveUserFirebase() {
-        print("Update active user called")
+//        print("Update active user called")
         guard let myId = userId else {
             NSException(name: "User ID not set", reason: "UserId has not been set properly", userInfo: nil).raise()
             return
         }
         
         guard let _ = userObject.location else {
-            print("location not set")
+//            print("location not set")
             return
         }
         
@@ -380,13 +396,23 @@ class FirebaseHomeManager: NSObject {
         userArray["interests"] = userObject.interests.joinWithSeparator(",")
         
         let userIdLocation = [myId:userArray]
-        print("Update active user called")
+//        print("Update active user called")
         allActiveUsers.updateChildValues(userIdLocation)
         
         userActiveFirebasePath = allActiveUsers.childByAppendingPath(userId)
         userActiveFirebasePath.onDisconnectRemoveValue()
         
         
+    }
+    
+    func removeMeetHandler() {
+        guard let _ = meetPathHandler else {
+            
+            print("handler was not set")
+            return
+        }
+        
+        meetUpPathWay.removeObserverWithHandle(meetPathHandler)
     }
     
     func createMeetUp() -> Firebase {

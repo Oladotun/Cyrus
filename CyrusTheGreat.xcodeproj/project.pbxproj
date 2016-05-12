@@ -24,6 +24,7 @@
 		7CCBAC2F1CE4CEA60094A511 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBAC2E1CE4CEA60094A511 /* User.swift */; };
 		7CCBAC311CE4CEB70094A511 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBAC301CE4CEB70094A511 /* UserProfile.swift */; };
 		7CCBAC331CE4CF930094A511 /* FirebaseHomeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBAC321CE4CF930094A511 /* FirebaseHomeManager.swift */; };
+		7CCBAC351CE4EADA0094A511 /* FirebaseChatManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBAC341CE4EADA0094A511 /* FirebaseChatManager.swift */; };
 		7CDC51961C88614F00D50F53 /* CollectionTwitterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDC51951C88614F00D50F53 /* CollectionTwitterViewController.swift */; };
 		7CDC51981C8862A700D50F53 /* CollectionTwitterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDC51971C8862A600D50F53 /* CollectionTwitterCollectionViewCell.swift */; };
 		7CE313271C97027C00634900 /* ChatViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE313261C97027C00634900 /* ChatViewCell.swift */; };
@@ -66,6 +67,7 @@
 		7CCBAC2E1CE4CEA60094A511 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		7CCBAC301CE4CEB70094A511 /* UserProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		7CCBAC321CE4CF930094A511 /* FirebaseHomeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseHomeManager.swift; sourceTree = "<group>"; };
+		7CCBAC341CE4EADA0094A511 /* FirebaseChatManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseChatManager.swift; sourceTree = "<group>"; };
 		7CDC51951C88614F00D50F53 /* CollectionTwitterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionTwitterViewController.swift; sourceTree = "<group>"; };
 		7CDC51971C8862A600D50F53 /* CollectionTwitterCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionTwitterCollectionViewCell.swift; sourceTree = "<group>"; };
 		7CE313261C97027C00634900 /* ChatViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewCell.swift; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 				7CCBAC2E1CE4CEA60094A511 /* User.swift */,
 				7CCBAC301CE4CEB70094A511 /* UserProfile.swift */,
 				7CE6A4221CDCCAB600C86EDE /* FirebaseManager.swift */,
+				7CCBAC341CE4EADA0094A511 /* FirebaseChatManager.swift */,
 				7CCBAC321CE4CF930094A511 /* FirebaseHomeManager.swift */,
 				7C03202C1C90A09A00E299D2 /* ChatViewController.swift */,
 				7C6701171CD7822D0049C37E /* SearchTableViewController.swift */,
@@ -365,6 +368,7 @@
 				7CED63861C7355DC0003B19A /* FrontPageViewController.swift in Sources */,
 				7C1154411C99A5070041C012 /* MeetUpPageViewController.swift in Sources */,
 				7C7218A61CCCF8120016C15B /* CyrusTheGreat.xcdatamodeld in Sources */,
+				7CCBAC351CE4EADA0094A511 /* FirebaseChatManager.swift in Sources */,
 				7C3BF1DB1CC780940082AC03 /* MeetUpAndMapViewController.swift in Sources */,
 				7CCBAC311CE4CEB70094A511 /* UserProfile.swift in Sources */,
 				7CCBAC2F1CE4CEA60094A511 /* User.swift in Sources */,
