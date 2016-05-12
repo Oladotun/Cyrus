@@ -11,22 +11,8 @@ import Firebase
 import SwiftyJSON
 import CoreLocation
 
-class User: NSObject {
-    var userId:String!
-    var firstName:String!
-    var schoolName:String!
-    var location:CLLocation!
-    var interests:[String]!
-    var status:String!
-    
-}
 
-class userProfile {
-    var user:User!
-    var userDistance:Double!
-    var userMatchedInterest:[String]!
-    var userMatchedCount:Int!
-}
+
 
 protocol FirebaseHomeDelegate {
     func receiveInvite(inviter:String)
@@ -60,7 +46,7 @@ class FirebaseManager: NSObject {
     var userId:String?
     var userObject:User!
     var userFirebase:Firebase!
-    var allFound = [userProfile]()
+    var allFound = [UserProfile]()
     var meetPathWay: Firebase!
     var fireBaseDelegate: FirebaseHomeDelegate?
     var fireBaseChatDelegate: FirebaseChatDelegate?
@@ -69,7 +55,7 @@ class FirebaseManager: NSObject {
     var foundCount = 0
     var setReceiver = false
     var meetUpSet = false
-    var connectedUserInfo:userProfile!
+    var connectedUserInfo:UserProfile!
     var chatMessagePathFirebase:Firebase!
     var chatAcceptPathFirebase:Firebase!
     var myLocationPath:Firebase!
@@ -580,7 +566,7 @@ class FirebaseManager: NSObject {
         userActiveUser.observeEventType(.Value, withBlock: {
             snapshot in
             
-            self.allFound = [userProfile]()
+            self.allFound = [UserProfile]()
             
             if (self.userObject != nil) {
                 
@@ -592,7 +578,7 @@ class FirebaseManager: NSObject {
                         if let childValue = childSnapshot.value as? [String:String] {
                             
                             print(childValue)
-                            let newFound = userProfile()
+                            let newFound = UserProfile()
                             newFound.user = User()
                             newFound.user.schoolName = childValue["schoolName"]
                             
