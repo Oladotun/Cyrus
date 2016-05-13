@@ -52,7 +52,11 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate {
         
         if (schoolEmailField.text!.isEmpty || passwordField.text!.isEmpty || firstNameField.text!.isEmpty || lastNameField.text!.isEmpty ) { // || passwordField.text!.isEmpty || firstNameField.text!.isEmpty || lastNameField.text!.isEmpty
             
-            print ("Please fill the empty field above")
+//            print ("Please fill the empty field above")
+            
+            cyrusTalkLabel.text = "Empty field detected, Kindly fill it up."
+            cyrusTalkLabel.textColor = UIColor.redColor()
+            cyrusTalkLabel.textAlignment = NSTextAlignment.Left
             
         } else {
             
@@ -64,27 +68,7 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate {
                             // There was an error creating the account
                             print(error)
                         } else {
-                            let uid = result["uid"] as? String
-                            print("Successfully created user account with uid: \(uid)")
-                            print(uid)
-                            // Database might not be needed
-                            
-//                            let managedContext = self.appDelegate.managedObjectContext
-//                            
-//                            //2
-//                            let entity =  NSEntityDescription.entityForName("User", inManagedObjectContext:managedContext)
-//                            
-//                            let newUser = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
-//                            
-//                            newUser.setValue(uid!, forKey: "f_id")
-//                            newUser.setValue(self.schoolEmailField.text!, forKey: "email")
-//                            newUser.setValue(self.firstNameField.text!, forKey: "first_name")
-//                            newUser.setValue(self.lastNameField.text!, forKey: "last_name")
-                            
-                            
-                            
-                            
-                            
+
                             self.appDelegate.userFire.authUser(self.schoolEmailField.text!, password: self.passwordField.text!, withCompletionBlock: { error, authData in
                                 if error != nil {
                                     // Something went wrong. :(
@@ -108,9 +92,6 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate {
                                     //  - https://<YOUR-FIREBASE-APP>.firebaseio.com/users/<uid>
                                     self.appDelegate.userFire.childByAppendingPath("users")
                                         .childByAppendingPath(authData.uid).setValue(newUser)
-                                    
-                                    // Initialize mpc manager with user identifier
-//                                    self.appDelegate.mpcManager = MPCManager()
                                     self.performSegueWithIdentifier("connectTwitter", sender: self)
 
                                 }
@@ -119,27 +100,18 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate {
                                 
                                 
                             })
-                            
-                            
-//                            self.performSegueWithIdentifier("connectTwitter", sender: self)
-                            
-                            
-//                            do {
-//                                try managedContext.save()
-//                                
-//                                self.performSegueWithIdentifier("connectTwitter", sender: self)
-//                                print("user info was saved")
-//                            } catch let error as NSError {
-//                                print("Could not save \(error), \(error.userInfo)")
-//                            }
-                            
-                            
+   
                         }
                 })
                 
             } else {
                 
-                print ("wrong usa student domain")
+//                print ("wrong usa student domain")
+                cyrusTalkLabel.text = "Wrong Student Domain, Re-enter."
+                cyrusTalkLabel.textColor = UIColor.redColor()
+                cyrusTalkLabel.textAlignment = NSTextAlignment.Left
+
+                
                 
             }
 

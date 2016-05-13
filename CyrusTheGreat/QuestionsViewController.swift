@@ -12,31 +12,23 @@ import Firebase
 class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
     
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-   
-    
     let questionPrelude:[String] = ["Tell us your favorite memories about","Share a story on why you like" ,"Tell us why you got into"]
     let fieldQuestion = "Tell us why you got into your field of study ?"
-    
     @IBOutlet weak var interestMatchLabel: UILabel!
-    
     var countQuestions:Int = 0
-
     var endButtonPressed:Bool!
-    
     @IBOutlet weak var questionButton: UIButton!
     @IBOutlet weak var doneButton: UIButton!
-    var firebaseManager:FirebaseManager!
+    var firebaseQuestionManager:FirebaseQuestionManager!
      var seenTopics = [String]()
     
    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        firebaseManager = appDelegate.userFirebaseManager
-        firebaseManager.observeQuestionFirebase()
-        firebaseManager.fireBaseQuestDelegate = self
+        firebaseQuestionManager.delegate = self
         doneButton.alpha = 0.0
-        if (firebaseManager.iamInitiator) {
+        if (appDelegate.iamInitiator == true) {
             questionButton.alpha = 1.0
             
         } else {
@@ -52,13 +44,14 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
     }
     
     func updateQuestionLabel(question: String) {
+        
         interestMatchLabel.text = question
         
     }
     
     func meetUpCancelled(canceller:String) {
         
-        firebaseManager.meetPathWay.removeValue()
+        firebaseQuestionManager.meetUpPathWay.removeValue()
         let alert = UIAlertController(title:"",message: "\(canceller) ended meetings", preferredStyle: UIAlertControllerStyle.Alert)
         
         let doneAction: UIAlertAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
@@ -75,7 +68,8 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
     }
     
     func chattingDone() {
-        firebaseManager.meetPathWay.removeValue()
+        
+        firebaseQuestionManager.meetUpPathWay.removeValue()
         let alert = UIAlertController(title:"",message: "Meet Up Chat Done", preferredStyle: UIAlertControllerStyle.Alert)
         
         let doneAction: UIAlertAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
@@ -96,9 +90,8 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
         let alert = UIAlertController(title: "", message: "Done Chatting ?", preferredStyle: UIAlertControllerStyle.Alert)
         
         let acceptAction: UIAlertAction = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
-            
-            self.firebaseManager.questionPathFirebase.setValue("_Done_")
-            self.performSegueWithIdentifier("unWindHome", sender: self)
+        self.firebaseQuestionManager.questionPathFirebase.setValue("_Done_")
+        self.performSegueWithIdentifier("unWindHome", sender: self)
             
             
         }
@@ -113,22 +106,23 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
         NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
             self.presentViewController(alert, animated: true, completion: nil)
         }
+
         
     }
     
-    
+//    
     func questTime() {
         var userName = ""
         var question = ""
         
         if (countQuestions % 2 == 0) {
-            userName = firebaseManager.userObject.firstName
+            userName = appDelegate.userObject.firstName
             
         } else {
-            userName = firebaseManager.connectedUserInfo.user.firstName
+            userName = appDelegate.connectedProfile.user.firstName
         }
         
-        question = questionPrelude.randomItem() + " " + firebaseManager.connectedUserInfo.userMatchedInterest.randomItem() + "?"
+        question = questionPrelude.randomItem() + " " + appDelegate.connectedProfile.userMatchedInterest.randomItem() + "?"
         
         if (countQuestions == 2 || countQuestions == 5) {
             question = fieldQuestion
@@ -139,9 +133,9 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
         }
         
         let completeQuestion = userName + "," + question
-        firebaseManager.questionPathFirebase.setValue(completeQuestion)
+        firebaseQuestionManager.questionPathFirebase.setValue(completeQuestion)
         
-        if (firebaseManager.iamInitiator) {
+        if (appDelegate.iamInitiator == true) {
             updateQuestionLabel(completeQuestion)
             
         }
@@ -166,8 +160,8 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
         
         let acceptAction: UIAlertAction = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
             
-            self.firebaseManager.questionPathFirebase.setValue("\(self.firebaseManager.userObject.firstName)_end_chat_")
-//            self.performSegueWithIdentifier("unwindExitQuestionHome", sender: self)
+            let userEnd = [self.appDelegate.userObject.firstName : "_end_chat_"]
+            self.firebaseQuestionManager.questionPathFirebase.setValue(userEnd)
             
             
         }
@@ -196,3 +190,5 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
     */
 
 }
+
+

@@ -30,10 +30,7 @@ class MapTrackViewController: UIViewController {
     var myLocation: CLLocation!
     var otherUserLocation: CLLocation!
     
-    var locationFireBase: Firebase!
-    var locationExactBase: Firebase!
-    var locationArrived: Firebase!
-    
+    var firebaseMapManager:FirebaseMapManager!
     var destinationAnnotation:Annotation!
     var otherUserAnnotation:Annotation!
     var sourceAnnotation: Annotation!
@@ -59,9 +56,7 @@ class MapTrackViewController: UIViewController {
         theMap.delegate = self
         theMap.mapType = MKMapType.Standard
         
-        appDelegate.userFirebaseManager.fireBaseOtherUserLocationDelegate = self
-        appDelegate.userFirebaseManager.observeEtaOtherUser()
-        appDelegate.userFirebaseManager.observeLocationOtherUser()
+        firebaseMapManager.delegate = self
         destinationPlacemark = MKPlacemark(coordinate: destinationLocation.coordinate, addressDictionary: nil)
         
         myArrival = false
@@ -111,14 +106,15 @@ class MapTrackViewController: UIViewController {
         if (title == "first") {
             
             let userInfo = [self.appDelegate.userIdentifier: ETA]
-            appDelegate.userFirebaseManager.etaPathFirebase.updateChildValues(userInfo)
+//            appDelegate.userFirebaseManager.etaPathFirebase.updateChildValues(userInfo)
+            firebaseMapManager.etaPathFirebase.updateChildValues(userInfo)
             myETA = ETA
             let myETAString = myETA.stringFromTimeInterval(myETA)
             myETALabel.text = "I am \(myETAString) from destination"
             myArrival = calculateArrival(ETA)
             
             if(myArrival == true) {
-                print("I will stop updating location")
+//                print("I will stop updating location")
                 if (protocolCalled == 0) {
                     appDelegate.locationManager.stopUpdatingLocation()
                 }
@@ -163,7 +159,6 @@ class MapTrackViewController: UIViewController {
 extension MapTrackViewController: FirebaseMapDelegate {
     
     func updateOtherUserLocation(location:CLLocation) {
-        
         self.otherUserLocation = location
         self.drawMap(self.myLocation, otherUserLocation: self.otherUserLocation, destinationLocation: self.destinationLocation)
         let itemDist = self.otherUserLocation.distanceFromLocation(self.destinationLocation)
@@ -195,7 +190,8 @@ extension MapTrackViewController: CLLocationManagerDelegate {
         
         let userInfo = [self.appDelegate.userIdentifier: "\(myLocation.coordinate.latitude) \(myLocation.coordinate.longitude)"]
         
-        appDelegate.userFirebaseManager.myLocationPath.updateChildValues(userInfo)
+//        appDelegate.userFirebaseManager.myLocationPath.updateChildValues(userInfo)
+        firebaseMapManager.locationPath.updateChildValues(userInfo)
         
         if let destination = destinationLocation {
             
@@ -285,7 +281,7 @@ extension MapTrackViewController: MKMapViewDelegate {
                 quickestRouteForSegment = routeResponse.sort({$0.expectedTravelTime < $1.expectedTravelTime})[0]
                 quickestRouteForSegment?.polyline.title = title
                 
-                print("title: \(title) , expected time: \(quickestRouteForSegment?.expectedTravelTime)")
+//                print("title: \(title) , expected time: \(quickestRouteForSegment?.expectedTravelTime)")
                 self.labelFromETA((quickestRouteForSegment?.expectedTravelTime)!, title: title)
                 
                 var toRemove:MKOverlay!
@@ -303,7 +299,7 @@ extension MapTrackViewController: MKMapViewDelegate {
                 }
 
             } else {
-                print ("could not display routes")
+//                print ("could not display routes")
             }
         })
         

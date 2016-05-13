@@ -19,11 +19,9 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
     @IBOutlet weak var txtChat: UITextField!
     @IBOutlet weak var meetTimePicker: UIDatePicker!
     @IBOutlet weak var tblChat: UITableView!
-//    var messagesArray: [Dictionary<String,String>] = []
+
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-    
     var alertEndChat:UIAlertController!
-    
     var messagesArray: [String] = []
     
     @IBOutlet weak var warningLabel: UILabel!
@@ -33,17 +31,8 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
     var initiator = false
     
     var searChatControll: SearchTableViewController!
-    var handler:UInt!
-    
-//    var otherUserUID:String!
-    
+    var myName:String!
     var iamSender:Bool!
-    var chatMsgPath: Firebase!
-    var chatAcceptPath: Firebase!
-    var userInvolved: Firebase!
-    
-    var firebaseManager: FirebaseManager!
-    
     var firebaseChatManager: FirebaseChatManager!
     
     var selectedCoordinate:CLLocationCoordinate2D!
@@ -65,12 +54,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
         super.viewDidLoad()
         
         iamSender = false
-//        firebaseManager = appDelegate.userFirebaseManager
-//        firebaseManager.fireBaseChatDelegate = self
-//        
-//        self.appDelegate.otherUserIdentifieir = firebaseManager.connectedUserInfo.user.userId
-//        appDelegate.userIdentifier = firebaseManager.userId
-        
         firebaseChatManager.userId = appDelegate.userIdentifier
         firebaseChatManager.delegate = self
 
@@ -110,7 +93,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
         timeFormatter.timeStyle = NSDateFormatterStyle.ShortStyle
         
         chatDate = timeFormatter.stringFromDate(meetTimePicker.date)
-        print( "Time for chat meet \(chatDate)")
         
     }
     
@@ -121,7 +103,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
         alertEndChat = UIAlertController(title: "", message: "Are you sure you want to end chat and meet up", preferredStyle: UIAlertControllerStyle.Alert)
         
         let acceptAction: UIAlertAction = UIAlertAction(title: "Accept", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
-            self.firebaseManager.updateChatAccept("\(self.firebaseManager.userObject.firstName)*_*_end_chat_")
+            self.firebaseChatManager.updateChatAccept("\(self.myName)*_*_end_chat_")
         }
         
         let declineAction: UIAlertAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel) { (alertAction) -> Void in
@@ -142,7 +124,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
     // When the time for meet up, we ask the user if there have met up with this user
     
     func yesTapped() {
-        firebaseManager.updateChatAccept("Yes")
+        firebaseChatManager.updateChatAccept("Yes")
     }
     
     func noTapped() {
@@ -152,8 +134,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
     }
     func cancel() {
         
-        print ("cancelled was called from home")
-                
     }
     
     func segueToNextPage() {
@@ -178,7 +158,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
     }
     
     func selected(address: String,completeAddress:String,coordinate:CLLocationCoordinate2D) {
-        print ("table view selected")
+//        print ("table view selected")
         txtChat.text = address
         sendButton.alpha = 1.0
         chatMessage = address + "\n" + completeAddress
@@ -190,14 +170,14 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
     
     @IBAction func sendButton(sender: AnyObject) {
     
-        print(chatDate)
-        print(chatMessage)
+//        print(chatDate)
+//        print(chatMessage)
     
         let toSendMessage = chatMessage + "\n" + chatDate
         let sendCoordinateString = "\(selectedCoordinate.latitude) \(selectedCoordinate.longitude)"
         
         if messageCount < 11 && !chatMessage.isEmpty {
-            print("message to send \(toSendMessage)")
+//            print("message to send \(toSendMessage)")
             updateChatDate()
             
             self.updateChat(toSendMessage, location: destinationLocation)
@@ -214,7 +194,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
             if (chatMessage.isEmpty) {
                 warningLabel.text = "Cannot Send Empty String"
             } else {
-                print("Reached Chat Limit, Pls choose last sent location")
+//                print("Reached Chat Limit, Pls choose last sent location")
                 warningLabel.text = "Reached Chat Limit, Pls choose last sent location"
             }
         }
@@ -229,12 +209,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
         }
         
     }
-    
-    @IBAction func unwindToChat(segue:UIStoryboardSegue) {
-        print("unwinded")
-        
-    }
-    
+       
     
   
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -251,6 +226,8 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
             destVC.placeAddress = messageInfoArray[1]
             destVC.destination = messageInfoArray[0]
             destVC.destinationLocation = destinationLocation
+            destVC.firebaseMapManager = FirebaseMapManager(meetPath: firebaseChatManager.meetUpPathWay, myId: firebaseChatManager.userId, otherUserId: appDelegate.otherUserIdentifieir)
+            destVC.firebaseMeetupInfoManager = FirebaseMeetUpInfoManager(meetPath: firebaseChatManager.meetUpPathWay,myId:firebaseChatManager.userId)
 
         }
         
@@ -262,13 +239,14 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
         
         
     }
+    
+
 
 }
 
 extension ChatViewController: UITextFieldDelegate {
     // Chat method
     func textFieldDidBeginEditing(textField: UITextField) {
-        print("I began editing")
         if (textField == txtChat) {
             txtChat.text = ""
             txtChat.resignFirstResponder()
@@ -305,12 +283,7 @@ extension ChatViewController: UITableViewDataSource {
         cell.chatMessage.text = messagesArray[indexPath.row]
         cell.chatMessage.alpha = 1.0
         cell.chatMessage.scrollEnabled = false
-        
-        print("Cell is being printed")
-        print("count of message: \(messagesArray[indexPath.row])")
         if(indexPath.row == messagesArray.count - 1) {
-            print("I am displaying")
-            //            print(iamSender!)
             if (iamSender! == true) {
                 cell.yesButton.alpha = 0.0
                 cell.noButton.alpha = 0.0

@@ -20,14 +20,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var fireConnect: Firebase! // Connection for current user used in questions View Controller
     var fireUID: String!
     var interests: [String]!
-    var matchedTopic: String!
+//    var matchedTopic: String!
     var meetAccept: Bool!
     var userIdentifier:String! // uid from firebase
     var userFirstName: String!
     var otherUserIdentifieir: String!
+    var userObject:User!
+    var connectedProfile:UserProfile!
+    var iamInitiator:Bool! // Chat initiator
 
     var locationManager: CLLocationManager!
-    var userFirebaseManager: FirebaseManager!
+//    var userFirebaseManager: FirebaseManager!
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -35,7 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        mpcManager = MPCManager()
         userFire = Firebase(url: "https://cyrusthegreat.firebaseio.com/")
         meetAccept = false
-        userFirebaseManager = FirebaseManager()
+//        userFirebaseManager = FirebaseManager()
         
         locationManager = CLLocationManager()
         locationManager?.requestWhenInUseAuthorization()

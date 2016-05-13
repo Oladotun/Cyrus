@@ -19,6 +19,9 @@ class MeetUpAndMapViewController: UIViewController {
     var placeAddress:String!
     var destinationLocation:CLLocation!
     var meetUpPage:MeetUpPageViewController!
+    
+    var firebaseMapManager:FirebaseMapManager!
+    var firebaseMeetupInfoManager:FirebaseMeetUpInfoManager!
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -40,14 +43,12 @@ class MeetUpAndMapViewController: UIViewController {
             UIView.animateWithDuration(0.5, animations: {
                 self.meetUpInfoContainer.alpha = 1
                 self.locationContainer.alpha = 0
-//                self.containerViewB.alpha = 0
             })
         } else {
             
             UIView.animateWithDuration(0.5, animations: {
                 self.meetUpInfoContainer.alpha = 0
                 self.locationContainer.alpha = 1
-                //                self.containerViewB.alpha = 0
             })
             
         }
@@ -63,20 +64,23 @@ class MeetUpAndMapViewController: UIViewController {
         
         
         if (segue.identifier == "meetWearingSegue") {
-            print("Called wearing segue")
+//            print("Called wearing segue")
             let childViewController = segue.destinationViewController as! MeetUpPageViewController
             childViewController.time = time
             childViewController.destination = destination
-            meetUpPage = childViewController
+            childViewController.firebaseMeetUpManager = firebaseMeetupInfoManager
+            
+            meetUpPage = childViewController // use this map controller as delegate for map track
             
         }
         
         if (segue.identifier == "mapSegue") {
-            print("Called map segue")
+//            print("Called map segue")
             let childViewController = segue.destinationViewController as! MapTrackViewController
             childViewController.addressString = placeAddress
             childViewController.destinationLocation = destinationLocation
             childViewController.mapProtocol = meetUpPage
+            childViewController.firebaseMapManager = firebaseMapManager
             
 //            meetUpInfoContainer
             

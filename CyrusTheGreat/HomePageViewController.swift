@@ -11,7 +11,7 @@ import MultipeerConnectivity
 import Firebase
 import CoreLocation
 
-class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocationManagerDelegate { // MPCManagerDelegate
+class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocationManagerDelegate {
     
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     @IBOutlet weak var currAvailability: UILabel!
@@ -23,7 +23,7 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     var chatInitiator:Bool!
     var alertInvite:UIAlertController!
     var locationManager:CLLocationManager!
-    var firebaseManager:FirebaseManager!
+    
     var firebaseHomeManager:FirebaseHomeManager!
     var userActiveOberverSet = false
     
@@ -43,18 +43,8 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         
         super.viewDidLoad()
         locationManager =  appDelegate.locationManager
-//        initialSetup()
-        availSwitch.setOn(false, animated:true)
-        firebaseHomeManager = FirebaseHomeManager()
-        firebaseHomeManager.setUpCurrentUser(appDelegate.userIdentifier)
-        firebaseHomeManager.updateUserState(notActiveString)
-        firebaseHomeManager.activateUserObserver()
-        userActiveOberverSet = false
-        currAvailability.text = "Offline"
-        locationManager.delegate = self
-        locationManager.distanceFilter = 20
-        locationManager.startUpdatingLocation()
-        firebaseHomeManager.delegate = self
+        initialSetup()
+        
 
 
     }
@@ -65,7 +55,6 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         // Re-initialize
         if (returned) {
             initialSetup()
-            
         }
         
         
@@ -74,18 +63,20 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     func initialSetup() {
         
         availSwitch.setOn(false, animated:true)
-        appDelegate.userFirebaseManager = FirebaseManager()
-        firebaseManager = appDelegate.userFirebaseManager
-        firebaseManager.setUpCurrentUser(appDelegate.userIdentifier)
-        firebaseManager.updateUserState(notActiveString)
-        firebaseManager.activateUserObserver()
-        firebaseManager.fireBaseDelegate = self
+        firebaseHomeManager = FirebaseHomeManager()
+        firebaseHomeManager.setUpCurrentUser(appDelegate.userIdentifier)
+        firebaseHomeManager.updateUserState(notActiveString)
+        firebaseHomeManager.activateUserObserver()
         userActiveOberverSet = false
         currAvailability.text = "Offline"
         locationManager.delegate = self
         locationManager.distanceFilter = 20
+        appDelegate.iamInitiator = false
         locationManager.startUpdatingLocation()
+        firebaseHomeManager.delegate = self
+        self.switchState = false
         foundDisplay()
+
         
     }
     
@@ -120,34 +111,10 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         
     }
     
-    
-    
-    func setUpDisplayView() {
-        
-       displayView = UIView(frame: CGRect(x: view.frame.midX - 90, y: view.frame.midY - 25, width: 180, height: 50))
-       displayView.backgroundColor = UIColor.whiteColor()
-       displayView.alpha = 1.0
-       displayView.layer.cornerRadius = 10
-        
-        
-        //Here the spinnier is initialized
-        let activityView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
-        activityView.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-        activityView.startAnimating()
-        
-        let textLabel = UILabel(frame: CGRect(x: 60, y: 0, width: 200, height: 50))
-        textLabel.textColor = UIColor.grayColor()
-        textLabel.text = "Pairing You Up"
-        
-        displayView.addSubview(activityView)
-        displayView.addSubview(textLabel)
-        
-        view.addSubview(displayView)
-        
-    }
+
     
     func receiveInvite(inviter: String) {
-        print("Invite was received")
+//        print("Invite was received")
         alertInvite = UIAlertController(title: "", message: "\(inviter) wants to chat with you", preferredStyle: UIAlertControllerStyle.Alert)
         
         let acceptAction: UIAlertAction = UIAlertAction(title: "Accept", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
@@ -184,12 +151,13 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     }
     
     func declineInvite() {
-        print ("decline invite called")
+//        print ("decline invite called")
+        alertView("Your Invite was declined, Please try again")
         
     }
     
     func segueToNextPage() {
-        print ("going to next page")
+//        print ("going to next page")
         performSegueWithIdentifier("idSegueChat", sender: self)
     }
     
@@ -202,10 +170,10 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     
 
     @IBAction func meetUpClicked(sender: AnyObject) {
-//         availSwitch.setOn(true, animated:true)
+        
         if (firebaseHomeManager.userObject.status == notActiveString) {
             
-            print ("Go online")
+            alertView("Please Go Online")
             
         } else {
             firebaseHomeManager.meetUpClicked()
@@ -215,9 +183,26 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     }
     
     @IBAction func unwindHomePageController(segue: UIStoryboardSegue) {
-//        print("Unwind to Root View Controller")
+        alertView("Welcome Back Home")
     }
     
+    
+    func alertView(message:String) {
+        
+        let alert = UIAlertController(title:"",message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        
+        let doneAction: UIAlertAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
+            
+            alert.dismissViewControllerAnimated(true, completion: nil)
+        }
+        
+        alert.addAction(doneAction)
+        
+        NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+            self.presentViewController(alert, animated: true, completion: nil)
+        })
+        
+    }
 
 
     
@@ -235,6 +220,9 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
             
             destinationVC.firebaseChatManager = FirebaseChatManager(meetUpPath: self.firebaseHomeManager.meetUpPathWay,currUserId: appDelegate.userIdentifier)
             appDelegate.otherUserIdentifieir = firebaseHomeManager.connectedUserInfo.user.userId
+            destinationVC.myName = self.firebaseHomeManager.userObject.firstName
+            appDelegate.userObject = self.firebaseHomeManager.userObject
+            appDelegate.connectedProfile = self.firebaseHomeManager.connectedUserInfo
             
             firebaseHomeManager.removeMeetHandler()
             firebaseHomeManager.meetUpSet = false
@@ -244,6 +232,7 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
             self.switchState = false
             if (self.chatInitiator == true) {
                destinationVC.initiator = self.chatInitiator
+               appDelegate.iamInitiator = self.chatInitiator
             }
             
             

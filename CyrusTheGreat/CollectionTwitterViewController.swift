@@ -36,8 +36,6 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        
-//        topics = ["Pain","Miserable","Expected Everytime you", "begin greatness"]
         stringCollection.allowsMultipleSelection = true
         self.userLookUp()
         self.unwantedTopics.text = "label"
@@ -52,10 +50,6 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.topics.count
     }
-    
-//    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-//        return 2
-//    }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
@@ -72,7 +66,7 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
     }
     
     func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
-        print("You unselected \(indexPath.item)")
+//        print("You unselected \(indexPath.item)")
         let cell = collectionView.cellForItemAtIndexPath(indexPath) as! CollectionTwitterCollectionViewCell
         
 //        println(cell.selected)
@@ -101,13 +95,11 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        print("You selected \(indexPath.item)")
-        
-        
+//        print("You selected \(indexPath.item)")
         let cell = collectionView.cellForItemAtIndexPath(indexPath) as! CollectionTwitterCollectionViewCell
         cell.backgroundColor = UIColor.redColor()
         
-        print("curr cell selected: \(cell.selected)")
+//        print("curr cell selected: \(cell.selected)")
         
        
         
@@ -127,7 +119,7 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
     
     
     func updateLabel() {
-        print("Updated label")
+//        print("Updated label")
         dispatch_async(dispatch_get_main_queue(), {
             self.unwantedTopics.text =
                 (self.uselessTopicsArray.joinWithSeparator(","))
@@ -135,29 +127,8 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
     }
     
    
-//    // change background color when user touches cell
-//    func collectionView(collectionView: UICollectionView, didHighlightItemAtIndexPath indexPath: NSIndexPath) {
-//        let cell = collectionView.cellForItemAtIndexPath(indexPath)
-//        cell?.backgroundColor = UIColor.redColor()
-//    }
-//    
-//    // change background color back when user releases touch
-//    func collectionView(collectionView: UICollectionView, didUnhighlightItemAtIndexPath indexPath: NSIndexPath) {
-//        let cell = collectionView.cellForItemAtIndexPath(indexPath)
-//        cell?.backgroundColor = UIColor.blueColor()
-//    }
-    
-    
-//    func collectionView(collectionView: UICollectionView,layout collectionViewLayout: UICollectionViewLayout,
-//        sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-//            
-//            let image =  UILabel(
-//            return image!.size
-//    }
-    
-    
 
-    /*
+/*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -173,13 +144,13 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
     func userLookUp() {
         
         let accountType = account.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
-        print("In Connect To Twiiter")
+//        print("In Connect To Twiiter")
         
         account.requestAccessToAccountsWithType(accountType, options: nil,
             completion: {(success:Bool, error:NSError!) -> Void in
                 
-                print("In Completion Mode")
-                print(success)
+//                print("In Completion Mode")
+//                print(success)
                 
                 if success {
                     let arrayOfAccounts = self.account.accountsWithAccountType(accountType)
@@ -201,22 +172,24 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
                                     let userInfoDictionary = try NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.MutableLeaves)
 //                                    print(userInfoDictionary)
                                     self.userFriends = userInfoDictionary["friends_count"] as! Int
-                                    print(self.userFriends)
+//                                    print(self.userFriends)
                                     if (self.userFriends > 200) {
                                         // TODO Visit more pages in future
                                         self.userFriends = 200
                                         self.getUserInfo()
                                     } else if (self.userFriends < 2) {
                                         
-                                        print("Please follow someone you are interested in on twitter")
+//                                        print("Please follow someone you are interested in on twitter")
                                         // TODO Check the users list membership
+                                        self.alertView("Please follow more people you are interested in on twitter so we can infer your interests")
                                         
                                     } else {
                                         self.getUserInfo()
                                     }
                                     
                                 } catch {
-                                    print(error)
+//                                    print(error)
+                                    self.alertView("Error occured while inferring interest")
                                 }
                                
                                 
@@ -225,11 +198,13 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
                         
                         
                     } else {
-                        print("No account to access")
+//                        print("No account to access")
+                        self.alertView("There are no twitter accounts currently set up")
                     }
                     
                 } else {
-          print("Could not access")
+//          print("Could not access")
+                    self.alertView("Could not access your twitter account")
                 }
         })
         
@@ -258,7 +233,8 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
                     self.userCollected =  dataSourceDictionary["users"] as! [(AnyObject)]
                     self.sortUserByUserCount()
                 } catch {
-                    print(error)
+//                    print(error)
+                    self.alertView("Error while getting users from twitter")
                 }
                 
                 
@@ -281,13 +257,13 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
         var sortedArray = userToFollower.sort( {$0.1 > $1.1})
         //        print("User Follower\n")
         
-        print("\nUser sorted \n")
+//        print("\nUser sorted \n")
         
         if (sortedArray.count > 5) {
             sortedArray = Array(sortedArray[0..<5])
             
         }
-        print(sortedArray)
+//        print(sortedArray)
         getFriendLists(sortedArray)
         
     }
@@ -300,7 +276,7 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
         
 //    for info in input {
         let info = input[0]
-        print(info.0)
+//        print(info.0)
         
         let parameters = ["screen_name":info.0,"trim_user": "1", "count" : "300"]
         let postRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: requestURL, parameters: parameters as [NSObject : AnyObject])
@@ -337,7 +313,9 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
                     })
                     
                 } catch {
-                    print(error)
+//                    print(error)
+//                    NSException(name: "Error at UserToList", reason: "Post request returned error", userInfo: nil).raise()
+                    self.alertView("Error Occured while getting User List")
                 }
                 
                 
@@ -351,7 +329,7 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
         
         dispatch_group_notify(dispatch_group, dispatch_get_main_queue()) {
             
-            print("Result")
+//            print("Result")
             self.getTopicFromUserLists()
             
             
@@ -406,21 +384,14 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
                 
             }
             
-            print(topics)
+//            print(topics)
             
-            
-           
-                
+    
             dispatch_async(dispatch_get_main_queue(), {
                 self.stringCollection.reloadData()
             })
             
-
-            
-            
         }
-        
-        
         
         
     }
@@ -491,6 +462,23 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
             return true
         }
         return false
+        
+    }
+    
+    func alertView(message:String) {
+        
+        let alert = UIAlertController(title:"",message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        
+        let doneAction: UIAlertAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
+            
+            alert.dismissViewControllerAnimated(true, completion: nil)
+        }
+        
+        alert.addAction(doneAction)
+        
+        NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+            self.presentViewController(alert, animated: true, completion: nil)
+        })
         
     }
     

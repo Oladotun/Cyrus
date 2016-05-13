@@ -109,15 +109,12 @@ class SearchTableViewController: UITableViewController,UISearchResultsUpdating {
         search.startWithCompletionHandler({
             (response,error) in
             if error != nil {
-                print("Error occured in search: \(error!.localizedDescription)")
+//                print("Error occured in search: \(error!.localizedDescription)")
             } else if response!.mapItems.count == 0 {
-                print("No matches found")
+//                print("No matches found")
             } else {
-                print("Matches found")
                 self.itemsFound = [MKMapItem]()
                 for item in response!.mapItems {
-                    print("Name = \(item.name)")
-                    print(item.placemark.addressDictionary!["FormattedAddressLines"])
                     self.itemsFound.append(item)
                 }
 
@@ -138,7 +135,6 @@ class SearchTableViewController: UITableViewController,UISearchResultsUpdating {
         
         if let addressString = itemsFound[indexPath.row].placemark.addressDictionary {
             if let addressInfo  = addressString["FormattedAddressLines"] {
-                
                 addressJoined = (addressInfo as! [String]).joinWithSeparator(",")
             }
         }
@@ -155,17 +151,14 @@ class SearchTableViewController: UITableViewController,UISearchResultsUpdating {
             
             if let addressString = itemsFound[indexPath.row].placemark.addressDictionary {
                 if let addressInfo  = addressString["FormattedAddressLines"] {
-                    
                     addressJoined = (addressInfo as! [String]).joinWithSeparator(",")
                 }
             }
             let completeWord = itemsFound[indexPath.row].name!
-            print("we are in did select row")
-            print(addressJoined)
-            print(itemsFound[indexPath.row].placemark)
+            
             let coordinate = itemsFound[indexPath.row].placemark.coordinate
             searchProtocol?.selected(completeWord,completeAddress: addressJoined,coordinate: coordinate)
-            print(itemsFound[indexPath.row].placemark.coordinate)
+            
             if (resultSearchController.searchBar.isFirstResponder()){
                  dismissViewControllerAnimated(true, completion: nil)
             }
@@ -177,13 +170,10 @@ class SearchTableViewController: UITableViewController,UISearchResultsUpdating {
 }
 extension SearchTableViewController : UISearchBarDelegate {
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        print("Cancelled")
         searchBar.resignFirstResponder()
-        //            self.itemsFound.removeAll()
-                    searchProtocol?.cancel()
-//        self.performSegueWithIdentifier("unWindBack", sender: self)
+        searchProtocol?.cancel()
         self.dismissViewControllerAnimated(true, completion: nil)
-//        self.dismissViewControllerAnimated(true, completion: {})
+
     }
 }
 
@@ -193,9 +183,7 @@ extension SearchTableViewController: CLLocationManagerDelegate {
         userLocation = locations.first
         
         if (userLocation != nil) {
-            let region = MKCoordinateRegionMakeWithDistance(
-                userLocation.coordinate, 2000, 2000)
-            
+            let region = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 2000, 2000)
             theMap.setRegion(region, animated: false)
         }
         

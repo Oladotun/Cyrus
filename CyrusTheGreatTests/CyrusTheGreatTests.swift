@@ -11,11 +11,11 @@ import XCTest
 @testable import CyrusTheGreat
 
 class CyrusTheGreatTests: XCTestCase {
-    var myModel: FirebaseManager!
+//    var myModel: FirebaseManager!
     
     override func setUp() {
         super.setUp()
-        self.myModel = FirebaseManager()
+//        self.myModel = FirebaseManager()
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
     
@@ -25,16 +25,16 @@ class CyrusTheGreatTests: XCTestCase {
     }
     
     func testMeetUpSetAtBeginning() {
-        myModel = FirebaseManager()
-        XCTAssert(!myModel.meetUpSet,"Created")
+//        myModel = FirebaseManager()
+//        XCTAssert(!myModel.meetUpSet,"Created")
         
     }
     
     func testUserObjectNotNill() {
-        myModel = FirebaseManager()
-        myModel.setUpCurrentUser("46a49580-3df3-4c21-af70-f623fd3095e3")
-        
-        XCTAssert(myModel.userObject != nil,"Not nil")
+//        myModel = FirebaseManager()
+//        myModel.setUpCurrentUser("46a49580-3df3-4c21-af70-f623fd3095e3")
+//        
+//        XCTAssert(myModel.userObject != nil,"Not nil")
 //        XCTAssert(myModel.userObject.firstName != nil, "FirstName not null")
     }
     
