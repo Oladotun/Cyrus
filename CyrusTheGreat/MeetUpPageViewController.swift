@@ -12,7 +12,7 @@ import AudioToolbox
 import CoreBluetooth
 import Firebase
 
-class MeetUpPageViewController: UIViewController, MapTrackerDelegate,FirebaseMeetUpInfoManagerDelegate { // ,CBCentralManagerDelegate , UITextFieldDelegate
+class MeetUpPageViewController: UIViewController, MapTrackerDelegate,FirebaseInfoMeetUpManagerDelegate { // ,CBCentralManagerDelegate , UITextFieldDelegate
 
     
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -27,7 +27,7 @@ class MeetUpPageViewController: UIViewController, MapTrackerDelegate,FirebaseMee
     
     var otherUserID:String!
 //    var firebaseManager:FirebaseManager!
-    var firebaseMeetUpManager: FirebaseMeetUpInfoManager!
+    var firebaseMeetUpManager: FirebaseInfoMeetUpManager!
 //    var segueToQuestionNode : Firebase!
 //    var questionTime:Bool!
     var time:String!

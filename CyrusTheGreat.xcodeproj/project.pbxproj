@@ -20,6 +20,7 @@
 		7C7218A21CCCF6A90016C15B /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C7218A11CCCF6A80016C15B /* CoreData.framework */; };
 		7C7218A61CCCF8120016C15B /* CyrusTheGreat.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7C7218A41CCCF8120016C15B /* CyrusTheGreat.xcdatamodeld */; };
 		7C7218AC1CCD3CC80016C15B /* usa_uni.json in Resources */ = {isa = PBXBuildFile; fileRef = 7C7218AB1CCD3CC80016C15B /* usa_uni.json */; };
+		7CC0EC621CE5A5010089C743 /* FirebaseInfoMeetUpManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC0EC611CE5A5010089C743 /* FirebaseInfoMeetUpManager.swift */; };
 		7CC3B1CE1CD8EB5400BB706A /* MapTrackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC3B1CD1CD8EB5400BB706A /* MapTrackViewController.swift */; };
 		7CCBAC2F1CE4CEA60094A511 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBAC2E1CE4CEA60094A511 /* User.swift */; };
 		7CCBAC311CE4CEB70094A511 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBAC301CE4CEB70094A511 /* UserProfile.swift */; };
@@ -27,7 +28,6 @@
 		7CCBAC351CE4EADA0094A511 /* FirebaseChatManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBAC341CE4EADA0094A511 /* FirebaseChatManager.swift */; };
 		7CCBAC371CE5106C0094A511 /* FirebaseMapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBAC361CE5106C0094A511 /* FirebaseMapManager.swift */; };
 		7CCBAC3B1CE573DD0094A511 /* FirebaseQuestionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBAC3A1CE573DD0094A511 /* FirebaseQuestionManager.swift */; };
-		7CCBAC3D1CE5A11A0094A511 /* FirebaseMeetUpInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBAC3C1CE5A11A0094A511 /* FirebaseMeetUpInfoManager.swift */; };
 		7CDC51961C88614F00D50F53 /* CollectionTwitterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDC51951C88614F00D50F53 /* CollectionTwitterViewController.swift */; };
 		7CDC51981C8862A700D50F53 /* CollectionTwitterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDC51971C8862A600D50F53 /* CollectionTwitterCollectionViewCell.swift */; };
 		7CE313271C97027C00634900 /* ChatViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE313261C97027C00634900 /* ChatViewCell.swift */; };
@@ -65,6 +65,7 @@
 		7C7218A11CCCF6A80016C15B /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		7C7218A51CCCF8120016C15B /* CyrusTheGreat.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CyrusTheGreat.xcdatamodel; sourceTree = "<group>"; };
 		7C7218AB1CCD3CC80016C15B /* usa_uni.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = usa_uni.json; sourceTree = "<group>"; };
+		7CC0EC611CE5A5010089C743 /* FirebaseInfoMeetUpManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseInfoMeetUpManager.swift; sourceTree = "<group>"; };
 		7CC3B1CD1CD8EB5400BB706A /* MapTrackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapTrackViewController.swift; sourceTree = "<group>"; };
 		7CCBAC2E1CE4CEA60094A511 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		7CCBAC301CE4CEB70094A511 /* UserProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
@@ -72,7 +73,6 @@
 		7CCBAC341CE4EADA0094A511 /* FirebaseChatManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseChatManager.swift; sourceTree = "<group>"; };
 		7CCBAC361CE5106C0094A511 /* FirebaseMapManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseMapManager.swift; sourceTree = "<group>"; };
 		7CCBAC3A1CE573DD0094A511 /* FirebaseQuestionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseQuestionManager.swift; sourceTree = "<group>"; };
-		7CCBAC3C1CE5A11A0094A511 /* FirebaseMeetUpInfoManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseMeetUpInfoManager.swift; sourceTree = "<group>"; };
 		7CDC51951C88614F00D50F53 /* CollectionTwitterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionTwitterViewController.swift; sourceTree = "<group>"; };
 		7CDC51971C8862A600D50F53 /* CollectionTwitterCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionTwitterCollectionViewCell.swift; sourceTree = "<group>"; };
 		7CE313261C97027C00634900 /* ChatViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewCell.swift; sourceTree = "<group>"; };
@@ -139,7 +139,7 @@
 				7CED63621C7353CD0003B19A /* Supporting Files */,
 				7CED63641C7353CD0003B19A /* AppDelegate.swift */,
 				7CED63851C7355DC0003B19A /* FrontPageViewController.swift */,
-				7CCBAC3C1CE5A11A0094A511 /* FirebaseMeetUpInfoManager.swift */,
+				7CC0EC611CE5A5010089C743 /* FirebaseInfoMeetUpManager.swift */,
 				7CED63871C75FC110003B19A /* SignUpPageViewController.swift */,
 				7C17984C1CCF97B7004E31BE /* LoginPageViewController.swift */,
 				7C0661AD1C876670003C04BD /* ApiConnectorViewController.swift */,
@@ -362,6 +362,7 @@
 			files = (
 				7C17984D1CCF97B7004E31BE /* LoginPageViewController.swift in Sources */,
 				7CCBAC331CE4CF930094A511 /* FirebaseHomeManager.swift in Sources */,
+				7CC0EC621CE5A5010089C743 /* FirebaseInfoMeetUpManager.swift in Sources */,
 				7CED63881C75FC110003B19A /* SignUpPageViewController.swift in Sources */,
 				7C1155441CAD9A1F0041C012 /* QuestionsViewController.swift in Sources */,
 				7CC3B1CE1CD8EB5400BB706A /* MapTrackViewController.swift in Sources */,
@@ -372,7 +373,6 @@
 				7CCBAC371CE5106C0094A511 /* FirebaseMapManager.swift in Sources */,
 				7C0320311C90A6BF00E299D2 /* HomePageViewController.swift in Sources */,
 				7CE313271C97027C00634900 /* ChatViewCell.swift in Sources */,
-				7CCBAC3D1CE5A11A0094A511 /* FirebaseMeetUpInfoManager.swift in Sources */,
 				7CCBAC3B1CE573DD0094A511 /* FirebaseQuestionManager.swift in Sources */,
 				7CED63861C7355DC0003B19A /* FrontPageViewController.swift in Sources */,
 				7C1154411C99A5070041C012 /* MeetUpPageViewController.swift in Sources */,

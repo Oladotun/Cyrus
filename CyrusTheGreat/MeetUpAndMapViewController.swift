@@ -21,7 +21,7 @@ class MeetUpAndMapViewController: UIViewController {
     var meetUpPage:MeetUpPageViewController!
     
     var firebaseMapManager:FirebaseMapManager!
-    var firebaseMeetupInfoManager:FirebaseMeetUpInfoManager!
+    var firebaseMeetupInfoManager:FirebaseInfoMeetUpManager!
     override func viewDidLoad() {
         super.viewDidLoad()
         
