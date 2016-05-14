@@ -109,8 +109,7 @@ class FirebaseChatManager: NSObject {
                     let endWord = snapshot.value as! String
                     
                     let splitEndWord = endWord.componentsSeparatedByString("*_*")
-                    // user x ended the chat
-//                    print("\(splitEndWord)")
+                    
                     self.delegate?.meetUpCancelled(splitEndWord[0])
                     
                     

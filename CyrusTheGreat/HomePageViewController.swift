@@ -116,7 +116,6 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
 
     
     func receiveInvite(inviter: String) {
-//        print("Invite was received")
         alertInvite = UIAlertController(title: "", message: "\(inviter) wants to chat with you", preferredStyle: UIAlertControllerStyle.Alert)
         
         let acceptAction: UIAlertAction = UIAlertAction(title: "Accept", style: UIAlertActionStyle.Default) { (alertAction) -> Void in

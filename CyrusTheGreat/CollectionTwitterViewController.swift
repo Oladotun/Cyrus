@@ -29,7 +29,7 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
     var userCollected =  [AnyObject]()
     var userToFollower = Dictionary<String, Int>()
     var userToList = [String : [String]]()
-    let stopWords = ["new","social","liked","tweet","people","list","twitter","boss","dick","shit","fuck","link","facebook","friend","celeb","my","feed","influencer","racist","all","funny","follower","instagram","fav","interest","important"]
+    let stopWords = ["new","social","liked","tweet","people","list","twitter","boss","dick","shit","fuck","link","facebook","friend","celeb","my","feed","influencer","racist","all","funny","follower","instagram","fav","interest","important","accounts","famous","star","media","other"]
     var topicToUser = [String:Int]()
 
     override func viewDidLoad() {
@@ -274,10 +274,9 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
         let requestURL = NSURL(string: "https://api.twitter.com/1.1/lists/memberships.json")
         let dispatch_group = dispatch_group_create()
         
-//    for info in input {
-        let info = input[0]
+    for info in input {
+//        let info = input[0]
 //        print(info.0)
-        
         let parameters = ["screen_name":info.0,"trim_user": "1", "count" : "300"]
         let postRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: requestURL, parameters: parameters as [NSObject : AnyObject])
         postRequest.account = self.twitterAccount
@@ -317,14 +316,9 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
 //                    NSException(name: "Error at UserToList", reason: "Post request returned error", userInfo: nil).raise()
                     self.alertView("Error Occured while getting User List")
                 }
-                
-                
-                
-                
         })
-        
-        
-//    }
+  
+    }
         
         
         dispatch_group_notify(dispatch_group, dispatch_get_main_queue()) {
@@ -384,9 +378,6 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
                 
             }
             
-//            print(topics)
-            
-    
             dispatch_async(dispatch_get_main_queue(), {
                 self.stringCollection.reloadData()
             })
@@ -407,7 +398,7 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
         
         
         
-        if currWord.length < 3 {
+        if currWord.length < 4 {
             return true
             
         }
