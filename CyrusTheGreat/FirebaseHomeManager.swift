@@ -6,9 +6,9 @@
 //  Copyright © 2016 Dotun Opasina. All rights reserved.
 //
 
-import UIKit
 import Firebase
 import CoreLocation
+import UIKit
 
 protocol FirebaseHomeDelegate {
     func receiveInvite(inviter:String)
@@ -377,6 +377,7 @@ class FirebaseHomeManager: NSObject {
         }
         
         guard let _ = userObject.location else {
+            print("user location not set")
             return
         }
         

@@ -63,6 +63,8 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     func initialSetup() {
         
         availSwitch.setOn(false, animated:true)
+        locationManager.delegate = self
+        locationManager.startUpdatingLocation()
         firebaseHomeManager = FirebaseHomeManager()
         firebaseHomeManager.setUpCurrentUser(appDelegate.userIdentifier)
         firebaseHomeManager.updateUserState(notActiveString)
@@ -72,7 +74,6 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         locationManager.delegate = self
         locationManager.distanceFilter = 20
         appDelegate.iamInitiator = false
-        locationManager.startUpdatingLocation()
         firebaseHomeManager.delegate = self
         self.switchState = false
         foundDisplay()
@@ -87,6 +88,7 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         if(swh.on){
             swh.setOn(true, animated: true)//But it will already do it.
             currAvailability.text = "Online"
+            locationManager.startUpdatingLocation()
             firebaseHomeManager.updateUserState(activeString)
             firebaseHomeManager.updateActiveUserFirebase()
             self.switchState = true
