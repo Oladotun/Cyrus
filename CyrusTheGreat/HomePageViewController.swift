@@ -44,8 +44,6 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         super.viewDidLoad()
         locationManager =  appDelegate.locationManager
         initialSetup()
-        
-
 
     }
     

@@ -13,10 +13,8 @@ class FrontPageViewController: UIViewController {
     @IBOutlet weak var logoCyrus: UIImageView!
     
     var cyrusText = "Hi there,my name is Cyrus.\n\nToday, my goal is to connect you with people who you share similar interest with, so you can learn from their views.\n\nKindly Sign Up or Login to start connecting.\n"
-    
     let paragraphStyle = NSMutableParagraphStyle()
-    
-    
+
     var cyrusIntroWords: [Character]!
     var myCounter = 0
     var timer:NSTimer?

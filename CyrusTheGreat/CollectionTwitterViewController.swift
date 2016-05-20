@@ -22,6 +22,8 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
     var uselessTopicsArray = [String]()
     
     @IBOutlet weak var unwantedTopics: UILabel!
+    @IBOutlet weak var nextButton: UIButton!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     let account = ACAccountStore()
     var twitterAccount=ACAccount()
@@ -34,17 +36,27 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+       activityIndicator.startAnimating()
 
         // Do any additional setup after loading the view.
         stringCollection.allowsMultipleSelection = true
         self.userLookUp()
         self.unwantedTopics.text = "label"
+        nextButton.alpha = 0.0
+        unwantedTopics.alpha = 0.0
         
+
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(true)
+        
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -59,27 +71,13 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
         cell.userTopic.sizeToFit()
         cell.backgroundColor = UIColor.blueColor()
         
-
-        
         return cell
         
     }
     
     func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
-//        print("You unselected \(indexPath.item)")
+        
         let cell = collectionView.cellForItemAtIndexPath(indexPath) as! CollectionTwitterCollectionViewCell
-        
-//        println(cell.selected)
-        
-//        if(cell.selected) {
-//            
-//            uselessTopicsArray = uselessTopicsArray.filter( {$0 != self.topics[indexPath.item]})
-//            updateLabel()
-////            unwantedTopics.text = ",".join(uselessTopicsArray)
-//            
-//            //            (topics[indexPath.item])
-//            
-//        }
         
         if (uselessTopicsArray.contains(topics[indexPath.item])) {
             uselessTopicsArray = uselessTopicsArray.filter( {$0 != self.topics[indexPath.item]})
@@ -87,39 +85,27 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
             
         }
         
-        
-         cell.backgroundColor = UIColor.blueColor()
+        cell.backgroundColor = UIColor.blueColor()
         
        
         
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-//        print("You selected \(indexPath.item)")
+        
         let cell = collectionView.cellForItemAtIndexPath(indexPath) as! CollectionTwitterCollectionViewCell
         cell.backgroundColor = UIColor.redColor()
         
-//        print("curr cell selected: \(cell.selected)")
-        
-       
-        
+        if (!uselessTopicsArray.contains(topics[indexPath.item])) {
+            uselessTopicsArray.append(topics[indexPath.item])
+            updateLabel()
             
-            if (!uselessTopicsArray.contains(topics[indexPath.item])) {
-                uselessTopicsArray.append(topics[indexPath.item])
-                updateLabel()
-                
-            }
-            
-            
-//            unwantedTopics.text = ",".join(uselessTopicsArray)
-            
-       
+        }
         
     }
     
     
     func updateLabel() {
-//        print("Updated label")
         dispatch_async(dispatch_get_main_queue(), {
             self.unwantedTopics.text =
                 (self.uselessTopicsArray.joinWithSeparator(","))
@@ -144,13 +130,9 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
     func userLookUp() {
         
         let accountType = account.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
-//        print("In Connect To Twiiter")
         
         account.requestAccessToAccountsWithType(accountType, options: nil,
             completion: {(success:Bool, error:NSError!) -> Void in
-                
-//                print("In Completion Mode")
-//                print(success)
                 
                 if success {
                     let arrayOfAccounts = self.account.accountsWithAccountType(accountType)
@@ -165,45 +147,31 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
                         
                         postRequest.performRequestWithHandler(
                             {(responseData:NSData!, urlResponse: NSHTTPURLResponse!, error:NSError!) -> Void in
-                                
-                                
                                 do {
                                     
                                     let userInfoDictionary = try NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.MutableLeaves)
-//                                    print(userInfoDictionary)
+                                    
                                     self.userFriends = userInfoDictionary["friends_count"] as! Int
-//                                    print(self.userFriends)
-                                    if (self.userFriends > 200) {
-                                        // TODO Visit more pages in future
-                                        self.userFriends = 200
-                                        self.getUserInfo()
-                                    } else if (self.userFriends < 2) {
-                                        
-//                                        print("Please follow someone you are interested in on twitter")
+                                    if (self.userFriends < 2) {
                                         // TODO Check the users list membership
                                         self.alertView("Please follow more people you are interested in on twitter so we can infer your interests")
-                                        
-                                    } else {
-                                        self.getUserInfo()
+                                    }
+                                    else {
+                                        let cursor = -1
+                                        self.getUserInfo(cursor)
                                     }
                                     
                                 } catch {
-//                                    print(error)
                                     self.alertView("Error occured while inferring interest")
                                 }
-                               
-                                
-                                
                         })
                         
                         
                     } else {
-//                        print("No account to access")
                         self.alertView("There are no twitter accounts currently set up")
                     }
                     
                 } else {
-//          print("Could not access")
                     self.alertView("Could not access your twitter account")
                 }
         })
@@ -213,32 +181,52 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
     
     // Get the List of User presents
     
-    func getUserInfo() {
+    func getUserInfo(cursorValue:Int) {
         
         let requestURL = NSURL(string: "https://api.twitter.com/1.1/friends/list.json")
-        
-        
-        let parameters = ["trim_user": "1", "count" : String(self.userFriends)]
+        let parameters = ["trim_user": "1", "count" : "200", "cursor": String(cursorValue)]
         let postRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: requestURL, parameters: parameters)
         
         postRequest.account = self.twitterAccount
-        
+        dispatch_async(dispatch_get_main_queue()) {
         postRequest.performRequestWithHandler(
             { (responseData:NSData!, urlResponse: NSHTTPURLResponse!, error:NSError!) -> Void in
-                
-                
+
                 do {
                     let dataSourceDictionary = try NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.MutableLeaves)
-                    
-                    self.userCollected =  dataSourceDictionary["users"] as! [(AnyObject)]
-                    self.sortUserByUserCount()
+                    if let collUsers =  dataSourceDictionary["users"] as? [(AnyObject)] {
+                        print(cursorValue)
+                        
+                        for i in collUsers {
+                            self.userCollected.append(i)
+                        }
+                        print(self.userCollected.count)
+                        let cursor = dataSourceDictionary[ "next_cursor" ] as! Int
+                         print("next cursor \(cursor)")
+                        if (cursor != 0) {
+                            self.getUserInfo(cursor)
+                            
+                        } else {
+                            if (!self.userCollected.isEmpty) {
+                                self.sortUserByUserCount()
+                            }
+                            return
+                        }
+                        
+                    } else {
+                        
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.alertView("Error while getting users from twitter")
+                        })
+                        return
+                    }
+
                 } catch {
-//                    print(error)
                     self.alertView("Error while getting users from twitter")
                 }
-                
-                
-        })
+            })
+        }
+        
     }
     
     func sortUserByUserCount() {
@@ -249,21 +237,28 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
             if protected == false {
                 let userName = user["screen_name"] as! String
                 let followerCount = user["followers_count"] as! Int
-                userToFollower[userName] = followerCount
+                var friendsCount = user["friends_count"] as! Int
+                
+                if (followerCount > 10000) {
+                    
+                    if (friendsCount < 0) {
+                        friendsCount = 1
+                    }
+                    
+                    let ratio = followerCount/friendsCount
+                    userToFollower[userName] = ratio
+                    
+                }
+
             }
             
         }
         
         var sortedArray = userToFollower.sort( {$0.1 > $1.1})
-        //        print("User Follower\n")
-        
-//        print("\nUser sorted \n")
-        
-        if (sortedArray.count > 5) {
-            sortedArray = Array(sortedArray[0..<5])
+        if (sortedArray.count > 15) { // number of inviduals to infer topic from
+            sortedArray = Array(sortedArray[0..<15])
             
         }
-//        print(sortedArray)
         getFriendLists(sortedArray)
         
     }
@@ -273,60 +268,59 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
         
         let requestURL = NSURL(string: "https://api.twitter.com/1.1/lists/memberships.json")
         let dispatch_group = dispatch_group_create()
+        var foundNil = false
         
-    for info in input {
-//        let info = input[0]
-//        print(info.0)
-        let parameters = ["screen_name":info.0,"trim_user": "1", "count" : "300"]
-        let postRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: requestURL, parameters: parameters as [NSObject : AnyObject])
-        postRequest.account = self.twitterAccount
-        
-        dispatch_group_enter(dispatch_group)
-        
-        postRequest.performRequestWithHandler(
-            { (responseData:NSData!, urlResponse: NSHTTPURLResponse!, error:NSError!) -> Void in
-                
-                
-                do {
-                    
-                    let dataSourceDictionary = try NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.MutableLeaves)
-//                    print(dataSourceDictionary)
-                    
-                    let collected = dataSourceDictionary["lists"] as! [(AnyObject)]
-                    var listName = [String]()
-                    
-                    dispatch_async(dispatch_get_main_queue(), {
+        for info in input {
+            let parameters = ["screen_name":info.0,"trim_user": "1", "count" : "300"]
+            let postRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: requestURL, parameters: parameters as [NSObject : AnyObject])
+            postRequest.account = self.twitterAccount
+            
+            dispatch_group_enter(dispatch_group)
+            postRequest.performRequestWithHandler(
+                { (responseData:NSData!, urlResponse: NSHTTPURLResponse!, error:NSError!) -> Void in
+
+                    do {
                         
-                        for list in collected {
-                            let currList = list as! NSDictionary
-                            listName.append((currList.objectForKey("name") as? String)!)
+                        let dataSourceDictionary = try NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.MutableLeaves)
+                        if let collected = dataSourceDictionary["lists"] as? [(AnyObject)] {
+                            var listName = [String]()
+                            
+                            dispatch_async(dispatch_get_main_queue(), {
+                                
+                                for list in collected {
+                                    if let currList = list as? NSDictionary {
+                                        listName.append((currList.objectForKey("name") as? String)!)
+                                    }
+                                }
+                                self.userToList[String(info.0)] = listName
+                            })
+                            dispatch_group_leave(dispatch_group)
+                        } else {
+                            if (!foundNil) {
+                                foundNil = true
+                                
+                            }
+                            dispatch_group_leave(dispatch_group)
                             
                         }
-                        
-                        
-                        self.userToList[String(info.0)] = listName
-                        
-                        dispatch_group_leave(dispatch_group)
-                        
-                        
-                    })
-                    
-                } catch {
-//                    print(error)
-//                    NSException(name: "Error at UserToList", reason: "Post request returned error", userInfo: nil).raise()
-                    self.alertView("Error Occured while getting User List")
-                }
-        })
-  
-    }
+ 
+                    } catch {
+                        self.alertView("Error Occured while getting User List")
+                    }
+            })
+      
+        }
         
-        
-        dispatch_group_notify(dispatch_group, dispatch_get_main_queue()) {
-            
-//            print("Result")
-            self.getTopicFromUserLists()
-            
-            
+            dispatch_group_notify(dispatch_group, dispatch_get_main_queue()) {
+            if (foundNil) {
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.alertView("Error while getting users from twitter")
+                })
+               
+            } else {
+                self.getTopicFromUserLists()
+
+            }
         }
         
     }
@@ -353,58 +347,89 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
             
         }
         let sortedArray = topicToUser.sort({$0.1 > $1.1})
-        //        println(sortedArray)
-        
-        var imporTantTopics = [(String,Int)]()
-        
-        if (sortedArray.count > 30){
-            imporTantTopics = Array(sortedArray[0..<30])
+        var importantTopics = getImportantTopics(sortedArray)
+   
+        if (importantTopics.count > 0) {
             
-        } else {
-            imporTantTopics = sortedArray
-        }
-        
-        
-        
-        
-        
-        
-        if(imporTantTopics.count > 0) {
-            
-            imporTantTopics.sortInPlace({ (s1:(String,Int), s2:(String,Int)) -> Bool in return (s1.0).length < (s2.0).length})
+            importantTopics.sortInPlace({ (s1:(String,Int), s2:(String,Int)) -> Bool in return (s1.0).length < (s2.0).length})
             self.topics = [String]()
-            for topic in imporTantTopics {
+            for topic in importantTopics {
                 topics.append(topic.0)
-                
             }
             
             dispatch_async(dispatch_get_main_queue(), {
                 self.stringCollection.reloadData()
+                self.activityIndicator.stopAnimating()
+                self.nextButton.alpha = 1.0
+                self.unwantedTopics.alpha = 1.0
             })
+        }
+ 
+    }
+    
+    func getImportantTopics(topic:[(String,Int)]) -> [(String,Int)]{
+        
+        var allTopic = topic
+        var newTopic = [(String,Int)]()
+        
+        while(allTopic.count > 0 && newTopic.count < 30) {
             
+            let newWord = allTopic.removeFirst()
+            var wordToRemove = ""
+            var wordSum = 0
+            var addNew = false
+            var index = 0
+            
+            for word in newTopic {
+                // Calculate fuzziness of interest to collapse them
+                if (newWord.0.score(word.0, fuzziness: 1.0) > 0.7) {
+                    wordToRemove = word.0
+                    if newWord.1 > word.1 {
+                        
+                        addNew = true
+                        
+                    } else {
+                        addNew = false
+                    }
+                    
+                    wordSum = newWord.1 + word.1
+                    break
+                    
+                }
+                index = index + 1
+            }
+            
+            if (!wordToRemove.isEmpty) {
+                newTopic.removeAtIndex(index)
+                if (addNew) {
+                    newTopic.append((newWord.0,wordSum))
+                } else {
+                    newTopic.append((wordToRemove,wordSum))
+                }
+                
+                
+                
+            } else {
+                newTopic.append(newWord)
+            }
         }
         
+        print(newTopic)
+        return newTopic
         
     }
 
-    
-    
-    
+
     func checkTopic(inout currWord:String) -> Bool {
         
         var wordToChange = currWord
         let unsafeChars = NSCharacterSet.alphanumericCharacterSet().invertedSet
         wordToChange = (wordToChange.componentsSeparatedByCharactersInSet(unsafeChars)).joinWithSeparator(" ")
-        
-        
-        
+
         if currWord.length < 4 {
             return true
-            
         }
-        
         // Check to make sure the first Character is a digit, do not insert as an interest if true
-       // var firstChar = Array(arrayLiteral: currWord)[0]
         let s = currWord.unicodeScalars
         let uni = s[s.startIndex]
         let digits = NSCharacterSet.decimalDigitCharacterSet()
@@ -431,8 +456,7 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
             }
             
         }
-        
-        
+
         let splitWord = wordToChange.componentsSeparatedByString(" ")
         
         if (splitWord.count > 3) {
@@ -463,6 +487,10 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
         let doneAction: UIAlertAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
             
             alert.dismissViewControllerAnimated(true, completion: nil)
+            // Remove indicator
+            dispatch_async(dispatch_get_main_queue(), {
+                self.activityIndicator.stopAnimating()
+            })
         }
         
         alert.addAction(doneAction)
@@ -472,17 +500,14 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
         })
         
     }
-    
-    
-    
+
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-        
         let destinationVC = segue.destinationViewController as! HomePageViewController
-        
+        topics = topics.filter{!uselessTopicsArray.contains($0)}
         destinationVC.interests = topics
-        
+
         let userInterests = ["interests":topics]
         self.appDelegate.userFire.childByAppendingPath("users")
             .childByAppendingPath(appDelegate.userIdentifier).updateChildValues(userInterests)
@@ -520,7 +545,6 @@ extension String {
     func toBase64()->String{
         
         let data = self.dataUsingEncoding(NSUTF8StringEncoding)
-        
         return data!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
         
     }
@@ -529,6 +553,105 @@ extension String {
         let decodedData = NSData(base64EncodedString: self, options:NSDataBase64DecodingOptions(rawValue: 0))
         let decodedString = NSString(data: decodedData!, encoding: NSUTF8StringEncoding)
         return decodedString as! String
+    }
+    
+    func score(word: String, fuzziness: Double? = nil) -> Double {
+        // If the string is equal to the word, perfect match.
+        if self == word {
+            return 1
+        }
+        
+        //if it's not a perfect match and is empty return 0
+        if word.isEmpty || self.isEmpty {
+            return 0
+        }
+        
+        var
+        runningScore = 0.0,
+        charScore = 0.0,
+        finalScore = 0.0
+        
+        var string = ""
+        var lWord = ""
+        if (self.characters.count < word.characters.count) {
+            string = word
+            lWord = self.lowercaseString
+        } else {
+            string = self
+            lWord = word.lowercaseString
+        }
+
+        let lString = string.lowercaseString,
+        strLength = string.characters.count
+
+        var wordLength = lWord.characters.count,
+        idxOf: String.Index!,
+        startAt = lString.startIndex,
+        fuzzies = 1.0,
+        fuzzyFactor = 0.0,
+        fuzzinessIsNil = true
+
+        // Cache fuzzyFactor for speed increase
+        if let fuzziness = fuzziness {
+            fuzzyFactor = 1 - fuzziness
+            fuzzinessIsNil = false
+        }
+        
+        for i in 0 ..< wordLength {
+            // Find next first case-insensitive match of word's i-th character.
+            // The search in "string" begins at "startAt".
+            if let range = lString.rangeOfString(
+                String(lWord[lWord.startIndex.advancedBy(i)] as Character),
+                options: NSStringCompareOptions.CaseInsensitiveSearch,
+                range: Range<String.Index>(startAt..<lString.endIndex),
+                locale: nil
+                ) {
+                    // start index of word's i-th character in string.
+                    idxOf = range.startIndex
+                    
+                    if startAt == idxOf {
+                        // Consecutive letter & start-of-string Bonus
+                        charScore = 0.7
+                    }
+                    else {
+                        charScore = 0.1
+                        // Acronym Bonus
+                        // Weighing Logic: Typing the first character of an acronym is as if you
+                        // preceded it with two perfect character matches.
+                        if string[idxOf.advancedBy(-1)] == " " {
+                            charScore += 0.8
+                        }
+                    }
+            }
+            else {
+                // Character not found.
+                if fuzzinessIsNil {
+                    // Fuzziness is nil. Return 0.
+                    return 0
+                }
+                else {
+                    fuzzies += fuzzyFactor
+                    continue
+                }
+            }
+            
+            // Same case bonus.
+            if (string[idxOf] == word[word.startIndex.advancedBy(i)]) {
+                charScore += 0.1
+            }
+            
+            // Update scores and startAt position for next round of indexOf
+            runningScore += charScore
+            startAt = idxOf.advancedBy(1)
+        }
+        
+        // Reduce penalty for longer strings.
+        finalScore = 0.5 * (runningScore / Double(strLength) + runningScore / Double(wordLength)) / fuzzies
+        if (lWord[lWord.startIndex] == lString[lString.startIndex]) && (finalScore < 0.85) {
+            finalScore += 0.15
+        }
+        
+        return finalScore
     }
     
 }

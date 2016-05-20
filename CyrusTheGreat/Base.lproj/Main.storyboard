@@ -263,7 +263,7 @@
                                     <constraint firstAttribute="height" constant="66" id="Lid-cj-RmN"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="default">
                                     <mask key="constraints">
@@ -329,13 +329,11 @@
                                 <exclude reference="Alt-4d-BMf"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="zCz-PU-LgS"/>
+                                <exclude reference="tiN-3w-xAz"/>
                                 <exclude reference="0xM-dd-GdR"/>
                                 <exclude reference="28j-Lx-QEH"/>
                                 <exclude reference="3aw-mX-CG6"/>
                                 <exclude reference="4By-TU-mFt"/>
-                                <exclude reference="7jY-pf-aoT"/>
-                                <exclude reference="jyc-vS-7el"/>
                                 <exclude reference="0eZ-62-f97"/>
                                 <exclude reference="MF0-Je-tD9"/>
                                 <exclude reference="gof-ui-hmt"/>
@@ -346,7 +344,9 @@
                                 <exclude reference="v1H-4u-eP9"/>
                                 <exclude reference="5Rz-TR-UQe"/>
                                 <exclude reference="9XH-fW-53E"/>
-                                <exclude reference="tiN-3w-xAz"/>
+                                <exclude reference="7jY-pf-aoT"/>
+                                <exclude reference="jyc-vS-7el"/>
+                                <exclude reference="zCz-PU-LgS"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
@@ -360,13 +360,11 @@
                                 <include reference="Alt-4d-BMf"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="zCz-PU-LgS"/>
+                                <include reference="tiN-3w-xAz"/>
                                 <include reference="0xM-dd-GdR"/>
                                 <include reference="28j-Lx-QEH"/>
                                 <include reference="3aw-mX-CG6"/>
                                 <include reference="4By-TU-mFt"/>
-                                <include reference="7jY-pf-aoT"/>
-                                <include reference="jyc-vS-7el"/>
                                 <include reference="0eZ-62-f97"/>
                                 <include reference="MF0-Je-tD9"/>
                                 <include reference="gof-ui-hmt"/>
@@ -377,7 +375,9 @@
                                 <include reference="v1H-4u-eP9"/>
                                 <include reference="5Rz-TR-UQe"/>
                                 <include reference="9XH-fW-53E"/>
-                                <include reference="tiN-3w-xAz"/>
+                                <include reference="7jY-pf-aoT"/>
+                                <include reference="jyc-vS-7el"/>
+                                <include reference="zCz-PU-LgS"/>
                             </mask>
                         </variation>
                     </view>
@@ -839,6 +839,14 @@
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
+                                <activityIndicatorView key="backgroundView" hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" id="8nw-N3-tes">
+                                    <rect key="frame" x="-10" y="-10" width="20" height="20"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                        <rect key="frame" x="173" y="308" width="20" height="20"/>
+                                    </variation>
+                                </activityIndicatorView>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="cell" id="HY4-AT-TX9" customClass="CollectionTwitterCollectionViewCell" customModule="CyrusTheGreat" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
@@ -879,7 +887,7 @@
                                     <outlet property="delegate" destination="Rdi-ec-lHb" id="me9-Ee-GUX"/>
                                 </connections>
                             </collectionView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7N0-Pk-DUS">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7N0-Pk-DUS">
                                 <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -948,6 +956,8 @@
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="8nw-N3-tes" id="bXY-OH-OfM"/>
+                        <outlet property="nextButton" destination="qna-gY-LLY" id="SHI-dF-Wyv"/>
                         <outlet property="stringCollection" destination="dT2-DH-zMS" id="U3U-wu-rRH"/>
                         <outlet property="unwantedTopics" destination="7N0-Pk-DUS" id="7qx-7j-kaa"/>
                     </connections>
@@ -1595,6 +1605,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="ohG-vI-Q98">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                 <state key="normal" title="Next Question"/>
+                                <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="44" y="390" width="130" height="30"/>
+                                </variation>
                                 <connections>
                                     <action selector="nextQuestion:" destination="DDq-FN-vDe" eventType="touchUpInside" id="DZE-wo-ai0"/>
                                 </connections>
@@ -1602,6 +1615,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dm2-Kf-s2N">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                 <state key="normal" title="Done"/>
+                                <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="216" y="390" width="130" height="30"/>
+                                </variation>
                                 <connections>
                                     <action selector="doneButtonHit:" destination="DDq-FN-vDe" eventType="touchUpInside" id="MYx-FM-bmK"/>
                                 </connections>
@@ -1629,18 +1645,18 @@
                                 <exclude reference="Dm2-Kf-s2N"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="Jwd-yx-TmL"/>
-                                <exclude reference="MMv-E4-ach"/>
-                                <exclude reference="bXu-uy-dHJ"/>
+                                <exclude reference="g52-2L-8Sd"/>
+                                <exclude reference="zxn-ds-o9D"/>
+                                <exclude reference="H8L-6b-C2h"/>
+                                <exclude reference="IXH-xM-WcP"/>
+                                <exclude reference="xO2-fz-ldA"/>
                                 <exclude reference="IXe-0m-bpi"/>
                                 <exclude reference="c49-ga-BR3"/>
                                 <exclude reference="kkd-fQ-d6m"/>
                                 <exclude reference="mkV-Qr-bIh"/>
-                                <exclude reference="H8L-6b-C2h"/>
-                                <exclude reference="IXH-xM-WcP"/>
-                                <exclude reference="xO2-fz-ldA"/>
-                                <exclude reference="g52-2L-8Sd"/>
-                                <exclude reference="zxn-ds-o9D"/>
+                                <exclude reference="Jwd-yx-TmL"/>
+                                <exclude reference="MMv-E4-ach"/>
+                                <exclude reference="bXu-uy-dHJ"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
@@ -1650,18 +1666,18 @@
                                 <include reference="Dm2-Kf-s2N"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="Jwd-yx-TmL"/>
-                                <include reference="MMv-E4-ach"/>
-                                <include reference="bXu-uy-dHJ"/>
+                                <include reference="g52-2L-8Sd"/>
+                                <include reference="zxn-ds-o9D"/>
+                                <include reference="H8L-6b-C2h"/>
+                                <include reference="IXH-xM-WcP"/>
+                                <include reference="xO2-fz-ldA"/>
                                 <include reference="IXe-0m-bpi"/>
                                 <include reference="c49-ga-BR3"/>
                                 <include reference="kkd-fQ-d6m"/>
                                 <include reference="mkV-Qr-bIh"/>
-                                <include reference="H8L-6b-C2h"/>
-                                <include reference="IXH-xM-WcP"/>
-                                <include reference="xO2-fz-ldA"/>
-                                <include reference="g52-2L-8Sd"/>
-                                <include reference="zxn-ds-o9D"/>
+                                <include reference="Jwd-yx-TmL"/>
+                                <include reference="MMv-E4-ach"/>
+                                <include reference="bXu-uy-dHJ"/>
                             </mask>
                         </variation>
                     </view>
@@ -1918,8 +1934,8 @@
         <image name="cyrus" width="350" height="350"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Skj-pL-1Aw"/>
-        <segue reference="HV1-fz-5Uo"/>
         <segue reference="HVS-kA-2F2"/>
+        <segue reference="KXb-Pi-882"/>
+        <segue reference="SWN-A0-I7y"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -1,5 +1,5 @@
 //
-//  firebaseMeetUpInfoManager.swift
+//  FirebaseMeetUpInfoManager.swift
 //  CyrusTheGreat
 //
 //  Created by Dotun Opasina on 5/12/16.
