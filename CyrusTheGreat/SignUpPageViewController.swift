@@ -11,13 +11,14 @@ import Firebase
 import CoreData
 import SwiftyJSON
 
-class SignUpPageViewController: UIViewController,UITextFieldDelegate {
+class SignUpPageViewController: UIViewController,UITextFieldDelegate,UIPickerViewDataSource, UIPickerViewDelegate {
     
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
 
     @IBOutlet weak var userLogo: UIImageView!    
     @IBOutlet weak var cyrusTalkLabel: UILabel!
     
+    @IBOutlet weak var fieldPicker: UIPickerView!
     
     @IBOutlet weak var schoolEmailField: UITextField!
     @IBOutlet weak var firstNameField: UITextField!
@@ -25,18 +26,22 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate {
     @IBOutlet weak var passwordField: UITextField!
     
     var schoolName:String!
+    var studyField:String!
+    
+    let pickerDataSource = ["Business","Engineering","Education","Natural Science","Arts","Social Science","Computer Science","Medicine","Law","Humanities","Social Work","Education"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         userLogo.image = UIImage(named:"cyrus")
-        
-        cyrusTalkLabel.text = "Hi,Cyrus here,I would like to know more about you."
         cyrusTalkLabel.textAlignment = NSTextAlignment.Left
         
         schoolEmailField.delegate = self
         firstNameField.delegate = self
         lastNameField.delegate = self
         passwordField.delegate = self
+        
+        fieldPicker.delegate = self
+        fieldPicker.dataSource = self
         
      
 
@@ -47,7 +52,24 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+        return 1
+    }
     
+    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return pickerDataSource.count;
+    }
+    
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return pickerDataSource[row]
+    }
+    
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        studyField = pickerDataSource[row]
+    }
+    
+    
+
     @IBAction func nextButton(sender: AnyObject) {
         
         if (schoolEmailField.text!.isEmpty || passwordField.text!.isEmpty || firstNameField.text!.isEmpty || lastNameField.text!.isEmpty ) { // || passwordField.text!.isEmpty || firstNameField.text!.isEmpty || lastNameField.text!.isEmpty
@@ -85,7 +107,8 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate {
                                     let newUser = [
                                         "first_name": self.firstNameField.text!,
                                         "last_name": self.lastNameField.text!,
-                                        "school_name": self.schoolName
+                                        "school_name": self.schoolName,
+                                        "field_study": self.studyField
                                     ]
                                     // Create a child path with a key set to the uid underneath the "users" node
                                     // This creates a URL path like the following:
