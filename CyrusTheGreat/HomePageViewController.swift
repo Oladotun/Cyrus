@@ -18,8 +18,8 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     @IBOutlet weak var availSwitch: UISwitch!
     @IBOutlet weak var interestCollected: UILabel!
     @IBOutlet weak var noOfPeer: UILabel!
-    var displayView = UIView()
-    var interests: [String]!
+    
+
     var chatInitiator:Bool!
     var alertInvite:UIAlertController!
     var locationManager:CLLocationManager!

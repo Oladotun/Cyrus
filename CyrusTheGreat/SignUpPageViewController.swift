@@ -39,6 +39,7 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate,UIPickerVie
         firstNameField.delegate = self
         lastNameField.delegate = self
         passwordField.delegate = self
+        passwordField.secureTextEntry = true
         fieldPicker.delegate = self
         fieldPicker.dataSource = self
         
@@ -109,6 +110,8 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate,UIPickerVie
                                     // Set uid for local identifier
                                     
                                     self.appDelegate.userIdentifier = authData.uid
+                                    // stored to keep user logged in
+                                    NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: "uid")
                                     // Create a new user dictionary accessing the user's info
                                     // provided by the authData parameter
                                     let newUser = [

@@ -23,6 +23,7 @@ class LoginPageViewController: UIViewController, UITextFieldDelegate {
         
         emailTextField.delegate = self
         passField.delegate = self
+        passField.secureTextEntry = true
         // Do any additional setup after loading the view.
     }
 
@@ -51,6 +52,9 @@ class LoginPageViewController: UIViewController, UITextFieldDelegate {
                         self.appDelegate.userIdentifier = authData.uid
                         // Get the user interests from firebase
                         let userInterests = Firebase(url:  "https://cyrusthegreat.firebaseio.com/users/\(authData.uid)/interests")
+                        
+                        //Used to keep user logged in
+                        NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: "uid")
                     
                         userInterests.observeEventType(.Value, withBlock: {
                             snapshot in
@@ -160,18 +164,12 @@ class LoginPageViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-        
-        if(segue.identifier == "LoginHomeSegue") {
-            let destinationVC = segue.destinationViewController as! HomePageViewController
-            
-            destinationVC.interests = self.interests
-            
-        }
-        
-    }
+//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+//        // Get the new view controller using segue.destinationViewController.
+//        // Pass the selected object to the new view controller.
+//        
+//        
+//    }
 
 
 }

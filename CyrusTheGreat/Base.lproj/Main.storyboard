@@ -92,11 +92,13 @@
                         <outlet property="login" destination="gMP-MZ-Iid" id="bLw-7j-GBq"/>
                         <outlet property="logoCyrus" destination="B3J-u2-rEi" id="6dM-qT-d9X"/>
                         <outlet property="signUp" destination="5iW-xU-a5R" id="EDk-VF-YhW"/>
+                        <segue destination="2Jf-bk-eeG" kind="show" identifier="CotinueSignUp" id="xGD-n5-nfU"/>
+                        <segue destination="FPe-MW-7Ug" kind="show" identifier="AlreadyLoggedIn" id="AUl-JE-Bk1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AK1-99-zkb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-7609.5" y="446.25"/>
+            <point key="canvasLocation" x="-6904.5" y="48"/>
         </scene>
         <!--Login Page View Controller-->
         <scene sceneID="HXh-EF-Cg4">
@@ -743,7 +745,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GjE-hO-a2H" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4188" y="1264.4999999999998"/>
+            <point key="canvasLocation" x="-5497.5" y="642"/>
         </scene>
         <!--Chat View Controller-->
         <scene sceneID="UFq-q8-tXK">
@@ -1249,9 +1251,9 @@
         <image name="cyrus" width="350" height="350"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Skj-pL-1Aw"/>
+        <segue reference="AUl-JE-Bk1"/>
+        <segue reference="xGD-n5-nfU"/>
         <segue reference="eOv-3E-glu"/>
-        <segue reference="HV1-fz-5Uo"/>
-        <segue reference="HVS-kA-2F2"/>
+        <segue reference="KXb-Pi-882"/>
     </inferredMetricsTieBreakers>
 </document>

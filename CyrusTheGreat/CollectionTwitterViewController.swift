@@ -504,9 +504,9 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-        let destinationVC = segue.destinationViewController as! HomePageViewController
+//        let destinationVC = segue.destinationViewController as! HomePageViewController
         topics = topics.filter{!uselessTopicsArray.contains($0)}
-        destinationVC.interests = topics
+//        destinationVC.interests = topics
 
         let userInterests = ["interests":topics]
         self.appDelegate.userFire.childByAppendingPath("users")
