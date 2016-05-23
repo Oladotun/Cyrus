@@ -83,13 +83,10 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate,UIPickerVie
     @IBAction func nextButton(sender: AnyObject) {
         
         if (schoolEmailField.text!.isEmpty || passwordField.text!.isEmpty || firstNameField.text!.isEmpty || lastNameField.text!.isEmpty ) { // || passwordField.text!.isEmpty || firstNameField.text!.isEmpty || lastNameField.text!.isEmpty
-            
-//            print ("Please fill the empty field above")
-            
-            cyrusTalkLabel.text = "Empty field detected, Kindly fill it up."
-            cyrusTalkLabel.textColor = UIColor.redColor()
-            cyrusTalkLabel.textAlignment = NSTextAlignment.Left
-            
+            schoolEmailField.checkEmptyField()
+            passwordField.checkEmptyField()
+            firstNameField.checkEmptyField()
+            lastNameField.checkEmptyField()
         } else {
             
             print(schoolEmailField.text!)
@@ -154,6 +151,7 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate,UIPickerVie
     
         
     }
+    
     
     func getDomainFromEmail(email:String) -> String {
         
@@ -264,6 +262,7 @@ extension UITextField {
         self.layer.borderWidth = 1
         self.layer.cornerRadius = 5
         self.placeholder = msg
+        self.resignFirstResponder()
     }
     
     // Text Field is NOT empty - show gray border with 0 border width
@@ -271,6 +270,12 @@ extension UITextField {
         self.layer.borderColor = UIColor.grayColor().CGColor
         self.layer.borderWidth = 0
         self.layer.cornerRadius = 5
+    }
+    
+    func checkEmptyField() {
+        if (self.text!.isEmpty) {
+            self.errorHighlightTextField("Required")
+        }
     }
 }
 

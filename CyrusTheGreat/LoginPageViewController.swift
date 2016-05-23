@@ -17,16 +17,12 @@ class LoginPageViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passField: UITextField!
     var interests = [String]()
-    
-    @IBOutlet weak var alertLabel: UILabel!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         emailTextField.delegate = self
         passField.delegate = self
-        alertLabel.text = ""
-        alertLabel.textColor = UIColor.redColor()
-
         // Do any additional setup after loading the view.
     }
 
@@ -39,10 +35,8 @@ class LoginPageViewController: UIViewController, UITextFieldDelegate {
     @IBAction func loginButton(sender: AnyObject) {
         
         if (emailTextField.text!.isEmpty || passField.text!.isEmpty ) {
-            
-//            print ("Please fill the empty field above")
-            alertLabel.text = "Please fill the empty field above"
-            
+            emailTextField.checkEmptyField()
+            passField.checkEmptyField()
         } else {
             
             if (checkEmailDomain(getDomainFromEmail(emailTextField.text!.trim()))) {
@@ -57,7 +51,7 @@ class LoginPageViewController: UIViewController, UITextFieldDelegate {
                         self.appDelegate.userIdentifier = authData.uid
                         // Get the user interests from firebase
                         let userInterests = Firebase(url:  "https://cyrusthegreat.firebaseio.com/users/\(authData.uid)/interests")
-                        
+                    
                         userInterests.observeEventType(.Value, withBlock: {
                             snapshot in
                             if (snapshot.value != nil) {
@@ -75,18 +69,14 @@ class LoginPageViewController: UIViewController, UITextFieldDelegate {
                             }
                             
                         })
-                        
-                        
-                       
-                        
+
                     }
-                    
-                    
+
                 })
                 
             } else {
 //                print ("wrong email domain entered")
-                alertLabel.text = "wrong email domain entered"
+                emailTextField.errorHighlightTextField("School email required")
             }
             
         }
@@ -97,13 +87,11 @@ class LoginPageViewController: UIViewController, UITextFieldDelegate {
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         
         if (textField == emailTextField) {
-            
             let enteredWord = emailTextField.text!
-            
             if (!enteredWord.isEmail || enteredWord.isEmpty) {
-//                print("wrong input")
-                alertLabel.text = "Wrong Input"
+                textField.errorHighlightTextField("School Email required")
             } else {
+                textField.removeErrorHighlightTextField()
                 passField.becomeFirstResponder()
             }
         }
@@ -112,13 +100,13 @@ class LoginPageViewController: UIViewController, UITextFieldDelegate {
             let enteredWord = passField.text!
             
             if (enteredWord.isEmpty) {
-                alertLabel.text = "Wrong Input"
+                textField.errorHighlightTextField("Password required")
+                textField.resignFirstResponder()
             } else {
+                textField.removeErrorHighlightTextField()
                 passField.resignFirstResponder()
             }
         }
-        
-        
         return true
         
     }
@@ -128,20 +116,16 @@ class LoginPageViewController: UIViewController, UITextFieldDelegate {
     func getDomainFromEmail(email:String) -> String {
         
         if (email.contains("@")) {
-            
             let indexOfDomain = email.characters.indexOf("@")
             let indexDomain = email.characters.startIndex.distanceTo(indexOfDomain!) + 1
             let emailString = (email as NSString).substringFromIndex(indexDomain)
-            
             return emailString
             
         } else {
-            alertLabel.text = "Wrong email domain"
+            emailTextField.errorHighlightTextField("School Email required")
             return ""
         }
-        
-        
-        
+ 
     }
     
     
