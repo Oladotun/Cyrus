@@ -39,10 +39,11 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate,UIPickerVie
         firstNameField.delegate = self
         lastNameField.delegate = self
         passwordField.delegate = self
-        
         fieldPicker.delegate = self
         fieldPicker.dataSource = self
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil);
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name:UIKeyboardWillHideNotification, object: nil);
      
 
         // Do any additional setup after loading the view.
@@ -52,6 +53,15 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate,UIPickerVie
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    func keyboardWillShow(sender: NSNotification) {
+        self.view.frame.origin.y = -150
+    }
+    
+    func keyboardWillHide(sender: NSNotification) {
+        self.view.frame.origin.y = 0
+    }
+    
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -187,50 +197,45 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate,UIPickerVie
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         
         if (textField == schoolEmailField) {
-            
             let enteredWord = schoolEmailField.text!
-            
             if (!enteredWord.isEmail || enteredWord.isEmpty) {
-                
-                print("Invalid Input")
+                textField.errorHighlightTextField("School Name is required")
                 
             } else {
+                textField.removeErrorHighlightTextField()
                 firstNameField.becomeFirstResponder()
                 
             }
-//            schoolEmailField.resignFirstResponder()
+
             
-        }
-//        
+        }  
         if (textField == firstNameField) {
-            
             let firstName = firstNameField.text!
-            
             if (firstName.isEmpty) {
-                print("Enter input")
+                textField.errorHighlightTextField("First Name is required")
             } else {
+                textField.removeErrorHighlightTextField()
                 lastNameField.becomeFirstResponder()
             }
         }
         
         if (textField == lastNameField) {
             let lastName = lastNameField.text!
-            
             if (lastName.isEmpty) {
-                print("Enter last Name")
+                textField.errorHighlightTextField("Last Name is required")
             } else {
+                 textField.removeErrorHighlightTextField()
                 passwordField.becomeFirstResponder()
             }
             
         }
         
         if (textField == passwordField) {
-            
             let password = passwordField.text!
-            
             if (password.isEmpty) {
-                print("valid password")
+                textField.errorHighlightTextField("Password is required")
             } else {
+                textField.removeErrorHighlightTextField()
                 passwordField.resignFirstResponder()
             }
             
@@ -239,8 +244,7 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate,UIPickerVie
         
         return true
     }
-    
-
+ 
     /*
     // MARK: - Navigation
 
@@ -251,6 +255,23 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate,UIPickerVie
     }
     */
 
+}
+extension UITextField {
+    
+    // Text Field is empty - show red border
+    func errorHighlightTextField(msg: String){
+        self.layer.borderColor = UIColor.redColor().CGColor
+        self.layer.borderWidth = 1
+        self.layer.cornerRadius = 5
+        self.placeholder = msg
+    }
+    
+    // Text Field is NOT empty - show gray border with 0 border width
+    func removeErrorHighlightTextField(){
+        self.layer.borderColor = UIColor.grayColor().CGColor
+        self.layer.borderWidth = 0
+        self.layer.cornerRadius = 5
+    }
 }
 
 extension String {
