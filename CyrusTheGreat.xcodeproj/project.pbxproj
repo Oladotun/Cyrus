@@ -108,6 +108,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7C5BA8CC1CF36522003DC625 /* FirebaseManagers */ = {
+			isa = PBXGroup;
+			children = (
+				7CC0EC611CE5A5010089C743 /* FirebaseInfoMeetUpManager.swift */,
+				7CCBAC341CE4EADA0094A511 /* FirebaseChatManager.swift */,
+				7CCBAC321CE4CF930094A511 /* FirebaseHomeManager.swift */,
+				7CCBAC361CE5106C0094A511 /* FirebaseMapManager.swift */,
+				7CCBAC3A1CE573DD0094A511 /* FirebaseQuestionManager.swift */,
+			);
+			name = FirebaseManagers;
+			sourceTree = "<group>";
+		};
 		7CED63561C7353CC0003B19A = {
 			isa = PBXGroup;
 			children = (
@@ -132,6 +144,7 @@
 		7CED63611C7353CD0003B19A /* CyrusTheGreat */ = {
 			isa = PBXGroup;
 			children = (
+				7C5BA8CC1CF36522003DC625 /* FirebaseManagers */,
 				7C7218AB1CCD3CC80016C15B /* usa_uni.json */,
 				7C0320321C90B04100E299D2 /* Main.storyboard */,
 				7CED636B1C7353CD0003B19A /* Images.xcassets */,
@@ -139,7 +152,6 @@
 				7CED63621C7353CD0003B19A /* Supporting Files */,
 				7CED63641C7353CD0003B19A /* AppDelegate.swift */,
 				7CED63851C7355DC0003B19A /* FrontPageViewController.swift */,
-				7CC0EC611CE5A5010089C743 /* FirebaseInfoMeetUpManager.swift */,
 				7CED63871C75FC110003B19A /* SignUpPageViewController.swift */,
 				7C17984C1CCF97B7004E31BE /* LoginPageViewController.swift */,
 				7C0661AD1C876670003C04BD /* ApiConnectorViewController.swift */,
@@ -148,9 +160,6 @@
 				7C0320301C90A6BF00E299D2 /* HomePageViewController.swift */,
 				7CCBAC2E1CE4CEA60094A511 /* User.swift */,
 				7CCBAC301CE4CEB70094A511 /* UserProfile.swift */,
-				7CCBAC341CE4EADA0094A511 /* FirebaseChatManager.swift */,
-				7CCBAC321CE4CF930094A511 /* FirebaseHomeManager.swift */,
-				7CCBAC361CE5106C0094A511 /* FirebaseMapManager.swift */,
 				7C03202C1C90A09A00E299D2 /* ChatViewController.swift */,
 				7C6701171CD7822D0049C37E /* SearchTableViewController.swift */,
 				7CE313261C97027C00634900 /* ChatViewCell.swift */,
@@ -158,7 +167,6 @@
 				7C1154401C99A5070041C012 /* MeetUpPageViewController.swift */,
 				7CC3B1CD1CD8EB5400BB706A /* MapTrackViewController.swift */,
 				7C1155431CAD9A1E0041C012 /* QuestionsViewController.swift */,
-				7CCBAC3A1CE573DD0094A511 /* FirebaseQuestionManager.swift */,
 			);
 			path = CyrusTheGreat;
 			sourceTree = "<group>";

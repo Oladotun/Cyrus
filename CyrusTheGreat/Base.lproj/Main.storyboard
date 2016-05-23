@@ -93,12 +93,12 @@
                         <outlet property="logoCyrus" destination="B3J-u2-rEi" id="6dM-qT-d9X"/>
                         <outlet property="signUp" destination="5iW-xU-a5R" id="EDk-VF-YhW"/>
                         <segue destination="2Jf-bk-eeG" kind="show" identifier="CotinueSignUp" id="xGD-n5-nfU"/>
-                        <segue destination="FPe-MW-7Ug" kind="show" identifier="AlreadyLoggedIn" id="AUl-JE-Bk1"/>
+                        <segue destination="FPe-MW-7Ug" kind="presentation" identifier="AlreadyLoggedIn" id="bXX-RC-uVd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AK1-99-zkb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-6904.5" y="48"/>
+            <point key="canvasLocation" x="-7750.5" y="547.5"/>
         </scene>
         <!--Login Page View Controller-->
         <scene sceneID="HXh-EF-Cg4">
@@ -250,13 +250,13 @@
                     <connections>
                         <outlet property="emailTextField" destination="JxN-vj-vfo" id="Ovb-P8-spP"/>
                         <outlet property="passField" destination="Vtg-av-qfy" id="ryv-vJ-3Lh"/>
-                        <segue destination="FPe-MW-7Ug" kind="presentation" identifier="LoginHomeSegue" id="Skj-pL-1Aw"/>
                         <segue destination="2Jf-bk-eeG" kind="presentation" identifier="NoInterestSegue" id="HVS-kA-2F2"/>
+                        <segue destination="FPe-MW-7Ug" kind="presentation" identifier="LoginHomeSegue" id="1iL-Eu-0hN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a4W-Kg-BcC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-7138.5" y="1212"/>
+            <point key="canvasLocation" x="-7750.5" y="1488.75"/>
         </scene>
         <!--Sign Up Page View Controller-->
         <scene sceneID="oFx-Td-rWR">
@@ -522,7 +522,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cUG-aw-PuC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-6819" y="447.75"/>
+            <point key="canvasLocation" x="-6451.5" y="-82.5"/>
         </scene>
         <!--Api Connector View Controller-->
         <scene sceneID="l4X-wF-Z1a">
@@ -578,7 +578,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3gU-WS-ZiQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5977.5" y="447.75"/>
+            <point key="canvasLocation" x="-6139.5" y="726.75"/>
         </scene>
         <!--Collection Twitter View Controller-->
         <scene sceneID="M8y-TV-lzt">
@@ -644,7 +644,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="FPe-MW-7Ug" kind="presentation" id="SWN-A0-I7y"/>
+                                    <segue destination="FPe-MW-7Ug" kind="presentation" id="RqY-DZ-alJ"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -671,7 +671,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SPw-eQ-WTH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5194.5" y="443.99999999999994"/>
+            <point key="canvasLocation" x="-5194.5" y="726.75"/>
         </scene>
         <!--Home Page View Controller-->
         <scene sceneID="sDI-a8-sp3">
@@ -732,20 +732,55 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vk5-gd-R4Z">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="logout"/>
+                                <connections>
+                                    <action selector="logginOut:" destination="FPe-MW-7Ug" eventType="touchUpInside" id="01z-aK-PpM"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="xPY-Hk-hNq" firstAttribute="top" secondItem="vk5-gd-R4Z" secondAttribute="bottom" constant="20" id="ArU-qP-i3q"/>
+                            <constraint firstItem="vk5-gd-R4Z" firstAttribute="leading" secondItem="ey4-5Q-FAA" secondAttribute="leadingMargin" constant="315" id="Fcn-sG-PE8"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="vk5-gd-R4Z" secondAttribute="trailing" constant="1" id="VC0-QL-1oe"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="vk5-gd-R4Z"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="ArU-qP-i3q"/>
+                                <exclude reference="Fcn-sG-PE8"/>
+                                <exclude reference="VC0-QL-1oe"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="vk5-gd-R4Z"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="ArU-qP-i3q"/>
+                                <include reference="Fcn-sG-PE8"/>
+                                <include reference="VC0-QL-1oe"/>
+                            </mask>
+                        </variation>
                     </view>
+                    <navigationItem key="navigationItem" id="kFa-3K-4Cj"/>
                     <connections>
                         <outlet property="availSwitch" destination="wNX-T6-RB8" id="V2U-s3-Aqh"/>
                         <outlet property="currAvailability" destination="aYp-V6-Bg5" id="H7O-3b-FS8"/>
                         <outlet property="interestCollected" destination="woZ-yt-l7h" id="3Qd-uj-GVq"/>
                         <outlet property="noOfPeer" destination="Pol-cF-aq9" id="NiS-cn-FBu"/>
                         <segue destination="bqI-cL-1Wj" kind="presentation" identifier="idSegueChat" id="H6L-Am-SpU"/>
+                        <segue destination="sxO-Jn-IFc" kind="unwind" identifier="logOutSegue" unwindAction="loggedOutPageController:" id="FYr-e6-Kkq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GjE-hO-a2H" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="sxO-Jn-IFc" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-5497.5" y="642"/>
+            <point key="canvasLocation" x="-6567" y="1504.5"/>
         </scene>
         <!--Chat View Controller-->
         <scene sceneID="UFq-q8-tXK">
@@ -931,7 +966,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BMU-fB-EO2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3468" y="446.99999999999994"/>
+            <point key="canvasLocation" x="-4200" y="447.75"/>
         </scene>
         <!--Search Table View Controller-->
         <scene sceneID="ORm-Hg-gUb">
@@ -965,7 +1000,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Euv-95-ig5" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="9ul-fk-PtN" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-1915.5" y="447.75"/>
+            <point key="canvasLocation" x="-1987.5" y="447.75"/>
         </scene>
         <!--Meet Up And Map View Controller-->
         <scene sceneID="Yf7-N8-njs">
@@ -1023,7 +1058,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rIl-G5-Lku" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3295.5" y="1220.25"/>
+            <point key="canvasLocation" x="-3282" y="1278.75"/>
         </scene>
         <!--Questions View Controller-->
         <scene sceneID="KlB-cV-ePG">
@@ -1131,18 +1166,27 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
+                                <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="13" y="209" width="371" height="21"/>
+                                </variation>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time to meet up is so and so" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gYL-m5-ZlO">
                                 <rect key="frame" x="13" y="271" width="561" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
+                                <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="13" y="271" width="371" height="21"/>
+                                </variation>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jYc-eK-EyZ">
                                 <rect key="frame" x="13" y="343" width="561" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
+                                <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="13" y="343" width="371" height="21"/>
+                                </variation>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IVd-WW-gob">
                                 <rect key="frame" x="13" y="414" width="250" height="30"/>
@@ -1186,7 +1230,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ppk-vo-Dvn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2534.25" y="1132.1249999999998"/>
+            <point key="canvasLocation" x="-2088" y="1278.75"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="yLV-b6-Pcy">
@@ -1204,7 +1248,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N7s-Gi-QkX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2667" y="447.75"/>
+            <point key="canvasLocation" x="-3060" y="455.25"/>
         </scene>
         <!--Map Track View Controller-->
         <scene sceneID="cFC-2g-4ef">
@@ -1244,16 +1288,16 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6tn-7a-P8k" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2941.5" y="1945.875"/>
+            <point key="canvasLocation" x="-2023.5" y="1945.875"/>
         </scene>
     </scenes>
     <resources>
         <image name="cyrus" width="350" height="350"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="AUl-JE-Bk1"/>
+        <segue reference="bXX-RC-uVd"/>
         <segue reference="xGD-n5-nfU"/>
         <segue reference="eOv-3E-glu"/>
-        <segue reference="KXb-Pi-882"/>
+        <segue reference="HV1-fz-5Uo"/>
     </inferredMetricsTieBreakers>
 </document>

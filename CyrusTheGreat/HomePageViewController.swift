@@ -113,6 +113,22 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     
 
     
+    @IBAction func logginOut(sender: AnyObject) {
+        NSUserDefaults.standardUserDefaults().removeObjectForKey("uid")
+        currAvailability.text = "Offline"
+        firebaseHomeManager.updateUserState(notActiveString)
+        firebaseHomeManager.removeActiveUser(appDelegate.userIdentifier)
+        firebaseHomeManager.userObject.status = notActiveString
+        self.switchState = false
+        locationManager.stopUpdatingLocation()
+        appDelegate.userFire.unauth()
+        self.performSegueWithIdentifier("logOutSegue", sender: self)
+        
+        
+            
+//            setValue(authData.uid, forKey: "uid")
+    }
+    
     func receiveInvite(inviter: String) {
         alertInvite = UIAlertController(title: "", message: "\(inviter) wants to chat with you", preferredStyle: UIAlertControllerStyle.Alert)
         

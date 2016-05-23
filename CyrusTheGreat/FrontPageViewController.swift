@@ -29,6 +29,7 @@ class FrontPageViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        // Get user logged in
         
         let autData = NSUserDefaults.standardUserDefaults().valueForKey("uid")
         
@@ -36,9 +37,6 @@ class FrontPageViewController: UIViewController {
             appDelegate.userIdentifier = autData as! String
             
             let userInterests = Firebase(url:  "https://cyrusthegreat.firebaseio.com/users/\(autData)/interests")
-            
-            //Used to keep user logged in
-            //        NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: "uid")w
             
             userInterests.observeEventType(.Value, withBlock: {
                 snapshot in
@@ -122,6 +120,7 @@ class FrontPageViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     
 
     /*
