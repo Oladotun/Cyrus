@@ -12,7 +12,7 @@ import Firebase
 class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
     
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-    let questionPrelude:[String] = ["Tell us your favorite memories about","Share a story on why you like" ,"Tell us why you enjoy"]
+    let questionPrelude:[String] = ["tell us your favorite memories about","share a story on why you like" ,"tell us why you enjoy"]
     @IBOutlet weak var interestMatchLabel: UILabel!
     var countQuestions:Int = 0
     var endButtonPressed:Bool!
@@ -98,26 +98,32 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
         var question = ""
         var fieldInfo = ""
         var foundInterest = ""
+        print ("myfield: \(appDelegate.userObject.userField)")
+        print ("otherUserField: \(appDelegate.connectedProfile.user.userField)")
         
         if (countQuestions % 2 == 0) {
-            userName = myName
+            userName = myName.capitalizeFirst
             
         } else {
-            userName = otherUserName
+            userName = otherUserName.capitalizeFirst
         }
         if (userToQuestions[userName] == nil) {
             userToQuestions[userName] = [String]()
         }
     
         if (countQuestions == 2 || countQuestions == 5) {
-            if (userName == myName) {
+            if (userName == myName.capitalizeFirst) {
                 fieldInfo = appDelegate.userObject.userField
+                print("user field is:\(appDelegate.userObject.userField)")
                 
             } else {
                 fieldInfo = appDelegate.connectedProfile.user.userField
                 
             }
-            question = "Tell us how and why you decided to get into \(fieldInfo) ?"
+            
+            print ("userName \(userName) and myfield: \(fieldInfo)")
+        
+            question = "tell us how and why you decided to get into \(fieldInfo) ?"
             userToQuestions[userName]!.append(fieldInfo)
         } else {
             repeat {
@@ -137,7 +143,7 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
             
         }
         allQuestionAsked = checkIfQuestionComplete()
-        print(userToQuestions)
+//        print(userToQuestions)
 
         
     }
