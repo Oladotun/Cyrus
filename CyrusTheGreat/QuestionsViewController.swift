@@ -113,19 +113,29 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
 //    
     func questTime() {
         var userName = ""
+        let myName = appDelegate.userObject.firstName
+        let otherUserName = appDelegate.connectedProfile.user.firstName
         var question = ""
+        var fieldInfo = ""
         
         if (countQuestions % 2 == 0) {
-            userName = appDelegate.userObject.firstName
+            userName = myName
             
         } else {
-            userName = appDelegate.connectedProfile.user.firstName
+            userName = otherUserName
         }
         
         question = questionPrelude.randomItem() + " " + appDelegate.connectedProfile.userMatchedInterest.randomItem() + "?"
         
         if (countQuestions == 2 || countQuestions == 5) {
-            question = fieldQuestion
+            if (userName == myName) {
+                fieldInfo = appDelegate.userObject.userField
+                
+            } else {
+                fieldInfo = appDelegate.connectedProfile.user.userField
+                
+            }
+            question = "Tell us how and why you decided to get into \(fieldInfo) ?"
             
             if (countQuestions == 5) {
                 doneButton.alpha = 1.0

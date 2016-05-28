@@ -13,6 +13,7 @@ class User: NSObject {
     var userId:String!
     var firstName:String!
     var schoolName:String!
+    var userField:String!
     var location:CLLocation!
     var interests:[String]!
     var status:String!

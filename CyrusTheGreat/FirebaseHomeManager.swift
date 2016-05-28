@@ -30,6 +30,7 @@ class FirebaseHomeManager: NSObject {
     let interestString = "interests"
     let locationString = "location"
     let schoolNameString = "schoolName"
+    let userFieldString = "userField"
     
     
     
@@ -81,6 +82,11 @@ class FirebaseHomeManager: NSObject {
                 
                 if (child.key == "school_name") {
                     self.userObject.schoolName = childSnapshot.value as! String
+                }
+                
+                if (child.key == "field_study") {
+                    self.userObject.userField = childSnapshot.value as! String
+                    
                 }
             }
             
@@ -236,6 +242,7 @@ class FirebaseHomeManager: NSObject {
                                     
                                     newFound.user.userId = childValue[self.userIdString]
                                     newFound.user.firstName = childValue[self.firstNameString]
+                                    newFound.user.userField = childValue[self.userFieldString]
                                     let coordinateInString = childValue[self.locationString]
                                     newFound.user.location = coordinateInString!.stringToCLLocation()
                                     
@@ -386,6 +393,7 @@ class FirebaseHomeManager: NSObject {
         userArray ["userId"] = userObject.userId
         userArray["firstName"] = userObject.firstName
         userArray["schoolName"] = userObject.schoolName
+        userArray["userField"] = userObject.userField
         userArray["location"] = "\(userObject.location.coordinate.latitude) \(userObject.location.coordinate.longitude)"
         userArray["interests"] = userObject.interests.joinWithSeparator(",")
         
