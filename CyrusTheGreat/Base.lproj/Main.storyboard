@@ -1088,29 +1088,27 @@
                                     <action selector="nextQuestion:" destination="DDq-FN-vDe" eventType="touchUpInside" id="DZE-wo-ai0"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dm2-Kf-s2N">
-                                <rect key="frame" x="321" y="390" width="235" height="57"/>
-                                <state key="normal" title="Done"/>
-                                <connections>
-                                    <action selector="doneButtonHit:" destination="DDq-FN-vDe" eventType="touchUpInside" id="MYx-FM-bmK"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="Dm2-Kf-s2N" secondAttribute="trailing" constant="24" id="H8L-6b-C2h"/>
-                            <constraint firstItem="Dm2-Kf-s2N" firstAttribute="top" secondItem="Fh4-ZQ-E75" secondAttribute="bottom" constant="104" id="IXH-xM-WcP"/>
-                            <constraint firstItem="ohG-vI-Q98" firstAttribute="width" secondItem="Dm2-Kf-s2N" secondAttribute="width" id="IXe-0m-bpi"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Fh4-ZQ-E75" secondAttribute="trailing" id="Jwd-yx-TmL"/>
                             <constraint firstAttribute="leadingMargin" secondItem="Fh4-ZQ-E75" secondAttribute="leading" id="MMv-E4-ach"/>
                             <constraint firstItem="Fh4-ZQ-E75" firstAttribute="top" secondItem="810-Vh-sSf" secondAttribute="bottom" constant="103" id="bXu-uy-dHJ"/>
-                            <constraint firstItem="ohG-vI-Q98" firstAttribute="height" secondItem="Dm2-Kf-s2N" secondAttribute="height" id="c49-ga-BR3"/>
-                            <constraint firstItem="fCD-1R-USr" firstAttribute="top" secondItem="Dm2-Kf-s2N" secondAttribute="bottom" constant="271" id="g52-2L-8Sd"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="ohG-vI-Q98" secondAttribute="trailing" constant="201" id="fX6-6u-7lf"/>
                             <constraint firstItem="ohG-vI-Q98" firstAttribute="top" secondItem="Fh4-ZQ-E75" secondAttribute="bottom" constant="104" id="kkd-fQ-d6m"/>
                             <constraint firstItem="ohG-vI-Q98" firstAttribute="leading" secondItem="ncs-YZ-Pok" secondAttribute="leadingMargin" constant="24" id="mkV-Qr-bIh"/>
-                            <constraint firstItem="Dm2-Kf-s2N" firstAttribute="leading" secondItem="ohG-vI-Q98" secondAttribute="trailing" constant="42" id="xO2-fz-ldA"/>
                             <constraint firstItem="fCD-1R-USr" firstAttribute="top" secondItem="ohG-vI-Q98" secondAttribute="bottom" constant="271" id="zxn-ds-o9D"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="fX6-6u-7lf"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="constraints">
+                                <include reference="fX6-6u-7lf"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="XBn-lX-MDU">
                         <barButtonItem key="leftBarButtonItem" systemItem="stop" id="3Ot-C2-gV2">
@@ -1120,7 +1118,6 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="doneButton" destination="Dm2-Kf-s2N" id="0UF-u4-Re9"/>
                         <outlet property="interestMatchLabel" destination="Fh4-ZQ-E75" id="k7P-Ix-fUE"/>
                         <outlet property="questionButton" destination="ohG-vI-Q98" id="gk8-Lm-A8e"/>
                         <segue destination="ob5-UI-jYw" kind="unwind" identifier="unWindHome" unwindAction="unwindHomePageController:" id="AkL-VI-dhv"/>

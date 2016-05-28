@@ -12,22 +12,21 @@ import Firebase
 class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
     
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-    let questionPrelude:[String] = ["Tell us your favorite memories about","Share a story on why you like" ,"Tell us why you got into"]
-    let fieldQuestion = "Tell us why you got into your field of study ?"
+    let questionPrelude:[String] = ["Tell us your favorite memories about","Share a story on why you like" ,"Tell us why you enjoy"]
     @IBOutlet weak var interestMatchLabel: UILabel!
     var countQuestions:Int = 0
     var endButtonPressed:Bool!
     @IBOutlet weak var questionButton: UIButton!
-    @IBOutlet weak var doneButton: UIButton!
     var firebaseQuestionManager:FirebaseQuestionManager!
-     var seenTopics = [String]()
+    var userToQuestions:[String:[String]]!
+    var questionPerUser:Int!
+    var allQuestionAsked = false
     
-   
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         firebaseQuestionManager.delegate = self
-        doneButton.alpha = 0.0
+        userToQuestions = [String:[String]]()
+        
         if (appDelegate.iamInitiator == true) {
             questionButton.alpha = 1.0
             
@@ -35,7 +34,15 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
             questionButton.alpha = 0.0
             
         }
-        interestMatchLabel.text = "Press the next question button to start"
+        
+        
+        if let interestCount = appDelegate.connectedProfile.userMatchedCount {
+            questionPerUser = interestCount + 1 // we added 1 for the users field
+            
+        }
+    
+        
+        interestMatchLabel.text = "Click the Next Question to start"
         interestMatchLabel.preferredMaxLayoutWidth = 350
         
         
@@ -70,7 +77,7 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
     func chattingDone() {
         
         firebaseQuestionManager.meetUpPathWay.removeValue()
-        let alert = UIAlertController(title:"",message: "Meet Up Chat Done", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title:"",message: "Chat Done!\n Stay in touch with each others by sharing contact information such as Email, Linkedln, Facebook or Phone number.", preferredStyle: UIAlertControllerStyle.Alert)
         
         let doneAction: UIAlertAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
             
@@ -83,40 +90,14 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
             self.presentViewController(alert, animated: true, completion: nil)
         })
     }
-    
-    @IBAction func doneButtonHit(sender: AnyObject) {
-        
-        
-        let alert = UIAlertController(title: "", message: "Done Chatting ?", preferredStyle: UIAlertControllerStyle.Alert)
-        
-        let acceptAction: UIAlertAction = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
-        self.firebaseQuestionManager.questionPathFirebase.setValue("_Done_")
-        self.performSegueWithIdentifier("unWindHome", sender: self)
-            
-            
-        }
-        
-        let declineAction: UIAlertAction = UIAlertAction(title: "No", style: UIAlertActionStyle.Cancel) { (alertAction) -> Void in
-            
-        }
-        
-        alert.addAction(acceptAction)
-        alert.addAction(declineAction)
-        
-        NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
-            self.presentViewController(alert, animated: true, completion: nil)
-        }
-
-        
-    }
-    
-//    
+  
     func questTime() {
         var userName = ""
         let myName = appDelegate.userObject.firstName
         let otherUserName = appDelegate.connectedProfile.user.firstName
         var question = ""
         var fieldInfo = ""
+        var foundInterest = ""
         
         if (countQuestions % 2 == 0) {
             userName = myName
@@ -124,9 +105,10 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
         } else {
             userName = otherUserName
         }
-        
-        question = questionPrelude.randomItem() + " " + appDelegate.connectedProfile.userMatchedInterest.randomItem() + "?"
-        
+        if (userToQuestions[userName] == nil) {
+            userToQuestions[userName] = [String]()
+        }
+    
         if (countQuestions == 2 || countQuestions == 5) {
             if (userName == myName) {
                 fieldInfo = appDelegate.userObject.userField
@@ -136,10 +118,15 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
                 
             }
             question = "Tell us how and why you decided to get into \(fieldInfo) ?"
+            userToQuestions[userName]!.append(fieldInfo)
+        } else {
+            repeat {
+                foundInterest = appDelegate.connectedProfile.userMatchedInterest.randomItem()
+            } while(userToQuestions[userName]!.contains(foundInterest))
+            userToQuestions[userName]!.append(foundInterest)
             
-            if (countQuestions == 5) {
-                doneButton.alpha = 1.0
-            }
+            question = questionPrelude.randomItem() + " " + foundInterest + "?"
+           
         }
         
         let completeQuestion = userName + "," + question
@@ -149,8 +136,20 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
             updateQuestionLabel(completeQuestion)
             
         }
+        allQuestionAsked = checkIfQuestionComplete()
+        print(userToQuestions)
 
         
+    }
+    
+    func checkIfQuestionComplete() -> Bool {
+        
+        for key in userToQuestions.keys {
+            if (userToQuestions[key]?.count < questionPerUser) {
+                return false
+            }
+        }
+        return true
     }
 
     override func didReceiveMemoryWarning() {
@@ -159,9 +158,17 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
     }
     
     @IBAction func nextQuestion(sender: AnyObject) {
+        
+        if (allQuestionAsked == true) {
+            chattingDone()
+            self.firebaseQuestionManager.questionPathFirebase.setValue("_Done_")
 
-        questTime()
-        countQuestions = countQuestions + 1
+        } else {
+            questTime()
+            countQuestions = countQuestions + 1
+        }
+
+        
     }
     
     @IBAction func exitButton(sender: AnyObject) {

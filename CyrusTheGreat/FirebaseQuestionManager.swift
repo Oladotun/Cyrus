@@ -32,10 +32,6 @@ class FirebaseQuestionManager: NSObject {
         observeQuestionFirebase()
     }
     
-    
-
-    
-    
     func questionUserFirebase() -> Firebase! {
         return meetUpPathWay.childByAppendingPath("question")
     }
