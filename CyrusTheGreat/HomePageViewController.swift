@@ -53,6 +53,7 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         // Re-initialize
         if (returned) {
             initialSetup()
+//            self.view.window?.rootViewController?.dismissViewControllerAnimated(true, completion: nil)
         }
         
         
@@ -124,9 +125,8 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         appDelegate.userFire.unauth()
         self.performSegueWithIdentifier("logOutSegue", sender: self)
         
+        print ("log out working")
         
-            
-//            setValue(authData.uid, forKey: "uid")
     }
     
     func receiveInvite(inviter: String) {
@@ -173,7 +173,7 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     
     func segueToNextPage() {
 //        print ("going to next page")
-        performSegueWithIdentifier("idSegueChat", sender: self)
+        self.performSegueWithIdentifier("idSegueChat", sender: self)
     }
     
     override func didReceiveMemoryWarning() {
@@ -222,6 +222,10 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
 
     
     // MARK: - Navigation
+    
+    override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
+        return false
+    }
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

@@ -45,6 +45,8 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
         self.messagesArray = [String]()
         self.messagesArray.append(chatMsg)
         self.destinationLocation = location
+        print("message sent")
+        print(messagesArray)
         self.updateTableView()
     }
     
@@ -74,6 +76,11 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
         warningLabel.text = ""
         warningLabel.textColor = UIColor.redColor()
         
+        
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(true)
         
     }
 
@@ -137,6 +144,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
     }
     
     func segueToNextPage() {
+        print("message in segueToNext: \(messagesArray)")
         performSegueWithIdentifier("yesSegue", sender: self)
     }
     
@@ -219,7 +227,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
         if (segue.identifier == "yesSegue") {
             
             let destVC = segue.destinationViewController as! MeetUpAndMapViewController
-            
+            print("the message is \(messagesArray)")
             let messageInfo = messagesArray.last!
             let messageInfoArray = messageInfo.componentsSeparatedByString("\n")
             destVC.time = messageInfoArray[2]

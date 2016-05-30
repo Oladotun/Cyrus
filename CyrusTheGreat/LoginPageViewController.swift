@@ -36,6 +36,7 @@ class LoginPageViewController: UIViewController, UITextFieldDelegate {
 //        print("logged out succesfully")
         emailTextField.text = ""
         passField.text = ""
+       
         
     }
     

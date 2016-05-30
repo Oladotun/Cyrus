@@ -42,7 +42,8 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
         }
     
         
-        interestMatchLabel.text = "Click the Next Question to start"
+        interestMatchLabel.text = "Hi, Cyrus here. I am going to ask both of you about your interests.Click the Next Question to start"
+        interestMatchLabel.numberOfLines = 4
         interestMatchLabel.preferredMaxLayoutWidth = 350
         
         
