@@ -49,7 +49,7 @@ class FirebaseHomeManager: NSObject {
     var connectedUserInfo:UserProfile!
     var allFound = [UserProfile]() // found profiles
     var delegate: FirebaseHomeDelegate?
-    
+    var declineList = [UserProfile]() // Decline profiles
     
     func setUpCurrentUser(userId:String) {
         
@@ -165,7 +165,7 @@ class FirebaseHomeManager: NSObject {
 
                                 for curr in self.allFound {
                                     if (curr.user.userId == snap ) {
-                                         self.delegate?.receiveInvite(curr.user.firstName)
+                                        self.delegate?.receiveInvite(curr.user.firstName)
                                         self.connectedUserInfo = curr
                                     }
                                 }
@@ -195,6 +195,10 @@ class FirebaseHomeManager: NSObject {
                         if (snap == "No" ) {
                             // alert as No
                             self.delegate?.declineInvite()
+                            self.declineList.append(self.connectedUserInfo)
+                            self.allFound = self.allFound.filter{ $0.user.userId != self.connectedUserInfo.user.userId} // filter out  unfound user
+                             self.delegate?.foundDisplay()
+                            
                         }
                         
                     }
@@ -313,10 +317,8 @@ class FirebaseHomeManager: NSObject {
     func removeActiveUser(userId:String) {
         let userExactPath = Firebase(url: "\(activeUserUrl)\(userId)")
     
-        if(userExactPath != nil) {
-        
+        if (userExactPath != nil) {
             userExactPath.removeValue()
-            
         }
         
         
@@ -423,6 +425,7 @@ class FirebaseHomeManager: NSObject {
     
     func updateUserLocation(location:CLLocation) {
         userObject.location = location
+        
     }
     
     
