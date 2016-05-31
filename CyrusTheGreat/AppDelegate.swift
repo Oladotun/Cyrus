@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var iamInitiator:Bool! // Chat initiator
 
     var locationManager: CLLocationManager!
-//    var userFirebaseManager: FirebaseManager!
+    var justMetUpWith = ""
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {

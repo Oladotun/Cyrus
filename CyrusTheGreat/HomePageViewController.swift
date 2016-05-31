@@ -54,6 +54,10 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         if (returned) {
             initialSetup()
 //            self.view.window?.rootViewController?.dismissViewControllerAnimated(true, completion: nil)
+            if (!appDelegate.justMetUpWith.isEmpty) {
+                print("returned from questions page")
+                firebaseHomeManager.updateMetUpWith(appDelegate.justMetUpWith)
+            }
         }
         
         
@@ -185,7 +189,6 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     
 
     @IBAction func meetUpClicked(sender: AnyObject) {
-        
         if (firebaseHomeManager.userObject.status == notActiveString) {
             
             alertView("Please Go Online")
@@ -198,7 +201,9 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     }
     
     @IBAction func unwindHomePageController(segue: UIStoryboardSegue) {
-        alertView("Welcome Back Home")
+//        alertView("Welcome Back Home")
+        
+        
     }
     
     
@@ -242,11 +247,12 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
             destinationVC.myName = self.firebaseHomeManager.userObject.firstName
             appDelegate.userObject = self.firebaseHomeManager.userObject
             appDelegate.connectedProfile = self.firebaseHomeManager.connectedUserInfo
-            
+            firebaseHomeManager.removeActiveUser(appDelegate.userIdentifier)
             firebaseHomeManager.removeMeetHandler()
             firebaseHomeManager.meetUpSet = false
             returned = true
             locationManager.stopUpdatingLocation()
+            appDelegate.justMetUpWith = ""
             
             self.switchState = false
             if (self.chatInitiator == true) {

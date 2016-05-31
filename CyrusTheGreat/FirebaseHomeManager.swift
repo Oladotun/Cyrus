@@ -35,8 +35,12 @@ class FirebaseHomeManager: NSObject {
     
     
     var userObject:User!
+    var userMetUpWith = [String]()
     var meetPathHandler:UInt!
+    
+    
     var userFirebase:Firebase!
+    var userMetUpWithFirebase:Firebase!
     var allActiveUsers:Firebase!
     var userActiveFirebasePath:Firebase!
     var userStatusFirebase:Firebase!
@@ -88,9 +92,22 @@ class FirebaseHomeManager: NSObject {
                     self.userObject.userField = childSnapshot.value as! String
                     
                 }
+                
+                if (child.key == "metup_with") {
+                    self.userMetUpWith = childSnapshot.value as! [String]
+                }
             }
             
         })
+        
+    }
+    
+    func updateMetUpWith(userIdMet:String) {
+        userMetUpWithFirebase = Firebase(url:"\(userUrl)/metup_with")
+        userMetUpWith.append(userIdMet)
+        userMetUpWithFirebase.setValue(userMetUpWith)
+        self.delegate?.foundDisplay()
+        
         
     }
     
@@ -127,7 +144,6 @@ class FirebaseHomeManager: NSObject {
                     
                     if (child.key == self.invitingString && self.meetUpSet == false) {
                         let childSnapshot = snapshot.childSnapshotForPath(child.key)
-                        
                         if let meetUpPath = childSnapshot.value as? String {
                             self.meetUpPathWay = Firebase(url: meetUpPath)
                             self.meetUpSet = true
@@ -217,6 +233,17 @@ class FirebaseHomeManager: NSObject {
         self.meetUpPathWay.updateChildValues(chatStatus)
     }
     
+    func checkMetUpWithList(userId:String) -> Bool {
+        for user in userMetUpWith  {
+            if (user == userId) {
+                return true
+            }
+        }
+        
+        return false
+        
+    }
+    
     func activateUserObserver() {
         
         guard let myId = userId else {
@@ -239,7 +266,7 @@ class FirebaseHomeManager: NSObject {
                         if let childValue = childSnapshot.value as? [String:String] {
                             let userId = childValue[self.userIdString]! as String
                             
-                            if (!self.checkDeclineList(userId)) {
+                            if (!self.checkDeclineList(userId) && !self.checkMetUpWithList(userId)) {
                                 
                                 let newFound = UserProfile()
                                 
@@ -384,16 +411,8 @@ class FirebaseHomeManager: NSObject {
                 self.meetUpPathWay.updateChildValues(initiatorInfo)
                 
             }
-//            else {
-//                print ("user not found")
-//            }
-            
             
         }
-//        else {
-//            print ("User receiving invite")
-//        }
-//        
         
     }
     // Call after everything is called

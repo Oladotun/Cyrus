@@ -26,6 +26,7 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
         super.viewDidLoad()
         firebaseQuestionManager.delegate = self
         userToQuestions = [String:[String]]()
+        appDelegate.justMetUpWith = appDelegate.connectedProfile.user.userId
         
         if (appDelegate.iamInitiator == true) {
             questionButton.alpha = 1.0
@@ -40,15 +41,11 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
             questionPerUser = interestCount + 1 // we added 1 for the users field
             
         }
-    
         
         interestMatchLabel.text = "Hi, Cyrus here. I am going to ask both of you about your interests to better assist with your convestations.\nClick the Next Question to start"
         interestMatchLabel.numberOfLines = 4
         interestMatchLabel.preferredMaxLayoutWidth = 350
         
-        
-        
-
     }
     
     func updateQuestionLabel(question: String) {
@@ -86,7 +83,6 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
         }
         
         alert.addAction(doneAction)
-        
         NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
             self.presentViewController(alert, animated: true, completion: nil)
         })
@@ -99,8 +95,7 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
         var question = ""
         var fieldInfo = ""
         var foundInterest = ""
-        print ("myfield: \(appDelegate.userObject.userField)")
-        print ("otherUserField: \(appDelegate.connectedProfile.user.userField)")
+        
         
         if (countQuestions % 2 == 0) {
             userName = myName.capitalizeFirst
@@ -115,15 +110,12 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
         if (countQuestions == 2 || countQuestions == 5) {
             if (userName == myName.capitalizeFirst) {
                 fieldInfo = appDelegate.userObject.userField
-                print("user field is:\(appDelegate.userObject.userField)")
                 
             } else {
                 fieldInfo = appDelegate.connectedProfile.user.userField
                 
             }
             
-            print ("userName \(userName) and myfield: \(fieldInfo)")
-        
             question = "tell us how and why you decided to get into \(fieldInfo) ?"
             userToQuestions[userName]!.append(fieldInfo)
         } else {
