@@ -108,6 +108,8 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         firebaseHomeManager.updateUserLocation(locations.last!)
         if (switchState == true) {
             firebaseHomeManager.updateActiveUserFirebase()
+        } else {
+            firebaseHomeManager.activateUserObserver()
         }
         
     }
@@ -154,9 +156,6 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
             self.presentViewController(self.alertInvite, animated: true, completion: nil)
         }
-        
-
-        
         
     }
     
