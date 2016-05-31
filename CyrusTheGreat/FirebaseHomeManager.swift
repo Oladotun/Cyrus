@@ -197,7 +197,8 @@ class FirebaseHomeManager: NSObject {
                             self.delegate?.declineInvite()
                             self.declineList.append(self.connectedUserInfo)
                             self.allFound = self.allFound.filter{ $0.user.userId != self.connectedUserInfo.user.userId} // filter out  unfound user
-                             self.delegate?.foundDisplay()
+                            self.delegate?.foundDisplay()
+                            self.updateUserState("Active")
                             
                         }
                         
@@ -236,46 +237,55 @@ class FirebaseHomeManager: NSObject {
                         let childSnapshot = snapshot.childSnapshotForPath(child.key)
                         
                         if let childValue = childSnapshot.value as? [String:String] {
-                            let newFound = UserProfile()
-                            newFound.user = User()
-                            newFound.user.schoolName = childValue[self.schoolNameString]
+                            let userId = childValue[self.userIdString]! as String
                             
-                            if (self.userObject.schoolName != nil ) {
+                            if (!self.checkDeclineList(userId)) {
                                 
-                                if (newFound.user.schoolName == self.userObject.schoolName) {
+                                let newFound = UserProfile()
+                                
+                                newFound.user = User()
+                                newFound.user.userId = childValue[self.userIdString]
+                                newFound.user.schoolName = childValue[self.schoolNameString]
+                                
+                                if (self.userObject.schoolName != nil ) {
                                     
-                                    newFound.user.userId = childValue[self.userIdString]
-                                    newFound.user.firstName = childValue[self.firstNameString]
-                                    newFound.user.userField = childValue[self.userFieldString]
-                                    let coordinateInString = childValue[self.locationString]
-                                    newFound.user.location = coordinateInString!.stringToCLLocation()
-                                    
-                                    let distance = newFound.user.location.distanceFromLocation(self.userObject.location)
-                                    
-                                    if (distance < 2000) {
-                                        newFound.user.interests = (childValue[self.interestString])?.componentsSeparatedByString(",")
-                                        let matchTopics =  self.findMatches(newFound.user.interests)
+                                    if (newFound.user.schoolName == self.userObject.schoolName) {
                                         
-                                        if (matchTopics.count > 0) {
-                                            newFound.userMatchedInterest = matchTopics
-                                            newFound.userMatchedCount = matchTopics.count
-                                            newFound.userDistance = distance
-                                            self.allFound.append(newFound)
+                                        
+                                        newFound.user.firstName = childValue[self.firstNameString]
+                                        newFound.user.userField = childValue[self.userFieldString]
+                                        let coordinateInString = childValue[self.locationString]
+                                        newFound.user.location = coordinateInString!.stringToCLLocation()
+                                        
+                                        let distance = newFound.user.location.distanceFromLocation(self.userObject.location)
+                                        
+                                        if (distance < 2000) {
+                                            newFound.user.interests = (childValue[self.interestString])?.componentsSeparatedByString(",")
+                                            let matchTopics =  self.findMatches(newFound.user.interests)
+                                            
+                                            if (matchTopics.count > 0) {
+                                                newFound.userMatchedInterest = matchTopics
+                                                newFound.userMatchedCount = matchTopics.count
+                                                newFound.userDistance = distance
+                                                self.allFound.append(newFound)
+                                            }
+                                            
                                         }
                                         
                                     }
-                                    
                                 }
+                                
                             }
-
+                            
                         }
                         
                     }
                     
+                    self.sortAllFound()
                 }
-                
-                self.sortAllFound()
+                                
             }
+                            
             
             self.delegate?.foundDisplay()
             
@@ -283,6 +293,15 @@ class FirebaseHomeManager: NSObject {
         
     }
     
+    func checkDeclineList(userId:String) -> Bool  {
+        for user in declineList {
+            if (user.user.userId == userId) {
+                return true
+            }
+        }
+        
+        return false
+    }
     
     
     

@@ -167,6 +167,7 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     func declineInvite() {
 //        print ("decline invite called")
         alertView("Your Invite was declined, Please try again")
+        firebaseHomeManager.meetUpPathWay.removeValue()
         
     }
     
