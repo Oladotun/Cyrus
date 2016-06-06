@@ -42,7 +42,7 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
         // Do any additional setup after loading the view.
         stringCollection.allowsMultipleSelection = true
         self.userLookUp()
-        self.unwantedTopics.text = "label"
+        self.unwantedTopics.text = "Click on interests to remove from interest list"
         nextButton.alpha = 0.0
         unwantedTopics.alpha = 0.0
         

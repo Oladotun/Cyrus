@@ -11,7 +11,7 @@ import CoreLocation
 import UIKit
 
 protocol FirebaseHomeDelegate {
-    func receiveInvite(inviter:String)
+    func receiveInvite(invitedUser:UserProfile)
     func declineInvite()
     func segueToNextPage()
     func foundDisplay()
@@ -181,7 +181,7 @@ class FirebaseHomeManager: NSObject {
 
                                 for curr in self.allFound {
                                     if (curr.user.userId == snap ) {
-                                        self.delegate?.receiveInvite(curr.user.firstName)
+                                        self.delegate?.receiveInvite(curr)
                                         self.connectedUserInfo = curr
                                     }
                                 }
@@ -204,6 +204,7 @@ class FirebaseHomeManager: NSObject {
                         
                         if (snap == "Yes") {
                             // Initialize and Segue to next page
+                            print("going to next page")
                             self.delegate?.segueToNextPage()
                             
                         }

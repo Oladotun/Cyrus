@@ -19,6 +19,7 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     @IBOutlet weak var interestCollected: UILabel!
     @IBOutlet weak var noOfPeer: UILabel!
     
+    @IBOutlet weak var userSearching: UIActivityIndicatorView!
 
     var chatInitiator:Bool!
     var alertInvite:UIAlertController!
@@ -36,14 +37,17 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     
     var findMorePeer = true
     var switchState = false
-    
     var returned = false
+   
+    
+    
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
         locationManager =  appDelegate.locationManager
         initialSetup()
+        
 
     }
     
@@ -55,7 +59,7 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
             initialSetup()
 //            self.view.window?.rootViewController?.dismissViewControllerAnimated(true, completion: nil)
             if (!appDelegate.justMetUpWith.isEmpty) {
-                print("returned from questions page")
+//                print("returned from questions page")
                 firebaseHomeManager.updateMetUpWith(appDelegate.justMetUpWith)
             }
         }
@@ -63,8 +67,9 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         
     }
     
+    
     func initialSetup() {
-        
+        userSearching.alpha = 0.0
         availSwitch.setOn(false, animated:true)
         locationManager.delegate = self
         locationManager.startUpdatingLocation()
@@ -83,6 +88,8 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
 
         
     }
+    
+    
     
     
     @IBAction func switchChanged(sender: AnyObject) {
@@ -135,8 +142,8 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         
     }
     
-    func receiveInvite(inviter: String) {
-        alertInvite = UIAlertController(title: "", message: "\(inviter) wants to chat with you", preferredStyle: UIAlertControllerStyle.Alert)
+    func receiveInvite(invitedUser: UserProfile) {
+        alertInvite = UIAlertController(title: "", message: "Hi, You have an invite to catchup from \(invitedUser.user.firstName), who goes to \(invitedUser.user.schoolName) and is in the field of \(invitedUser.user.userField) . \(invitedUser.user.firstName) shares \(invitedUser.userMatchedInterest) as interests with you. We will be discussing about them during your meetup.\n\n Click accept to select a meet up location or decline to cancel", preferredStyle: UIAlertControllerStyle.Alert)
         
         let acceptAction: UIAlertAction = UIAlertAction(title: "Accept", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
             
@@ -149,7 +156,7 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
 
         }
         
-        let declineAction: UIAlertAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel) { (alertAction) -> Void in
+        let declineAction: UIAlertAction = UIAlertAction(title: "Decline", style: UIAlertActionStyle.Cancel) { (alertAction) -> Void in
             self.firebaseHomeManager.updateChatMeetUp(self.noString)
   
         }
@@ -177,7 +184,26 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     
     func segueToNextPage() {
 //        print ("going to next page")
-        self.performSegueWithIdentifier("idSegueChat", sender: self)
+        
+        if (!self.firebaseHomeManager.setReceiver) {
+            
+            let alert = UIAlertController(title:"Invite accepted",message:"Hi, You have been connected with \(firebaseHomeManager.connectedUserInfo.user.firstName), who goes to \(firebaseHomeManager.connectedUserInfo.user.schoolName) and is in the field of \(firebaseHomeManager.connectedUserInfo.user.userField). \(firebaseHomeManager.connectedUserInfo.user.firstName) shares \(firebaseHomeManager.connectedUserInfo.userMatchedInterest) as interests with you. We will be discussing about them during your meetup.\n\n Click okay to select a meet up location" , preferredStyle: UIAlertControllerStyle.Alert)
+            
+            let doneAction: UIAlertAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
+                
+                 self.performSegueWithIdentifier("idSegueChat", sender: self)
+            }
+            
+            alert.addAction(doneAction)
+            
+            NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                self.presentViewController(alert, animated: true, completion: nil)
+            })
+            
+        } else {
+           self.performSegueWithIdentifier("idSegueChat", sender: self)
+        }
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -194,7 +220,15 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
             alertView("Please Go Online")
             
         } else {
-            firebaseHomeManager.meetUpClicked()
+            
+            if (firebaseHomeManager.allFound.count < 1) {
+                alertView("No User Online, Pls try again later")
+            } else {
+                userSearching.alpha = 1.0
+                userSearching.startAnimating()
+                firebaseHomeManager.meetUpClicked()
+            }
+            
         }
  
         
@@ -223,14 +257,11 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         })
         
     }
+    
 
 
     
     // MARK: - Navigation
-    
-    override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
-        return false
-    }
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -262,6 +293,7 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
             
             
         }
+    
     }
 
 
