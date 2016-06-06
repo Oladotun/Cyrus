@@ -15,10 +15,10 @@ import CoreLocation
 class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegate, SearchTableDelegate,FirebaseChatDelegate {
 
     @IBOutlet weak var searchChat: UITextField!
-    @IBOutlet weak var destinationLabel: UILabel!
     @IBOutlet weak var txtChat: UITextField!
     @IBOutlet weak var meetTimePicker: UIDatePicker!
     @IBOutlet weak var tblChat: UITableView!
+    @IBOutlet weak var buildName: UITextField!
 
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     var alertEndChat:UIAlertController!
@@ -34,6 +34,9 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
     var myName:String!
     var iamSender:Bool!
     var firebaseChatManager: FirebaseChatManager!
+    var address:String!
+    var completeAddress:String!
+    var buildNameTxt = ""
     
     var selectedCoordinate:CLLocationCoordinate2D!
     var destinationLocation: CLLocation!
@@ -69,6 +72,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
         tblChat.estimatedRowHeight = 60.0
         tblChat.rowHeight = UITableViewAutomaticDimension
         txtChat.delegate = self
+        buildName.delegate = self
         searchChat.delegate = self
         updateChatDate()
         sendButton.alpha = 0.0
@@ -144,17 +148,17 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
     }
     
     func segueToNextPage() {
-        print("message in segueToNext: \(messagesArray)")
+//        print("message in segueToNext: \(messagesArray)")
         performSegueWithIdentifier("yesSegue", sender: self)
     }
     
     func meetUpCancelled(canceller: String) {
         firebaseChatManager.meetUpPathWay.removeValue()
-        let alert = UIAlertController(title:"",message: "\(canceller) Ended the chat", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title:"",message: "\(canceller) ended the chat", preferredStyle: UIAlertControllerStyle.Alert)
         
         let doneAction: UIAlertAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
-            
-            self.dismissViewControllerAnimated(true, completion: nil)
+    
+            self.performSegueWithIdentifier("GoHomeSegue", sender: self)
         }
         
         alert.addAction(doneAction)
@@ -166,10 +170,11 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
     }
     
     func selected(address: String,completeAddress:String,coordinate:CLLocationCoordinate2D) {
-//        print ("table view selected")
         txtChat.text = address
         sendButton.alpha = 1.0
-        chatMessage = address + "\n" + completeAddress
+        self.address = address
+        self.completeAddress = completeAddress
+//        chatMessage = address + "\n" + completeAddress
         selectedCoordinate = coordinate
         destinationLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
         updateChatDate()
@@ -177,14 +182,24 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
     }
     
     @IBAction func sendButton(sender: AnyObject) {
-    
-//        print(chatDate)
-//        print(chatMessage)
-    
-        let toSendMessage = chatMessage + "\n" + chatDate
-        let sendCoordinateString = "\(selectedCoordinate.latitude) \(selectedCoordinate.longitude)"
+        
+        if let build = buildName.text {
+            buildNameTxt = build
+        }
+        
+        if (!buildNameTxt.isEmpty) {
+            chatMessage = address + " (\(buildNameTxt))" + "\n" + completeAddress
+        } else {
+            chatMessage = address + "\n" + completeAddress
+        }
+        
+       let toSendMessage = chatMessage + "\n" + chatDate
+       let sendCoordinateString = "\(selectedCoordinate.latitude) \(selectedCoordinate.longitude)"
         
         if messageCount < 11 && !chatMessage.isEmpty {
+            txtChat.resignFirstResponder()
+            buildName.resignFirstResponder()
+            buildName.text = ""
 //            print("message to send \(toSendMessage)")
             updateChatDate()
             
@@ -261,6 +276,19 @@ extension ChatViewController: UITextFieldDelegate {
             performSegueWithIdentifier("searchTableId", sender: self)
 
         }
+        
+        
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        if (textField == buildName) {
+            buildNameTxt = buildName.text!
+            print("Updated buildName info")
+            buildName.resignFirstResponder()
+           
+        }
+        
+        return true
     }
 
     
