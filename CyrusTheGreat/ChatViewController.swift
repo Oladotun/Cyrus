@@ -48,8 +48,8 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
         self.messagesArray = [String]()
         self.messagesArray.append(chatMsg)
         self.destinationLocation = location
-        print("message sent")
-        print(messagesArray)
+//        print("message sent")
+//        print(messagesArray)
         self.updateTableView()
     }
     
@@ -71,6 +71,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
         // Dynamic sizing of chat box
         tblChat.estimatedRowHeight = 60.0
         tblChat.rowHeight = UITableViewAutomaticDimension
+        tblChat.alwaysBounceHorizontal = false
         txtChat.delegate = self
         buildName.delegate = self
         searchChat.delegate = self
@@ -325,7 +326,7 @@ extension ChatViewController: UITableViewDataSource {
                 cell.noButton.alpha = 0.0
             } else {
                 cell.yesButton.alpha = 1.0
-                cell.noButton.alpha = 1.0
+                cell.noButton.alpha = 0.0
             }
             
         }

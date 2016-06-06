@@ -161,7 +161,7 @@ class FirebaseHomeManager: NSObject {
     }
     
     func observeMeetPath() {
-        
+        var nextPagePath = false
         meetPathHandler = meetUpPathWay.observeEventType(.Value, withBlock: {
             snapshot in
 
@@ -202,19 +202,21 @@ class FirebaseHomeManager: NSObject {
                     
                     if let snap = childSnapshot.value as? String {
                         
-                        if (snap == "Yes") {
+                        if (snap == "Yes" && !nextPagePath) {
                             // Initialize and Segue to next page
-                            print("going to next page")
+//                            print("going to next page")
+                            nextPagePath = true
                             self.delegate?.segueToNextPage()
                             
                         }
                         
-                        if (snap == "No" ) {
+                        if (snap == "No" && !nextPagePath) {
                             // alert as No
                             self.delegate?.declineInvite()
                             self.declineList.append(self.connectedUserInfo)
                             self.allFound = self.allFound.filter{ $0.user.userId != self.connectedUserInfo.user.userId} // filter out  unfound user
                             self.delegate?.foundDisplay()
+                            nextPagePath = true
                             self.updateUserState("Active")
                             
                         }
