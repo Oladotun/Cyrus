@@ -21,7 +21,7 @@ class FrontPageViewController: UIViewController {
     var myCounter = 0
     var timer:NSTimer?
 
-    @IBOutlet weak var blockLabel: UILabel!
+    
     @IBOutlet weak var cyrusIntro: UILabel!
     @IBOutlet weak var signUp: UIButton!
     @IBOutlet weak var login: UIButton!
@@ -107,7 +107,7 @@ class FrontPageViewController: UIViewController {
         cyrusIntro.attributedText = attributedString
         cyrusIntro.font = UIFont(name: "Helvetica-Light", size: 15.0)
         cyrusIntro.alpha = 0.0
-        blockLabel.text = ""
+        
         
         
         

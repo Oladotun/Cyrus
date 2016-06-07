@@ -16,7 +16,6 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     @IBOutlet weak var currAvailability: UILabel!
     @IBOutlet weak var availSwitch: UISwitch!
-    @IBOutlet weak var interestCollected: UILabel!
     @IBOutlet weak var noOfPeer: UILabel!
     
     @IBOutlet weak var userSearching: UIActivityIndicatorView!
