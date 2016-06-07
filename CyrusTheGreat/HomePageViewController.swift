@@ -115,12 +115,15 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        firebaseHomeManager.updateUserLocation(locations.last!)
-        if (switchState == true) {
-            firebaseHomeManager.updateActiveUserFirebase()
-        } else {
-            firebaseHomeManager.activateUserObserver()
+         firebaseHomeManager.updateUserLocation(locations.last!)
+        if (firebaseHomeManager.activeUserListActivated) {
+           
+            if (switchState == true) {
+                firebaseHomeManager.updateActiveUserFirebase()
+            }
+            
         }
+        
         
     }
     

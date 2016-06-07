@@ -50,6 +50,7 @@ class FirebaseHomeManager: NSObject {
     var userUrl:String!
     var userId:String!
     var iamInitiator:Bool!
+    var activeUserListActivated = false
     var connectedUserInfo:UserProfile!
     var allFound = [UserProfile]() // found profiles
     var delegate: FirebaseHomeDelegate?
@@ -249,6 +250,7 @@ class FirebaseHomeManager: NSObject {
     
     func activateUserObserver() {
         
+
         guard let myId = userId else {
             NSException(name: "User ID not set", reason: "UserId has not been set properly", userInfo: nil).raise()
             return
@@ -259,8 +261,12 @@ class FirebaseHomeManager: NSObject {
             
             self.allFound = [UserProfile]()
             
+            if (!self.activeUserListActivated) {
+                self.activeUserListActivated = true
+            }
+            
             if (self.userObject != nil) {
-                
+               
                 for child in snapshot.children {
                     
                     if child.key != myId {
@@ -281,6 +287,7 @@ class FirebaseHomeManager: NSObject {
                                     
                                     if (newFound.user.schoolName == self.userObject.schoolName) {
                                         
+                                        print("Found user with the same school name")
                                         
                                         newFound.user.firstName = childValue[self.firstNameString]
                                         newFound.user.userField = childValue[self.userFieldString]
