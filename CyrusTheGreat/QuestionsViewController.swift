@@ -43,8 +43,8 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
         }
         
         interestMatchLabel.text = "Hi, Cyrus here. I am going to ask both of you about your interests to better assist with your convestations.\nClick the Next Question to start"
-        interestMatchLabel.numberOfLines = 4
-        interestMatchLabel.preferredMaxLayoutWidth = 350
+        interestMatchLabel.numberOfLines = 0
+//        interestMatchLabel.preferredMaxLayoutWidth = 350
         
     }
     
@@ -124,14 +124,16 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
             } while(userToQuestions[userName]!.contains(foundInterest))
             userToQuestions[userName]!.append(foundInterest)
             
-            question = questionPrelude.randomItem() + " " + foundInterest + "?"
+            question = questionPrelude.randomItem() + " " + foundInterest + " ?"
            
         }
         
-        let completeQuestion = userName + "," + question
+        let completeQuestion = userName + ", " + question
         firebaseQuestionManager.questionPathFirebase.setValue(completeQuestion)
         
         if (appDelegate.iamInitiator == true) {
+            print("I am initiator")
+            print(completeQuestion)
             updateQuestionLabel(completeQuestion)
             
         }
