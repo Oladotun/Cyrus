@@ -414,7 +414,7 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
             }
         }
         
-        print(newTopic)
+//        print(newTopic)
         return newTopic
         
     }

@@ -8,15 +8,21 @@
 
 import UIKit
 
-class ApiConnectorViewController: UIViewController {
+class ApiConnectorViewController: UIViewController,UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     @IBOutlet weak var cyrusPrompt: UILabel!
     @IBOutlet weak var cyrusLogo: UIImageView!
+    @IBOutlet weak var profilePicture: UIImageView!
+    
+    let imagePicker = UIImagePickerController()
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         cyrusLogo.image = UIImage(named:"cyrus")
-        cyrusPrompt.text = "Trust me, I can infer your interest"
+        cyrusPrompt.text = "Some more information about you..."
+        imagePicker.delegate = self
         // Do any additional setup after loading the view.
     }
 
@@ -26,6 +32,51 @@ class ApiConnectorViewController: UIViewController {
     }
     
 
+    @IBAction func loadProfilePicture(sender: AnyObject) {
+        imagePicker.allowsEditing = false
+        imagePicker.sourceType = .PhotoLibrary
+        
+        presentViewController(imagePicker, animated: true, completion: nil)
+    }
+    
+    
+    // MARK: - UIImagePickerControllerDelegate Methods
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            profilePicture.contentMode = .ScaleAspectFit
+            profilePicture.image = pickedImage
+        }
+        
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+
+    @IBAction func connectToTwitter(sender: AnyObject) {
+        if (profilePicture == nil ) {
+            cyrusPrompt.text = "Kindly upload a profile picture"
+        } else {
+            
+            if (profilePicture.image == nil) {
+                 cyrusPrompt.text = "Kindly upload a profile picture"
+                
+            } else {
+                
+                let imageData = UIImagePNGRepresentation(profilePicture.image!)! as NSData
+                let str = imageData.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
+                let userImage = ["image": str]
+                self.appDelegate.userFire.childByAppendingPath("users")
+                    .childByAppendingPath(appDelegate.userIdentifier).updateChildValues(userImage)
+                self.performSegueWithIdentifier("TwitterInferPage", sender: self)
+                
+            }
+            
+            
+        }
+    }
     /*
     // MARK: - Navigation
 
