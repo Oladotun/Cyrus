@@ -32,13 +32,7 @@ class LoginPageViewController: UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func loggedOutPageController(segue:UIStoryboardSegue) {
-//        print("logged out succesfully")
-        emailTextField.text = ""
-        passField.text = ""
-       
-        
-    }
+    
     
 
     @IBAction func loginButton(sender: AnyObject) {

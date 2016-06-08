@@ -121,6 +121,11 @@ class FrontPageViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func loggedOutPageController(segue:UIStoryboardSegue) {
+        print("logged out succesfully")
+ 
+    }
+    
     
 
     /*
