@@ -17,6 +17,8 @@ class MeetUpPageViewController: UIViewController, MapTrackerDelegate,FirebaseInf
     
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
 
+    @IBOutlet weak var otherImageLoader: UIActivityIndicatorView!
+    @IBOutlet weak var myImageLoader: UIActivityIndicatorView!
     var destination:String!
 
     @IBOutlet weak var myImage: UIImageView!
@@ -39,7 +41,8 @@ class MeetUpPageViewController: UIViewController, MapTrackerDelegate,FirebaseInf
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        myImageLoader.startAnimating()
+        otherImageLoader.startAnimating()
         meetupDesc.text = "MeetUp Destination is at \(destination)"
         meetupTime.text = "Planned meetup time is \(time)"
         timeToMeetUpAlert.text = ""
@@ -54,11 +57,15 @@ class MeetUpPageViewController: UIViewController, MapTrackerDelegate,FirebaseInf
     func updateMyImage(image:UIImage) {
         myImage.contentMode = .ScaleAspectFit
         myImage.image = image
+        myImageLoader.stopAnimating()
+        myImageLoader.alpha = 0.0
     }
     
     func updateOtherUserImage(image:UIImage) {
         otherUserImage.contentMode = .ScaleAspectFit
         otherUserImage.image = image
+        otherImageLoader.stopAnimating()
+        otherImageLoader.alpha = 0.0
     }
     
     func segueToNext() {
