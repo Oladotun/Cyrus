@@ -55,6 +55,9 @@ class FirebaseHomeManager: NSObject {
     var allFound = [UserProfile]() // found profiles
     var delegate: FirebaseHomeDelegate?
     var declineList = [UserProfile]() // Decline profiles
+    var activeUserCalled = false
+    
+    var countInitial = 0
     
     func setUpCurrentUser(userId:String) {
         
@@ -64,6 +67,7 @@ class FirebaseHomeManager: NSObject {
         allActiveUsers = Firebase(url: activeUserUrl)
         userObject = User()
         userObject.userId = userId
+        print("https://cyrusthegreat.firebaseio.com/users/\(userId)")
         self.retrieveUserInfoFirebase()
         
         
@@ -71,6 +75,7 @@ class FirebaseHomeManager: NSObject {
     
     func retrieveUserInfoFirebase() {
         
+        print("User info called")
         userFirebase.observeSingleEventOfType(.Value, withBlock: {
             snapshot in
             
@@ -79,24 +84,43 @@ class FirebaseHomeManager: NSObject {
                 
                 if (child.key == "first_name") {
                     self.userObject.firstName = childSnapshot.value as! String
+                    self.countInitial = self.countInitial + 1
+                    print("first name called")
                 }
                 
                 if (child.key == "interests") {
                     self.userObject.interests = childSnapshot.value as! [String]
+                     self.countInitial = self.countInitial + 2
+                     print("interests")
                 }
                 
                 if (child.key == "school_name") {
                     self.userObject.schoolName = childSnapshot.value as! String
+                     self.countInitial = self.countInitial + 3
+                    print("school name")
                 }
                 
                 if (child.key == "field_study") {
                     self.userObject.userField = childSnapshot.value as! String
+                     self.countInitial = self.countInitial + 4
+                    print("study field")
                     
                 }
                 
                 if (child.key == "metup_with") {
                     self.userMetUpWith = childSnapshot.value as! [String]
+                     self.countInitial = self.countInitial + 6
                 }
+                
+          
+                
+                if (self.countInitial > 9 && self.activeUserCalled) {
+                    
+                    self.updateActiveUserFirebase()
+                    
+                }
+                
+                
             }
             
         })
@@ -115,7 +139,6 @@ class FirebaseHomeManager: NSObject {
     func updateUserState(userStatus:String){
         
         guard let _ = userId else {
-//            print("userId not set")
             return
         }
         
@@ -376,6 +399,7 @@ class FirebaseHomeManager: NSObject {
         if (userExactPath != nil) {
             userExactPath.removeValue()
         }
+         activeUserCalled = false
         
         
     }
@@ -437,6 +461,14 @@ class FirebaseHomeManager: NSObject {
             print("user location not set")
             return
         }
+        activeUserCalled = true
+        
+        if (countInitial < 10) {
+            print(countInitial)
+            print("Not all set")
+//            retrieveUserInfoFirebase()
+            return
+        }
         
         //        var userArray = [String]()
         var userArray = [String : String]()
@@ -446,6 +478,7 @@ class FirebaseHomeManager: NSObject {
         userArray["userField"] = userObject.userField
         userArray["location"] = "\(userObject.location.coordinate.latitude) \(userObject.location.coordinate.longitude)"
         userArray["interests"] = userObject.interests.joinWithSeparator(",")
+    
         
         let userIdLocation = [myId:userArray]
         allActiveUsers.updateChildValues(userIdLocation)
@@ -475,7 +508,14 @@ class FirebaseHomeManager: NSObject {
         userObject.location = location
         
     }
-    
-    
 
+}
+
+extension String {
+    func stringToImage() -> UIImage {
+        let dataDecoded:NSData? = NSData(base64EncodedString: self, options:.IgnoreUnknownCharacters)
+        let decodedimage:UIImage = UIImage(data: dataDecoded!)!
+        return decodedimage
+        
+    }
 }

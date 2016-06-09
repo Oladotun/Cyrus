@@ -16,8 +16,7 @@ class User: NSObject {
     var userField:String!
     var location:CLLocation!
     var interests:[String]!
-    var status:String!
-    
+    var status:String! 
 }
 
 extension Array {

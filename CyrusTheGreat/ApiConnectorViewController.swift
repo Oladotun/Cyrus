@@ -67,6 +67,7 @@ class ApiConnectorViewController: UIViewController,UIImagePickerControllerDelega
                 
                 let imageData = UIImagePNGRepresentation(profilePicture.image!)! as NSData
                 let str = imageData.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
+             
                 let userImage = ["image": str]
                 self.appDelegate.userFire.childByAppendingPath("users")
                     .childByAppendingPath(appDelegate.userIdentifier).updateChildValues(userImage)

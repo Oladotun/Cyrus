@@ -97,7 +97,6 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         if(swh.on){
             swh.setOn(true, animated: true)//But it will already do it.
             currAvailability.text = "Online"
-            locationManager.startUpdatingLocation()
             firebaseHomeManager.updateUserState(activeString)
             firebaseHomeManager.updateActiveUserFirebase()
             self.switchState = true
