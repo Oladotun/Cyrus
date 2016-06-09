@@ -251,7 +251,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
             destVC.destination = messageInfoArray[0]
             destVC.destinationLocation = destinationLocation
             destVC.firebaseMapManager = FirebaseMapManager(meetPath: firebaseChatManager.meetUpPathWay, myId: firebaseChatManager.userId, otherUserId: appDelegate.otherUserIdentifieir)
-            destVC.firebaseMeetupInfoManager = FirebaseInfoMeetUpManager(meetPath: firebaseChatManager.meetUpPathWay,myId:firebaseChatManager.userId)
+            destVC.firebaseMeetupInfoManager = FirebaseInfoMeetUpManager(meetPath: firebaseChatManager.meetUpPathWay,myId:firebaseChatManager.userId, otherUserId: appDelegate.otherUserIdentifieir)
 
         }
         

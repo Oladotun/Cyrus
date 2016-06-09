@@ -67,15 +67,13 @@ class FirebaseHomeManager: NSObject {
         allActiveUsers = Firebase(url: activeUserUrl)
         userObject = User()
         userObject.userId = userId
-        print("https://cyrusthegreat.firebaseio.com/users/\(userId)")
+//        print("https://cyrusthegreat.firebaseio.com/users/\(userId)")
         self.retrieveUserInfoFirebase()
-        
+               
         
     }
     
     func retrieveUserInfoFirebase() {
-        
-        print("User info called")
         userFirebase.observeSingleEventOfType(.Value, withBlock: {
             snapshot in
             
@@ -85,25 +83,25 @@ class FirebaseHomeManager: NSObject {
                 if (child.key == "first_name") {
                     self.userObject.firstName = childSnapshot.value as! String
                     self.countInitial = self.countInitial + 1
-                    print("first name called")
+//                    print("first name called")
                 }
                 
                 if (child.key == "interests") {
                     self.userObject.interests = childSnapshot.value as! [String]
                      self.countInitial = self.countInitial + 2
-                     print("interests")
+//                     print("interests")
                 }
                 
                 if (child.key == "school_name") {
                     self.userObject.schoolName = childSnapshot.value as! String
                      self.countInitial = self.countInitial + 3
-                    print("school name")
+//                    print("school name")
                 }
                 
                 if (child.key == "field_study") {
                     self.userObject.userField = childSnapshot.value as! String
                      self.countInitial = self.countInitial + 4
-                    print("study field")
+//                    print("study field")
                     
                 }
                 
@@ -115,7 +113,6 @@ class FirebaseHomeManager: NSObject {
           
                 
                 if (self.countInitial > 9 && self.activeUserCalled) {
-                    
                     self.updateActiveUserFirebase()
                     
                 }

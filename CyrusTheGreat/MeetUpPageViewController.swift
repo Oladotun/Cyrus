@@ -19,7 +19,12 @@ class MeetUpPageViewController: UIViewController, MapTrackerDelegate,FirebaseInf
 
     var destination:String!
 
+    @IBOutlet weak var myImage: UIImageView!
+    @IBOutlet weak var myNameInfo: UILabel!
 
+    @IBOutlet weak var otherUserImage: UIImageView!
+    @IBOutlet weak var otherUserInfo: UILabel!
+    
     @IBOutlet weak var timeToMeetUpAlert: UILabel!
     @IBOutlet weak var meetupTime: UILabel!
     @IBOutlet weak var meetupDesc: UILabel!
@@ -41,8 +46,19 @@ class MeetUpPageViewController: UIViewController, MapTrackerDelegate,FirebaseInf
         yesButton.alpha = 1.0
         firebaseMeetUpManager.questionTime = false
         firebaseMeetUpManager.delegate = self
+        myNameInfo.text = appDelegate.userObject.firstName
+        otherUserInfo.text = appDelegate.connectedProfile.user.firstName
 
 
+    }
+    func updateMyImage(image:UIImage) {
+        myImage.contentMode = .ScaleAspectFit
+        myImage.image = image
+    }
+    
+    func updateOtherUserImage(image:UIImage) {
+        otherUserImage.contentMode = .ScaleAspectFit
+        otherUserImage.image = image
     }
     
     func segueToNext() {
