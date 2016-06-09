@@ -65,8 +65,10 @@ class ApiConnectorViewController: UIViewController,UIImagePickerControllerDelega
                 
             } else {
                 
-                let imageData = UIImagePNGRepresentation(profilePicture.image!)! as NSData
+                let imageData = UIImageJPEGRepresentation(profilePicture.image!, 2.0)! as NSData
                 let str = imageData.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
+                
+//                profilePicture.image = str.stringToImage()
              
                 let userImage = ["image": str]
                 self.appDelegate.userFire.childByAppendingPath("users")
