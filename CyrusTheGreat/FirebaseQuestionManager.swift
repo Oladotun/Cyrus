@@ -20,20 +20,21 @@ class FirebaseQuestionManager: NSObject {
     let questionPrelude:[String] = ["Tell us your favorite memories about","Share a story on why you like" ,"Tell us why you got into"]
     let fieldQuestion = "Tell us why you got into your field of study ?"
     var countQuestions:Int = 0
-    var questionPathFirebase:Firebase!
-    var meetUpPathWay:Firebase!
+    var questionPathFirebase:FIRDatabaseReference!
+    var meetUpPathWay:FIRDatabaseReference!
     var delegate:FirebaseQuestionDelegate?
     
     
-    init(meetup:Firebase) {
+    init(meetup:FIRDatabaseReference) {
         super.init()
         meetUpPathWay = meetup
         questionPathFirebase = questionUserFirebase()
         observeQuestionFirebase()
     }
     
-    func questionUserFirebase() -> Firebase! {
-        return meetUpPathWay.childByAppendingPath("question")
+    func questionUserFirebase() -> FIRDatabaseReference! {
+        return meetUpPathWay.database.referenceWithPath("question")
+//            childByAppendingPath("question")
     }
     
     func observeQuestionFirebase() {
@@ -59,7 +60,7 @@ class FirebaseQuestionManager: NSObject {
             
             if (snapshot.childrenCount == 1) {
                 for child in snapshot.children {
-                    let childSnapshot = snapshot.childSnapshotForPath(child.key)
+                    let childSnapshot = snapshot.childSnapshotForPath(child.key!!)
                     
                     if let childValue = childSnapshot.value as? String {
                         

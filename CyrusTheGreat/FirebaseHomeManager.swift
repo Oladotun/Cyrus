@@ -39,12 +39,12 @@ class FirebaseHomeManager: NSObject {
     var meetPathHandler:UInt!
     
     
-    var userFirebase:Firebase!
-    var userMetUpWithFirebase:Firebase!
-    var allActiveUsers:Firebase!
-    var userActiveFirebasePath:Firebase!
-    var userStatusFirebase:Firebase!
-    var meetUpPathWay:Firebase!
+    var userFirebase:FIRDatabaseReference!
+    var userMetUpWithFirebase:FIRDatabaseReference!
+    var allActiveUsers:FIRDatabaseReference!
+    var userActiveFirebasePath:FIRDatabaseReference!
+    var userStatusFirebase:FIRDatabaseReference!
+    var meetUpPathWay:FIRDatabaseReference!
     var meetUpSet = false
     var setReceiver = false
     var userUrl:String!
@@ -63,8 +63,8 @@ class FirebaseHomeManager: NSObject {
         
         self.userId = userId
         userUrl = "https://cyrusthegreat.firebaseio.com/users/\(userId)"
-        userFirebase = Firebase(url:userUrl)
-        allActiveUsers = Firebase(url: activeUserUrl)
+        userFirebase = FIRDatabase.database().referenceFromURL(userUrl)
+        allActiveUsers = FIRDatabase.database().referenceFromURL(activeUserUrl)
         userObject = User()
         userObject.userId = userId
 //        print("https://cyrusthegreat.firebaseio.com/users/\(userId)")
@@ -78,7 +78,7 @@ class FirebaseHomeManager: NSObject {
             snapshot in
             
             for child in snapshot.children {
-                let childSnapshot = snapshot.childSnapshotForPath(child.key)
+                let childSnapshot = snapshot.childSnapshotForPath(child.key!!)
                 
                 if (child.key == "first_name") {
                     self.userObject.firstName = childSnapshot.value as! String
@@ -125,9 +125,11 @@ class FirebaseHomeManager: NSObject {
     }
     
     func updateMetUpWith(userIdMet:String) {
-        userMetUpWithFirebase = Firebase(url:"\(userUrl)/metup_with")
+        userMetUpWithFirebase = FIRDatabase.database().referenceFromURL("\(userUrl)/metup_with")
+//            Firebase(url:"\(userUrl)/metup_with")
         userMetUpWith.append(userIdMet)
-        userMetUpWithFirebase.setValue(userMetUpWith)
+//        userMetUpWithFirebase.setValue(userMetUpWith)
+        userFirebase.updateChildValues(["metup_with":userMetUpWith])
         self.delegate?.foundDisplay()
         
         
@@ -139,8 +141,10 @@ class FirebaseHomeManager: NSObject {
             return
         }
         
-        userStatusFirebase = Firebase(url:"\(userUrl)/status")
-        userStatusFirebase.setValue(userStatus)
+        userStatusFirebase = FIRDatabase.database().referenceFromURL("\(userUrl)/status")
+
+//            Firebase(url:"\(userUrl)/status")
+        userFirebase.updateChildValues(["status":userStatus])
         userObject.status = userStatus
         userStatusFirebase.onDisconnectSetValue(notActiveString)
         observeUserStatusFirebase()
@@ -164,9 +168,10 @@ class FirebaseHomeManager: NSObject {
                 for child in snapshot.children {
                     
                     if (child.key == self.invitingString && self.meetUpSet == false) {
-                        let childSnapshot = snapshot.childSnapshotForPath(child.key)
+                        let childSnapshot = snapshot.childSnapshotForPath(child.key!!)
                         if let meetUpPath = childSnapshot.value as? String {
-                            self.meetUpPathWay = Firebase(url: meetUpPath)
+                            self.meetUpPathWay = FIRDatabase.database().referenceFromURL(meetUpPath)
+//                                Firebase(url: meetUpPath)
                             self.meetUpSet = true
                             self.observeMeetPath()
                             
@@ -190,7 +195,7 @@ class FirebaseHomeManager: NSObject {
 
                 if (child.key == "initiator") {
 
-                    let childSnapshot = snapshot.childSnapshotForPath(child.key)
+                    let childSnapshot = snapshot.childSnapshotForPath(child.key!!)
                     
                     if let snap = childSnapshot.value as? String {
                         
@@ -219,7 +224,7 @@ class FirebaseHomeManager: NSObject {
                 if (child.key == self.chatMeetupString) {
                     // print receiver info
                     
-                    let childSnapshot = snapshot.childSnapshotForPath(child.key)
+                    let childSnapshot = snapshot.childSnapshotForPath(child.key!!)
                     
                     if let snap = childSnapshot.value as? String {
                         
@@ -290,7 +295,7 @@ class FirebaseHomeManager: NSObject {
                 for child in snapshot.children {
                     
                     if child.key != myId {
-                        let childSnapshot = snapshot.childSnapshotForPath(child.key)
+                        let childSnapshot = snapshot.childSnapshotForPath(child.key!!)
                         
                         if let childValue = childSnapshot.value as? [String:String] {
                             let userId = childValue[self.userIdString]! as String
@@ -391,12 +396,11 @@ class FirebaseHomeManager: NSObject {
     }
     
     func removeActiveUser(userId:String) {
-        let userExactPath = Firebase(url: "\(activeUserUrl)\(userId)")
+        let userExactPath = FIRDatabase.database().referenceFromURL("\(activeUserUrl)\(userId)")
+//        Firebase(url: "\(activeUserUrl)\(userId)")
     
-        if (userExactPath != nil) {
-            userExactPath.removeValue()
-        }
-         activeUserCalled = false
+        userExactPath.removeValue()
+        activeUserCalled = false
         
         
     }
@@ -406,11 +410,12 @@ class FirebaseHomeManager: NSObject {
         
         if (self.userObject.status == activeString) {
             var found = false
-            var otherUser: Firebase!
+            var otherUser: FIRDatabaseReference!
             var otherUserUrl:String!
             for user in allFound {
                 
-                otherUser = Firebase(url:"\(cyrusUrl)users/\(user.user.userId)/status")
+                otherUser =  FIRDatabase.database().referenceFromURL("\(cyrusUrl)users/\(user.user.userId)/status")
+//                    Firebase(url:"\(cyrusUrl)users/\(user.user.userId)/status")
                 otherUserUrl = "\(cyrusUrl)users/\(user.user.userId)/status.json"
 
                 let url = NSURL(string:otherUserUrl)
@@ -463,7 +468,6 @@ class FirebaseHomeManager: NSObject {
         if (countInitial < 10) {
             print(countInitial)
             print("Not all set")
-//            retrieveUserInfoFirebase()
             return
         }
         
@@ -480,7 +484,8 @@ class FirebaseHomeManager: NSObject {
         let userIdLocation = [myId:userArray]
         allActiveUsers.updateChildValues(userIdLocation)
         
-        userActiveFirebasePath = allActiveUsers.childByAppendingPath(userId)
+        userActiveFirebasePath = allActiveUsers.child(userId)
+//            childByAppendingPath(userId)
         userActiveFirebasePath.onDisconnectRemoveValue()
         
         
@@ -496,8 +501,9 @@ class FirebaseHomeManager: NSObject {
         meetUpPathWay.removeObserverWithHandle(meetPathHandler)
     }
     
-    func createMeetUp() -> Firebase {
-        let meetUp = Firebase(url: "\(cyrusUrl)meetup/")
+    func createMeetUp() -> FIRDatabaseReference {
+        let meetUp = FIRDatabase.database().referenceFromURL("\(cyrusUrl)meetup/")
+//        Firebase(url: "\(cyrusUrl)meetup/")
         return meetUp.childByAutoId()
     }
     

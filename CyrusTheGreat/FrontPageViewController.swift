@@ -20,6 +20,7 @@ class FrontPageViewController: UIViewController {
     var cyrusIntroWords: [Character]!
     var myCounter = 0
     var timer:NSTimer?
+    var returnBack = false
 
     
     @IBOutlet weak var cyrusIntro: UILabel!
@@ -30,15 +31,23 @@ class FrontPageViewController: UIViewController {
         super.viewWillAppear(animated)
         
         // Get user logged in
+        var autData:AnyObject?
+        if (returnBack) {
+             autData = nil
+        } else {
+          autData = NSUserDefaults.standardUserDefaults().valueForKey("uid")
+        }
         
-        let autData = NSUserDefaults.standardUserDefaults().valueForKey("uid")
+        
         
         if let autData = autData {
             appDelegate.userIdentifier = autData as! String
             
-            let userInterests = Firebase(url:  "https://cyrusthegreat.firebaseio.com/users/\(autData)/interests")
+            let userInterests = appDelegate.userFire.database.referenceWithPath("users/\(autData)/interests")
             
-            userInterests.observeEventType(.Value, withBlock: {
+            //Firebase(url:  "https://cyrusthegreat.firebaseio.com/users/\(autData)/interests")
+
+            userInterests.observeSingleEventOfType(.Value, withBlock: {
                 snapshot in
                 if (snapshot.value != nil) {
                     
@@ -128,14 +137,15 @@ class FrontPageViewController: UIViewController {
     
     
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        returnBack = true
     }
-    */
+    
 
 }

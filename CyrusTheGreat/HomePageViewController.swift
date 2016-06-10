@@ -136,7 +136,7 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         firebaseHomeManager.userObject.status = notActiveString
         self.switchState = false
         locationManager.stopUpdatingLocation()
-        appDelegate.userFire.unauth()
+        try! FIRAuth.auth()!.signOut()
         self.performSegueWithIdentifier("logOutSegue", sender: self)
         
         print ("log out working")

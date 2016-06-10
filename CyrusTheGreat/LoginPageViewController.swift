@@ -43,20 +43,21 @@ class LoginPageViewController: UIViewController, UITextFieldDelegate {
         } else {
             
             if (checkEmailDomain(getDomainFromEmail(emailTextField.text!.trim()))) {
-                
-                self.appDelegate.userFire.authUser(self.emailTextField.text!.trim(), password: self.passField.text!, withCompletionBlock: { error, authData in
+                FIRAuth.auth()?.signInWithEmail(self.emailTextField.text!.trim(), password: self.passField.text!, completion:{ user, error in
                     if error != nil {
                         // Something went wrong. :(
                     } else {
                         // Authentication just completed successfully :)
                         // The logged in user's unique identifier
                         
-                        self.appDelegate.userIdentifier = authData.uid
+                        self.appDelegate.userIdentifier = user?.uid
                         // Get the user interests from firebase
-                        let userInterests = Firebase(url:  "https://cyrusthegreat.firebaseio.com/users/\(authData.uid)/interests")
+                        let userInterests = self.appDelegate.userFire.database.referenceFromURL("users/\(user?.uid)/interests")
+                        
+//                        Firebase(url:  "https://cyrusthegreat.firebaseio.com/users/\(authData.uid)/interests")
                         
                         //Used to keep user logged in
-                        NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: "uid")
+                        NSUserDefaults.standardUserDefaults().setValue(user?.uid, forKey: "uid")
                     
                         userInterests.observeEventType(.Value, withBlock: {
                             snapshot in

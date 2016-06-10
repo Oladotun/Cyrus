@@ -16,37 +16,38 @@ protocol FirebaseMapDelegate {
 }
 
 class FirebaseMapManager: NSObject {
-    var meetUpPathWay: Firebase!
-    var etaPathFirebase : Firebase!
-    var locationPathOtherUserFirebase : Firebase!
+    var meetUpPathWay: FIRDatabaseReference!
+    var etaPathFirebase : FIRDatabaseReference!
+    var locationPathOtherUserFirebase : FIRDatabaseReference!
     var userId: String!
     var otherUserId:String!
     var delegate:FirebaseMapDelegate?
-    var locationPath:Firebase!
+    var locationPath:FIRDatabaseReference!
     
     let locationString = "location"
     let etaToDestinationString = "etaToDestination"
     
-    init(meetPath:Firebase,myId:String,otherUserId:String) {
+    init(meetPath:FIRDatabaseReference,myId:String,otherUserId:String) {
         super.init()
         meetUpPathWay = meetPath
         userId = myId
         self.otherUserId = otherUserId
-        locationPath = meetUpPathWay.childByAppendingPath(locationString)
+        locationPath = meetUpPathWay.database.referenceWithPath(locationString)
         locationPathOtherUserFirebase = self.locationOtherUserFirebase()
         etaPathFirebase = etaToDestination()
         self.observeEtaOtherUser()
         self.observeLocationOtherUser()
     }
     
-    func locationOtherUserFirebase() -> Firebase! {
+    func locationOtherUserFirebase() -> FIRDatabaseReference! {
         
-        return meetUpPathWay.childByAppendingPath(locationString).childByAppendingPath(otherUserId)
+        return meetUpPathWay.database.referenceWithPath("\(locationString)/\(otherUserId)")
     }
     
     
-    func etaToDestination() -> Firebase! {
-        return meetUpPathWay.childByAppendingPath(etaToDestinationString)
+    func etaToDestination() -> FIRDatabaseReference! {
+        return meetUpPathWay.database.referenceWithPath(etaToDestinationString)
+//            childByAppendingPath(etaToDestinationString)
     }
     
     func observeEtaOtherUser() {
@@ -58,7 +59,7 @@ class FirebaseMapManager: NSObject {
             
                 if youngChild.key != self.userId {
 
-                    let youngChildSnapshot = snapshot.childSnapshotForPath(youngChild.key)
+                    let youngChildSnapshot = snapshot.childSnapshotForPath(youngChild.key!!)
                     
                     if let youngChildETA = youngChildSnapshot.value as? NSTimeInterval {
                         
