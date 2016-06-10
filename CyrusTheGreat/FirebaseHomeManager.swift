@@ -415,18 +415,15 @@ class FirebaseHomeManager: NSObject {
             for user in allFound {
                 
                 otherUser =  FIRDatabase.database().referenceFromURL("\(cyrusUrl)users/\(user.user.userId)/status")
-//                    Firebase(url:"\(cyrusUrl)users/\(user.user.userId)/status")
                 otherUserUrl = "\(cyrusUrl)users/\(user.user.userId)/status.json"
 
                 let url = NSURL(string:otherUserUrl)
                 let data = NSData(contentsOfURL: url!)
 
                 let otherUserStatus = NSString(data: data!, encoding: NSUTF8StringEncoding)
-//                print(otherUserStatus!)
                 let otherUserString = otherUserStatus!.stringByReplacingOccurrencesOfString("\"", withString: "")
                 
                 if (otherUserString == activeString) {
-//                    print("found other user and breaking out")
                     otherUser.setValue(self.invitingString)
                     self.connectedUserInfo = user
                     found = true
@@ -481,8 +478,8 @@ class FirebaseHomeManager: NSObject {
         userArray["interests"] = userObject.interests.joinWithSeparator(",")
     
         
-        let userIdLocation = [myId:userArray]
-        allActiveUsers.updateChildValues(userIdLocation)
+//        let userIdLocation = [myId:userArray]
+        allActiveUsers.child(myId).updateChildValues(userArray)
         
         userActiveFirebasePath = allActiveUsers.child(userId)
 //            childByAppendingPath(userId)

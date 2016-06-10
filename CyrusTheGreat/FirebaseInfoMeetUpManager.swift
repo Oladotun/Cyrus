@@ -42,7 +42,6 @@ class FirebaseInfoMeetUpManager: NSObject {
         
         let userUrl = "https://cyrusthegreat.firebaseio.com/users/\(userId)/image"
         let userFirebase = FIRDatabase.database().referenceFromURL(userUrl)
-//        Firebase(url:userUrl)
         
         userFirebase.observeSingleEventOfType(.Value, withBlock: {
             snapshot in

@@ -121,12 +121,12 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate,UIPickerVie
                                         "verified" : "false"
                                     ]
                                     
-                                    let userUidNewUser = [self.appDelegate.userIdentifier : newUser]
+//                                    let userUidNewUser = [self.appDelegate.userIdentifier : newUser]
 //                                    let usersPathNewUser = ["users":userUidNewUser]
                                     
-                                    let userRef = FIRDatabase.database().referenceFromURL("https://cyrusthegreat.firebaseio.com/users/")
+                                    self.appDelegate.userFire.child("users").child(self.appDelegate.userIdentifier).updateChildValues(newUser)
                                     NSUserDefaults.standardUserDefaults().setValue(user?.uid, forKey: "uid")
-                                    userRef.updateChildValues(userUidNewUser)
+//                                    userRef.updateChildValues(userUidNewUser)
                                     self.performSegueWithIdentifier("connectTwitter", sender: self)
                                 }
                             })

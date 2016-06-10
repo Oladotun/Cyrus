@@ -52,7 +52,10 @@ class LoginPageViewController: UIViewController, UITextFieldDelegate {
                         
                         self.appDelegate.userIdentifier = user?.uid
                         // Get the user interests from firebase
-                        let userInterests = self.appDelegate.userFire.database.referenceFromURL("users/\(user?.uid)/interests")
+                        let userInterests = self.appDelegate.userFire.child("users/\(user?.uid)/interests")
+                            
+                            
+//                            database.referenceFromURL("users/\(user?.uid)/interests")
                         
 //                        Firebase(url:  "https://cyrusthegreat.firebaseio.com/users/\(authData.uid)/interests")
                         

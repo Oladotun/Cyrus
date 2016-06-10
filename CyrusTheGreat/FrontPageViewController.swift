@@ -37,13 +37,11 @@ class FrontPageViewController: UIViewController {
         } else {
           autData = NSUserDefaults.standardUserDefaults().valueForKey("uid")
         }
-        
-        
-        
+
         if let autData = autData {
             appDelegate.userIdentifier = autData as! String
             
-            let userInterests = appDelegate.userFire.database.referenceWithPath("users/\(autData)/interests")
+            let userInterests = appDelegate.userFire.child("users").child("\(autData)/interests")
             
             //Firebase(url:  "https://cyrusthegreat.firebaseio.com/users/\(autData)/interests")
 
@@ -84,11 +82,6 @@ class FrontPageViewController: UIViewController {
                 }, completion: nil)
             
         }
-        
-        
-        
-        
-        
         
     }
     
