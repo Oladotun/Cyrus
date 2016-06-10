@@ -312,7 +312,7 @@ class FirebaseHomeManager: NSObject {
                                     
                                     if (newFound.user.schoolName == self.userObject.schoolName) {
                                         
-                                        print("Found user with the same school name")
+//                                        print("Found user with the same school name")
                                         
                                         newFound.user.firstName = childValue[self.firstNameString]
                                         newFound.user.userField = childValue[self.userFieldString]

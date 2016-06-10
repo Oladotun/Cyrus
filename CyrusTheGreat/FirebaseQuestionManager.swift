@@ -33,7 +33,7 @@ class FirebaseQuestionManager: NSObject {
     }
     
     func questionUserFirebase() -> FIRDatabaseReference! {
-        return meetUpPathWay.database.referenceWithPath("question")
+        return meetUpPathWay.child("question")
 //            childByAppendingPath("question")
     }
     

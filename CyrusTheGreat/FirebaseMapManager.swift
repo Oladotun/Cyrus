@@ -32,7 +32,7 @@ class FirebaseMapManager: NSObject {
         meetUpPathWay = meetPath
         userId = myId
         self.otherUserId = otherUserId
-        locationPath = meetUpPathWay.database.referenceWithPath(locationString)
+        locationPath = meetUpPathWay.child(locationString)
         locationPathOtherUserFirebase = self.locationOtherUserFirebase()
         etaPathFirebase = etaToDestination()
         self.observeEtaOtherUser()
@@ -41,12 +41,12 @@ class FirebaseMapManager: NSObject {
     
     func locationOtherUserFirebase() -> FIRDatabaseReference! {
         
-        return meetUpPathWay.database.referenceWithPath("\(locationString)/\(otherUserId)")
+        return locationPath.child("\(otherUserId)")
     }
     
     
     func etaToDestination() -> FIRDatabaseReference! {
-        return meetUpPathWay.database.referenceWithPath(etaToDestinationString)
+        return meetUpPathWay.child(etaToDestinationString)
 //            childByAppendingPath(etaToDestinationString)
     }
     

@@ -105,34 +105,62 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
         if (userToQuestions[userName] == nil) {
             userToQuestions[userName] = [String]()
         }
-    
-        if (countQuestions == 2 || countQuestions == 5) {
-            if (userName == myName.capitalizeFirst) {
-                fieldInfo = appDelegate.userObject.userField
+        
+        
+        if (appDelegate.connectedProfile.userMatchedInterest.count > 5) {
+            
+            if (countQuestions == 2 || countQuestions == 5) {
+                if (userName == myName.capitalizeFirst) {
+                    fieldInfo = appDelegate.userObject.userField
+                    
+                } else {
+                    fieldInfo = appDelegate.connectedProfile.user.userField
+                    
+                }
                 
+                question = "tell us how and why you decided to get into \(fieldInfo) ?"
+                userToQuestions[userName]!.append(fieldInfo)
             } else {
-                fieldInfo = appDelegate.connectedProfile.user.userField
+                repeat {
+                    foundInterest = appDelegate.connectedProfile.userMatchedInterest.randomItem()
+                } while(userToQuestions[userName]!.contains(foundInterest))
+                userToQuestions[userName]!.append(foundInterest)
+                
+                question = questionPrelude.randomItem() + " " + foundInterest + " ?"
                 
             }
             
-            question = "tell us how and why you decided to get into \(fieldInfo) ?"
-            userToQuestions[userName]!.append(fieldInfo)
         } else {
-            repeat {
-                foundInterest = appDelegate.connectedProfile.userMatchedInterest.randomItem()
-            } while(userToQuestions[userName]!.contains(foundInterest))
-            userToQuestions[userName]!.append(foundInterest)
             
-            question = questionPrelude.randomItem() + " " + foundInterest + " ?"
-           
+            if (countQuestions == 1 || countQuestions == 2) {
+                if (userName == myName.capitalizeFirst) {
+                    fieldInfo = appDelegate.userObject.userField
+                    
+                } else {
+                    fieldInfo = appDelegate.connectedProfile.user.userField
+                    
+                }
+                
+                question = "tell us how and why you decided to get into \(fieldInfo) ?"
+                userToQuestions[userName]!.append(fieldInfo)
+            } else {
+                repeat {
+                    foundInterest = appDelegate.connectedProfile.userMatchedInterest.randomItem()
+                } while(userToQuestions[userName]!.contains(foundInterest))
+                userToQuestions[userName]!.append(foundInterest)
+                
+                question = questionPrelude.randomItem() + " " + foundInterest + " ?"
+                
+            }
+            
         }
+    
+        
         
         let completeQuestion = userName + ", " + question
         firebaseQuestionManager.questionPathFirebase.setValue(completeQuestion)
         
         if (appDelegate.iamInitiator == true) {
-            print("I am initiator")
-            print(completeQuestion)
             updateQuestionLabel(completeQuestion)
             
         }

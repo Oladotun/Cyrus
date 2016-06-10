@@ -42,7 +42,7 @@ class FirebaseChatManager: NSObject {
             NSException(name: "Meet up not set", reason: "Meet up info not set", userInfo: nil).raise()
             return nil
         }
-        return meetUpPathWay.database.referenceWithPath("chatMsg")
+        return meetUpPathWay.child("chatMsg")
 //            childByAppendingPath("chatMsg")
     }
     
@@ -135,7 +135,8 @@ class FirebaseChatManager: NSObject {
             NSException(name: "Meet up not set in Chat Accept", reason: "Meet up info not set", userInfo: nil).raise()
             return nil
         }
-        return meetUpPathWay.database.referenceWithPath("chatAccept")
+        return meetUpPathWay.child("ChatAccept")
+//            database.referenceWithPath("chatAccept")
 //            childByAppendingPath("chatAccept")
         
     }

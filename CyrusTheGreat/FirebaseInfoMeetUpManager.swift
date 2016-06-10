@@ -29,7 +29,7 @@ class FirebaseInfoMeetUpManager: NSObject {
     init(meetPath:FIRDatabaseReference,myId:String,otherUserId:String) {
         super.init()
         meetUpPathWay = meetPath
-        segueToQuestionNode = meetUpPathWay.database.referenceWithPath("segueToQuestion")
+        segueToQuestionNode = meetUpPathWay.child("segueToQuestion")
 //            childByAppendingPath("segueToQuestion")
         userId = myId
         self.otherUserId = otherUserId

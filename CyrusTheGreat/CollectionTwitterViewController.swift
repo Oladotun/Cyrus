@@ -510,12 +510,9 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
 //        destinationVC.interests = topics
 
         let userInterests = ["interests":topics]
-//        self.appDelegate.userFire.database.referenceWithPath("users").database.referenceWithPath(appDelegate.userIdentifier).updateChildValues(userInterests)
         
         FIRDatabase.database().referenceFromURL("https://cyrusthegreat.firebaseio.com/users/\(appDelegate.userIdentifier)/").updateChildValues(userInterests)
-            
-//            childByAppendingPath("users")
-//            .childByAppendingPath(appDelegate.userIdentifier).updateChildValues(userInterests)
+        
         
     }
     
