@@ -241,7 +241,7 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
                 
                 if (followerCount > 10000) {
                     
-                    if (friendsCount < 0) {
+                    if (friendsCount <= 0) {
                         friendsCount = 1
                     }
                     
@@ -255,7 +255,7 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
         }
         
         var sortedArray = userToFollower.sort( {$0.1 > $1.1})
-        let no = 2
+        let no = 10
         if (sortedArray.count > no) { // number of inviduals to infer topic from
             sortedArray = Array(sortedArray[0..<no])
             

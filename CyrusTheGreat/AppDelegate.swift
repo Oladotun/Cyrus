@@ -33,6 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         // Use Firebase library to configure APIs
+//          NSUserDefaults.standardUserDefaults().removeObjectForKey("uid")
         FIRApp.configure()
 //        FIR
        userFire = FIRDatabase.database().referenceFromURL("https://cyrusthegreat.firebaseio.com/")

@@ -51,8 +51,10 @@ class LoginPageViewController: UIViewController, UITextFieldDelegate {
                         // The logged in user's unique identifier
                         
                         self.appDelegate.userIdentifier = user?.uid
+                        print(user?.uid)
                         // Get the user interests from firebase
-                        let userInterests = self.appDelegate.userFire.child("users/\(user?.uid)/interests")
+                        let userInterests = self.appDelegate.userFire.child("users/\( self.appDelegate.userIdentifier)/interests")
+                        print(userInterests.description())
                             
                             
 //                            database.referenceFromURL("users/\(user?.uid)/interests")
@@ -60,7 +62,7 @@ class LoginPageViewController: UIViewController, UITextFieldDelegate {
 //                        Firebase(url:  "https://cyrusthegreat.firebaseio.com/users/\(authData.uid)/interests")
                         
                         //Used to keep user logged in
-                        NSUserDefaults.standardUserDefaults().setValue(user?.uid, forKey: "uid")
+                        NSUserDefaults.standardUserDefaults().setValue( self.appDelegate.userIdentifier, forKey: "uid")
                     
                         userInterests.observeEventType(.Value, withBlock: {
                             snapshot in
