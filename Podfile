@@ -4,9 +4,10 @@
 use_frameworks!
 
 target 'CyrusTheGreat' do
-    pod 'Firebase', '>= 2.5.1'
-    pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git'
-
+	pod 'Firebase'
+    pod 'Firebase/Database'
+    pod 'Firebase/Auth'
+	pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git'
 end
 
 target 'CyrusTheGreatTests' do

@@ -15,12 +15,9 @@ import CoreLocation
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var userFire: Firebase! // CyrusTheGreat Connection
-    var meetUpFire: Firebase! // Connection for specific chat session used in chat view controller
-    var fireConnect: Firebase! // Connection for current user used in questions View Controller
+    var userFire: FIRDatabaseReference! // CyrusTheGreat Connection
     var fireUID: String!
     var interests: [String]!
-//    var matchedTopic: String!
     var meetAccept: Bool!
     var userIdentifier:String! // uid from firebase
     var userFirstName: String!
@@ -35,8 +32,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
-//        mpcManager = MPCManager()
-        userFire = Firebase(url: "https://cyrusthegreat.firebaseio.com/")
+        // Use Firebase library to configure APIs
+//          NSUserDefaults.standardUserDefaults().removeObjectForKey("uid")
+        FIRApp.configure()
+//        FIR
+       userFire = FIRDatabase.database().referenceFromURL("https://cyrusthegreat.firebaseio.com/")
+//        .referenceWithPath("https://cyrusthegreat.firebaseio.com/")
         meetAccept = false
 //        userFirebaseManager = FirebaseManager()
         

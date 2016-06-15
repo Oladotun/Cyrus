@@ -19,17 +19,18 @@ protocol FirebaseInfoMeetUpManagerDelegate {
 
 class FirebaseInfoMeetUpManager: NSObject {
     
-    var meetUpPathWay:Firebase!
-    var segueToQuestionNode:Firebase!
+    var meetUpPathWay:FIRDatabaseReference!
+    var segueToQuestionNode:FIRDatabaseReference!
     var delegate:FirebaseInfoMeetUpManagerDelegate?
     var userId:String!
     var otherUserId:String!
     var questionTime:Bool!
     
-    init(meetPath:Firebase,myId:String,otherUserId:String) {
+    init(meetPath:FIRDatabaseReference,myId:String,otherUserId:String) {
         super.init()
         meetUpPathWay = meetPath
-        segueToQuestionNode = meetUpPathWay.childByAppendingPath("segueToQuestion")
+        segueToQuestionNode = meetUpPathWay.child("segueToQuestion")
+//            childByAppendingPath("segueToQuestion")
         userId = myId
         self.otherUserId = otherUserId
         observeNextQuestionNode()
@@ -40,7 +41,7 @@ class FirebaseInfoMeetUpManager: NSObject {
     func observeImageUser() {
         
         let userUrl = "https://cyrusthegreat.firebaseio.com/users/\(userId)/image"
-        let userFirebase = Firebase(url:userUrl)
+        let userFirebase = FIRDatabase.database().referenceFromURL(userUrl)
         
         userFirebase.observeSingleEventOfType(.Value, withBlock: {
             snapshot in
@@ -53,7 +54,7 @@ class FirebaseInfoMeetUpManager: NSObject {
     
     func observeImageOtherUser() {
         let userUrl = "https://cyrusthegreat.firebaseio.com/users/\(otherUserId)/image"
-        let userFirebase = Firebase(url:userUrl)
+        let userFirebase = FIRDatabase.database().referenceFromURL(userUrl)
         
         userFirebase.observeSingleEventOfType(.Value, withBlock: {
             snapshot in
@@ -71,7 +72,7 @@ class FirebaseInfoMeetUpManager: NSObject {
             
             for child in snapshot.children {
                 if (child.key != self.userId) {
-                    let childSnapshot = snapshot.childSnapshotForPath(child.key)
+                    let childSnapshot = snapshot.childSnapshotForPath(child.key!!)
                     
                     if let readyQuest = childSnapshot.value as? Bool {
                         

@@ -29,6 +29,7 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate,UIPickerVie
     var studyField:String!
     
     let pickerDataSource = ["Business","Engineering","Education","Natural Science","Arts","Social Science","Computer Science","Medicine","Law","Humanities","Social Work","Education"]
+    let startingPassword = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,6 +43,7 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate,UIPickerVie
         passwordField.secureTextEntry = true
         fieldPicker.delegate = self
         fieldPicker.dataSource = self
+        studyField = pickerDataSource[0]
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil);
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name:UIKeyboardWillHideNotification, object: nil);
@@ -92,50 +94,82 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate,UIPickerVie
             
             print(schoolEmailField.text!)
             if (checkEmailDomain(getDomainFromEmail(schoolEmailField.text!))) {
-                appDelegate.userFire.createUser(schoolEmailField.text!, password: passwordField.text!,
-                    withValueCompletionBlock: { error, result in
+                FIRAuth.auth()?.createUserWithEmail(schoolEmailField.text!.trim(), password: passwordField.text!) {
+                    ( user, error )in
                         if error != nil {
                             // There was an error creating the account
                             print(error)
                         } else {
-
-                            self.appDelegate.userFire.authUser(self.schoolEmailField.text!, password: self.passwordField.text!, withCompletionBlock: { error, authData in
+                            
+//                            startingPassword.random()
+                            
+                            
+                            // Verify email
+                            
+                            
+                            FIRAuth.auth()?.signInWithEmail(self.schoolEmailField.text!.trim(), password: self.passwordField.text!, completion:{ user, error in
                                 if error != nil {
                                     // Something went wrong. :(
                                 } else {
-                                    // Authentication just completed successfully :)
-                                    // The logged in user's unique identifier
-                                    print(authData.uid)
+                                    self.appDelegate.userIdentifier =  user?.uid
                                     
-                                    // Set uid for local identifier
-                                    
-                                    self.appDelegate.userIdentifier = authData.uid
-                                    // stored to keep user logged in
-                                    NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: "uid")
-                                    // Create a new user dictionary accessing the user's info
-                                    // provided by the authData parameter
                                     let newUser = [
                                         "first_name": self.firstNameField.text!,
                                         "last_name": self.lastNameField.text!,
                                         "school_name": self.schoolName,
-                                        "field_study": self.studyField
+                                        "field_study": self.studyField,
+                                        "verified" : "false"
                                     ]
-                                    // Create a child path with a key set to the uid underneath the "users" node
-                                    // This creates a URL path like the following:
-                                    //  - https://<YOUR-FIREBASE-APP>.firebaseio.com/users/<uid>
-                                    self.appDelegate.userFire.childByAppendingPath("users")
-                                        .childByAppendingPath(authData.uid).setValue(newUser)
+                                    
+//                                    let userUidNewUser = [self.appDelegate.userIdentifier : newUser]
+//                                    let usersPathNewUser = ["users":userUidNewUser]
+                                    
+                                    self.appDelegate.userFire.child("users").child(self.appDelegate.userIdentifier).updateChildValues(newUser)
+                                    NSUserDefaults.standardUserDefaults().setValue(user?.uid, forKey: "uid")
+//                                    userRef.updateChildValues(userUidNewUser)
                                     self.performSegueWithIdentifier("connectTwitter", sender: self)
-
                                 }
-
-                                
-                                
-                                
                             })
+                           
+                            
+
+//                            FIRAuth.auth()?.authUser(self.schoolEmailField.text!, password: self.passwordField.text!, withCompletionBlock: { error, authData in
+//                                if error != nil {
+//                                    // Something went wrong. :(
+//                                } else {
+//                                    // Authentication just completed successfully :)
+//                                    // The logged in user's unique identifier
+//                                    print(authData.uid)
+//                                    
+//                                    // Set uid for local identifier
+//                                    
+//                                    self.appDelegate.userIdentifier = authData.uid
+//                                    // stored to keep user logged in
+//                                    NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: "uid")
+//                                    // Create a new user dictionary accessing the user's info
+//                                    // provided by the authData parameter
+//                                    let newUser = [
+//                                        "first_name": self.firstNameField.text!,
+//                                        "last_name": self.lastNameField.text!,
+//                                        "school_name": self.schoolName,
+//                                        "field_study": self.studyField
+//                                    ]
+//                                    // Create a child path with a key set to the uid underneath the "users" node
+//                                    // This creates a URL path like the following:
+//                                    //  - https://<YOUR-FIREBASE-APP>.firebaseio.com/users/<uid>
+//                                    self.appDelegate.userFire.childByAppendingPath("users")
+//                                        .childByAppendingPath(authData.uid).setValue(newUser)
+//                                    self.performSegueWithIdentifier("connectTwitter", sender: self)
+//
+//                                }
+//
+//                                
+//                                
+//                                
+//                            })
    
                         }
-                })
+                }
                 
             } else {
                 
@@ -192,6 +226,8 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate,UIPickerVie
         
     }
     
+
+    
     
     
     // MARK: - TextField Delegate 
@@ -201,6 +237,7 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate,UIPickerVie
             let enteredWord = schoolEmailField.text!
             if (!enteredWord.isEmail || enteredWord.isEmpty) {
                 textField.errorHighlightTextField("School Name is required")
+                schoolEmailField.becomeFirstResponder()
                 
             } else {
                 textField.removeErrorHighlightTextField()
@@ -214,6 +251,7 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate,UIPickerVie
             let firstName = firstNameField.text!
             if (firstName.isEmpty) {
                 textField.errorHighlightTextField("First Name is required")
+                firstNameField.becomeFirstResponder()
             } else {
                 textField.removeErrorHighlightTextField()
                 lastNameField.becomeFirstResponder()
@@ -224,6 +262,7 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate,UIPickerVie
             let lastName = lastNameField.text!
             if (lastName.isEmpty) {
                 textField.errorHighlightTextField("Last Name is required")
+                lastNameField.becomeFirstResponder()
             } else {
                  textField.removeErrorHighlightTextField()
                 passwordField.becomeFirstResponder()
@@ -236,8 +275,16 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate,UIPickerVie
             if (password.isEmpty) {
                 textField.errorHighlightTextField("Password is required")
             } else {
-                textField.removeErrorHighlightTextField()
-                passwordField.resignFirstResponder()
+                
+                if (password.length < 7) {
+                    passwordField.text = ""
+                    textField.errorHighlightTextField("Password needs to be at least 6 character")
+                    passwordField.becomeFirstResponder()
+                } else {
+                    textField.removeErrorHighlightTextField()
+                    passwordField.resignFirstResponder()
+                }
+                
             }
             
         }
@@ -290,5 +337,18 @@ extension String {
         } catch {
             return false
         }
+    }
+    // Password Generator
+    func random(length: Int = 20) -> String {
+        
+        let base = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        var randomString: String = ""
+        
+        for _ in 0..<length {
+            let randomValue = arc4random_uniform(UInt32(base.characters.count))
+            randomString += "\(base[base.startIndex.advancedBy(Int(randomValue))])"
+        }
+        
+        return randomString
     }
 }

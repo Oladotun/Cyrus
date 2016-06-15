@@ -241,7 +241,7 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
                 
                 if (followerCount > 10000) {
                     
-                    if (friendsCount < 0) {
+                    if (friendsCount <= 0) {
                         friendsCount = 1
                     }
                     
@@ -255,8 +255,9 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
         }
         
         var sortedArray = userToFollower.sort( {$0.1 > $1.1})
-        if (sortedArray.count > 15) { // number of inviduals to infer topic from
-            sortedArray = Array(sortedArray[0..<15])
+        let no = 10
+        if (sortedArray.count > no) { // number of inviduals to infer topic from
+            sortedArray = Array(sortedArray[0..<no])
             
         }
         getFriendLists(sortedArray)
@@ -509,8 +510,9 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
 //        destinationVC.interests = topics
 
         let userInterests = ["interests":topics]
-        self.appDelegate.userFire.childByAppendingPath("users")
-            .childByAppendingPath(appDelegate.userIdentifier).updateChildValues(userInterests)
+        
+        FIRDatabase.database().referenceFromURL("https://cyrusthegreat.firebaseio.com/users/\(appDelegate.userIdentifier)/").updateChildValues(userInterests)
+        
         
     }
     

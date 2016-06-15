@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class ApiConnectorViewController: UIViewController,UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
@@ -69,10 +70,15 @@ class ApiConnectorViewController: UIViewController,UIImagePickerControllerDelega
                 let str = imageData.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
                 
 //                profilePicture.image = str.stringToImage()
-             
+//             
                 let userImage = ["image": str]
-                self.appDelegate.userFire.childByAppendingPath("users")
-                    .childByAppendingPath(appDelegate.userIdentifier).updateChildValues(userImage)
+                print(appDelegate.userFire.URL)
+                
+               FIRDatabase.database().referenceFromURL("https://cyrusthegreat.firebaseio.com/users/\(appDelegate.userIdentifier)/").updateChildValues(userImage)
+//                self.appDelegate.userFire.database.referenceWithPath("users").database.referenceWithPath(appDelegate.userIdentifier).updateChildValues(userImage)
+//                
+////                    childByAppendingPath("users")
+////                    .childByAppendingPath(appDelegate.userIdentifier).updateChildValues(userImage)
                 self.performSegueWithIdentifier("TwitterInferPage", sender: self)
                 
             }

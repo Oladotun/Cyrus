@@ -18,14 +18,14 @@ protocol FirebaseChatDelegate {
 }
 
 class FirebaseChatManager: NSObject {
-    var meetUpPathWay:Firebase! // reference to previous meetup
-    var chatMessagePathFirebase:Firebase!
-    var chatAcceptPathFirebase:Firebase!
+    var meetUpPathWay:FIRDatabaseReference! // reference to previous meetup
+    var chatMessagePathFirebase:FIRDatabaseReference!
+    var chatAcceptPathFirebase:FIRDatabaseReference!
     var userId:String!
     var delegate:FirebaseChatDelegate?
     
     
-    init(meetUpPath:Firebase,currUserId:String) {
+    init(meetUpPath:FIRDatabaseReference,currUserId:String) {
         super.init()
         self.meetUpPathWay = meetUpPath
         chatMessagePathFirebase = self.chatMessagePath()
@@ -37,12 +37,13 @@ class FirebaseChatManager: NSObject {
     
     
     
-    func chatMessagePath() -> Firebase! {
+    func chatMessagePath() -> FIRDatabaseReference! {
         guard let _ = meetUpPathWay else {
             NSException(name: "Meet up not set", reason: "Meet up info not set", userInfo: nil).raise()
             return nil
         }
-        return meetUpPathWay.childByAppendingPath("chatMsg")
+        return meetUpPathWay.child("chatMsg")
+//            childByAppendingPath("chatMsg")
     }
     
     func observeChatMsgPath() {
@@ -56,7 +57,7 @@ class FirebaseChatManager: NSObject {
             snapshot in
             
             for child in snapshot.children {
-                let childSnapshot = snapshot.childSnapshotForPath(child.key)
+                let childSnapshot = snapshot.childSnapshotForPath(child.key!!)
                 if (child.key != self.userId) {
                     if let value = childSnapshot.value as? [String:String] {
                         self.delegate?.iamSender = false
@@ -91,30 +92,36 @@ class FirebaseChatManager: NSObject {
         chatAcceptPathFirebase.observeEventType(.Value, withBlock: {
             snapshot in
             
-            if (!snapshot.value.isEqual(NSNull()) ) {
+            if let value = snapshot.value {
                 
-                if(snapshot.value as! String == "Yes") && !yesCalled {
+                if (!value.isEqual(NSNull()) ) {
                     
-                    self.delegate?.segueToNextPage()
-                    yesCalled = true
+                    if(snapshot.value as! String == "Yes") && !yesCalled {
+                        
+                        self.delegate?.segueToNextPage()
+                        yesCalled = true
+                        
+                    }
                     
+                    if(snapshot.value as! String == "No") {
+                        
+                    }
+                    
+                    if((snapshot.value as! String).contains("_end_chat_")) {
+                        
+                        let endWord = snapshot.value as! String
+                        
+                        let splitEndWord = endWord.componentsSeparatedByString("*_*")
+                        
+                        self.delegate?.meetUpCancelled(splitEndWord[0])
+                        
+                        
+                    }
                 }
                 
-                if(snapshot.value as! String == "No") {
-                    
-                }
-                
-                if((snapshot.value as! String).contains("_end_chat_")) {
-                    
-                    let endWord = snapshot.value as! String
-                    
-                    let splitEndWord = endWord.componentsSeparatedByString("*_*")
-                    
-                    self.delegate?.meetUpCancelled(splitEndWord[0])
-                    
-                    
-                }
             }
+            
+            
             
             
             
@@ -123,12 +130,14 @@ class FirebaseChatManager: NSObject {
         
     }
     
-    func chatAcceptPath() -> Firebase! {
+    func chatAcceptPath() -> FIRDatabaseReference! {
         guard let _ = meetUpPathWay else {
             NSException(name: "Meet up not set in Chat Accept", reason: "Meet up info not set", userInfo: nil).raise()
             return nil
         }
-        return meetUpPathWay.childByAppendingPath("chatAccept")
+        return meetUpPathWay.child("ChatAccept")
+//            database.referenceWithPath("chatAccept")
+//            childByAppendingPath("chatAccept")
         
     }
     
