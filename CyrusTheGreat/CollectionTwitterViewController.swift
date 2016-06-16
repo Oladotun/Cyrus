@@ -255,7 +255,7 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
         }
         
         var sortedArray = userToFollower.sort( {$0.1 > $1.1})
-        let no = 10
+        let no = 15
         if (sortedArray.count > no) { // number of inviduals to infer topic from
             sortedArray = Array(sortedArray[0..<no])
             

@@ -22,6 +22,7 @@ class FrontPageViewController: UIViewController {
     var myCounter = 0
     var timer:NSTimer?
     var returnBack = false
+    var verified = false
 
     
     @IBOutlet weak var cyrusIntro: UILabel!
@@ -32,57 +33,93 @@ class FrontPageViewController: UIViewController {
         super.viewWillAppear(animated)
         
         // Get user logged in
-        var autData:AnyObject?
+        var autData:AnyObject? = nil
         if (returnBack) {
              autData = nil
         } else {
-          autData = NSUserDefaults.standardUserDefaults().valueForKey("uid")
-        }
-
-        if let autData = autData {
-            appDelegate.userIdentifier = autData as! String
             
-            let userInterests = appDelegate.userFire.child("users").child("\(autData)/interests")
-            
-            //Firebase(url:  "https://cyrusthegreat.firebaseio.com/users/\(autData)/interests")
-
-            userInterests.observeSingleEventOfType(.Value, withBlock: {
-                snapshot in
-                if (snapshot.value != nil) {
-                    
-                    if (snapshot.value is NSNull) {
-                        
-                        self.performSegueWithIdentifier("CotinueSignUp", sender: self)
-                        
-                    } else {
-                        
-                        //                    interests = (snapshot.value as? [String])!
-                        self.performSegueWithIdentifier("AlreadyLoggedIn", sender: self)
-                    }
-                    
+            autData = NSUserDefaults.standardUserDefaults().valueForKey("uid")
+            if let _ = FIRAuth.auth()?.currentUser {
+                
+                if let preVerified = FIRAuth.auth()?.currentUser?.emailVerified {
+                    verified = preVerified
                 }
                 
-            })
-            
-        } else {
-            logoCyrus.image = UIImage(named:"cyrus")
-            logoCyrus.alpha = 0.0
-            
-            
-            UIView.animateWithDuration(0.5, delay: 0.0, options: .CurveEaseInOut, animations: {
-                self.logoCyrus.alpha = 1.0
-                }, completion: nil)
-            
-            UIView.animateWithDuration(1.0, delay: 1.0, options: .CurveEaseInOut, animations: {
-                self.cyrusIntro.alpha = 1
-                }, completion: nil)
-            
-            UIView.animateWithDuration(1.0, delay: 2.0, options: .CurveEaseInOut, animations: {
-                self.login.alpha = 1.0
-                self.signUp.alpha = 1.0
-                }, completion: nil)
-            
+                if (!verified) {
+                    // segue to user page
+                    self.performSegueWithIdentifier("VerifyEmailSegue", sender: self)
+                    
+                } else {
+                    if let autData = autData {
+                        appDelegate.userIdentifier = autData as! String
+                        
+                        let userInterests = appDelegate.userFire.child("users").child("\(autData)/interests")
+                        
+                        //Firebase(url:  "https://cyrusthegreat.firebaseio.com/users/\(autData)/interests"
+                        
+                        userInterests.observeSingleEventOfType(.Value, withBlock: {
+                            snapshot in
+                            if (snapshot.value != nil) {
+                                
+                                if (snapshot.value is NSNull) {
+                                    self.performSegueWithIdentifier("CotinueSignUp", sender: self)
+                                    
+                                } else {
+                                    self.performSegueWithIdentifier("AlreadyLoggedIn", sender: self)
+                                }
+                                
+                            }
+                            
+                        })
+                        
+                    } else {
+                        logoCyrus.image = UIImage(named:"cyrus")
+                        logoCyrus.alpha = 0.0
+                        
+                        
+                        UIView.animateWithDuration(0.5, delay: 0.0, options: .CurveEaseInOut, animations: {
+                            self.logoCyrus.alpha = 1.0
+                            }, completion: nil)
+                        
+                        UIView.animateWithDuration(1.0, delay: 1.0, options: .CurveEaseInOut, animations: {
+                            self.cyrusIntro.alpha = 1
+                            }, completion: nil)
+                        
+                        UIView.animateWithDuration(1.0, delay: 2.0, options: .CurveEaseInOut, animations: {
+                            self.login.alpha = 1.0
+                            self.signUp.alpha = 1.0
+                            }, completion: nil)
+                        
+                    }
+                }
+                
+            } else {
+                
+                
+                logoCyrus.image = UIImage(named:"cyrus")
+                logoCyrus.alpha = 0.0
+                
+                
+                UIView.animateWithDuration(0.5, delay: 0.0, options: .CurveEaseInOut, animations: {
+                    self.logoCyrus.alpha = 1.0
+                    }, completion: nil)
+                
+                UIView.animateWithDuration(1.0, delay: 1.0, options: .CurveEaseInOut, animations: {
+                    self.cyrusIntro.alpha = 1
+                    }, completion: nil)
+                
+                UIView.animateWithDuration(1.0, delay: 2.0, options: .CurveEaseInOut, animations: {
+                    self.login.alpha = 1.0
+                    self.signUp.alpha = 1.0
+                    }, completion: nil)
+
+            }
+                
         }
+            
+
+
+
         
     }
     
@@ -139,6 +176,12 @@ class FrontPageViewController: UIViewController {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         returnBack = true
+        
+        if (segue.identifier == "VerifyEmailSegue") {
+            
+            print("working users ")
+            
+        }
     }
     
 

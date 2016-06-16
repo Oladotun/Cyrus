@@ -47,6 +47,10 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         locationManager =  appDelegate.locationManager
         initialSetup()
         
+        print(FIRAuth.auth()!.currentUser?.emailVerified)
+        
+//        FIRAuth.auth()!.currentUser?.
+        
 
     }
     

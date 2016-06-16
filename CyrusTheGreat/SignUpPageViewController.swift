@@ -121,52 +121,19 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate,UIPickerVie
                                         "verified" : "false"
                                     ]
                                     
+                                    user?.sendEmailVerificationWithCompletion(nil)
+                                    
 //                                    let userUidNewUser = [self.appDelegate.userIdentifier : newUser]
 //                                    let usersPathNewUser = ["users":userUidNewUser]
                                     
                                     self.appDelegate.userFire.child("users").child(self.appDelegate.userIdentifier).updateChildValues(newUser)
                                     NSUserDefaults.standardUserDefaults().setValue(user?.uid, forKey: "uid")
 //                                    userRef.updateChildValues(userUidNewUser)
-                                    self.performSegueWithIdentifier("connectTwitter", sender: self)
+//                                    self.performSegueWithIdentifier("connectTwitter", sender: self)
+                                    
+                                    self.performSegueWithIdentifier("VerifyEmailSegue", sender: self)
                                 }
                             })
-                           
-                            
-
-//                            FIRAuth.auth()?.authUser(self.schoolEmailField.text!, password: self.passwordField.text!, withCompletionBlock: { error, authData in
-//                                if error != nil {
-//                                    // Something went wrong. :(
-//                                } else {
-//                                    // Authentication just completed successfully :)
-//                                    // The logged in user's unique identifier
-//                                    print(authData.uid)
-//                                    
-//                                    // Set uid for local identifier
-//                                    
-//                                    self.appDelegate.userIdentifier = authData.uid
-//                                    // stored to keep user logged in
-//                                    NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: "uid")
-//                                    // Create a new user dictionary accessing the user's info
-//                                    // provided by the authData parameter
-//                                    let newUser = [
-//                                        "first_name": self.firstNameField.text!,
-//                                        "last_name": self.lastNameField.text!,
-//                                        "school_name": self.schoolName,
-//                                        "field_study": self.studyField
-//                                    ]
-//                                    // Create a child path with a key set to the uid underneath the "users" node
-//                                    // This creates a URL path like the following:
-//                                    //  - https://<YOUR-FIREBASE-APP>.firebaseio.com/users/<uid>
-//                                    self.appDelegate.userFire.childByAppendingPath("users")
-//                                        .childByAppendingPath(authData.uid).setValue(newUser)
-//                                    self.performSegueWithIdentifier("connectTwitter", sender: self)
-//
-//                                }
-//
-//                                
-//                                
-//                                
-//                            })
    
                         }
                 }

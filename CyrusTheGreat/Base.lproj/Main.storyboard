@@ -109,11 +109,12 @@
                         <outlet property="signUp" destination="5iW-xU-a5R" id="EDk-VF-YhW"/>
                         <segue destination="2Jf-bk-eeG" kind="show" identifier="CotinueSignUp" id="xGD-n5-nfU"/>
                         <segue destination="FPe-MW-7Ug" kind="show" identifier="AlreadyLoggedIn" id="bXX-RC-uVd"/>
+                        <segue destination="RM3-Sh-iRo" kind="showDetail" identifier="VerifyEmailSegue" action="showViewController:sender:" id="Yyr-oi-xHs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AK1-99-zkb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-7758" y="332"/>
+            <point key="canvasLocation" x="-6690" y="-399"/>
         </scene>
         <!--Login Page View Controller-->
         <scene sceneID="HXh-EF-Cg4">
@@ -360,11 +361,12 @@
                         <outlet property="schoolEmailField" destination="kLH-V5-KeM" id="KBA-JG-1d9"/>
                         <outlet property="userLogo" destination="0g1-ds-VFn" id="6d9-EX-38U"/>
                         <segue destination="2Jf-bk-eeG" kind="presentation" identifier="connectTwitter" id="8iI-Sx-Oy5"/>
+                        <segue destination="RM3-Sh-iRo" kind="show" identifier="VerifyEmailSegue" id="MgV-xI-tAr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cUG-aw-PuC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-6094" y="-32"/>
+            <point key="canvasLocation" x="-6605" y="631"/>
         </scene>
         <!--Verify Email View Controller-->
         <scene sceneID="Y7j-AF-A2L">
@@ -415,10 +417,13 @@
                             </mask>
                         </variation>
                     </view>
+                    <connections>
+                        <segue destination="2Jf-bk-eeG" kind="show" identifier="ProfilePictureSegue" id="jbN-il-o83"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f89-nG-lq6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5257" y="-189"/>
+            <point key="canvasLocation" x="-5880" y="-373"/>
         </scene>
         <!--Api Connector View Controller-->
         <scene sceneID="l4X-wF-Z1a">
@@ -531,7 +536,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3gU-WS-ZiQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5370" y="546"/>
+            <point key="canvasLocation" x="-5649" y="546"/>
         </scene>
         <!--Collection Twitter View Controller-->
         <scene sceneID="M8y-TV-lzt">
@@ -646,7 +651,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SPw-eQ-WTH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4522.5" y="673.5"/>
+            <point key="canvasLocation" x="-4439" y="619"/>
         </scene>
         <!--Home Page View Controller-->
         <scene sceneID="sDI-a8-sp3">
@@ -750,7 +755,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GjE-hO-a2H" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="sxO-Jn-IFc" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-6336" y="1466.25"/>
+            <point key="canvasLocation" x="-5772" y="1750"/>
         </scene>
         <!--Chat View Controller-->
         <scene sceneID="UFq-q8-tXK">
@@ -1080,16 +1085,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Press the next question button to start" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="349" translatesAutoresizingMaskIntoConstraints="NO" id="Fh4-ZQ-E75">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Press the next question button to start" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="349" translatesAutoresizingMaskIntoConstraints="NO" id="Fh4-ZQ-E75">
                                 <rect key="frame" x="20" y="177" width="560" height="120"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cyrus" translatesAutoresizingMaskIntoConstraints="NO" id="JA5-rX-T1b">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="cyrus" translatesAutoresizingMaskIntoConstraints="NO" id="JA5-rX-T1b">
                                 <rect key="frame" x="210" y="72" width="180" height="120"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="ohG-vI-Q98">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="ohG-vI-Q98">
                                 <rect key="frame" x="180" y="312" width="240" height="60"/>
                                 <state key="normal" title="Next Question"/>
                                 <connections>
@@ -1129,7 +1134,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vbp-42-5J3" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="ob5-UI-jYw" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="739" y="498"/>
+            <point key="canvasLocation" x="-389" y="1286"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="NsC-HH-sfc">
@@ -1147,7 +1152,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tcm-ed-aYN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="54" y="502.5"/>
+            <point key="canvasLocation" x="-1202" y="1286"/>
         </scene>
         <!--Meet Up Page View Controller-->
         <scene sceneID="dBi-6j-THp">
@@ -1394,8 +1399,9 @@
         <image name="cyrus" width="350" height="350"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="bXX-RC-uVd"/>
-        <segue reference="xGD-n5-nfU"/>
+        <segue reference="RqY-DZ-alJ"/>
+        <segue reference="jbN-il-o83"/>
+        <segue reference="Yyr-oi-xHs"/>
         <segue reference="eOv-3E-glu"/>
         <segue reference="KXb-Pi-882"/>
     </inferredMetricsTieBreakers>
