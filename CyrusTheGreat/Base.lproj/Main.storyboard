@@ -390,20 +390,33 @@
                                     <action selector="openMail:" destination="RM3-Sh-iRo" eventType="touchUpInside" id="enz-6h-Lgy"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Verify Your Email Addres To Continue:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IPk-eI-ppD">
+                                <rect key="frame" x="20" y="256" width="560" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="IPk-eI-ppD" firstAttribute="centerX" secondItem="l8a-7T-fog" secondAttribute="centerX" id="3Y5-N3-cA2"/>
+                            <constraint firstItem="0Xo-Rc-l4Q" firstAttribute="top" secondItem="IPk-eI-ppD" secondAttribute="bottom" constant="8" id="5BU-l0-OGE"/>
                             <constraint firstItem="UEy-d1-l9B" firstAttribute="centerX" secondItem="l8a-7T-fog" secondAttribute="centerX" id="CsD-Km-a72"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="IPk-eI-ppD" secondAttribute="trailing" id="QPX-h8-jGK"/>
                             <constraint firstItem="UEy-d1-l9B" firstAttribute="width" secondItem="l8a-7T-fog" secondAttribute="width" multiplier="0.3" id="RjC-GX-m0t"/>
                             <constraint firstItem="UEy-d1-l9B" firstAttribute="top" secondItem="zny-Xq-32I" secondAttribute="bottom" id="cgd-Lo-bKr"/>
                             <constraint firstItem="UEy-d1-l9B" firstAttribute="height" secondItem="l8a-7T-fog" secondAttribute="height" multiplier="0.3" id="f3t-YG-O9N"/>
                             <constraint firstItem="0Xo-Rc-l4Q" firstAttribute="centerX" secondItem="l8a-7T-fog" secondAttribute="centerX" id="hGx-ci-cSx"/>
+                            <constraint firstItem="IPk-eI-ppD" firstAttribute="centerX" secondItem="l8a-7T-fog" secondAttribute="centerX" id="hsC-6L-ZLv"/>
+                            <constraint firstItem="IPk-eI-ppD" firstAttribute="width" secondItem="l8a-7T-fog" secondAttribute="width" multiplier="0.5" id="oQx-gw-g2z"/>
                             <constraint firstItem="UEy-d1-l9B" firstAttribute="width" secondItem="l8a-7T-fog" secondAttribute="width" multiplier="0.5" id="rcG-LN-D09"/>
                             <constraint firstItem="0Xo-Rc-l4Q" firstAttribute="centerY" secondItem="l8a-7T-fog" secondAttribute="centerY" id="v6S-54-Km4"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="rcG-LN-D09"/>
+                                <exclude reference="3Y5-N3-cA2"/>
+                                <exclude reference="oQx-gw-g2z"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
