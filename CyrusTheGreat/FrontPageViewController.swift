@@ -36,11 +36,29 @@ class FrontPageViewController: UIViewController {
         var autData:AnyObject? = nil
         if (returnBack) {
              autData = nil
-        } else {
+            logoCyrus.image = UIImage(named:"cyrus")
+            logoCyrus.alpha = 0.0
             
+            
+            UIView.animateWithDuration(0.5, delay: 0.0, options: .CurveEaseInOut, animations: {
+                self.logoCyrus.alpha = 1.0
+                }, completion: nil)
+            
+            UIView.animateWithDuration(1.0, delay: 1.0, options: .CurveEaseInOut, animations: {
+                self.cyrusIntro.alpha = 1
+                }, completion: nil)
+            
+            UIView.animateWithDuration(1.0, delay: 2.0, options: .CurveEaseInOut, animations: {
+                self.login.alpha = 1.0
+                self.signUp.alpha = 1.0
+                }, completion: nil)
+            
+        
+        } else {
+    
             autData = NSUserDefaults.standardUserDefaults().valueForKey("uid")
             if let _ = FIRAuth.auth()?.currentUser {
-                
+    
                 if let preVerified = FIRAuth.auth()?.currentUser?.emailVerified {
                     verified = preVerified
                 }

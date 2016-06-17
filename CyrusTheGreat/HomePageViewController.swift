@@ -11,6 +11,7 @@ import MultipeerConnectivity
 import Firebase
 import CoreLocation
 
+
 class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocationManagerDelegate {
     
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -37,10 +38,9 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     var findMorePeer = true
     var switchState = false
     var returned = false
+
    
-    
-    
-    
+
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -87,6 +87,7 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         appDelegate.iamInitiator = false
         firebaseHomeManager.delegate = self
         self.switchState = false
+        checkNotification()
         foundDisplay()
 
         
@@ -113,6 +114,8 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
             firebaseHomeManager.userObject.status = notActiveString
             self.switchState = false
             locationManager.stopUpdatingLocation()
+            userSearching.alpha = 0.0
+            userSearching.stopAnimating()
         }
     }
     
@@ -147,7 +150,30 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         
     }
     
+    func checkNotification() {
+        guard let settings = UIApplication.sharedApplication().currentUserNotificationSettings() else { return }
+        
+        if settings.types == .None {
+            let ac = UIAlertController(title: "Notification Settings Disabled", message: "Kindly Update Notification Settings to be notified", preferredStyle: .Alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+            presentViewController(ac, animated: true, completion: nil)
+            return
+        }
+    }
+    
+    
+    func schedule() {
+        let notification = UILocalNotification()
+        notification.fireDate = NSDate(timeIntervalSinceNow: 0)
+        notification.alertBody = "Hey someone wants to meetup with you!"
+        notification.alertAction = "be awesome!"
+        notification.soundName = UILocalNotificationDefaultSoundName
+        notification.userInfo = ["CustomField1": "w00t"]
+        UIApplication.sharedApplication().scheduleLocalNotification(notification)
+    }
+    
     func receiveInvite(invitedUser: UserProfile) {
+        schedule()
         alertInvite = UIAlertController(title: "", message: "Hi, You have an invite to catchup from \(invitedUser.user.firstName), who goes to \(invitedUser.user.schoolName) and is in the field of \(invitedUser.user.userField) . \(invitedUser.user.firstName) shares \(invitedUser.userMatchedInterest) as interests with you. We will be discussing about them during your meetup.\n\n Click accept to select a meet up location or decline to cancel", preferredStyle: UIAlertControllerStyle.Alert)
         
         let acceptAction: UIAlertAction = UIAlertAction(title: "Accept", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
