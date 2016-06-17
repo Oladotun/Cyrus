@@ -43,6 +43,7 @@ class MeetUpPageViewController: UIViewController, MapTrackerDelegate,FirebaseInf
         meetupDesc.text = "MeetUp Destination is at \(destination)"
         meetupTime.text = "Planned meetup time is \(time)"
         timeToMeetUpAlert.text = ""
+        self.timeToMeetUpAlert.textColor = UIColor.redColor()
         yesButton.alpha = 1.0
         firebaseMeetUpManager.questionTime = false
         firebaseMeetUpManager.delegate = self
@@ -79,6 +80,7 @@ class MeetUpPageViewController: UIViewController, MapTrackerDelegate,FirebaseInf
     func alertOtherUserArrival() {
         
         self.timeToMeetUpAlert.text = "Other user has arrived location"
+        
         
     }
     
