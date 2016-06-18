@@ -39,16 +39,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
        userFire = FIRDatabase.database().referenceFromURL("https://cyrusthegreat.firebaseio.com/")
 //        .referenceWithPath("https://cyrusthegreat.firebaseio.com/")
         meetAccept = false
-//        userFirebaseManager = FirebaseManager()
-        
         locationManager = CLLocationManager()
         locationManager?.requestWhenInUseAuthorization()
         
         let notificationSettings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
         UIApplication.sharedApplication().registerUserNotificationSettings(notificationSettings)
-        
-        
-        
+
         return true
     }
 

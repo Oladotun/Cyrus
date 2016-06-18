@@ -122,14 +122,8 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate,UIPickerVie
                                     ]
                                     
                                     user?.sendEmailVerificationWithCompletion(nil)
-                                    
-//                                    let userUidNewUser = [self.appDelegate.userIdentifier : newUser]
-//                                    let usersPathNewUser = ["users":userUidNewUser]
-                                    
                                     self.appDelegate.userFire.child("users").child(self.appDelegate.userIdentifier).updateChildValues(newUser)
                                     NSUserDefaults.standardUserDefaults().setValue(user?.uid, forKey: "uid")
-//                                    userRef.updateChildValues(userUidNewUser)
-//                                    self.performSegueWithIdentifier("connectTwitter", sender: self)
                                     
                                     self.performSegueWithIdentifier("VerifyEmailSegue", sender: self)
                                 }

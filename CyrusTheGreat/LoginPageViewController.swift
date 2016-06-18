@@ -46,39 +46,31 @@ class LoginPageViewController: UIViewController, UITextFieldDelegate {
                 FIRAuth.auth()?.signInWithEmail(self.emailTextField.text!.trim(), password: self.passField.text!, completion:{ user, error in
                     if error != nil {
                         // Something went wrong. :(
+                       self.alertView("Invalid Email or Password")
                     } else {
                         // Authentication just completed successfully :)
                         // The logged in user's unique identifier
                         
                         self.appDelegate.userIdentifier = user?.uid
-                        print(user?.uid)
                         // Get the user interests from firebase
                         let userInterests = self.appDelegate.userFire.child("users/\( self.appDelegate.userIdentifier)/interests")
-                        print(userInterests.description())
-                            
-                            
-//                            database.referenceFromURL("users/\(user?.uid)/interests")
-                        
-//                        Firebase(url:  "https://cyrusthegreat.firebaseio.com/users/\(authData.uid)/interests")
                         
                         //Used to keep user logged in
                         NSUserDefaults.standardUserDefaults().setValue( self.appDelegate.userIdentifier, forKey: "uid")
                     
                         userInterests.observeEventType(.Value, withBlock: {
                             snapshot in
-                            if (snapshot.value != nil) {
+                            if (snapshot.value == nil) {
                                 
-                                if (snapshot.value is NSNull) {
-                                    
-                                    self.performSegueWithIdentifier("NoInterestSegue", sender: self)
-                                    
-                                } else {
-            
-                                    self.interests = (snapshot.value as? [String])!
-                                    self.performSegueWithIdentifier("LoginHomeSegue", sender: self)
-                                    }
+                                self.performSegueWithIdentifier("NoInterestSegue", sender: self)
                                 
-                            }
+                            } else {
+        
+                                self.interests = (snapshot.value as? [String])!
+                                self.performSegueWithIdentifier("LoginHomeSegue", sender: self)
+                                }
+                                
+                            
                             
                         })
 
@@ -155,8 +147,6 @@ class LoginPageViewController: UIViewController, UITextFieldDelegate {
                 if let jsonDict = item.dictionary { //  jsonDict : [String: JSon]
                     let domain = jsonDict["domain"]!.stringValue
                     if (domainCheck == domain) {
-//                        print("found array")
-//                        print("our school name \(schoolName)")
                         
                         return true
                     }
@@ -166,6 +156,23 @@ class LoginPageViewController: UIViewController, UITextFieldDelegate {
         }
         
         return false
+        
+    }
+    
+    func alertView(message:String) {
+        
+        let alert = UIAlertController(title:"",message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        
+        let doneAction: UIAlertAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
+            
+            alert.dismissViewControllerAnimated(true, completion: nil)
+        }
+        
+        alert.addAction(doneAction)
+        
+        NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+            self.presentViewController(alert, animated: true, completion: nil)
+        })
         
     }
     
