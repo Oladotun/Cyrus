@@ -154,7 +154,7 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
                                     self.userFriends = userInfoDictionary["friends_count"] as! Int
                                     if (self.userFriends < 2) {
                                         // TODO Check the users list membership
-                                        self.alertView("Please follow more people you are interested in on twitter so we can infer your interests")
+                                        self.alertView("Please follow more people you are interested in on Twitter so we can infer your Interests")
                                     }
                                     else {
                                         let cursor = -1
@@ -168,11 +168,11 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
                         
                         
                     } else {
-                        self.alertView("There are no twitter accounts currently set up")
+                        self.alertView("There are no Twitter accounts currently set up.\nPlease Go to Settings > Twitter and Sign into Twitter")
                     }
                     
                 } else {
-                    self.alertView("Could not access your twitter account")
+                    self.alertView("Could not access your Twitter Account.\nPlease Go to Settings > Twitter and authorize Cyrus")
                 }
         })
         
