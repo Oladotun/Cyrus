@@ -60,18 +60,19 @@ class LoginPageViewController: UIViewController, UITextFieldDelegate {
                     
                         userInterests.observeEventType(.Value, withBlock: {
                             snapshot in
-                            if (snapshot.value == nil) {
+                           
                                 
-                                self.performSegueWithIdentifier("NoInterestSegue", sender: self)
-                                
-                            } else {
-        
-                                self.interests = (snapshot.value as? [String])!
-                                self.performSegueWithIdentifier("LoginHomeSegue", sender: self)
+                                if ((snapshot.value is NSNull) || snapshot.value == nil) {
+                                    
+                                    self.performSegueWithIdentifier("NoInterestSegue", sender: self)
+                                    
+                                } else {
+                                    
+                                    self.interests = (snapshot.value as? [String])!
+                                    self.performSegueWithIdentifier("LoginHomeSegue", sender: self)
+
                                 }
-                                
-                            
-                            
+        
                         })
 
                     }

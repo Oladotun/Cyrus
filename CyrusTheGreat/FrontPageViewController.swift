@@ -57,12 +57,12 @@ class FrontPageViewController: UIViewController {
         } else {
     
             autData = NSUserDefaults.standardUserDefaults().valueForKey("uid")
+            
             if let _ = FIRAuth.auth()?.currentUser {
     
                 if let preVerified = FIRAuth.auth()?.currentUser?.emailVerified {
                     verified = preVerified
                 }
-                
                 if (!verified) {
                     // segue to user page
                     self.performSegueWithIdentifier("VerifyEmailSegue", sender: self)
@@ -70,26 +70,19 @@ class FrontPageViewController: UIViewController {
                 } else {
                     if let autData = autData {
                         appDelegate.userIdentifier = autData as! String
-                        
                         let userInterests = appDelegate.userFire.child("users").child("\(autData)/interests")
-                        
-                        //Firebase(url:  "https://cyrusthegreat.firebaseio.com/users/\(autData)/interests"
-                        
-                        userInterests.observeSingleEventOfType(.Value, withBlock: {
-                            snapshot in
-                            if (snapshot.value != nil) {
-                                
-                                if (snapshot.value is NSNull) {
-                                    self.performSegueWithIdentifier("CotinueSignUp", sender: self)
-                                    
-                                } else {
-                                    self.performSegueWithIdentifier("AlreadyLoggedIn", sender: self)
-                                }
-                                
+                        userInterests.observeSingleEventOfType(.Value, withBlock: { snapshot in
+                            
+                            
+                            
+                            if ((snapshot.value is NSNull)||snapshot.value == nil) {
+                                self.performSegueWithIdentifier("CotinueSignUp", sender: self)
+
+                            } else {
+                                self.performSegueWithIdentifier("AlreadyLoggedIn", sender: self)
                             }
                             
                         })
-                        
                     } else {
                         logoCyrus.image = UIImage(named:"cyrus")
                         logoCyrus.alpha = 0.0
