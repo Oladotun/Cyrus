@@ -10,7 +10,7 @@
         <!--FrontPage-->
         <scene sceneID="hG6-hi-CRf">
             <objects>
-                <viewController title="FrontPage" id="5Dr-lq-Qif" customClass="FrontPageViewController" customModule="CyrusTheGreat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="FrontPage" id="5Dr-lq-Qif" customClass="FrontPageViewController" customModule="Cyrus" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="RKZ-lS-Mxv"/>
                         <viewControllerLayoutGuide type="bottom" id="Ng4-Tw-Mq6"/>
@@ -119,7 +119,7 @@
         <!--Login Page View Controller-->
         <scene sceneID="HXh-EF-Cg4">
             <objects>
-                <viewController id="MTj-iS-lCV" customClass="LoginPageViewController" customModule="CyrusTheGreat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="MTj-iS-lCV" customClass="LoginPageViewController" customModule="Cyrus" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="YkL-y4-8Gr"/>
                         <viewControllerLayoutGuide type="bottom" id="ytU-AP-Uo4"/>
@@ -213,7 +213,7 @@
         <!--Sign Up Page View Controller-->
         <scene sceneID="oFx-Td-rWR">
             <objects>
-                <viewController id="HsN-u7-B77" customClass="SignUpPageViewController" customModule="CyrusTheGreat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="HsN-u7-B77" customClass="SignUpPageViewController" customModule="Cyrus" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="l1g-8W-ITc"/>
                         <viewControllerLayoutGuide type="bottom" id="4xv-5J-39Z"/>
@@ -371,7 +371,7 @@
         <!--Verify Email View Controller-->
         <scene sceneID="Y7j-AF-A2L">
             <objects>
-                <viewController id="RM3-Sh-iRo" customClass="VerifyEmailViewController" customModule="CyrusTheGreat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="RM3-Sh-iRo" customClass="VerifyEmailViewController" customModule="Cyrus" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="zny-Xq-32I"/>
                         <viewControllerLayoutGuide type="bottom" id="WNT-zc-vrC"/>
@@ -441,7 +441,7 @@
         <!--Api Connector View Controller-->
         <scene sceneID="l4X-wF-Z1a">
             <objects>
-                <viewController id="2Jf-bk-eeG" customClass="ApiConnectorViewController" customModule="CyrusTheGreat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="2Jf-bk-eeG" customClass="ApiConnectorViewController" customModule="Cyrus" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="cIB-Z7-h6k"/>
                         <viewControllerLayoutGuide type="bottom" id="q7G-dP-IMy"/>
@@ -554,7 +554,7 @@
         <!--Collection Twitter View Controller-->
         <scene sceneID="M8y-TV-lzt">
             <objects>
-                <viewController id="Rdi-ec-lHb" customClass="CollectionTwitterViewController" customModule="CyrusTheGreat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Rdi-ec-lHb" customClass="CollectionTwitterViewController" customModule="Cyrus" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="7PL-N9-5jj"/>
                         <viewControllerLayoutGuide type="bottom" id="YGt-ho-mjR"/>
@@ -576,7 +576,7 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 </activityIndicatorView>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="cell" id="HY4-AT-TX9" customClass="CollectionTwitterCollectionViewCell" customModule="CyrusTheGreat" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="cell" id="HY4-AT-TX9" customClass="CollectionTwitterCollectionViewCell" customModule="Cyrus" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="59" height="74"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -669,7 +669,7 @@
         <!--Home Page View Controller-->
         <scene sceneID="sDI-a8-sp3">
             <objects>
-                <viewController id="FPe-MW-7Ug" customClass="HomePageViewController" customModule="CyrusTheGreat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="FPe-MW-7Ug" customClass="HomePageViewController" customModule="Cyrus" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="J80-Pq-B9v"/>
                         <viewControllerLayoutGuide type="bottom" id="xPY-Hk-hNq"/>
@@ -773,7 +773,7 @@
         <!--Chat View Controller-->
         <scene sceneID="UFq-q8-tXK">
             <objects>
-                <viewController id="bqI-cL-1Wj" customClass="ChatViewController" customModule="CyrusTheGreat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="bqI-cL-1Wj" customClass="ChatViewController" customModule="Cyrus" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="XEq-vP-XRM"/>
                         <viewControllerLayoutGuide type="bottom" id="0zg-Li-ljC"/>
@@ -857,7 +857,7 @@
                                 <rect key="frame" x="20" y="289" width="560" height="240"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="idCell" rowHeight="320" id="uQx-IT-aYC" customClass="ChatViewCell" customModule="CyrusTheGreat" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="idCell" rowHeight="320" id="uQx-IT-aYC" customClass="ChatViewCell" customModule="Cyrus" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="22" width="560" height="320"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uQx-IT-aYC" id="Mvn-y6-OxZ">
@@ -978,7 +978,7 @@
         <!--Search Table View Controller-->
         <scene sceneID="ORm-Hg-gUb">
             <objects>
-                <tableViewController id="dsY-bc-hJL" customClass="SearchTableViewController" customModule="CyrusTheGreat" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="dsY-bc-hJL" customClass="SearchTableViewController" customModule="Cyrus" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="67" sectionHeaderHeight="40" sectionFooterHeight="28" id="qKv-C0-gzt">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1012,7 +1012,7 @@
         <!--Meet Up And Map View Controller-->
         <scene sceneID="Yf7-N8-njs">
             <objects>
-                <viewController id="nev-X9-wU0" customClass="MeetUpAndMapViewController" customModule="CyrusTheGreat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="nev-X9-wU0" customClass="MeetUpAndMapViewController" customModule="Cyrus" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="gkZ-Hl-19W"/>
                         <viewControllerLayoutGuide type="bottom" id="m7z-Rb-QXZ"/>
@@ -1089,7 +1089,7 @@
         <!--Questions View Controller-->
         <scene sceneID="KlB-cV-ePG">
             <objects>
-                <viewController id="DDq-FN-vDe" customClass="QuestionsViewController" customModule="CyrusTheGreat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="DDq-FN-vDe" customClass="QuestionsViewController" customModule="Cyrus" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="810-Vh-sSf"/>
                         <viewControllerLayoutGuide type="bottom" id="fCD-1R-USr"/>
@@ -1170,7 +1170,7 @@
         <!--Meet Up Page View Controller-->
         <scene sceneID="dBi-6j-THp">
             <objects>
-                <viewController id="0mv-3b-yBT" customClass="MeetUpPageViewController" customModule="CyrusTheGreat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="0mv-3b-yBT" customClass="MeetUpPageViewController" customModule="Cyrus" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="RO4-Mc-XvF"/>
                         <viewControllerLayoutGuide type="bottom" id="p33-wf-5IX"/>
@@ -1340,7 +1340,7 @@
         <!--Map Track View Controller-->
         <scene sceneID="cFC-2g-4ef">
             <objects>
-                <viewController id="BqG-d5-T11" customClass="MapTrackViewController" customModule="CyrusTheGreat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BqG-d5-T11" customClass="MapTrackViewController" customModule="Cyrus" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Mkf-bM-sEn"/>
                         <viewControllerLayoutGuide type="bottom" id="ydt-QN-qUI"/>

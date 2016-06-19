@@ -38,6 +38,7 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     var findMorePeer = true
     var switchState = false
     var returned = false
+    var noFound = 0
 
    
 
@@ -162,10 +163,10 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     }
     
     
-    func schedule() {
+    func schedule(message:String) {
         let notification = UILocalNotification()
         notification.fireDate = NSDate(timeIntervalSinceNow: 0)
-        notification.alertBody = "Hey someone wants to meetup with you!"
+        notification.alertBody = message
         notification.alertAction = "be awesome!"
         notification.soundName = UILocalNotificationDefaultSoundName
         notification.userInfo = ["CustomField1": "w00t"]
@@ -173,7 +174,7 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     }
     
     func receiveInvite(invitedUser: UserProfile) {
-        schedule()
+        schedule("Hey you have an invite for a meetup!")
         alertInvite = UIAlertController(title: "", message: "Hi, You have an invite to catchup from \(invitedUser.user.firstName), who goes to \(invitedUser.user.schoolName) and is in the field of \(invitedUser.user.userField) . \(invitedUser.user.firstName) shares \(invitedUser.userMatchedInterest) as interests with you. We will be discussing about them during your meetup.\n\n Click accept to select a meet up location or decline to cancel", preferredStyle: UIAlertControllerStyle.Alert)
         
         let acceptAction: UIAlertAction = UIAlertAction(title: "Accept", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
@@ -202,7 +203,11 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     }
     
     func foundDisplay() {
+        if (noFound == 0 && firebaseHomeManager.allFound.count == 1) {
+            schedule("Hey someone is online looking to chat!")
+        }
         noOfPeer.text = "\(firebaseHomeManager.allFound.count)"
+        noFound = firebaseHomeManager.allFound.count
         
     }
     
