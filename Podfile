@@ -3,14 +3,15 @@
 # Uncomment this line if you're using Swift
 use_frameworks!
 
-target 'CyrusTheGreat' do
+target 'Cyrus' do
 	pod 'Firebase'
     pod 'Firebase/Database'
     pod 'Firebase/Auth'
 	pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git'
+    pod 'JSQMessagesViewController'
 end
 
-target 'CyrusTheGreatTests' do
+target 'CyrusTests' do
 
 end
 
