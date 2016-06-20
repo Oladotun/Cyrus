@@ -117,8 +117,7 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate,UIPickerVie
                                         "first_name": self.firstNameField.text!,
                                         "last_name": self.lastNameField.text!,
                                         "school_name": self.schoolName,
-                                        "field_study": self.studyField,
-                                        "verified" : "false"
+                                        "field_study": self.studyField
                                     ]
                                     
                                     user?.sendEmailVerificationWithCompletion(nil)
