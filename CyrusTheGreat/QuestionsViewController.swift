@@ -170,6 +170,11 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
         
     }
     
+    func segueToMessages() {
+        //
+        self.performSegueWithIdentifier("MessagesSegue", sender: self)
+    }
+    
     func checkIfQuestionComplete() -> Bool {
         
         for key in userToQuestions.keys {
@@ -224,15 +229,28 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
     }
     
 
-    /*
+    @IBAction func chatWithUser(sender: AnyObject) {
+        firebaseQuestionManager.segueToMessages.setValue(appDelegate.userIdentifier)
+        self.performSegueWithIdentifier("MessagesSegue", sender: self)
+    }
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        
+        if (segue.identifier == "MessagesSegue") {
+//            let navVC =  segue.destinationViewController as! UINavigationController
+            let destinationVC = segue.destinationViewController as! FindUserChatViewController
+            destinationVC.messageRef = firebaseQuestionManager.meetUpPathWay.child("messages")
+            destinationVC.senderId = appDelegate.userIdentifier
+            destinationVC.senderDisplayName = appDelegate.userObject.firstName
+            
+        }
     }
-    */
+    
 
 }
 

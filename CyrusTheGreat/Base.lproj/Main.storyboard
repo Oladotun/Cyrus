@@ -973,7 +973,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BMU-fB-EO2" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="cDK-Ar-CIV" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-4745" y="1630"/>
+            <point key="canvasLocation" x="-5045" y="1638"/>
         </scene>
         <!--Search Table View Controller-->
         <scene sceneID="ORm-Hg-gUb">
@@ -1084,7 +1084,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rIl-G5-Lku" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3282" y="1278"/>
+            <point key="canvasLocation" x="-4138" y="1540"/>
         </scene>
         <!--Questions View Controller-->
         <scene sceneID="KlB-cV-ePG">
@@ -1104,34 +1104,54 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="cyrus" translatesAutoresizingMaskIntoConstraints="NO" id="JA5-rX-T1b">
-                                <rect key="frame" x="210" y="72" width="180" height="120"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cyrus" translatesAutoresizingMaskIntoConstraints="NO" id="JA5-rX-T1b">
+                                <rect key="frame" x="210" y="52" width="180" height="120"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="ohG-vI-Q98">
-                                <rect key="frame" x="180" y="312" width="240" height="60"/>
+                                <rect key="frame" x="150" y="300" width="300" height="60"/>
                                 <state key="normal" title="Next Question"/>
                                 <connections>
                                     <action selector="nextQuestion:" destination="DDq-FN-vDe" eventType="touchUpInside" id="DZE-wo-ai0"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fql-BQ-UJs">
+                                <rect key="frame" x="0.0" y="397" width="600" height="30"/>
+                                <state key="normal" title="Chat to find exact location of other Person"/>
+                                <connections>
+                                    <action selector="chatWithUser:" destination="DDq-FN-vDe" eventType="touchUpInside" id="chV-8T-xi2"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Or" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OnD-fa-1gB">
+                                <rect key="frame" x="150" y="368" width="300" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Fh4-ZQ-E75" firstAttribute="top" secondItem="JA5-rX-T1b" secondAttribute="bottom" constant="5" id="09L-Qd-v9h"/>
-                            <constraint firstItem="ohG-vI-Q98" firstAttribute="top" secondItem="Fh4-ZQ-E75" secondAttribute="bottom" constant="15" id="4aM-BL-MGh"/>
+                            <constraint firstItem="OnD-fa-1gB" firstAttribute="top" secondItem="ohG-vI-Q98" secondAttribute="bottom" constant="8" id="0S2-Pb-Yrr"/>
+                            <constraint firstItem="Fql-BQ-UJs" firstAttribute="top" secondItem="OnD-fa-1gB" secondAttribute="bottom" constant="8" id="1xv-rw-euS"/>
                             <constraint firstItem="JA5-rX-T1b" firstAttribute="top" secondItem="810-Vh-sSf" secondAttribute="bottom" constant="8" id="4i5-Sc-CNb"/>
-                            <constraint firstItem="ohG-vI-Q98" firstAttribute="width" secondItem="ncs-YZ-Pok" secondAttribute="width" multiplier="0.4" id="CZF-dd-A8D"/>
+                            <constraint firstItem="ohG-vI-Q98" firstAttribute="height" secondItem="ncs-YZ-Pok" secondAttribute="height" multiplier="0.1" id="Bip-o6-eiJ"/>
                             <constraint firstItem="JA5-rX-T1b" firstAttribute="centerX" secondItem="ncs-YZ-Pok" secondAttribute="centerX" id="FpN-2L-s3O"/>
+                            <constraint firstItem="Fql-BQ-UJs" firstAttribute="centerX" secondItem="ohG-vI-Q98" secondAttribute="centerX" id="Hw6-Jf-SKd"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Fh4-ZQ-E75" secondAttribute="trailing" id="IV1-UX-SuP"/>
+                            <constraint firstItem="Fql-BQ-UJs" firstAttribute="width" secondItem="ncs-YZ-Pok" secondAttribute="width" id="NUj-At-Av1"/>
                             <constraint firstItem="JA5-rX-T1b" firstAttribute="width" secondItem="ncs-YZ-Pok" secondAttribute="width" multiplier="0.3" id="PrJ-QM-IOU"/>
-                            <constraint firstItem="ohG-vI-Q98" firstAttribute="height" secondItem="ncs-YZ-Pok" secondAttribute="height" multiplier="0.1" id="WIc-Eb-QI3"/>
+                            <constraint firstItem="ohG-vI-Q98" firstAttribute="top" secondItem="Fh4-ZQ-E75" secondAttribute="bottom" constant="3" id="S3i-VV-27c"/>
                             <constraint firstItem="Fh4-ZQ-E75" firstAttribute="height" secondItem="ncs-YZ-Pok" secondAttribute="height" multiplier="0.2" id="d2H-A4-ast"/>
+                            <constraint firstItem="ohG-vI-Q98" firstAttribute="centerX" secondItem="ncs-YZ-Pok" secondAttribute="centerX" id="dS0-Og-Ena"/>
                             <constraint firstItem="JA5-rX-T1b" firstAttribute="height" secondItem="ncs-YZ-Pok" secondAttribute="height" multiplier="0.2" id="gQW-8S-Par"/>
+                            <constraint firstItem="OnD-fa-1gB" firstAttribute="trailing" secondItem="ohG-vI-Q98" secondAttribute="trailing" id="gR2-jP-TLB"/>
+                            <constraint firstItem="OnD-fa-1gB" firstAttribute="leading" secondItem="ohG-vI-Q98" secondAttribute="leading" id="ira-kR-Lfo"/>
+                            <constraint firstItem="ohG-vI-Q98" firstAttribute="width" secondItem="ncs-YZ-Pok" secondAttribute="width" multiplier="0.5" id="jXh-Zi-AVy"/>
                             <constraint firstAttribute="leadingMargin" secondItem="Fh4-ZQ-E75" secondAttribute="leading" id="ppZ-Zs-GqC"/>
-                            <constraint firstItem="ohG-vI-Q98" firstAttribute="centerX" secondItem="ncs-YZ-Pok" secondAttribute="centerX" id="vgV-am-6JM"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="XBn-lX-MDU">
+                        <barButtonItem key="backBarButtonItem" title="Return" id="m8H-sK-6UX"/>
                         <barButtonItem key="leftBarButtonItem" systemItem="stop" id="3Ot-C2-gV2">
                             <connections>
                                 <action selector="exitButton:" destination="DDq-FN-vDe" id="DgM-iG-ija"/>
@@ -1142,12 +1162,34 @@
                         <outlet property="interestMatchLabel" destination="Fh4-ZQ-E75" id="k7P-Ix-fUE"/>
                         <outlet property="questionButton" destination="ohG-vI-Q98" id="gk8-Lm-A8e"/>
                         <segue destination="ob5-UI-jYw" kind="unwind" identifier="unWindHome" unwindAction="unwindHomePageController:" id="AkL-VI-dhv"/>
+                        <segue destination="ZJX-uz-5fT" kind="presentation" identifier="MessagesSegue" id="Ivf-fM-tt2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vbp-42-5J3" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="ob5-UI-jYw" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-1047" y="1262"/>
+            <point key="canvasLocation" x="-2141" y="1436"/>
+        </scene>
+        <!--Find User Chat View Controller-->
+        <scene sceneID="p9o-45-G0A">
+            <objects>
+                <viewController id="ZJX-uz-5fT" customClass="FindUserChatViewController" customModule="Cyrus" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="GIg-nk-o3R"/>
+                        <viewControllerLayoutGuide type="bottom" id="xHQ-1y-i3B"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="NLw-0v-Nqe">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="ur9-Xd-mBR">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="DwT-Te-pfC"/>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="L3x-UN-VZg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1409" y="1431"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="NsC-HH-sfc">
@@ -1165,7 +1207,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tcm-ed-aYN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1756" y="1256"/>
+            <point key="canvasLocation" x="-2796" y="1436"/>
         </scene>
         <!--Meet Up Page View Controller-->
         <scene sceneID="dBi-6j-THp">
@@ -1317,7 +1359,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ppk-vo-Dvn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2514" y="1256"/>
+            <point key="canvasLocation" x="-3402" y="1436"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="yLV-b6-Pcy">
@@ -1387,7 +1429,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6tn-7a-P8k" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2522" y="1981"/>
+            <point key="canvasLocation" x="-4050" y="2319"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="7gd-xn-yGi">

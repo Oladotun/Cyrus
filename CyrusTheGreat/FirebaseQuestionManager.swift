@@ -13,6 +13,7 @@ protocol FirebaseQuestionDelegate {
     func updateQuestionLabel(question:String)
     func chattingDone()
     func meetUpCancelled(canceller:String)
+    func segueToMessages()
 }
 
 class FirebaseQuestionManager: NSObject {
@@ -21,6 +22,7 @@ class FirebaseQuestionManager: NSObject {
     let fieldQuestion = "Tell us why you got into your field of study ?"
     var countQuestions:Int = 0
     var questionPathFirebase:FIRDatabaseReference!
+    var segueToMessages:FIRDatabaseReference!
     var meetUpPathWay:FIRDatabaseReference!
     var delegate:FirebaseQuestionDelegate?
     
@@ -29,12 +31,37 @@ class FirebaseQuestionManager: NSObject {
         super.init()
         meetUpPathWay = meetup
         questionPathFirebase = questionUserFirebase()
+        segueToMessages = segueToMessagesFirebase()
         observeQuestionFirebase()
+        observeSegueToMessages()
     }
     
     func questionUserFirebase() -> FIRDatabaseReference! {
         return meetUpPathWay.child("question")
-//            childByAppendingPath("question")
+    }
+    
+    func segueToMessagesFirebase() -> FIRDatabaseReference! {
+        return meetUpPathWay.child("chatInitiated")
+    }
+    
+    func observeSegueToMessages() {
+        segueToMessages.observeEventType(.Value, withBlock: {
+            snapshot in
+            
+            if (snapshot.value is NSNull) {
+  
+            } else {
+                if let value = snapshot.value {
+                    let stringValue = value as! String
+                    if (self.appDelegate.userIdentifier != stringValue) {
+                        self.delegate?.segueToMessages()
+                    }
+                }
+            }
+            
+            
+        })
+    
     }
     
     func observeQuestionFirebase() {
