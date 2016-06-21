@@ -124,6 +124,8 @@ class FindUserChatViewController: JSQMessagesViewController {
         print("westeros")
     }
     
+    @IBAction func returnToQuestion(sender: AnyObject) {
+    }
     
     override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!,senderDisplayName: String!, date: NSDate!) {
         

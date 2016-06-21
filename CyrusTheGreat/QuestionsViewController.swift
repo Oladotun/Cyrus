@@ -234,6 +234,10 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
         self.performSegueWithIdentifier("MessagesSegue", sender: self)
     }
     
+    @IBAction func unwindQuestionController(segue: UIStoryboardSegue) {
+        
+    }
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -242,8 +246,8 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
         // Pass the selected object to the new view controller.
         
         if (segue.identifier == "MessagesSegue") {
-//            let navVC =  segue.destinationViewController as! UINavigationController
-            let destinationVC = segue.destinationViewController as! FindUserChatViewController
+            let navVC =  segue.destinationViewController as! UINavigationController
+            let destinationVC = navVC.topViewController as! FindUserChatViewController
             destinationVC.messageRef = firebaseQuestionManager.meetUpPathWay.child("messages")
             destinationVC.senderId = appDelegate.userIdentifier
             destinationVC.senderDisplayName = appDelegate.userObject.firstName

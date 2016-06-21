@@ -1162,13 +1162,13 @@
                         <outlet property="interestMatchLabel" destination="Fh4-ZQ-E75" id="k7P-Ix-fUE"/>
                         <outlet property="questionButton" destination="ohG-vI-Q98" id="gk8-Lm-A8e"/>
                         <segue destination="ob5-UI-jYw" kind="unwind" identifier="unWindHome" unwindAction="unwindHomePageController:" id="AkL-VI-dhv"/>
-                        <segue destination="ZJX-uz-5fT" kind="presentation" identifier="MessagesSegue" id="Ivf-fM-tt2"/>
+                        <segue destination="upc-EC-c8M" kind="presentation" identifier="MessagesSegue" id="Ivf-fM-tt2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vbp-42-5J3" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="ob5-UI-jYw" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-2141" y="1436"/>
+            <point key="canvasLocation" x="-2067" y="1448"/>
         </scene>
         <!--Find User Chat View Controller-->
         <scene sceneID="p9o-45-G0A">
@@ -1183,13 +1183,22 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <toolbarItems/>
                     <navigationItem key="navigationItem" id="ur9-Xd-mBR">
                         <barButtonItem key="backBarButtonItem" title="Back" id="DwT-Te-pfC"/>
+                        <barButtonItem key="leftBarButtonItem" title="Back" id="7Nn-zT-tX9">
+                            <connections>
+                                <action selector="returnToQuestion:" destination="ZJX-uz-5fT" id="ELB-Rk-lhb"/>
+                                <segue destination="bRD-VK-fS3" kind="unwind" identifier="returnSegue" unwindAction="unwindQuestionController:" id="r0o-C4-eIA"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="L3x-UN-VZg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="bRD-VK-fS3" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-1409" y="1431"/>
+            <point key="canvasLocation" x="-455" y="1431"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="NsC-HH-sfc">
@@ -1207,7 +1216,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tcm-ed-aYN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2796" y="1436"/>
+            <point key="canvasLocation" x="-2740" y="1448"/>
         </scene>
         <!--Meet Up Page View Controller-->
         <scene sceneID="dBi-6j-THp">
@@ -1448,6 +1457,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gzg-Rf-QlB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-8722.5" y="469.5"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="XRn-be-kEa">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="upc-EC-c8M" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="HjB-7a-q61">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="ZJX-uz-5fT" kind="relationship" relationship="rootViewController" id="aer-AB-uLT"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tDd-jz-6ZK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1267" y="1431"/>
         </scene>
     </scenes>
     <resources>
