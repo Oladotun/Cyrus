@@ -28,6 +28,7 @@ class MeetUpPageViewController: UIViewController, MapTrackerDelegate,FirebaseInf
     @IBOutlet weak var meetupTime: UILabel!
     @IBOutlet weak var meetupDesc: UILabel!
     @IBOutlet weak var yesButton: UIButton!
+    @IBOutlet weak var arrivalQuestions: UILabel!
     
     var otherUserID:String!
 //    var firebaseManager:FirebaseManager!
@@ -108,6 +109,8 @@ class MeetUpPageViewController: UIViewController, MapTrackerDelegate,FirebaseInf
         let messageDictionary: [String: Bool] = [appDelegate.userIdentifier: true]
         firebaseMeetUpManager.segueToQuestionNode.updateChildValues(messageDictionary)
         yesButton.alpha = 0.0
+        arrivalQuestions.text = "Notifying, \(appDelegate.connectedProfile.user.firstName) of your arrrival"
+        arrivalQuestions.textColor = UIColor.redColor()
         
     
     }

@@ -455,7 +455,10 @@
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="755" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UTm-Si-hKj">
                                 <rect key="frame" x="20" y="394" width="560" height="48"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="Connect to Twitter to infer your interest">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -613,7 +616,9 @@
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qna-gY-LLY">
                                 <rect key="frame" x="255" y="530" width="90" height="42"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="Next">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -688,7 +693,7 @@
                                 <rect key="frame" x="180" y="240" width="240" height="120"/>
                                 <color key="backgroundColor" red="0.035455710292197518" green="0.058884680503431854" blue="0.10990767045454541" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <state key="normal" title="Meet Up">
+                                <state key="normal" title="Click to MeetUp">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -712,7 +717,10 @@
                             </activityIndicatorView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lgv-YX-1tU">
                                 <rect key="frame" x="400" y="530" width="180" height="60"/>
-                                <state key="normal" title="Logout"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Logout">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="logginOut:" destination="FPe-MW-7Ug" eventType="touchUpInside" id="DpB-KN-kOh"/>
                                 </connections>
@@ -814,7 +822,10 @@
                             </datePicker>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k2o-80-iki">
                                 <rect key="frame" x="460" y="247" width="120" height="42"/>
-                                <state key="normal" title="Send"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Send">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="sendButton:" destination="bqI-cL-1Wj" eventType="touchUpInside" id="Dr1-uW-JW6"/>
                                 </connections>
@@ -866,7 +877,10 @@
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lpy-HJ-9NF">
                                                     <rect key="frame" x="252" y="10" width="56" height="32"/>
-                                                    <state key="normal" title="Yes"/>
+                                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <state key="normal" title="Yes">
+                                                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </state>
                                                     <connections>
                                                         <action selector="acceptedInfo:" destination="uQx-IT-aYC" eventType="touchUpInside" id="g7u-xS-wsA"/>
                                                     </connections>
@@ -918,6 +932,12 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select Destination and TIme" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GkJ-0c-z5F">
+                                <rect key="frame" x="193" y="31" width="215" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -942,6 +962,7 @@
                             <constraint firstItem="K0O-iv-RrQ" firstAttribute="top" secondItem="Z8R-bE-z9b" secondAttribute="bottom" constant="28" id="d7T-cd-Uee"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Z8R-bE-z9b" secondAttribute="trailing" id="er1-bQ-Tkp"/>
                             <constraint firstItem="K0O-iv-RrQ" firstAttribute="leading" secondItem="PXQ-NO-gct" secondAttribute="trailing" constant="10" id="fF7-Ku-90Y"/>
+                            <constraint firstItem="GkJ-0c-z5F" firstAttribute="centerX" secondItem="gc9-o3-hSi" secondAttribute="centerX" id="fmz-H6-z3U"/>
                             <constraint firstItem="PXQ-NO-gct" firstAttribute="top" secondItem="K0O-iv-RrQ" secondAttribute="top" id="gB4-Xs-4G4"/>
                             <constraint firstItem="Z8R-bE-z9b" firstAttribute="top" secondItem="V4r-9B-cS2" secondAttribute="bottom" id="knL-nf-veV"/>
                             <constraint firstItem="ZAD-GB-EgV" firstAttribute="centerX" secondItem="mOz-hw-a2Q" secondAttribute="centerX" id="m8S-yg-Wwh"/>
@@ -949,6 +970,7 @@
                             <constraint firstAttribute="leadingMargin" secondItem="PXQ-NO-gct" secondAttribute="leading" id="odh-Ot-N7F"/>
                             <constraint firstAttribute="leadingMargin" secondItem="V4r-9B-cS2" secondAttribute="leading" id="qbM-xK-Bmc"/>
                             <constraint firstItem="gc9-o3-hSi" firstAttribute="width" secondItem="mOz-hw-a2Q" secondAttribute="width" id="sc3-s9-9Uh"/>
+                            <constraint firstItem="GkJ-0c-z5F" firstAttribute="centerY" secondItem="gc9-o3-hSi" secondAttribute="centerY" id="ufS-eQ-gy6"/>
                             <constraint firstItem="k2o-80-iki" firstAttribute="width" secondItem="mOz-hw-a2Q" secondAttribute="width" multiplier="0.2" id="xAl-2x-pzf"/>
                         </constraints>
                         <variation key="default">
@@ -1086,7 +1108,7 @@
             </objects>
             <point key="canvasLocation" x="-4138" y="1540"/>
         </scene>
-        <!--Questions View Controller-->
+        <!--Question Page-->
         <scene sceneID="KlB-cV-ePG">
             <objects>
                 <viewController id="DDq-FN-vDe" customClass="QuestionsViewController" customModule="Cyrus" customModuleProvider="target" sceneMemberID="viewController">
@@ -1109,7 +1131,10 @@
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="ohG-vI-Q98">
                                 <rect key="frame" x="150" y="300" width="300" height="60"/>
-                                <state key="normal" title="Next Question"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Next Question">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="nextQuestion:" destination="DDq-FN-vDe" eventType="touchUpInside" id="DZE-wo-ai0"/>
                                 </connections>
@@ -1150,7 +1175,7 @@
                             <constraint firstAttribute="leadingMargin" secondItem="Fh4-ZQ-E75" secondAttribute="leading" id="ppZ-Zs-GqC"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="XBn-lX-MDU">
+                    <navigationItem key="navigationItem" title="Question Page" id="XBn-lX-MDU">
                         <barButtonItem key="backBarButtonItem" title="Return" id="m8H-sK-6UX"/>
                         <barButtonItem key="leftBarButtonItem" systemItem="stop" id="3Ot-C2-gV2">
                             <connections>
@@ -1230,14 +1255,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Time to meet up is so and so" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gYL-m5-ZlO">
-                                <rect key="frame" x="20" y="254" width="560" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time to meet up is so and so" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gYL-m5-ZlO">
+                                <rect key="frame" x="20" y="204" width="560" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jYc-eK-EyZ">
-                                <rect key="frame" x="20" y="280" width="560" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jYc-eK-EyZ">
+                                <rect key="frame" x="20" y="230" width="560" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -1245,9 +1270,12 @@
                                     <rect key="frame" x="13" y="343" width="761" height="21"/>
                                 </variation>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IVd-WW-gob">
-                                <rect key="frame" x="110" y="330" width="60" height="48"/>
-                                <state key="normal" title="Yes"/>
+                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IVd-WW-gob">
+                                <rect key="frame" x="80" y="280" width="120" height="48"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Yes">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <variation key="widthClass=regular" ambiguous="YES" misplaced="YES">
                                     <rect key="frame" x="15" y="413" width="450" height="32"/>
                                 </variation>
@@ -1255,60 +1283,61 @@
                                     <action selector="yesMeetup:" destination="0mv-3b-yBT" eventType="touchUpInside" id="2J9-NY-blK"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="MeetUp Destination is at so and so" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xc0-Ue-db5">
-                                <rect key="frame" x="20" y="228" width="560" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MeetUp Destination is at so and so" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xc0-Ue-db5">
+                                <rect key="frame" x="20" y="178" width="560" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Have you arrived at the location ?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fio-UT-ta9">
-                                <rect key="frame" x="20" y="306" width="560" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Have you arrived at the location ?" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fio-UT-ta9">
+                                <rect key="frame" x="20" y="256" width="560" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lm0-E9-9qf">
-                                <rect key="frame" x="20" y="46" width="240" height="120"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lm0-E9-9qf">
+                                <rect key="frame" x="20" y="26" width="240" height="120"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="w80-Ns-gC1">
-                                <rect key="frame" x="340" y="46" width="240" height="120"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="w80-Ns-gC1">
+                                <rect key="frame" x="340" y="26" width="240" height="120"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aol-M6-b63">
-                                <rect key="frame" x="20" y="197" width="240" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aol-M6-b63">
+                                <rect key="frame" x="20" y="147" width="240" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gx6-D6-KeK">
-                                <rect key="frame" x="340" y="197" width="240" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gx6-D6-KeK">
+                                <rect key="frame" x="340" y="147" width="240" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Meet Up Information" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A3G-1f-h4c">
-                                <rect key="frame" x="221" y="20" width="158" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Meet Up Information" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A3G-1f-h4c">
+                                <rect key="frame" x="221" y="0.0" width="158" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bEv-eP-rrH">
-                                <rect key="frame" x="340" y="330" width="240" height="48"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bEv-eP-rrH">
+                                <rect key="frame" x="340" y="280" width="240" height="48"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="Cancel Meetup">
                                     <color key="titleColor" red="1" green="0.14448669189999999" blue="0.213912568" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                             </button>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="LW2-9V-m8s">
-                                <rect key="frame" x="20" y="46" width="240" height="120"/>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="LW2-9V-m8s">
+                                <rect key="frame" x="20" y="26" width="240" height="120"/>
                             </activityIndicatorView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="fgE-GU-BY5">
-                                <rect key="frame" x="340" y="46" width="240" height="120"/>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="fgE-GU-BY5">
+                                <rect key="frame" x="340" y="26" width="240" height="120"/>
                             </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="w80-Ns-gC1" firstAttribute="height" secondItem="5Ry-6v-QOg" secondAttribute="height" multiplier="0.25" id="0sc-pa-3Kv"/>
                             <constraint firstItem="LW2-9V-m8s" firstAttribute="centerX" secondItem="lm0-E9-9qf" secondAttribute="centerX" id="4Hg-9Q-WxV"/>
-                            <constraint firstItem="IVd-WW-gob" firstAttribute="width" secondItem="5Ry-6v-QOg" secondAttribute="width" multiplier="0.1" id="6y1-Hd-Jn9"/>
+                            <constraint firstItem="IVd-WW-gob" firstAttribute="width" secondItem="5Ry-6v-QOg" secondAttribute="width" multiplier="0.2" id="6y1-Hd-Jn9"/>
                             <constraint firstItem="lm0-E9-9qf" firstAttribute="top" secondItem="w80-Ns-gC1" secondAttribute="top" id="CYh-an-dcy"/>
                             <constraint firstItem="fgE-GU-BY5" firstAttribute="width" secondItem="w80-Ns-gC1" secondAttribute="width" id="DeE-aC-vd2"/>
                             <constraint firstAttribute="trailingMargin" secondItem="gYL-m5-ZlO" secondAttribute="trailing" id="Gjr-mF-iqh"/>
@@ -1353,6 +1382,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="arrivalQuestions" destination="fio-UT-ta9" id="6WP-2h-0y0"/>
                         <outlet property="meetupDesc" destination="Xc0-Ue-db5" id="F09-yB-wOX"/>
                         <outlet property="meetupTime" destination="gYL-m5-ZlO" id="UhL-hJ-KZp"/>
                         <outlet property="myImage" destination="lm0-E9-9qf" id="Fvq-eO-mWP"/>
