@@ -143,14 +143,20 @@
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gxe-or-ohC">
                                 <rect key="frame" x="340" y="215" width="240" height="30"/>
-                                <state key="normal" title="Or Sign up"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Or Sign up">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <segue destination="HsN-u7-B77" kind="presentation" id="HV1-fz-5Uo"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Alt-4d-BMf">
                                 <rect key="frame" x="20" y="215" width="240" height="30"/>
-                                <state key="normal" title="Login"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Login">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="loginButton:" destination="MTj-iS-lCV" eventType="touchUpInside" id="Xz0-JO-d8Z"/>
                                 </connections>
@@ -1511,10 +1517,10 @@
         <image name="cyrus" width="350" height="350"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="RqY-DZ-alJ"/>
-        <segue reference="jbN-il-o83"/>
-        <segue reference="Yyr-oi-xHs"/>
+        <segue reference="1iL-Eu-0hN"/>
         <segue reference="eOv-3E-glu"/>
-        <segue reference="KXb-Pi-882"/>
+        <segue reference="Yyr-oi-xHs"/>
+        <segue reference="HV1-fz-5Uo"/>
+        <segue reference="HVS-kA-2F2"/>
     </inferredMetricsTieBreakers>
 </document>
