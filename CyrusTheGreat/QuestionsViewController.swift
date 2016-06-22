@@ -11,7 +11,7 @@ import UIKit
 class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
     
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-    let questionPrelude:[String] = ["tell us your favorite memories about","share a story on why you like" ,"tell us why you enjoy"]
+    var questionPrelude:[String]!
     @IBOutlet weak var interestMatchLabel: UILabel!
     var countQuestions:Int = 0
     var endButtonPressed:Bool!
@@ -34,8 +34,6 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
             questionButton.alpha = 0.0
             
         }
-        
-        
         if let interestCount = appDelegate.connectedProfile.userMatchedCount {
             questionPerUser = interestCount + 1 // we added 1 for the users field
             
@@ -43,6 +41,8 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
         
         interestMatchLabel.text = "Hi, Cyrus here. I am going to ask both of you about your interests to better assist with your convestations.\nClick the Next Question to start"
         interestMatchLabel.numberOfLines = 0
+        
+        
 //        interestMatchLabel.preferredMaxLayoutWidth = 350
         
     }
@@ -89,23 +89,26 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
   
     func questTime() {
         var userName = ""
+        var oppUserName = ""
         let myName = appDelegate.userObject.firstName
         let otherUserName = appDelegate.connectedProfile.user.firstName
         var question = ""
         var fieldInfo = ""
         var foundInterest = ""
         
-        
         if (countQuestions % 2 == 0) {
             userName = myName.capitalizeFirst
+            oppUserName = otherUserName.capitalizeFirst
             
         } else {
             userName = otherUserName.capitalizeFirst
+            oppUserName = myName.capitalizeFirst
         }
         if (userToQuestions[userName] == nil) {
             userToQuestions[userName] = [String]()
         }
         
+        questionPrelude = ["tell \(oppUserName) your favorite memories about","share a story with \(oppUserName) on why you like" ,"tell \(oppUserName) why you enjoy"]
         
         if (appDelegate.connectedProfile.userMatchedInterest.count > 5) {
             
@@ -118,7 +121,7 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
                     
                 }
                 
-                question = "tell us how and why you decided to get into \(fieldInfo) ?"
+                question = "tell \(oppUserName) how and why you decided to get into \(fieldInfo) ?"
                 userToQuestions[userName]!.append(fieldInfo)
             } else {
                 repeat {
@@ -141,7 +144,7 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
                     
                 }
                 
-                question = "tell us how and why you decided to get into \(fieldInfo) ?"
+                question = "tell \(oppUserName) how and why you decided to get into \(fieldInfo) ?"
                 userToQuestions[userName]!.append(fieldInfo)
             } else {
                 repeat {

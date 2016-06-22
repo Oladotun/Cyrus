@@ -107,6 +107,7 @@ class MeetUpPageViewController: UIViewController, MapTrackerDelegate,FirebaseInf
         firebaseMeetUpManager.questionTime = true
         let messageDictionary: [String: Bool] = [appDelegate.userIdentifier: true]
         firebaseMeetUpManager.segueToQuestionNode.updateChildValues(messageDictionary)
+        yesButton.alpha = 0.0
         
     
     }
