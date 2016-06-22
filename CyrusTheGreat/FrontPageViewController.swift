@@ -23,6 +23,8 @@ class FrontPageViewController: UIViewController {
     var timer:NSTimer?
     var returnBack = false
     var verified = false
+    var pageValue = 0
+    var segued = false
 
     
     @IBOutlet weak var cyrusIntro: UILabel!
@@ -55,34 +57,63 @@ class FrontPageViewController: UIViewController {
             
         
         } else {
-    
-            autData = NSUserDefaults.standardUserDefaults().valueForKey("uid")
             
-            if let _ = FIRAuth.auth()?.currentUser {
-    
-                if let preVerified = FIRAuth.auth()?.currentUser?.emailVerified {
-                    verified = preVerified
-                }
+            if let user = FIRAuth.auth()?.currentUser {
+                autData = user.uid
+                verified = user.emailVerified
+                
                 if (!verified) {
                     // segue to user page
+                    appDelegate.userIdentifier = user.uid
                     self.performSegueWithIdentifier("VerifyEmailSegue", sender: self)
                     
                 } else {
+                
                     if let autData = autData {
                         appDelegate.userIdentifier = autData as! String
-                        let userInterests = appDelegate.userFire.child("users").child("\(autData)/interests")
-                        userInterests.observeSingleEventOfType(.Value, withBlock: { snapshot in
-                            
-                            
-                            
-                            if ((snapshot.value is NSNull)||snapshot.value == nil) {
-                                self.performSegueWithIdentifier("CotinueSignUp", sender: self)
+                        
+                        let userProfileImage = appDelegate.userFire.child("users").child("\(autData)/image")
+                        userProfileImage.observeSingleEventOfType(.Value, withBlock: {
+                            snapshot in
+                            if ((snapshot.value is NSNull) || snapshot.value == nil) {
+                                if(!self.segued) {
+                                    self.segued = true
+                                    self.performSegueWithIdentifier("CotinueSignUp", sender: self)
+ 
+                                }
 
                             } else {
-                                self.performSegueWithIdentifier("AlreadyLoggedIn", sender: self)
+                                self.pageValue = self.pageValue + 1
+                                if (self.pageValue > 1) {
+                                    self.performSegueWithIdentifier("AlreadyLoggedIn", sender: self)
+                                }
+
+                            }
+                        })
+                        
+                        let userInterests = self.appDelegate.userFire.child("users").child("\(autData)/interests")
+                        userInterests.observeSingleEventOfType(.Value, withBlock: { snapshot in
+                            if ((snapshot.value is NSNull)||snapshot.value == nil) {
+                               
+                                if (!self.segued) {
+                                    self.segued = true
+                                    self.performSegueWithIdentifier("CotinueSignUp", sender: self)
+                                }
+ 
+                            } else {
+                                self.pageValue = self.pageValue + 1
+                                if (self.pageValue > 1) {
+                                    self.performSegueWithIdentifier("AlreadyLoggedIn", sender: self)
+                                }
+                                
+                                
                             }
                             
                         })
+                        
+                        
+                        
+                        
                     } else {
                         logoCyrus.image = UIImage(named:"cyrus")
                         logoCyrus.alpha = 0.0
@@ -127,16 +158,11 @@ class FrontPageViewController: UIViewController {
             }
                 
         }
-            
 
-
-
-        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         signUp.layer.cornerRadius = 5
         signUp.layer.borderWidth = 1
         signUp.layer.borderColor = UIColor.blackColor().CGColor
@@ -173,7 +199,7 @@ class FrontPageViewController: UIViewController {
     }
     
     @IBAction func loggedOutPageController(segue:UIStoryboardSegue) {
-        print("logged out succesfully")
+//        print("logged out succesfully")
  
     }
     
@@ -187,12 +213,6 @@ class FrontPageViewController: UIViewController {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         returnBack = true
-        
-        if (segue.identifier == "VerifyEmailSegue") {
-            
-            print("working users ")
-            
-        }
     }
     
 

@@ -9,6 +9,7 @@ target 'Cyrus' do
     pod 'Firebase/Auth'
 	pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git'
     pod 'JSQMessagesViewController'
+    pod 'Firebase/Storage'
 end
 
 target 'CyrusTests' do

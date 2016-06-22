@@ -35,6 +35,7 @@ class MeetUpPageViewController: UIViewController, MapTrackerDelegate,FirebaseInf
 //    var segueToQuestionNode : Firebase!
 //    var questionTime:Bool!
     var time:String!
+    var timer:NSTimer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,14 +50,21 @@ class MeetUpPageViewController: UIViewController, MapTrackerDelegate,FirebaseInf
         firebaseMeetUpManager.delegate = self
         myNameInfo.text = appDelegate.userObject.firstName
         otherUserInfo.text = appDelegate.connectedProfile.user.firstName
+        
+        timer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: Selector("updateMyImage"), userInfo: nil, repeats: true)
 
 
     }
-    func updateMyImage(image:UIImage) {
-        myImage.contentMode = .ScaleAspectFit
-        myImage.image = image
-        myImageLoader.stopAnimating()
-        myImageLoader.alpha = 0.0
+    func updateMyImage() {
+        if let image = appDelegate.myImage {
+            myImage.contentMode = .ScaleAspectFit
+            myImage.image = image
+            myImageLoader.stopAnimating()
+            myImageLoader.alpha = 0.0
+            timer.invalidate()
+            
+        }
+        
     }
     
     func updateOtherUserImage(image:UIImage) {

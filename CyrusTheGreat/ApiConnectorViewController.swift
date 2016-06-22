@@ -14,9 +14,13 @@ class ApiConnectorViewController: UIViewController,UIImagePickerControllerDelega
     @IBOutlet weak var cyrusPrompt: UILabel!
     @IBOutlet weak var cyrusLogo: UIImageView!
     @IBOutlet weak var profilePicture: UIImageView!
+    var buttonPressed = false
     
     let imagePicker = UIImagePickerController()
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    // Utilizing firebase storage
+    let storage = FIRStorage.storage()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,34 +61,46 @@ class ApiConnectorViewController: UIViewController,UIImagePickerControllerDelega
     }
 
     @IBAction func connectToTwitter(sender: AnyObject) {
-        if (profilePicture == nil ) {
-            cyrusPrompt.text = "Kindly upload a profile picture"
-        } else {
-            
-            if (profilePicture.image == nil) {
-                 cyrusPrompt.text = "Kindly upload a profile picture"
-                
+        
+        if (!buttonPressed) {
+            buttonPressed = true
+            if (profilePicture == nil ) {
+                cyrusPrompt.text = "Kindly upload a profile picture"
             } else {
                 
-                let imageData = UIImageJPEGRepresentation(profilePicture.image!, 2.0)! as NSData
-                let str = imageData.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
+                if (profilePicture.image == nil) {
+                    cyrusPrompt.text = "Kindly upload a profile picture"
+                    
+                } else {
+                    
+                    let storageRef = storage.referenceForURL("gs://project-5582715640635114460.appspot.com")
+                    
+                    
+                    let imageData = UIImageJPEGRepresentation(profilePicture.image!, 2.0)! as NSData
+                    let imageInfo = storageRef.child("\(appDelegate.userIdentifier).jpg")
+                    
+                    // Upload the file to the path "images/rivers.jpg"
+                    let _ = imageInfo.putData(imageData, metadata: nil) { metadata, error in
+                        if (error != nil) {
+                            // Uh-oh, an error occurred!
+                            print("we have a problem")
+                        } else {
+                            // Metadata contains file metadata such as size, content-type, and download URL.
+                            let imageInfoPath = imageInfo.fullPath
+                            let userImage = ["image": "\(imageInfoPath)"]
+                            FIRDatabase.database().referenceFromURL("https://cyrusthegreat.firebaseio.com/users/\(self.appDelegate.userIdentifier)/").updateChildValues(userImage)
+                        }
+                    }
+                    self.performSegueWithIdentifier("TwitterInferPage", sender: self)
+                    
+                    
+                }
                 
-//                profilePicture.image = str.stringToImage()
-//             
-                let userImage = ["image": str]
-                print(appDelegate.userFire.URL)
-                
-               FIRDatabase.database().referenceFromURL("https://cyrusthegreat.firebaseio.com/users/\(appDelegate.userIdentifier)/").updateChildValues(userImage)
-//                self.appDelegate.userFire.database.referenceWithPath("users").database.referenceWithPath(appDelegate.userIdentifier).updateChildValues(userImage)
-//                
-////                    childByAppendingPath("users")
-////                    .childByAppendingPath(appDelegate.userIdentifier).updateChildValues(userImage)
-                self.performSegueWithIdentifier("TwitterInferPage", sender: self)
                 
             }
             
-            
         }
+        
     }
     /*
     // MARK: - Navigation

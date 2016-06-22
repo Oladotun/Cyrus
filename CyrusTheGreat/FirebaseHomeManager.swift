@@ -15,6 +15,8 @@ protocol FirebaseHomeDelegate {
     func declineInvite()
     func segueToNextPage()
     func foundDisplay()
+    func setImage(image:UIImage)
+    
 }
 
 class FirebaseHomeManager: NSObject {
@@ -72,6 +74,30 @@ class FirebaseHomeManager: NSObject {
                
         
     }
+    
+    func getMyImageUser() {
+
+        let storage = FIRStorage.storage()
+        let imageRef = storage.referenceForURL("gs://project-5582715640635114460.appspot.com/\(userId).jpg")
+        
+        // Download in memory with a maximum allowed size of 1MB (1 * 1024 * 1024 bytes)
+        imageRef.dataWithMaxSize(1 * 1024 * 1024) { (data, error) -> Void in
+            if (error != nil) {
+                // Uh-oh, an error occurred!
+            } else {
+                // Data for "images/island.jpg" is returned
+                let myImage: UIImage! = UIImage(data: data!)
+                self.delegate?.setImage(myImage)
+               
+                
+            }
+        }
+        
+
+        
+    }
+    
+    
     
     func retrieveUserInfoFirebase() {
         userFirebase.observeSingleEventOfType(.Value, withBlock: {

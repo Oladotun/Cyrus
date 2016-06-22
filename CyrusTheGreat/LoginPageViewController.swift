@@ -17,6 +17,8 @@ class LoginPageViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passField: UITextField!
     var interests = [String]()
+    var pageValue = 0
+    var segued = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,12 +33,8 @@ class LoginPageViewController: UIViewController, UITextFieldDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    
-    
 
     @IBAction func loginButton(sender: AnyObject) {
-        
         if (emailTextField.text!.isEmpty || passField.text!.isEmpty ) {
             emailTextField.checkEmptyField()
             passField.checkEmptyField()
@@ -50,37 +48,55 @@ class LoginPageViewController: UIViewController, UITextFieldDelegate {
                     } else {
                         // Authentication just completed successfully :)
                         // The logged in user's unique identifier
-                        
-                        self.appDelegate.userIdentifier = user?.uid
-                        // Get the user interests from firebase
-                        let userInterests = self.appDelegate.userFire.child("users/\( self.appDelegate.userIdentifier)/interests")
-                        
-                        //Used to keep user logged in
-                        NSUserDefaults.standardUserDefaults().setValue( self.appDelegate.userIdentifier, forKey: "uid")
-                    
-                        userInterests.observeEventType(.Value, withBlock: {
-                            snapshot in
-                           
-                                
+                        if let currUser = user {
+                            
+                            self.appDelegate.userIdentifier = currUser.uid
+                            // Get the user interests from firebase
+                            let userProfileImage = self.appDelegate.userFire.child("users").child("\(currUser.uid)/image")
+                            userProfileImage.observeSingleEventOfType(.Value, withBlock: {
+                                snapshot in
                                 if ((snapshot.value is NSNull) || snapshot.value == nil) {
-                                    
-                                    self.performSegueWithIdentifier("NoInterestSegue", sender: self)
+                                    if(!self.segued) {
+                                        self.pageValue = -1
+                                        self.segued = true
+                                        self.performSegueWithIdentifier("NoInterestSegue", sender: self)
+                                    }
                                     
                                 } else {
+                                    self.pageValue = self.pageValue + 1
+                                    if (self.pageValue > 1) {
+                                        self.performSegueWithIdentifier("LoginHomeSegue", sender: self)
+                                    }
                                     
-                                    self.interests = (snapshot.value as? [String])!
-                                    self.performSegueWithIdentifier("LoginHomeSegue", sender: self)
-
                                 }
-        
-                        })
+                            })
+                            
+                            let userInterests = self.appDelegate.userFire.child("users").child("\(currUser.uid)/interests")
+                            userInterests.observeSingleEventOfType(.Value, withBlock: { snapshot in
+                                if ((snapshot.value is NSNull)||snapshot.value == nil) {
+                                    if (!self.segued) {
+                                        self.pageValue = -2
+                                         self.segued = true
+                                        self.performSegueWithIdentifier("NoInterestSegue", sender: self)
+                                    }
+                                    
+                                } else {
+                                    self.pageValue = self.pageValue + 1
+                                    if (self.pageValue > 1) {
+                                        self.performSegueWithIdentifier("LoginHomeSegue", sender: self)
+                                    }
+    
+                                }
+
+                            })
+                            
+                        }
 
                     }
 
                 })
                 
             } else {
-//                print ("wrong email domain entered")
                 emailTextField.errorHighlightTextField("School email required")
             }
             

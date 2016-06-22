@@ -12,7 +12,7 @@ protocol FirebaseInfoMeetUpManagerDelegate {
     
     func segueToNext()
     func alertOtherUserArrival()
-    func updateMyImage(image:UIImage)
+//    func updateMyImage(image:UIImage)
     func updateOtherUserImage(image:UIImage)
     
 }
@@ -34,34 +34,41 @@ class FirebaseInfoMeetUpManager: NSObject {
         userId = myId
         self.otherUserId = otherUserId
         observeNextQuestionNode()
-        observeImageUser()
+//        observeImageUser()
         observeImageOtherUser()
     }
     
-    func observeImageUser() {
-        
-        let userUrl = "https://cyrusthegreat.firebaseio.com/users/\(userId)/image"
-        let userFirebase = FIRDatabase.database().referenceFromURL(userUrl)
-        
-        userFirebase.observeSingleEventOfType(.Value, withBlock: {
-            snapshot in
-            let imageString = snapshot.value as! String
-            let image = imageString.stringToImage()
-            self.delegate?.updateMyImage(image)
-        })
-        
-    }
+//    func observeImageUser() {
+//        
+//        let userUrl = "https://cyrusthegreat.firebaseio.com/users/\(userId)/image"
+//        let userFirebase = FIRDatabase.database().referenceFromURL(userUrl)
+//        
+//        userFirebase.observeSingleEventOfType(.Value, withBlock: {
+//            snapshot in
+//            let imageString = snapshot.value as! String
+//            let image = imageString.stringToImage()
+//            self.delegate?.updateMyImage(image)
+//        })
+//        
+//    }
     
     func observeImageOtherUser() {
-        let userUrl = "https://cyrusthegreat.firebaseio.com/users/\(otherUserId)/image"
-        let userFirebase = FIRDatabase.database().referenceFromURL(userUrl)
         
-        userFirebase.observeSingleEventOfType(.Value, withBlock: {
-            snapshot in
-            let imageString = snapshot.value as! String
-            let image = imageString.stringToImage()
-            self.delegate?.updateOtherUserImage(image)
-        })
+        let storage = FIRStorage.storage()
+        let imageRef = storage.referenceForURL("gs://project-5582715640635114460.appspot.com/\(otherUserId).jpg")
+        
+        // Download in memory with a maximum allowed size of 1MB (1 * 1024 * 1024 bytes)
+        imageRef.dataWithMaxSize(1 * 1024 * 1024) { (data, error) -> Void in
+            if (error != nil) {
+                // Uh-oh, an error occurred!
+            } else {
+                // Data for "images/island.jpg" is returned
+                let myImage: UIImage! = UIImage(data: data!)
+                self.delegate?.updateOtherUserImage(myImage)
+                
+                
+            }
+        }
         
     }
     

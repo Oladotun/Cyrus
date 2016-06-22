@@ -33,24 +33,19 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     let notActiveString = "Not Active"
     let yesString = "Yes"
     let noString = "No"
-    
-    
+
     var findMorePeer = true
     var switchState = false
     var returned = false
     var noFound = 0
-
-   
+    
 
     override func viewDidLoad() {
         
         super.viewDidLoad()
         locationManager =  appDelegate.locationManager
         initialSetup()
-        
-        print(FIRAuth.auth()!.currentUser?.emailVerified)
-        
-//        FIRAuth.auth()!.currentUser?.
+   
         
 
     }
@@ -83,18 +78,24 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         firebaseHomeManager.activateUserObserver()
         userActiveOberverSet = false
         currAvailability.text = "Offline"
-        locationManager.delegate = self
         locationManager.distanceFilter = 20
         appDelegate.iamInitiator = false
         firebaseHomeManager.delegate = self
         self.switchState = false
         checkNotification()
         foundDisplay()
+        if(appDelegate.myImage == nil) {
+            firebaseHomeManager.getMyImageUser()
+        }
 
         
     }
     
+    func setImage(image: UIImage) {
+        appDelegate.myImage = image
+    }
     
+
     
     
     @IBAction func switchChanged(sender: AnyObject) {
