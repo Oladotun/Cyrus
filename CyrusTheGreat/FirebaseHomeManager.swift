@@ -155,7 +155,9 @@ class FirebaseHomeManager: NSObject {
 //            Firebase(url:"\(userUrl)/metup_with")
         userMetUpWith.append(userIdMet)
 //        userMetUpWithFirebase.setValue(userMetUpWith)
+        let userMeetUpCount = FIRDatabase.database().referenceFromURL("\(userUrl)/metup_with_count")
         userFirebase.updateChildValues(["metup_with":userMetUpWith])
+        userMeetUpCount.updateChildValues(["metup_with_count":userMetUpWith.count])
         self.delegate?.foundDisplay()
         
         

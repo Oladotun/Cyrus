@@ -39,15 +39,14 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     var returned = false
     var noFound = 0
     
+    @IBOutlet weak var meetupsCompleted: UILabel!
 
     override func viewDidLoad() {
         
         super.viewDidLoad()
         locationManager =  appDelegate.locationManager
+        meetupsCompleted.text = "0"
         initialSetup()
-   
-        
-
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -84,6 +83,7 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         self.switchState = false
         checkNotification()
         foundDisplay()
+        meetupsCompleted.text = "\(firebaseHomeManager.userMetUpWith.count)"
         if(appDelegate.myImage == nil) {
             firebaseHomeManager.getMyImageUser()
         }
@@ -204,11 +204,12 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     }
     
     func foundDisplay() {
-        if (noFound == 0 && firebaseHomeManager.allFound.count == 1) {
+        if (noFound == 0 && firebaseHomeManager.allFound.count > 0) {
             schedule("Hey someone is online looking to chat!")
         }
         noOfPeer.text = "\(firebaseHomeManager.allFound.count)"
         noFound = firebaseHomeManager.allFound.count
+        meetupsCompleted.text = "\(firebaseHomeManager.userMetUpWith.count)"
         
     }
     
