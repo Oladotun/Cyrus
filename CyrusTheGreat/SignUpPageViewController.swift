@@ -45,8 +45,8 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate,UIPickerVie
         fieldPicker.dataSource = self
         studyField = pickerDataSource[0]
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil);
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name:UIKeyboardWillHideNotification, object: nil);
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignUpPageViewController.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil);
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignUpPageViewController.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil);
      
 
         // Do any additional setup after loading the view.
@@ -120,7 +120,6 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate,UIPickerVie
                                         "field_study": self.studyField
                                     ]
                                     
-                                    user?.sendEmailVerificationWithCompletion(nil)
                                     self.appDelegate.userFire.child("users").child(self.appDelegate.userIdentifier).updateChildValues(newUser)
                                     NSUserDefaults.standardUserDefaults().setValue(user?.uid, forKey: "uid")
                                     

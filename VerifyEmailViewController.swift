@@ -14,8 +14,8 @@ class VerifyEmailViewController: UIViewController {
     var timer:NSTimer!
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        timer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: Selector("checkEmailVerified"), userInfo: nil, repeats: true)
+        FIRAuth.auth()?.currentUser?.sendEmailVerificationWithCompletion(nil)
+        timer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: #selector(VerifyEmailViewController.checkEmailVerified), userInfo: nil, repeats: true)
         
 
         // Do any additional setup after loading the view.

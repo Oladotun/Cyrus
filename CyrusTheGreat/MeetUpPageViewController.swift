@@ -52,7 +52,7 @@ class MeetUpPageViewController: UIViewController, MapTrackerDelegate,FirebaseInf
         myNameInfo.text = appDelegate.userObject.firstName
         otherUserInfo.text = appDelegate.connectedProfile.user.firstName
         
-        timer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: Selector("updateMyImage"), userInfo: nil, repeats: true)
+        timer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: #selector(MeetUpPageViewController.updateMyImage), userInfo: nil, repeats: true)
 
 
     }

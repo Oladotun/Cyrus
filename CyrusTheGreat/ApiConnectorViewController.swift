@@ -15,6 +15,7 @@ class ApiConnectorViewController: UIViewController,UIImagePickerControllerDelega
     @IBOutlet weak var cyrusLogo: UIImageView!
     @IBOutlet weak var profilePicture: UIImageView!
     var buttonPressed = false
+    var nextPage = false
     
     let imagePicker = UIImagePickerController()
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -62,7 +63,7 @@ class ApiConnectorViewController: UIViewController,UIImagePickerControllerDelega
 
     @IBAction func connectToTwitter(sender: AnyObject) {
         
-        if (!buttonPressed) {
+        if (!buttonPressed && !nextPage) {
             buttonPressed = true
             if (profilePicture == nil ) {
                 cyrusPrompt.text = "Kindly upload a profile picture"
@@ -74,7 +75,7 @@ class ApiConnectorViewController: UIViewController,UIImagePickerControllerDelega
                 } else {
                     
                     let storageRef = storage.referenceForURL("gs://project-5582715640635114460.appspot.com")
-                    
+                    print("I am uploading picture")
                     
                     let imageData = UIImageJPEGRepresentation(profilePicture.image!, 2.0)! as NSData
                     let imageInfo = storageRef.child("\(appDelegate.userIdentifier).jpg")
@@ -92,6 +93,7 @@ class ApiConnectorViewController: UIViewController,UIImagePickerControllerDelega
                         }
                     }
                     self.performSegueWithIdentifier("TwitterInferPage", sender: self)
+                    nextPage = true
                     
                     
                 }
@@ -102,14 +104,17 @@ class ApiConnectorViewController: UIViewController,UIImagePickerControllerDelega
         }
         
     }
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        print("I am inferring")
+        nextPage = true
     }
-    */
+    
+    
 
 }
