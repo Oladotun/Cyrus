@@ -148,6 +148,23 @@ class LoginPageViewController: UIViewController, UITextFieldDelegate {
         }
  
     }
+    @IBAction func sendPasswordReset(sender: AnyObject) {
+
+        if (emailTextField.text!.isEmpty  ) {
+            emailTextField.checkEmptyField()
+            
+        } else {
+            
+            if (checkEmailDomain(getDomainFromEmail(emailTextField.text!.trim()))) {
+                FIRAuth.auth()?.sendPasswordResetWithEmail(emailTextField.text!, completion: nil)
+                alertView("Password Reset sent to your email \(emailTextField.text!)")
+                
+            } else {
+                alertView("Invalid Email Entered")
+            }
+            
+        }
+    }
     
     
     func checkEmailDomain(domainCheck:String) -> Bool {

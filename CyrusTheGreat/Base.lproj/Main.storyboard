@@ -142,7 +142,7 @@
                                 <rect key="frame" x="240" y="0.0" width="120" height="120"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gxe-or-ohC">
-                                <rect key="frame" x="340" y="215" width="240" height="30"/>
+                                <rect key="frame" x="340" y="215" width="240" height="60"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="Or Sign up">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -152,7 +152,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Alt-4d-BMf">
-                                <rect key="frame" x="20" y="215" width="240" height="30"/>
+                                <rect key="frame" x="20" y="215" width="240" height="60"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="Login">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -161,14 +161,23 @@
                                     <action selector="loginButton:" destination="MTj-iS-lCV" eventType="touchUpInside" id="Xz0-JO-d8Z"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="plT-eV-bkH">
+                                <rect key="frame" x="0.0" y="285" width="600" height="30"/>
+                                <state key="normal" title="Click to reset password"/>
+                                <connections>
+                                    <action selector="sendPasswordReset:" destination="MTj-iS-lCV" eventType="touchUpInside" id="0eE-i2-bJ8"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="gxe-or-ohC" firstAttribute="height" secondItem="5tN-Lj-P11" secondAttribute="height" multiplier="0.1" id="1Cs-DX-GpT"/>
                             <constraint firstItem="6BA-bA-vjZ" firstAttribute="width" secondItem="5tN-Lj-P11" secondAttribute="width" multiplier="0.2" id="36A-mo-TT8"/>
                             <constraint firstItem="6BA-bA-vjZ" firstAttribute="centerX" secondItem="5tN-Lj-P11" secondAttribute="centerX" id="3ko-l0-iWP"/>
                             <constraint firstAttribute="leadingMargin" secondItem="Alt-4d-BMf" secondAttribute="leading" id="BAu-Ul-4CB"/>
                             <constraint firstItem="Vtg-av-qfy" firstAttribute="trailing" secondItem="5tN-Lj-P11" secondAttribute="trailingMargin" id="CNJ-w8-eII"/>
                             <constraint firstAttribute="trailingMargin" secondItem="gxe-or-ohC" secondAttribute="trailing" id="D09-xc-U5Z"/>
+                            <constraint firstItem="plT-eV-bkH" firstAttribute="centerX" secondItem="5tN-Lj-P11" secondAttribute="centerX" id="D6h-av-hIi"/>
                             <constraint firstItem="gxe-or-ohC" firstAttribute="top" secondItem="Alt-4d-BMf" secondAttribute="top" id="Fcp-sS-YdJ"/>
                             <constraint firstItem="gxe-or-ohC" firstAttribute="top" secondItem="Vtg-av-qfy" secondAttribute="bottom" constant="30" id="GiB-h0-9d9"/>
                             <constraint firstItem="Alt-4d-BMf" firstAttribute="width" secondItem="5tN-Lj-P11" secondAttribute="width" multiplier="0.4" id="IqW-mW-xyg"/>
@@ -176,15 +185,18 @@
                             <constraint firstItem="6BA-bA-vjZ" firstAttribute="top" secondItem="YkL-y4-8Gr" secondAttribute="bottom" id="JhE-TE-eSq"/>
                             <constraint firstAttribute="leadingMargin" secondItem="JxN-vj-vfo" secondAttribute="leading" id="NSN-o2-B1Y"/>
                             <constraint firstItem="Vtg-av-qfy" firstAttribute="top" secondItem="JxN-vj-vfo" secondAttribute="bottom" id="QAV-fN-98v"/>
+                            <constraint firstItem="plT-eV-bkH" firstAttribute="centerY" secondItem="5tN-Lj-P11" secondAttribute="centerY" id="TPy-7u-7V0"/>
                             <constraint firstItem="JxN-vj-vfo" firstAttribute="top" secondItem="6BA-bA-vjZ" secondAttribute="bottom" constant="5" id="bZh-ew-UIS"/>
                             <constraint firstItem="Vtg-av-qfy" firstAttribute="leading" secondItem="5tN-Lj-P11" secondAttribute="leadingMargin" id="eRN-KO-Mcd"/>
                             <constraint firstItem="JxN-vj-vfo" firstAttribute="trailing" secondItem="5tN-Lj-P11" secondAttribute="trailingMargin" id="hBU-8a-Cz9"/>
                             <constraint firstItem="Alt-4d-BMf" firstAttribute="top" secondItem="Vtg-av-qfy" secondAttribute="bottom" constant="30" id="hMu-bl-hdF"/>
                             <constraint firstItem="Alt-4d-BMf" firstAttribute="width" secondItem="gxe-or-ohC" secondAttribute="width" id="kyf-gA-Wf9"/>
                             <constraint firstItem="6BA-bA-vjZ" firstAttribute="width" secondItem="5tN-Lj-P11" secondAttribute="width" multiplier="0.4" id="lBq-BS-wej"/>
+                            <constraint firstItem="plT-eV-bkH" firstAttribute="width" secondItem="5tN-Lj-P11" secondAttribute="width" id="muk-Ug-5P0"/>
                             <constraint firstItem="JxN-vj-vfo" firstAttribute="leading" secondItem="5tN-Lj-P11" secondAttribute="leadingMargin" id="rKd-DK-l78"/>
                             <constraint firstItem="6BA-bA-vjZ" firstAttribute="top" secondItem="5tN-Lj-P11" secondAttribute="topMargin" id="uG2-6k-l9H"/>
                             <constraint firstItem="6BA-bA-vjZ" firstAttribute="height" secondItem="5tN-Lj-P11" secondAttribute="height" multiplier="0.2" id="vz2-ZE-H6D"/>
+                            <constraint firstItem="Alt-4d-BMf" firstAttribute="height" secondItem="5tN-Lj-P11" secondAttribute="height" multiplier="0.1" id="wgU-rO-1Pc"/>
                             <constraint firstItem="6BA-bA-vjZ" firstAttribute="height" secondItem="5tN-Lj-P11" secondAttribute="height" multiplier="0.2" id="yf7-0f-RAD"/>
                         </constraints>
                         <variation key="default">
@@ -313,7 +325,7 @@
                             <constraint firstItem="oqm-SN-zh8" firstAttribute="width" secondItem="WCT-bk-mjw" secondAttribute="width" id="TM8-0R-dY8"/>
                             <constraint firstItem="6BX-ae-N2J" firstAttribute="top" secondItem="Go3-dJ-frw" secondAttribute="bottom" id="U1q-G6-kj6"/>
                             <constraint firstAttribute="trailingMargin" secondItem="4cy-HW-6kf" secondAttribute="trailing" id="YFX-Qi-MYx"/>
-                            <constraint firstItem="WCT-bk-mjw" firstAttribute="height" secondItem="0lP-Gi-1C5" secondAttribute="height" multiplier="0.05" id="bEB-vA-mxX"/>
+                            <constraint firstItem="WCT-bk-mjw" firstAttribute="height" secondItem="0lP-Gi-1C5" secondAttribute="height" multiplier="0.1" id="bEB-vA-mxX"/>
                             <constraint firstItem="0g1-ds-VFn" firstAttribute="width" secondItem="0lP-Gi-1C5" secondAttribute="width" multiplier="0.2" id="d8d-bE-hbC"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Naq-BT-9QQ" secondAttribute="trailing" id="dPl-A2-2nk"/>
                             <constraint firstItem="0g1-ds-VFn" firstAttribute="centerX" secondItem="0lP-Gi-1C5" secondAttribute="centerX" id="dYX-Re-pgY"/>
@@ -1542,10 +1554,10 @@
         <image name="cyrus" width="350" height="350"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="8iI-Sx-Oy5"/>
         <segue reference="HV1-fz-5Uo"/>
         <segue reference="z0A-Dz-rAQ"/>
+        <segue reference="1iL-Eu-0hN"/>
+        <segue reference="8iI-Sx-Oy5"/>
         <segue reference="MgV-xI-tAr"/>
-        <segue reference="RqY-DZ-alJ"/>
     </inferredMetricsTieBreakers>
 </document>
