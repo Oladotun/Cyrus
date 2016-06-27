@@ -151,15 +151,22 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
                                     
                                     let userInfoDictionary = try NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.MutableLeaves)
                                     
-                                    self.userFriends = userInfoDictionary["friends_count"] as! Int
-                                    if (self.userFriends < 2) {
-                                        // TODO Check the users list membership
-                                        self.alertView("Please follow more people you are interested in on Twitter so we can infer your Interests")
+                                    if let userFriendCount = userInfoDictionary["friends_count"] as? Int {
+                                        
+                                        self.userFriends = userFriendCount
+                                        if (self.userFriends < 2) {
+                                            // TODO Check the users list membership
+                                            self.alertView("Please follow more people you are interested in on Twitter so we can infer your Interests")
+                                        }
+                                        else {
+                                            let cursor = -1
+                                            self.getUserInfo(cursor)
+                                        }
+                                        
+                                    } else {
+                                        self.alertView("Could not verify account.\nPlease Go to Settings > Twitter and Re-Sign into Twitter")
                                     }
-                                    else {
-                                        let cursor = -1
-                                        self.getUserInfo(cursor)
-                                    }
+                                    
                                     
                                 } catch {
                                     self.alertView("Error occured while inferring interest")
@@ -482,6 +489,7 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
     }
     
     func alertView(message:String) {
+        activityIndicator.stopAnimating()
         
         let alert = UIAlertController(title:"",message: message, preferredStyle: UIAlertControllerStyle.Alert)
         
