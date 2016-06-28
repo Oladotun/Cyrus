@@ -20,6 +20,7 @@ class ApiConnectorViewController: UIViewController,UIImagePickerControllerDelega
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     // Utilizing firebase storage
     let storage = FIRStorage.storage()
+    var inferredTopic:[String]!
     
     
     override func viewDidLoad() {
@@ -28,6 +29,15 @@ class ApiConnectorViewController: UIViewController,UIImagePickerControllerDelega
         cyrusLogo.image = UIImage(named:"cyrus")
         cyrusPrompt.text = "Some more information about you..."
         imagePicker.delegate = self
+        
+//        NSUserDefaults.standardUserDefaults().setObject("", forKey: "TwitterTopics")
+        if let cachedTopic = NSUserDefaults.standardUserDefaults().objectForKey("TwitterTopics") as? [String] {
+            
+            inferredTopic = cachedTopic
+            
+        }
+        print(inferredTopic)
+        
         // Do any additional setup after loading the view.
     }
 
@@ -109,12 +119,18 @@ class ApiConnectorViewController: UIViewController,UIImagePickerControllerDelega
 //    // MARK: - Navigation
 //
 //    // In a storyboard-based application, you will often want to do a little preparation before navigation
-//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 //        // Get the new view controller using segue.destinationViewController.
 //        // Pass the selected object to the new view controller.
+      
+        if (segue.identifier == "TwitterInferPage") {
+            let destVC = segue.destinationViewController as! CollectionTwitterViewController
+            destVC.topics = inferredTopic
+            print(destVC.topics)
+        }
 //    
-//    }
-    
+    }
+
     func alertView(message:String) {
         
         let alert = UIAlertController(title:"",message: message, preferredStyle: UIAlertControllerStyle.Alert)

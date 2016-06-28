@@ -98,6 +98,7 @@ class FrontPageViewController: UIViewController {
                                 if (!self.segued) {
                                     self.segued = true
                                     self.performSegueWithIdentifier("CotinueSignUp", sender: self)
+                                    
                                 }
  
                             } else {

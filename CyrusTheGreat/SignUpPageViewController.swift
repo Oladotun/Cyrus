@@ -121,8 +121,6 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate,UIPickerVie
                                     ]
                                     
                                     self.appDelegate.userFire.child("users").child(self.appDelegate.userIdentifier).updateChildValues(newUser)
-                                    NSUserDefaults.standardUserDefaults().setValue(user?.uid, forKey: "uid")
-                                    
                                     self.performSegueWithIdentifier("VerifyEmailSegue", sender: self)
                                 }
                             })

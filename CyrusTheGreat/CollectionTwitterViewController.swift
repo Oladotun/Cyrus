@@ -18,7 +18,7 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
     
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
-    var topics = [String]()
+    var topics:[String]!
     var uselessTopicsArray = [String]()
     
     @IBOutlet weak var unwantedTopics: UILabel!
@@ -41,10 +41,20 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
 
         // Do any additional setup after loading the view.
         stringCollection.allowsMultipleSelection = true
-        self.userLookUp()
         self.unwantedTopics.text = "Click on interests to remove from interest list"
         nextButton.alpha = 0.0
         unwantedTopics.alpha = 0.0
+        if (topics != nil){
+            self.stringCollection.reloadData()
+            self.activityIndicator.stopAnimating()
+            self.activityIndicator.alpha = 0.0
+            self.nextButton.alpha = 1.0
+        } else {
+            topics = [String]()
+            self.userLookUp()
+        }
+        
+        
         
 
     }
@@ -366,9 +376,11 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
             }
             
             dispatch_async(dispatch_get_main_queue(), {
+                
                 self.stringCollection.reloadData()
                 self.activityIndicator.stopAnimating()
                 self.nextButton.alpha = 1.0
+                NSUserDefaults.standardUserDefaults().setObject(self.topics, forKey: "TwitterTopics")
                 self.unwantedTopics.alpha = 1.0
             })
         }
