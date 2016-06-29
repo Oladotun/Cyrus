@@ -29,6 +29,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var locationManager: CLLocationManager!
     var justMetUpWith = ""
     var myImage:UIImage!
+    var userMetWith:User!
+    var firebaseUser:FIRUser!
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {

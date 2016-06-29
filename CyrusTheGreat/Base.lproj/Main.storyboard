@@ -744,7 +744,7 @@
                                 <rect key="frame" x="180" y="240" width="240" height="120"/>
                                 <color key="backgroundColor" red="0.035455710292197518" green="0.058884680503431854" blue="0.10990767045454541" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <state key="normal" title="Click to MeetUp">
+                                <state key="normal" title="Click to Meet Up">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -763,7 +763,7 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1kq-q6-ERp">
+                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1kq-q6-ERp">
                                 <rect key="frame" x="38" y="20" width="120" height="60"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -847,12 +847,107 @@
                         <outlet property="userSearching" destination="oqR-uu-Z2I" id="Anv-MP-dgh"/>
                         <segue destination="bqI-cL-1Wj" kind="show" identifier="idSegueChat" id="H6L-Am-SpU"/>
                         <segue destination="sxO-Jn-IFc" kind="unwind" identifier="logOutSegue" unwindAction="loggedOutPageController:" id="FYr-e6-Kkq"/>
+                        <segue destination="ehO-MG-OvQ" kind="presentation" identifier="segueMeetupInfo" id="nGp-bm-IdH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GjE-hO-a2H" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="sxO-Jn-IFc" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-5772" y="1750"/>
+            <point key="canvasLocation" x="-5882" y="1593"/>
+        </scene>
+        <!--Completed Meetups View Controller-->
+        <scene sceneID="eYt-0g-NkH">
+            <objects>
+                <viewController id="ehO-MG-OvQ" customClass="CompletedMeetupsViewController" customModule="Cyrus" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="xfq-Vr-5sE"/>
+                        <viewControllerLayoutGuide type="bottom" id="9Z4-Kg-qkg"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Z91-ow-1e6">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="74" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="FZU-xe-J8S">
+                                <rect key="frame" x="0.0" y="72" width="600" height="540"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MeetUpCell" rowHeight="74" id="WgH-Ys-CvK" customClass="CompletedMeetUpsTableViewCell" customModule="Cyrus" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="600" height="74"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WgH-Ys-CvK" id="Jbp-3A-RcV">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="73"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7ZZ-fi-JDP">
+                                                    <rect key="frame" x="500" y="17" width="92" height="35"/>
+                                                    <state key="normal" title="View Contact"/>
+                                                    <connections>
+                                                        <action selector="ViewContact:" destination="WgH-Ys-CvK" eventType="touchUpInside" id="VYT-Yi-E4a"/>
+                                                    </connections>
+                                                </button>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5vX-V5-cKp">
+                                                    <rect key="frame" x="8" y="17" width="480" height="35"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="5vX-V5-cKp" firstAttribute="width" secondItem="Jbp-3A-RcV" secondAttribute="width" multiplier="0.8" id="3La-bL-r5V"/>
+                                                <constraint firstItem="7ZZ-fi-JDP" firstAttribute="centerY" secondItem="5vX-V5-cKp" secondAttribute="centerY" id="3gT-kI-uey"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="5vX-V5-cKp" secondAttribute="bottom" constant="13" id="K9i-mj-ZTH"/>
+                                                <constraint firstAttribute="leadingMargin" secondItem="5vX-V5-cKp" secondAttribute="leading" id="UcR-J6-MYp"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="7ZZ-fi-JDP" secondAttribute="trailing" id="VO2-sn-mco"/>
+                                                <constraint firstItem="5vX-V5-cKp" firstAttribute="top" secondItem="Jbp-3A-RcV" secondAttribute="topMargin" constant="9" id="f6M-su-vpA"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="7ZZ-fi-JDP" secondAttribute="bottom" constant="13" id="hSl-Bl-zdr"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="contactViewButton" destination="7ZZ-fi-JDP" id="KKM-uF-EIt"/>
+                                            <outlet property="name" destination="5vX-V5-cKp" id="YnN-eb-Fpz"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EJz-NB-wIk">
+                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                <items>
+                                    <barButtonItem title="Back" id="PNA-UZ-fch">
+                                        <connections>
+                                            <action selector="backButton:" destination="ehO-MG-OvQ" id="8a0-9I-7h8"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Friend Names and Contact" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Awy-FS-u5B">
+                                <rect key="frame" x="198" y="39" width="205" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="FZU-xe-J8S" firstAttribute="width" secondItem="Z91-ow-1e6" secondAttribute="width" id="Dx3-Mu-5nN"/>
+                            <constraint firstItem="Awy-FS-u5B" firstAttribute="centerX" secondItem="EJz-NB-wIk" secondAttribute="centerX" id="JdL-CI-32U"/>
+                            <constraint firstItem="FZU-xe-J8S" firstAttribute="height" secondItem="Z91-ow-1e6" secondAttribute="height" multiplier="0.9" id="KdL-hv-rXU"/>
+                            <constraint firstItem="EJz-NB-wIk" firstAttribute="centerX" secondItem="Z91-ow-1e6" secondAttribute="centerX" id="Lgd-Mf-sE4"/>
+                            <constraint firstItem="FZU-xe-J8S" firstAttribute="centerX" secondItem="Z91-ow-1e6" secondAttribute="centerX" id="hMj-Lt-0dq"/>
+                            <constraint firstItem="Awy-FS-u5B" firstAttribute="centerY" secondItem="EJz-NB-wIk" secondAttribute="centerY" id="jRG-ZD-JqE"/>
+                            <constraint firstItem="EJz-NB-wIk" firstAttribute="top" secondItem="xfq-Vr-5sE" secondAttribute="bottom" constant="8" id="oIf-Dp-75m"/>
+                            <constraint firstItem="FZU-xe-J8S" firstAttribute="top" secondItem="EJz-NB-wIk" secondAttribute="bottom" id="tKy-92-NUe"/>
+                            <constraint firstItem="EJz-NB-wIk" firstAttribute="width" secondItem="Z91-ow-1e6" secondAttribute="width" id="wh1-gR-hyA"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="meetList" destination="FZU-xe-J8S" id="bSg-29-laZ"/>
+                        <segue destination="4oS-JV-OcR" kind="unwind" identifier="goHome" unwindAction="unwindHomePageController:" id="X9b-Vp-2ki"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3iK-xF-7oe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="4oS-JV-OcR" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="-6500" y="2308"/>
         </scene>
         <!--Chat View Controller-->
         <scene sceneID="UFq-q8-tXK">
@@ -1331,16 +1426,16 @@
                         <viewControllerLayoutGuide type="bottom" id="p33-wf-5IX"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="5Ry-6v-QOg">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Time to meet up is so and so" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gYL-m5-ZlO">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time to meet up is so and so" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gYL-m5-ZlO">
                                 <rect key="frame" x="20" y="204" width="560" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jYc-eK-EyZ">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jYc-eK-EyZ">
                                 <rect key="frame" x="20" y="230" width="560" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -1349,8 +1444,8 @@
                                     <rect key="frame" x="13" y="343" width="761" height="21"/>
                                 </variation>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IVd-WW-gob">
-                                <rect key="frame" x="80" y="280" width="120" height="60"/>
+                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IVd-WW-gob">
+                                <rect key="frame" x="80" y="280" width="120" height="48"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="Yes">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -1362,54 +1457,54 @@
                                     <action selector="yesMeetup:" destination="0mv-3b-yBT" eventType="touchUpInside" id="2J9-NY-blK"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="MeetUp Destination is at so and so" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xc0-Ue-db5">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MeetUp Destination is at so and so" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xc0-Ue-db5">
                                 <rect key="frame" x="20" y="178" width="560" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Have you arrived at the location ?" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fio-UT-ta9">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Have you arrived at the location ?" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fio-UT-ta9">
                                 <rect key="frame" x="20" y="256" width="560" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lm0-E9-9qf">
-                                <rect key="frame" x="20" y="26" width="240" height="150"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lm0-E9-9qf">
+                                <rect key="frame" x="20" y="26" width="240" height="120"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="w80-Ns-gC1">
-                                <rect key="frame" x="340" y="26" width="240" height="150"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="w80-Ns-gC1">
+                                <rect key="frame" x="340" y="26" width="240" height="120"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aol-M6-b63">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aol-M6-b63">
                                 <rect key="frame" x="20" y="147" width="240" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gx6-D6-KeK">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gx6-D6-KeK">
                                 <rect key="frame" x="340" y="147" width="240" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Meet Up Information" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A3G-1f-h4c">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Meet Up Information" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A3G-1f-h4c">
                                 <rect key="frame" x="221" y="0.0" width="158" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bEv-eP-rrH">
-                                <rect key="frame" x="340" y="280" width="240" height="60"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bEv-eP-rrH">
+                                <rect key="frame" x="340" y="280" width="240" height="48"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="Cancel Meetup">
                                     <color key="titleColor" red="1" green="0.14448669189999999" blue="0.213912568" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                             </button>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="LW2-9V-m8s">
-                                <rect key="frame" x="20" y="26" width="240" height="150"/>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="LW2-9V-m8s">
+                                <rect key="frame" x="20" y="26" width="240" height="120"/>
                             </activityIndicatorView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="fgE-GU-BY5">
-                                <rect key="frame" x="340" y="26" width="240" height="150"/>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="fgE-GU-BY5">
+                                <rect key="frame" x="340" y="26" width="240" height="120"/>
                             </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1506,10 +1601,10 @@
                         <viewControllerLayoutGuide type="bottom" id="ydt-QN-qUI"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Iem-PW-axE">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pkd-i2-tGt">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pkd-i2-tGt">
                                 <rect key="frame" x="20" y="416" width="560" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -1518,13 +1613,13 @@
                                     <rect key="frame" x="20" y="532" width="560" height="21"/>
                                 </variation>
                             </label>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="RBr-MA-fBK">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="RBr-MA-fBK">
                                 <rect key="frame" x="0.0" y="2" width="600" height="384"/>
                                 <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
                                     <rect key="frame" x="0.0" y="22" width="600" height="480"/>
                                 </variation>
                             </mapView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kWv-Ki-qAg">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kWv-Ki-qAg">
                                 <rect key="frame" x="20" y="394" width="560" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -1599,10 +1694,10 @@
         <image name="cyrus" width="350" height="350"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="HV1-fz-5Uo"/>
-        <segue reference="z0A-Dz-rAQ"/>
-        <segue reference="1iL-Eu-0hN"/>
-        <segue reference="8iI-Sx-Oy5"/>
-        <segue reference="MgV-xI-tAr"/>
+        <segue reference="RqY-DZ-alJ"/>
+        <segue reference="xGD-n5-nfU"/>
+        <segue reference="eOv-3E-glu"/>
+        <segue reference="Yyr-oi-xHs"/>
+        <segue reference="KXb-Pi-882"/>
     </inferredMetricsTieBreakers>
 </document>

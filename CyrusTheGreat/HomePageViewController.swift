@@ -46,6 +46,9 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         super.viewDidLoad()
         locationManager =  appDelegate.locationManager
         meetupsCompleted.text = "0"
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(HomePageViewController.handleTap(_:)))
+        meetupsCompleted.userInteractionEnabled=true
+        meetupsCompleted.addGestureRecognizer(tapGesture)
         initialSetup()
     }
     
@@ -55,14 +58,17 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         // Re-initialize
         if (returned) {
             initialSetup()
-//            self.view.window?.rootViewController?.dismissViewControllerAnimated(true, completion: nil)
             if (!appDelegate.justMetUpWith.isEmpty) {
 //                print("returned from questions page")
-                firebaseHomeManager.updateMetUpWith(appDelegate.justMetUpWith)
+                firebaseHomeManager.updateMetUpWith(appDelegate.justMetUpWith,userMetWith: appDelegate.userMetWith)
             }
         }
         
         
+    }
+    
+    func handleTap(sender:UITapGestureRecognizer){
+        self.performSegueWithIdentifier("segueMeetupInfo", sender: self)
     }
     
     
@@ -72,7 +78,7 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         locationManager.delegate = self
         locationManager.startUpdatingLocation()
         firebaseHomeManager = FirebaseHomeManager()
-        firebaseHomeManager.setUpCurrentUser(appDelegate.userIdentifier)
+        firebaseHomeManager.setUpCurrentUser(appDelegate.userIdentifier,email: appDelegate.firebaseUser.email!)
         firebaseHomeManager.updateUserState(notActiveString)
         firebaseHomeManager.activateUserObserver()
         userActiveOberverSet = false
@@ -138,7 +144,6 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
 
     
     @IBAction func logginOut(sender: AnyObject) {
-        NSUserDefaults.standardUserDefaults().removeObjectForKey("uid")
         currAvailability.text = "Offline"
         firebaseHomeManager.updateUserState(notActiveString)
         firebaseHomeManager.removeActiveUser(appDelegate.userIdentifier)
@@ -176,7 +181,7 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     
     func receiveInvite(invitedUser: UserProfile) {
         schedule("Hey you have an invite for a meetup!")
-        alertInvite = UIAlertController(title: "", message: "Hi, You have an invite to catchup from \(invitedUser.user.firstName), who goes to \(invitedUser.user.schoolName) and is in the field of \(invitedUser.user.userField) . \(invitedUser.user.firstName) shares \(invitedUser.userMatchedInterest) as interests with you. We will be discussing about them during your meetup.\n\n Click accept to select a meet up location or decline to cancel", preferredStyle: UIAlertControllerStyle.Alert)
+        alertInvite = UIAlertController(title: "", message: "Hi, You have an invite to catch up from \(invitedUser.user.firstName), who goes to \(invitedUser.user.schoolName) and is in the field of \(invitedUser.user.userField) . \(invitedUser.user.firstName) shares \(invitedUser.userMatchedInterest) as interests with you. We will be discussing about them during your meet up.\n\n Click accept to select a meet up location or decline to cancel", preferredStyle: UIAlertControllerStyle.Alert)
         
         let acceptAction: UIAlertAction = UIAlertAction(title: "Accept", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
             
@@ -225,7 +230,7 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         
         if (!self.firebaseHomeManager.setReceiver) {
             
-            let alert = UIAlertController(title:"Invite accepted",message:"Hi, You have been connected with \(firebaseHomeManager.connectedUserInfo.user.firstName), who goes to \(firebaseHomeManager.connectedUserInfo.user.schoolName) and is in the field of \(firebaseHomeManager.connectedUserInfo.user.userField). \(firebaseHomeManager.connectedUserInfo.user.firstName) shares \(firebaseHomeManager.connectedUserInfo.userMatchedInterest) as interests with you. We will be discussing about them during your meetup.\n\n Click okay to select a meet up location" , preferredStyle: UIAlertControllerStyle.Alert)
+            let alert = UIAlertController(title:"Invite accepted",message:"Hi, You have been connected with \(firebaseHomeManager.connectedUserInfo.user.firstName), who goes to \(firebaseHomeManager.connectedUserInfo.user.schoolName) and is in the field of \(firebaseHomeManager.connectedUserInfo.user.userField). \(firebaseHomeManager.connectedUserInfo.user.firstName) shares \(firebaseHomeManager.connectedUserInfo.userMatchedInterest) as interests with you. We will be discussing about them during your meet up.\n\n Click okay to select a meet up location" , preferredStyle: UIAlertControllerStyle.Alert)
             
             let doneAction: UIAlertAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
                 
@@ -329,6 +334,12 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
                appDelegate.iamInitiator = self.chatInitiator
             }
             
+            
+        }
+        
+        if (segue.identifier == "segueMeetupInfo"){
+            let destVC = segue.destinationViewController as! CompletedMeetupsViewController
+            destVC.meetUpList = firebaseHomeManager.userMetUpWithDict
             
         }
     

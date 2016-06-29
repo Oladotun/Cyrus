@@ -31,7 +31,7 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
     var userCollected =  [AnyObject]()
     var userToFollower = Dictionary<String, Int>()
     var userToList = [String : [String]]()
-    let stopWords = ["new","social","liked","tweet","people","list","twitter","boss","dick","shit","fuck","link","facebook","friend","celeb","my","feed","influencer","racist","all","funny","follower","instagram","fav","interest","important","accounts","famous","star","media","other"]
+    let stopWords = ["new","social","liked","tweet","people","list","twitter","boss","dick","shit","fuck","link","facebook","friend","celeb","my","feed","influencer","racist","all","funny","follower","instagram","fav","interest","important","accounts","famous","star","media","other","spam","verifyw"]
     var topicToUser = [String:Int]()
 
     override func viewDidLoad() {
@@ -63,7 +63,7 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         

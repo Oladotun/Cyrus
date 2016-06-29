@@ -26,6 +26,7 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
         firebaseQuestionManager.delegate = self
         userToQuestions = [String:[String]]()
         appDelegate.justMetUpWith = appDelegate.connectedProfile.user.userId
+        appDelegate.userMetWith = appDelegate.connectedProfile.user
         
         if (appDelegate.iamInitiator == true) {
             questionButton.alpha = 1.0

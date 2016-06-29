@@ -120,6 +120,9 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate,UIPickerVie
                                         "field_study": self.studyField
                                     ]
                                     
+                                    
+                                    self.appDelegate.firebaseUser = user
+                                    
                                     self.appDelegate.userFire.child("users").child(self.appDelegate.userIdentifier).updateChildValues(newUser)
                                     self.performSegueWithIdentifier("VerifyEmailSegue", sender: self)
                                 }

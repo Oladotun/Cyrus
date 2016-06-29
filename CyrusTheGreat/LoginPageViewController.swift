@@ -50,6 +50,8 @@ class LoginPageViewController: UIViewController, UITextFieldDelegate {
                         // The logged in user's unique identifier
                         if let currUser = user {
                             
+                            self.appDelegate.firebaseUser = currUser
+                            
                             self.appDelegate.userIdentifier = currUser.uid
                             // Get the user interests from firebase
                             let userProfileImage = self.appDelegate.userFire.child("users").child("\(currUser.uid)/image")

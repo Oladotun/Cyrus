@@ -38,6 +38,7 @@ class FirebaseHomeManager: NSObject {
     
     var userObject:User!
     var userMetUpWith = [String]()
+    var userMetUpWithDict = [[String:String]]()
     var meetPathHandler:UInt!
     
     
@@ -61,7 +62,7 @@ class FirebaseHomeManager: NSObject {
     
     var countInitial = 0
     
-    func setUpCurrentUser(userId:String) {
+    func setUpCurrentUser(userId:String,email:String) {
         
         self.userId = userId
         userUrl = "https://cyrusthegreat.firebaseio.com/users/\(userId)"
@@ -69,6 +70,8 @@ class FirebaseHomeManager: NSObject {
         allActiveUsers = FIRDatabase.database().referenceFromURL(activeUserUrl)
         userObject = User()
         userObject.userId = userId
+        userObject.email = email
+        observeUserMetUpWith()
 //        print("https://cyrusthegreat.firebaseio.com/users/\(userId)")
         self.retrieveUserInfoFirebase()
                
@@ -131,13 +134,13 @@ class FirebaseHomeManager: NSObject {
                     
                 }
                 
-                if (child.key == "metup_with") {
-                    self.userMetUpWith = childSnapshot.value as! [String]
-                     self.countInitial = self.countInitial + 6
+                if (child.key == "last_name") {
+                    self.userObject.lastName = childSnapshot.value as! String
+                    self.countInitial = self.countInitial + 5
+                    //                    print("study field")
+                    
                 }
-                
-          
-                
+  
                 if (self.countInitial > 9 && self.activeUserCalled) {
                     self.updateActiveUserFirebase()
                     
@@ -150,15 +153,49 @@ class FirebaseHomeManager: NSObject {
         
     }
     
-    func updateMetUpWith(userIdMet:String) {
+    func observeUserMetUpWith() {
+        userMetUpWithFirebase = FIRDatabase.database().referenceFromURL("\(userUrl)/metup_with")
+        self.userMetUpWithDict = [[String:String]]()
+        userMetUpWithFirebase.observeSingleEventOfType(.Value, withBlock: {
+            snapshot in
+            
+            for child in snapshot.children {
+                self.userMetUpWith.append(child.key!)
+                let childSnapshot = snapshot.childSnapshotForPath(child.key!!)
+                if let childValue = childSnapshot.value as? [String:String] {
+                    
+                    self.userMetUpWithDict.append(childValue)
+                    
+                }
+                
+
+                
+            }
+            self.delegate?.foundDisplay()
+        })
+        
+    }
+    
+    func updateMetUpWith(userIdMet:String,userMetWith:User) {
         userMetUpWithFirebase = FIRDatabase.database().referenceFromURL("\(userUrl)/metup_with")
 //            Firebase(url:"\(userUrl)/metup_with")
         userMetUpWith.append(userIdMet)
 //        userMetUpWithFirebase.setValue(userMetUpWith)
-        let userMeetUpCount = FIRDatabase.database().referenceFromURL("\(userUrl)/metup_with_count")
-        userFirebase.updateChildValues(["metup_with":userMetUpWith])
-        userMeetUpCount.updateChildValues(["metup_with_count":userMetUpWith.count])
+        
+        let userMetUp = userMetUpWithFirebase.child("\(userMetWith.userId)")
+        var userInfo = [String:String]()
+        userInfo["Name"] = "\(userMetWith.firstName) \(userMetWith.lastName)"
+        userInfo["Email"] = "\(userMetWith.email)"
+        
+        userMetUp.updateChildValues(userInfo)
+        userMetUpWithDict.append(userInfo)
+       
         self.delegate?.foundDisplay()
+        
+        let userMeetUpCount = FIRDatabase.database().referenceFromURL("\(userUrl)/metup_with_count")
+         userMeetUpCount.setValue(self.userMetUpWithDict.count)
+        
+        
         
         
     }
@@ -343,7 +380,9 @@ class FirebaseHomeManager: NSObject {
 //                                        print("Found user with the same school name")
                                         
                                         newFound.user.firstName = childValue[self.firstNameString]
+                                        newFound.user.lastName = childValue["lastName"]
                                         newFound.user.userField = childValue[self.userFieldString]
+                                        newFound.user.email = childValue["email"]
                                         let coordinateInString = childValue[self.locationString]
                                         newFound.user.location = coordinateInString!.stringToCLLocation()
                                         
@@ -500,11 +539,12 @@ class FirebaseHomeManager: NSObject {
         var userArray = [String : String]()
         userArray ["userId"] = userObject.userId
         userArray["firstName"] = userObject.firstName
+        userArray["lastName"] = userObject.lastName
         userArray["schoolName"] = userObject.schoolName
         userArray["userField"] = userObject.userField
         userArray["location"] = "\(userObject.location.coordinate.latitude) \(userObject.location.coordinate.longitude)"
         userArray["interests"] = userObject.interests.joinWithSeparator(",")
-    
+        userArray["email"] = userObject.email
         
 //        let userIdLocation = [myId:userArray]
         allActiveUsers.child(myId).updateChildValues(userArray)

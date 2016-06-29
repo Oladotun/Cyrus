@@ -11,7 +11,9 @@ import CoreLocation
 
 class User: NSObject {
     var userId:String!
+    var email:String!
     var firstName:String!
+    var lastName:String!
     var schoolName:String!
     var userField:String!
     var location:CLLocation!
