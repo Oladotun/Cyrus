@@ -530,8 +530,9 @@ class CollectionTwitterViewController: UIViewController, UICollectionViewDataSou
 //        destinationVC.interests = topics
 
         let userInterests = ["interests":topics]
-        
+
         FIRDatabase.database().referenceFromURL("https://cyrusthegreat.firebaseio.com/users/\(appDelegate.userIdentifier)/").updateChildValues(userInterests)
+         NSUserDefaults.standardUserDefaults().removeObjectForKey("TwitterTopics")
         
         
     }
