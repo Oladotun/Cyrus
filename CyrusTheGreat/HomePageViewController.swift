@@ -34,7 +34,7 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     let yesString = "Yes"
     let noString = "No"
 
-    var findMorePeer = true
+    
     var switchState = false
     var returned = false
     var noFound = 0
@@ -93,7 +93,6 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         self.switchState = false
         checkNotification()
         foundDisplay()
-        meetupsCompleted.text = "\(firebaseHomeManager.userMetUpWith.count)"
         if(appDelegate.myImage == nil) {
             firebaseHomeManager.getMyImageUser()
         }
@@ -103,6 +102,56 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     
     func setImage(image: UIImage) {
         appDelegate.myImage = image
+    }
+    
+    // Restore Info
+    override func encodeRestorableStateWithCoder(coder: NSCoder) {
+        //1
+        if let firebaseHome = firebaseHomeManager {
+            coder.encodeObject(firebaseHome, forKey: "firebaseHomeManager")
+        }
+        
+        coder.encodeBool(switchState, forKey: "currentState")
+        
+        //2
+        super.encodeRestorableStateWithCoder(coder)
+    }
+    
+    override func decodeRestorableStateWithCoder(coder: NSCoder) {
+        
+        if let firebaseInfo = coder.decodeObjectForKey("firebaseHomeManager") {
+            firebaseHomeManager = firebaseInfo as! FirebaseHomeManager
+        }
+    
+        switchState =  coder.decodeBoolForKey("currentState")
+        
+        super.decodeRestorableStateWithCoder(coder)
+    }
+    
+    override func applicationFinishedRestoringState() {
+        // Final configuration goes here.
+        // Load images, reload data, e. t. c.
+        
+         guard let firebase = firebaseHomeManager else { return }
+        firebase.activateUserObserver()
+        userSearching.alpha = 0.0
+        firebase.delegate = self
+        availSwitch.setOn(switchState, animated:true)
+        foundDisplay()
+        if (switchState) {
+            currAvailability.text = "Online"
+            firebaseHomeManager.updateUserState(activeString)
+            firebaseHomeManager.updateActiveUserFirebase()
+        } else {
+            currAvailability.text = "Offline"
+            firebaseHomeManager.updateUserState(notActiveString)
+            firebaseHomeManager.removeActiveUser(appDelegate.userIdentifier)
+            firebaseHomeManager.userObject.status = notActiveString
+        }
+        foundDisplay()
+        if(appDelegate.myImage == nil) {
+            firebaseHomeManager.getMyImageUser()
+        }
     }
     
 
