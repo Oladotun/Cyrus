@@ -57,11 +57,12 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         // When we return back from another page
         // Re-initialize
         if (returned) {
-            initialSetup()
             if (!appDelegate.justMetUpWith.isEmpty) {
 //                print("returned from questions page")
                 firebaseHomeManager.updateMetUpWith(appDelegate.justMetUpWith,userMetWith: appDelegate.userMetWith)
+                appDelegate.justMetUpWith = ""
             }
+            initialSetup()
         }
         
         

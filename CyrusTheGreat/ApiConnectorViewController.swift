@@ -86,7 +86,7 @@ class ApiConnectorViewController: UIViewController,UIImagePickerControllerDelega
                     let storageRef = storage.referenceForURL("gs://project-5582715640635114460.appspot.com")
 //                    print("I am uploading picture")
                     
-                    let imageData = UIImageJPEGRepresentation(profilePicture.image!, 2.0)! as NSData
+                    let imageData = UIImageJPEGRepresentation(profilePicture.image!, 0.5)! as NSData
                     let imageInfo = storageRef.child("\(appDelegate.userIdentifier).jpg")
                     
                     // Upload the file to the path "images/rivers.jpg"

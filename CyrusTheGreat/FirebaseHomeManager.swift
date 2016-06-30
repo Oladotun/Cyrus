@@ -172,16 +172,17 @@ class FirebaseHomeManager: NSObject {
                 
             }
             self.delegate?.foundDisplay()
+
         })
+        
+        
         
     }
     
     func updateMetUpWith(userIdMet:String,userMetWith:User) {
         userMetUpWithFirebase = FIRDatabase.database().referenceFromURL("\(userUrl)/metup_with")
-//            Firebase(url:"\(userUrl)/metup_with")
         userMetUpWith.append(userIdMet)
-//        userMetUpWithFirebase.setValue(userMetUpWith)
-        
+
         let userMetUp = userMetUpWithFirebase.child("\(userMetWith.userId)")
         var userInfo = [String:String]()
         userInfo["Name"] = "\(userMetWith.firstName) \(userMetWith.lastName)"
@@ -189,15 +190,13 @@ class FirebaseHomeManager: NSObject {
         
         userMetUp.updateChildValues(userInfo)
         userMetUpWithDict.append(userInfo)
+        
        
         self.delegate?.foundDisplay()
-        
+
         let userMeetUpCount = FIRDatabase.database().referenceFromURL("\(userUrl)/metup_with_count")
-         userMeetUpCount.setValue(self.userMetUpWithDict.count)
-        
-        
-        
-        
+        userMeetUpCount.setValue(self.userMetUpWithDict.count)
+
     }
     
     func updateUserState(userStatus:String){
