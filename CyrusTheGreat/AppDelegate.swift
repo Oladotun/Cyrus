@@ -31,6 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var myImage:UIImage!
     var userMetWith:User!
     var firebaseUser:FIRUser!
+   // var currentController: UIViewController!
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -38,27 +39,50 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use Firebase library to configure APIs
 //          NSUserDefaults.standardUserDefaults().removeObjectForKey("uid")
         FIRApp.configure()
-//        FIR
        userFire = FIRDatabase.database().referenceFromURL("https://cyrusthegreat.firebaseio.com/")
-//        .referenceWithPath("https://cyrusthegreat.firebaseio.com/")
         meetAccept = false
         locationManager = CLLocationManager()
         locationManager?.requestWhenInUseAuthorization()
         
         let notificationSettings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
         UIApplication.sharedApplication().registerUserNotificationSettings(notificationSettings)
+        
+//        if let navigationController = UIApplication.sharedApplication().keyWindow?.rootViewController  {
+//            
+//            let nv = navigationController as? UINavigationController
+//            
+//            if let cr = currentController {
+//                
+//                nv?.popToViewController(cr, animated: true)
+//            }
+//            
+//            
+//        }
+        
+        
 
+        return true
+    }
+    
+    func application(application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
+        return true
+    }
+    
+    func application(application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {
         return true
     }
 
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+        
     }
 
     func applicationDidEnterBackground(application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    
+       
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
@@ -83,4 +107,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
 }
+
+//
+//extension UIApplication {
+//    class func topViewController(base: UIViewController? = UIApplication.sharedApplication().keyWindow?.rootViewController) -> UIViewController? {
+//        if let nav = base as? UINavigationController {
+//            return topViewController(nav.visibleViewController)
+//        }
+//        if let tab = base as? UITabBarController {
+//            if let selected = tab.selectedViewController {
+//                return topViewController(selected)
+//            }
+//        }
+//        if let presented = base?.presentedViewController {
+//            return topViewController(presented)
+//        }
+//        return base
+//    }
+//}
+
+
 

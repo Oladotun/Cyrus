@@ -44,6 +44,9 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+        restorationIdentifier = "HomePageViewController"
+        restorationClass = HomePageViewController.self
         locationManager =  appDelegate.locationManager
         meetupsCompleted.text = "0"
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(HomePageViewController.handleTap(_:)))
