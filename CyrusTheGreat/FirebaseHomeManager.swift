@@ -373,7 +373,6 @@ class FirebaseHomeManager: NSObject,NSCoding {
         
         allActiveUsers.observeEventType(.Value, withBlock: {
             snapshot in
-            print("allActive user processing")
             self.allFound = [UserProfile]()
             
             if (!self.activeUserListActivated) {

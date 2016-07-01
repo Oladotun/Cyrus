@@ -17,12 +17,39 @@ protocol FirebaseChatDelegate {
     func meetUpCancelled(canceller:String)
 }
 
-class FirebaseChatManager: NSObject {
+class FirebaseChatManager: NSObject, NSCoding {
     var meetUpPathWay:FIRDatabaseReference! // reference to previous meetup
     var chatMessagePathFirebase:FIRDatabaseReference!
     var chatAcceptPathFirebase:FIRDatabaseReference!
     var userId:String!
     var delegate:FirebaseChatDelegate?
+    
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init()
+        var meetUpUrl = ""
+        
+        if let userObject = aDecoder.decodeObjectForKey("currUserObjectId") {
+            self.userId = userObject as! String
+            
+        }
+        if let userMeetUpPathway = aDecoder.decodeObjectForKey("cyrusMeetUpPathWay") {
+            
+            meetUpUrl = userMeetUpPathway as! String
+            meetUpPathWay = FIRDatabase.database().referenceFromURL(meetUpUrl)
+            chatMessagePathFirebase = self.chatMessagePath()
+            chatAcceptPathFirebase = chatAcceptPath()
+            observeChatAcceptPath()
+            observeChatMsgPath()
+            
+        }
+    }
+    
+    
+    func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(userId, forKey: "currUserObjectId")
+        aCoder.encodeObject(meetUpPathWay.URL, forKey: "cyrusMeetUpPathWay")
+    }
     
     
     init(meetUpPath:FIRDatabaseReference,currUserId:String) {
@@ -34,6 +61,8 @@ class FirebaseChatManager: NSObject {
         observeChatAcceptPath()
         observeChatMsgPath()
     }
+    
+    
     
     
     

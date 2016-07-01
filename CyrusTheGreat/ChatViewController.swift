@@ -58,10 +58,17 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
         restorationIdentifier = "ChatViewControllerId"
         restorationClass = ChatViewController.self
         
-        iamSender = false
-        firebaseChatManager.userId = appDelegate.userIdentifier
-        firebaseChatManager.delegate = self
-
+        if (iamSender == nil) {
+             iamSender = false
+        }
+       
+        if let userId = appDelegate.userIdentifier {
+            firebaseChatManager.userId = userId
+             firebaseChatManager.delegate = self
+        }
+        
+       
+        
         // Do any additional setup after loading the view.
         tblChat.delegate = self
         tblChat.dataSource = self
@@ -80,10 +87,9 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
         messageCount = 0
         warningLabel.text = ""
         warningLabel.textColor = UIColor.redColor()
-        
-        
+
     }
-    
+  
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         
@@ -116,10 +122,9 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
         }
         if messagesArray.count > 0 {
             coder.encodeObject(messagesArray, forKey: "messagesArray")
+            coder.encodeBool(iamSender, forKey: "sentLast")
         }
         
-        
-//        coder.encodeBool(switchState, forKey: "currentState")
         
         //2
         super.encodeRestorableStateWithCoder(coder)
@@ -129,11 +134,14 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
         
         if let firebaseInfo = coder.decodeObjectForKey("firebaseChatManager") {
             firebaseChatManager = firebaseInfo as! FirebaseChatManager
+            appDelegate.userIdentifier = firebaseChatManager.userId
         }
         
         if let shortAddress = coder.decodeObjectForKey("messagesArray") {
             messagesArray = shortAddress as! [String]
         }
+        
+        iamSender = coder.decodeBoolForKey("sentLast")
         
 //        switchState =  coder.decodeBoolForKey("currentState")
         
@@ -144,28 +152,17 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
         // Final configuration goes here.
         // Load images, reload data, e. t. c.
         
-//        guard let firebase = firebaseHomeManager else { return }
-//        firebase.activateUserObserver()
-//        userSearching.alpha = 0.0
-//        firebase.delegate = self
-//        availSwitch.setOn(switchState, animated:true)
-//        foundDisplay()
-//        if (switchState) {
-//            currAvailability.text = "Online"
-//            firebaseHomeManager.updateUserState(activeString)
-//            firebaseHomeManager.updateActiveUserFirebase()
-//        } else {
-//            currAvailability.text = "Offline"
-//            firebaseHomeManager.updateUserState(notActiveString)
-//            firebaseHomeManager.removeActiveUser(appDelegate.userIdentifier)
-//            firebaseHomeManager.userObject.status = notActiveString
-//        }
-//        foundDisplay()
-//        if(appDelegate.myImage == nil) {
-//            firebaseHomeManager.getMyImageUser()
-//        }
+        guard let firebase = firebaseChatManager else {return}
+        print("Decoded")
+        firebase.delegate = self
+        updateTableView()
+        
     }
     
+    static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
+        let vc = ChatViewController()
+        return vc
+    }
     
     
     // MARK: IBAction method implementation
