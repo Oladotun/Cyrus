@@ -82,6 +82,7 @@ class FirebaseHomeManager: NSObject,NSCoding {
     
     func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(userId, forKey: "currUserObjectId")
+        aCoder.encodeObject(userObject.email, forKey: "currUserEmailId")
     }
     
     
