@@ -38,7 +38,8 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     var switchState = false
     var returned = false
     var noFound = 0
-    
+    var decoded = false
+
     @IBOutlet weak var meetupsCompleted: UILabel!
 
     override func viewDidLoad() {
@@ -52,7 +53,7 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(HomePageViewController.handleTap(_:)))
         meetupsCompleted.userInteractionEnabled=true
         meetupsCompleted.addGestureRecognizer(tapGesture)
-        initialSetup()
+//        initialSetup()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -65,6 +66,10 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
                 firebaseHomeManager.updateMetUpWith(appDelegate.justMetUpWith,userMetWith: appDelegate.userMetWith)
                 appDelegate.justMetUpWith = ""
             }
+            
+        }
+        
+        if (!decoded) {
             initialSetup()
         }
         
@@ -96,12 +101,14 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         if(appDelegate.myImage == nil) {
             firebaseHomeManager.getMyImageUser()
         }
-
+        
+        print(firebaseHomeManager.userFirebase.URL)
         
     }
     
     func setImage(image: UIImage) {
         appDelegate.myImage = image
+        print("image set")
     }
     
     // Restore Info
@@ -111,6 +118,11 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
             coder.encodeObject(firebaseHome, forKey: "firebaseHomeManager")
         }
         
+        if let img = appDelegate.myImage {
+            coder.encodeObject(img, forKey: "cyrusUserImage")
+        }
+    
+        
         coder.encodeBool(switchState, forKey: "currentState")
         
         //2
@@ -118,12 +130,19 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     }
     
     override func decodeRestorableStateWithCoder(coder: NSCoder) {
+        decoded = true
         
         if let firebaseInfo = coder.decodeObjectForKey("firebaseHomeManager") {
             firebaseHomeManager = firebaseInfo as! FirebaseHomeManager
         }
+        if let img = coder.decodeObjectForKey("cyrusUserImage") {
+            appDelegate.myImage = img as! UIImage
+            print("retrieving image")
+        }
     
         switchState =  coder.decodeBoolForKey("currentState")
+        
+        
         
         super.decodeRestorableStateWithCoder(coder)
     }
@@ -136,10 +155,18 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         firebase.activateUserObserver()
         userSearching.alpha = 0.0
         firebase.delegate = self
+        
         availSwitch.setOn(switchState, animated:true)
+        appDelegate.userIdentifier = firebase.userObject.userId
+        locationManager =  appDelegate.locationManager
+        locationManager.delegate = self
+        locationManager.distanceFilter = 20
+        locationManager.startUpdatingLocation()
+
         foundDisplay()
         if (switchState) {
             currAvailability.text = "Online"
+            firebase.userObject.location = locationManager.location
             firebaseHomeManager.updateUserState(activeString)
             firebaseHomeManager.updateActiveUserFirebase()
         } else {
@@ -154,6 +181,12 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         }
     }
     
+    
+    static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
+        let vc = HomePageViewController()
+        return vc
+    }
+
 
     
     
@@ -382,6 +415,7 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
             appDelegate.justMetUpWith = ""
             
             self.switchState = false
+            decoded = false
             if (self.chatInitiator == true) {
                destinationVC.initiator = self.chatInitiator
                appDelegate.iamInitiator = self.chatInitiator

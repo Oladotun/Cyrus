@@ -16,8 +16,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var userFire: FIRDatabaseReference! // CyrusTheGreat Connection
-    var fireUID: String!
-    var interests: [String]!
     var meetAccept: Bool!
     var userIdentifier:String! // uid from firebase
     var userFirstName: String!
@@ -26,40 +24,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var connectedProfile:UserProfile!
     var iamInitiator:Bool! // Chat initiator
 
-    var locationManager: CLLocationManager!
+    var locationManager  = CLLocationManager()
     var justMetUpWith = ""
     var myImage:UIImage!
     var userMetWith:User!
     var firebaseUser:FIRUser!
-   // var currentController: UIViewController!
-
-
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
-        // Use Firebase library to configure APIs
-//          NSUserDefaults.standardUserDefaults().removeObjectForKey("uid")
+   
+    
+    func application(application: UIApplication, willFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
         FIRApp.configure()
-       userFire = FIRDatabase.database().referenceFromURL("https://cyrusthegreat.firebaseio.com/")
+        userFire = FIRDatabase.database().referenceFromURL("https://cyrusthegreat.firebaseio.com/")
+
         meetAccept = false
-        locationManager = CLLocationManager()
-        locationManager?.requestWhenInUseAuthorization()
+        
+        locationManager.requestWhenInUseAuthorization()
+        
         
         let notificationSettings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
         UIApplication.sharedApplication().registerUserNotificationSettings(notificationSettings)
         
-//        if let navigationController = UIApplication.sharedApplication().keyWindow?.rootViewController  {
-//            
-//            let nv = navigationController as? UINavigationController
-//            
-//            if let cr = currentController {
-//                
-//                nv?.popToViewController(cr, animated: true)
-//            }
-//            
-//            
-//        }
         
-        
+        return true
+    }
+
+    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        // Override point for customization after application launch.
+        // Use Firebase library to configure APIs
 
         return true
     }
@@ -70,6 +60,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {
         return true
+    }
+    
+    func application(application: UIApplication, willEncodeRestorableStateWithCoder coder: NSCoder) {
+ 
+    }
+    func application(application: UIApplication, didDecodeRestorableStateWithCoder coder: NSCoder) {
+        
     }
 
     func applicationWillResignActive(application: UIApplication) {
@@ -91,6 +88,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+//        FIRApp.configure()
+//        userFire = FIRDatabase.database().referenceFromURL("https://cyrusthegreat.firebaseio.com/")
+//        meetAccept = false
+        if (FIRApp.allApps() == nil ) {
+            FIRApp.configure()
+            userFire = FIRDatabase.database().referenceFromURL("https://cyrusthegreat.firebaseio.com/")
+
+        }
         
     }
 
@@ -104,6 +109,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
        
         
     }
+    
+    
+    
+    
 
 
 }

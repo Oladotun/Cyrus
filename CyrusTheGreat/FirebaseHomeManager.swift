@@ -167,7 +167,7 @@ class FirebaseHomeManager: NSObject,NSCoding {
                     
                 }
   
-                if (self.countInitial > 9 && self.activeUserCalled) {
+                if (self.countInitial > 14 && self.activeUserCalled) {
                     self.updateActiveUserFirebase()
                     
                 }
@@ -373,7 +373,7 @@ class FirebaseHomeManager: NSObject,NSCoding {
         
         allActiveUsers.observeEventType(.Value, withBlock: {
             snapshot in
-            
+            print("allActive user processing")
             self.allFound = [UserProfile]()
             
             if (!self.activeUserListActivated) {
@@ -543,6 +543,7 @@ class FirebaseHomeManager: NSObject,NSCoding {
     // Call after everything is called
     func updateActiveUserFirebase() {
 //        print("Update active user called")
+       
         guard let myId = userId else {
             NSException(name: "User ID not set", reason: "UserId has not been set properly", userInfo: nil).raise()
             return
@@ -554,12 +555,12 @@ class FirebaseHomeManager: NSObject,NSCoding {
         }
         activeUserCalled = true
         
-        if (countInitial < 10) {
+        if (countInitial < 15) {
             print(countInitial)
             print("Not all set")
             return
         }
-        
+
         //        var userArray = [String]()
         var userArray = [String : String]()
         userArray ["userId"] = userObject.userId
