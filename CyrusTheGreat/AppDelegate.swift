@@ -63,10 +63,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, willEncodeRestorableStateWithCoder coder: NSCoder) {
+        
+        if let c = connectedProfile {
+            coder.encodeObject(c, forKey: "connectedProfile")
+        }
  
     }
     func application(application: UIApplication, didDecodeRestorableStateWithCoder coder: NSCoder) {
-        
+        if let c = coder.decodeObjectForKey("connectedProfile") {
+            connectedProfile = c as! UserProfile
+        }
     }
 
     func applicationWillResignActive(application: UIApplication) {
