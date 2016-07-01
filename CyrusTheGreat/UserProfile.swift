@@ -36,7 +36,7 @@ class UserProfile:NSObject,NSCoding {
     
     func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(user, forKey: "madeUser")
-        aCoder.encodeObject(userDistance, forKey: "userDistance")
+        aCoder.encodeDouble(userDistance, forKey: "userDistance")
         aCoder.encodeObject(userMatchedInterest, forKey: "matchedInterests")
         aCoder.encodeObject(userMatchedCount, forKey: "matchedCounts")
     }
