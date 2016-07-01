@@ -21,17 +21,37 @@ class User: NSObject,NSCoding {
     var status:String!
     
     required init(coder aDecoder: NSCoder) {
-        userId = aDecoder.decodeObjectForKey("currUserId") as! String
-        email = aDecoder.decodeObjectForKey("email") as! String
-        firstName = aDecoder.decodeObjectForKey("firstName") as! String
-        lastName = aDecoder.decodeObjectForKey("lastName") as! String
-        schoolName = aDecoder.decodeObjectForKey("schoolName") as! String
-        userField = aDecoder.decodeObjectForKey("userField") as! String
-        location = aDecoder.decodeObjectForKey("location") as! CLLocation
-        interests = aDecoder.decodeObjectForKey("interests") as! [String]
-        status = aDecoder.decodeObjectForKey("status") as! String
-
+        super.init()
+        if let userId = aDecoder.decodeObjectForKey("currUserId")  {
+            self.userId = userId as! String
+        }
+        if let email = aDecoder.decodeObjectForKey("email")  {
+            self.email = email as! String
+        }
         
+        if let firstName = aDecoder.decodeObjectForKey("firstName") {
+            self.firstName = firstName as! String
+        }
+        if let lastName = aDecoder.decodeObjectForKey("lastName") {
+            self.lastName = lastName as! String
+        }
+        if let schoolName = aDecoder.decodeObjectForKey("schoolName") {
+            self.schoolName = schoolName as! String
+        }
+        if let userField = aDecoder.decodeObjectForKey("userField") {
+            self.userField = userField as! String
+        }
+        
+        if let location = aDecoder.decodeObjectForKey("location") {
+            self.location = location as! CLLocation
+        }
+        if let interests = aDecoder.decodeObjectForKey("interests") {
+            self.interests = interests as! [String]
+        }
+        if let status = aDecoder.decodeObjectForKey("status") {
+            self.status = status as! String
+        }
+
     }
     override init() {
         
