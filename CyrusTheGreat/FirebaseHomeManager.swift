@@ -41,6 +41,8 @@ class FirebaseHomeManager: NSObject {
     var userMetUpWithDict = [[String:String]]()
     var meetPathHandler:UInt!
     
+
+    
     
     var userFirebase:FIRDatabaseReference!
     var userMetUpWithFirebase:FIRDatabaseReference!
@@ -61,6 +63,9 @@ class FirebaseHomeManager: NSObject {
     var activeUserCalled = false
     
     var countInitial = 0
+    
+    
+    
     
     func setUpCurrentUser(userId:String,email:String) {
         

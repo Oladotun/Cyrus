@@ -48,8 +48,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
         self.messagesArray = [String]()
         self.messagesArray.append(chatMsg)
         self.destinationLocation = location
-//        print("message sent")
-//        print(messagesArray)
         self.updateTableView()
     }
     
@@ -57,6 +55,8 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        restorationIdentifier = "ChatViewControllerId"
+        restorationClass = ChatViewController.self
         
         iamSender = false
         firebaseChatManager.userId = appDelegate.userIdentifier
@@ -108,6 +108,66 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
         
     }
     
+    // Restore Info
+    override func encodeRestorableStateWithCoder(coder: NSCoder) {
+        //1
+        if let firebaseChat = firebaseChatManager {
+            coder.encodeObject(firebaseChat, forKey: "firebaseChatManager")
+        }
+        if messagesArray.count > 0 {
+            coder.encodeObject(messagesArray, forKey: "messagesArray")
+        }
+        
+        
+//        coder.encodeBool(switchState, forKey: "currentState")
+        
+        //2
+        super.encodeRestorableStateWithCoder(coder)
+    }
+    
+    override func decodeRestorableStateWithCoder(coder: NSCoder) {
+        
+        if let firebaseInfo = coder.decodeObjectForKey("firebaseChatManager") {
+            firebaseChatManager = firebaseInfo as! FirebaseChatManager
+        }
+        
+        if let shortAddress = coder.decodeObjectForKey("messagesArray") {
+            messagesArray = shortAddress as! [String]
+        }
+        
+//        switchState =  coder.decodeBoolForKey("currentState")
+        
+        super.decodeRestorableStateWithCoder(coder)
+    }
+    
+    override func applicationFinishedRestoringState() {
+        // Final configuration goes here.
+        // Load images, reload data, e. t. c.
+        
+//        guard let firebase = firebaseHomeManager else { return }
+//        firebase.activateUserObserver()
+//        userSearching.alpha = 0.0
+//        firebase.delegate = self
+//        availSwitch.setOn(switchState, animated:true)
+//        foundDisplay()
+//        if (switchState) {
+//            currAvailability.text = "Online"
+//            firebaseHomeManager.updateUserState(activeString)
+//            firebaseHomeManager.updateActiveUserFirebase()
+//        } else {
+//            currAvailability.text = "Offline"
+//            firebaseHomeManager.updateUserState(notActiveString)
+//            firebaseHomeManager.removeActiveUser(appDelegate.userIdentifier)
+//            firebaseHomeManager.userObject.status = notActiveString
+//        }
+//        foundDisplay()
+//        if(appDelegate.myImage == nil) {
+//            firebaseHomeManager.getMyImageUser()
+//        }
+    }
+    
+    
+    
     // MARK: IBAction method implementation
     
     @IBAction func endChat(sender: AnyObject) {
@@ -154,7 +214,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
     }
     
     func meetUpCancelled(canceller: String) {
-        firebaseChatManager.meetUpPathWay.removeValue()
+        
         let alert = UIAlertController(title:"",message: "\(canceller) ended the chat", preferredStyle: UIAlertControllerStyle.Alert)
         
         let doneAction: UIAlertAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
@@ -284,7 +344,7 @@ extension ChatViewController: UITextFieldDelegate {
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         if (textField == buildName) {
             buildNameTxt = buildName.text!
-            print("Updated buildName info")
+//            print("Updated buildName info")
             buildName.resignFirstResponder()
            
         }
