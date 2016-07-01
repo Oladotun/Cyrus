@@ -8,10 +8,30 @@
 
 import UIKit
 
-class UserProfile {
+class UserProfile:NSObject,NSCoding {
     var user:User!
     var userDistance:Double!
     var userMatchedInterest:[String]!
     var userMatchedCount:Int!
+    
+    required init(coder aDecoder: NSCoder) {
+        
+        user = aDecoder.decodeObjectForKey("madeUser") as! User
+        userDistance = aDecoder.decodeDoubleForKey("userDistance")
+        userMatchedInterest = aDecoder.decodeObjectForKey("matchedInterests") as! [String]
+        userMatchedCount = aDecoder.decodeObjectForKey("userMatchedCount") as! Int
+        
+    }
+    override init() {
+        
+    }
+    
+    func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(user, forKey: "madeUser")
+        aCoder.encodeObject(userDistance, forKey: "userDistance")
+        aCoder.encodeObject(userMatchedInterest, forKey: "matchedInterests")
+        aCoder.encodeObject(userMatchedCount, forKey: "matchedCounts")
+    }
+    
 }
 
