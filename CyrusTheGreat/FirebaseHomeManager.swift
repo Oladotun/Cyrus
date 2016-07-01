@@ -19,7 +19,7 @@ protocol FirebaseHomeDelegate {
     
 }
 
-class FirebaseHomeManager: NSObject {
+class FirebaseHomeManager: NSObject,NSCoding {
     
     let cyrusUrl:String! = "https://cyrusthegreat.firebaseio.com/"
     let activeUserUrl = "https://cyrusthegreat.firebaseio.com/activeusers/"
@@ -40,10 +40,6 @@ class FirebaseHomeManager: NSObject {
     var userMetUpWith = [String]()
     var userMetUpWithDict = [[String:String]]()
     var meetPathHandler:UInt!
-    
-
-    
-    
     var userFirebase:FIRDatabaseReference!
     var userMetUpWithFirebase:FIRDatabaseReference!
     var allActiveUsers:FIRDatabaseReference!
@@ -63,6 +59,30 @@ class FirebaseHomeManager: NSObject {
     var activeUserCalled = false
     
     var countInitial = 0
+    
+    
+    
+    override init() {
+        
+    }
+    required init?(coder aDecoder: NSCoder) {
+        super.init()
+        var email = ""
+        if let userObject = aDecoder.decodeObjectForKey("currUserObjectId") {
+            self.userId = userObject as! String
+            
+        }
+        if let userEmail = aDecoder.decodeObjectForKey("currUserEmailId") {
+            email = userEmail as! String
+        }
+        self.setUpCurrentUser(self.userId, email: email)
+        
+    }
+    
+    
+    func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(userId, forKey: "currUserObjectId")
+    }
     
     
     
