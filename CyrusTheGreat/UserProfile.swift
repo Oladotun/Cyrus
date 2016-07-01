@@ -15,11 +15,19 @@ class UserProfile:NSObject,NSCoding {
     var userMatchedCount:Int!
     
     required init(coder aDecoder: NSCoder) {
-        
-        user = aDecoder.decodeObjectForKey("madeUser") as! User
+        super.init()
+        if let user = aDecoder.decodeObjectForKey("madeUser") {
+            self.user = user as! User
+        }
+       
         userDistance = aDecoder.decodeDoubleForKey("userDistance")
-        userMatchedInterest = aDecoder.decodeObjectForKey("matchedInterests") as! [String]
-        userMatchedCount = aDecoder.decodeObjectForKey("userMatchedCount") as! Int
+        if let userMatchedInterest = aDecoder.decodeObjectForKey("matchedInterests")  {
+            self.userMatchedInterest = userMatchedInterest as! [String]
+        }
+        if let userCount = aDecoder.decodeObjectForKey("userMatchedCount") {
+            userMatchedCount = userCount as! Int
+        }
+        
         
     }
     override init() {
