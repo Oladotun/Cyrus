@@ -17,7 +17,7 @@ protocol FirebaseInfoMeetUpManagerDelegate {
     
 }
 
-class FirebaseInfoMeetUpManager: NSObject {
+class FirebaseInfoMeetUpManager: NSObject,NSCoding {
     
     var meetUpPathWay:FIRDatabaseReference!
     var segueToQuestionNode:FIRDatabaseReference!
@@ -26,31 +26,54 @@ class FirebaseInfoMeetUpManager: NSObject {
     var otherUserId:String!
     var questionTime:Bool!
     
+    required init?(coder aDecoder: NSCoder) {
+        super.init()
+        
+        if let userObject = aDecoder.decodeObjectForKey("currUserObjectId") {
+            self.userId = userObject as! String
+            
+        }
+        if let otherId = aDecoder.decodeObjectForKey("otherUserObjectId") {
+            self.otherUserId = otherId as! String
+        }
+        
+        if let userMeetUpPathway = aDecoder.decodeObjectForKey("cyrusMeetUpPathWay") {
+            
+            let meetUpUrl = userMeetUpPathway as! String
+            meetUpPathWay = FIRDatabase.database().referenceFromURL(meetUpUrl)
+            segueToQuestionNode = meetUpPathWay.child("segueToQuestion")
+            observeNextQuestionNode()
+            observeImageOtherUser()
+        }
+        
+         questionTime = aDecoder.decodeBoolForKey("questionTime")
+         
+        
+        
+    }
+    
+    
+    func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(userId, forKey: "currUserObjectId")
+        aCoder.encodeObject(otherUserId, forKey: "otherUserObjectId")
+        aCoder.encodeObject(meetUpPathWay.URL, forKey: "cyrusMeetUpPathWay")
+        aCoder.encodeBool(questionTime, forKey: "questionTime")
+    }
+    
+    
+    
     init(meetPath:FIRDatabaseReference,myId:String,otherUserId:String) {
         super.init()
         meetUpPathWay = meetPath
         segueToQuestionNode = meetUpPathWay.child("segueToQuestion")
-//            childByAppendingPath("segueToQuestion")
         userId = myId
+        self.questionTime = false
         self.otherUserId = otherUserId
         observeNextQuestionNode()
-//        observeImageUser()
         observeImageOtherUser()
     }
     
-//    func observeImageUser() {
-//        
-//        let userUrl = "https://cyrusthegreat.firebaseio.com/users/\(userId)/image"
-//        let userFirebase = FIRDatabase.database().referenceFromURL(userUrl)
-//        
-//        userFirebase.observeSingleEventOfType(.Value, withBlock: {
-//            snapshot in
-//            let imageString = snapshot.value as! String
-//            let image = imageString.stringToImage()
-//            self.delegate?.updateMyImage(image)
-//        })
-//        
-//    }
+
     
     func observeImageOtherUser() {
         
