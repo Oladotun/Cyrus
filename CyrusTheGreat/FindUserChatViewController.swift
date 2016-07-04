@@ -22,15 +22,24 @@ class FindUserChatViewController: JSQMessagesViewController {
         super.viewDidLoad()
 //        self.senderId = "testWorker1234"
 //        self.senderDisplayName = "xyz"
+        
+        restorationIdentifier = "FindUserChatViewControllerId"
+        restorationClass = FindUserChatViewController.self
+        
+        
         self.title = "Find Other User Chat"
         setupBubbles()
         // No avatars
         collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSizeZero
         collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSizeZero
-        observeMessages()
+        
       
 
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        observeMessages()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -44,6 +53,46 @@ class FindUserChatViewController: JSQMessagesViewController {
 //        finishReceivingMessage()
         
     }
+    
+    
+    // Restore Info
+    override func encodeRestorableStateWithCoder(coder: NSCoder) {
+        //1
+        
+        coder.encodeObject(messageRef.URL , forKey: "FindUserChatDataReferenceURL")
+        coder.encodeObject(senderId, forKey: "FindUserSenderId")
+        coder.encodeObject(senderDisplayName, forKey: "FindUserSenderDisplayName")
+        
+        //2
+        super.encodeRestorableStateWithCoder(coder)
+    }
+    
+    override func decodeRestorableStateWithCoder(coder: NSCoder) {
+        
+        if let metWith =  coder.decodeObjectForKey("FindUserChatDataReferenceURL") {
+             let metWithUrl = metWith as! String
+             messageRef = FIRDatabase.database().referenceFromURL(metWithUrl)
+        }
+        if let userSenderId = coder.decodeObjectForKey("FindUserSenderId") {
+            senderId = userSenderId as! String
+        }
+        if let userSenderDisplayName = coder.decodeObjectForKey( "FindUserSenderDisplayName") {
+            senderDisplayName = userSenderDisplayName as! String
+        }
+        
+        
+        super.decodeRestorableStateWithCoder(coder)
+    }
+    
+    override func applicationFinishedRestoringState() {
+        // Final configuration goes here.
+        // Load images, reload data, e. t. c.
+        
+        
+        
+    }
+    
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
