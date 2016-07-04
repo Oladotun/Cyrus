@@ -124,6 +124,7 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     
         
         coder.encodeBool(switchState, forKey: "currentState")
+        coder.encodeBool(returned,forKey: "returnHome")
         
         //2
         super.encodeRestorableStateWithCoder(coder)
@@ -141,6 +142,7 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         }
     
         switchState =  coder.decodeBoolForKey("currentState")
+        returned = coder.decodeBoolForKey("returnHome")
         
         
         
