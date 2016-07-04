@@ -35,6 +35,9 @@ class SearchTableViewController: UITableViewController,UISearchResultsUpdating {
         super.viewDidLoad()
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "CheckCell")
         
+        restorationIdentifier = "SearchTableViewControllerId"
+        restorationClass = SearchTableViewController.self
+        
         resultSearchController = UISearchController(searchResultsController: nil)
         // 2
         resultSearchController.searchResultsUpdater = self
@@ -59,6 +62,8 @@ class SearchTableViewController: UITableViewController,UISearchResultsUpdating {
         theMap.delegate = self
         
     }
+    
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
