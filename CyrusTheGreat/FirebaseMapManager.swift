@@ -15,7 +15,7 @@ protocol FirebaseMapDelegate {
     func updateETAInfo(ETA:NSTimeInterval)
 }
 
-class FirebaseMapManager: NSObject {
+class FirebaseMapManager: NSObject,NSCoding {
     var meetUpPathWay: FIRDatabaseReference!
     var etaPathFirebase : FIRDatabaseReference!
     var locationPathOtherUserFirebase : FIRDatabaseReference!
@@ -26,6 +26,46 @@ class FirebaseMapManager: NSObject {
     
     let locationString = "location"
     let etaToDestinationString = "etaToDestination"
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init()
+        
+        if let userObject = aDecoder.decodeObjectForKey("currUserObjectId") {
+            self.userId = userObject as! String
+            
+        }
+        if let otherId = aDecoder.decodeObjectForKey("otherUserObjectId") {
+            self.otherUserId = otherId as! String
+        }
+        
+        if let userMeetUpPathway = aDecoder.decodeObjectForKey("cyrusMeetUpPathWay") {
+            
+            let meetUpUrl = userMeetUpPathway as! String
+            meetUpPathWay = FIRDatabase.database().referenceFromURL(meetUpUrl)
+            if (otherUserId != nil) {
+                locationPath = meetUpPathWay.child(locationString)
+                locationPathOtherUserFirebase = self.locationOtherUserFirebase()
+                etaPathFirebase = etaToDestination()
+                self.observeEtaOtherUser()
+                self.observeLocationOtherUser()
+            }
+//            segueToQuestionNode = meetUpPathWay.child("segueToQuestion")
+//            observeNextQuestionNode()
+//            observeImageOtherUser()
+        }
+        
+        
+    }
+    
+    
+    func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(userId, forKey: "currUserObjectId")
+        aCoder.encodeObject(otherUserId, forKey: "otherUserObjectId")
+        aCoder.encodeObject(meetUpPathWay.URL, forKey: "cyrusMeetUpPathWay")
+    }
+    
+    
+    
     
     init(meetPath:FIRDatabaseReference,myId:String,otherUserId:String) {
         super.init()
