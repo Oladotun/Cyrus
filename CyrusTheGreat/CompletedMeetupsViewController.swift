@@ -16,12 +16,53 @@ class CompletedMeetupsViewController: UIViewController, CompletedMeetupDelegate 
     var contactInfo:String!
     override func viewDidLoad() {
         super.viewDidLoad()
-        meetList.delegate = self
-        meetList.dataSource = self
+        restorationIdentifier = "CompletedMeetupsViewControllerId"
+        restorationClass = CompletedMeetupsViewController.self
         
-
+        
+        
         // Do any additional setup after loading the view.
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        meetList.delegate = self
+        meetList.dataSource = self
+    }
+    
+    
+    // Restore Info
+    override func encodeRestorableStateWithCoder(coder: NSCoder) {
+        //1
+        
+       coder.encodeObject(meetUpList , forKey: "metWithList")
+        
+        //2
+        super.encodeRestorableStateWithCoder(coder)
+    }
+    
+    override func decodeRestorableStateWithCoder(coder: NSCoder) {
+        
+        if let metWith =  coder.decodeObjectForKey("metWithList") {
+            meetUpList = metWith as! [[String:String]]
+        }
+        
+        
+        super.decodeRestorableStateWithCoder(coder)
+    }
+    
+    override func applicationFinishedRestoringState() {
+        // Final configuration goes here.
+        // Load images, reload data, e. t. c.
+        meetList.reloadData()
+        
+        
+    }
+    
+    
+    
+    
+    
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
