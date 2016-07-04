@@ -16,7 +16,7 @@ protocol FirebaseQuestionDelegate {
     func segueToMessages()
 }
 
-class FirebaseQuestionManager: NSObject {
+class FirebaseQuestionManager: NSObject,NSCoding {
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     let questionPrelude:[String] = ["Tell us your favorite memories about","Share a story on why you like" ,"Tell us why you got into"]
     let fieldQuestion = "Tell us why you got into your field of study ?"
@@ -25,6 +25,27 @@ class FirebaseQuestionManager: NSObject {
     var segueToMessages:FIRDatabaseReference!
     var meetUpPathWay:FIRDatabaseReference!
     var delegate:FirebaseQuestionDelegate?
+    
+    
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init()
+
+        if let userMeetUpPathway = aDecoder.decodeObjectForKey("cyrusMeetUpPathWay") {
+            let meetUpUrl = userMeetUpPathway as! String
+            meetUpPathWay = FIRDatabase.database().referenceFromURL(meetUpUrl)
+            questionPathFirebase = questionUserFirebase()
+            segueToMessages = segueToMessagesFirebase()
+            observeQuestionFirebase()
+            observeSegueToMessages()
+        }
+    }
+    
+    
+    func encodeWithCoder(aCoder: NSCoder) {
+        
+        aCoder.encodeObject(meetUpPathWay.URL, forKey: "cyrusMeetUpPathWay")
+    }
     
     
     init(meetup:FIRDatabaseReference) {
