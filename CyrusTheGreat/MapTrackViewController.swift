@@ -49,30 +49,93 @@ class MapTrackViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        appDelegate.locationManager!.delegate = self
-        appDelegate.locationManager!.desiredAccuracy = kCLLocationAccuracyBest
-        appDelegate.locationManager.distanceFilter = 20 // Updates after moves 20 meters
-        theMap.delegate = self
-        theMap.mapType = MKMapType.Standard
-        
-        firebaseMapManager.delegate = self
-        destinationPlacemark = MKPlacemark(coordinate: destinationLocation.coordinate, addressDictionary: nil)
-        
+        restorationIdentifier = "MapTrackViewControllerId"
+        restorationClass = MapTrackViewController.self
+
         myArrival = false
         userArrival = false
 
-        theMap.showsUserLocation = true
-        appDelegate.locationManager!.startUpdatingLocation()
         // Do any additional setup after loading the view.
+        
+
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        firebaseMapManager.delegate = self
+        theMap.delegate = self
+        theMap.mapType = MKMapType.Standard
+        theMap.showsUserLocation = true
+        myLocation = appDelegate.locationManager.location
+        appDelegate.locationManager.delegate = self
+        appDelegate.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        appDelegate.locationManager.distanceFilter = 20 // Updates after moves 20 meters
+        
+        appDelegate.locationManager.startUpdatingLocation()
         
         destinationAnnotation = initializeAnnotations("Destination", color: UIColor.greenColor())
         sourceAnnotation = initializeAnnotations("Current Location", color: UIColor.blueColor())
         otherUserAnnotation = initializeAnnotations("Other User Location", color: UIColor.purpleColor())
+        
+        destinationPlacemark = MKPlacemark(coordinate: destinationLocation.coordinate, addressDictionary: nil)
         destinationAnnotation.coordinate = destinationLocation.coordinate
         
         
-
+        
+        
+        
+    }
+    
+    // Restore Info
+    override func encodeRestorableStateWithCoder(coder: NSCoder) {
+        //1
+        
+    
+        if let placement = addressString {
+            coder.encodeObject(placement, forKey: "CyrusPlacedAddress")
+        }
+        
+        if let locateDestiny = destinationLocation {
+            coder.encodeObject(locateDestiny, forKey: "CyrusDestinyLocation")
+        }
+        
+        if let firebaseMap = firebaseMapManager {
+            coder.encodeObject(firebaseMap, forKey: "firebaseMapManager")
+        }
+        
+        //2
+        super.encodeRestorableStateWithCoder(coder)
+    }
+    
+    override func decodeRestorableStateWithCoder(coder: NSCoder) {
+        
+       
+        if let place = coder.decodeObjectForKey("CyrusPlacedAddress") {
+            addressString = place as! String
+            
+        }
+        if let destLC = coder.decodeObjectForKey("CyrusDestinyLocation") {
+            destinationLocation = destLC as! CLLocation
+        }
+      
+        if let firebaseMap = coder.decodeObjectForKey("firebaseMapManager") {
+            firebaseMapManager = firebaseMap as! FirebaseMapManager
+        }
+        
+        super.decodeRestorableStateWithCoder(coder)
+    }
+    
+    override func applicationFinishedRestoringState() {
+        // Final configuration goes here.
+        // Load images, reload data, e. t. c.
+//        guard let dest = destinationLocation else {return}
+//        destinationPlacemark = MKPlacemark(coordinate: dest.coordinate, addressDictionary: nil)
+//        destinationAnnotation.coordinate = dest.coordinate
+        
+    }
+    
+    static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
+        let vc = MapTrackViewController()
+        return vc
     }
     
 
@@ -189,8 +252,7 @@ extension MapTrackViewController: CLLocationManagerDelegate {
         self.drawMap(self.myLocation, otherUserLocation: self.otherUserLocation, destinationLocation: self.destinationLocation)
         
         let userInfo = [self.appDelegate.userIdentifier: "\(myLocation.coordinate.latitude) \(myLocation.coordinate.longitude)"]
-        
-//        appDelegate.userFirebaseManager.myLocationPath.updateChildValues(userInfo)
+    
         firebaseMapManager.locationPath.updateChildValues(userInfo)
         
         if let destination = destinationLocation {
@@ -282,12 +344,12 @@ extension MapTrackViewController: MKMapViewDelegate {
                 quickestRouteForSegment?.polyline.title = title
                 
 //                print("title: \(title) , expected time: \(quickestRouteForSegment?.expectedTravelTime)")
+                
                 self.labelFromETA((quickestRouteForSegment?.expectedTravelTime)!, title: title)
                 
                 var toRemove:MKOverlay!
                 for overlay in self.theMap.overlays {
                     if (title == overlay.title!!) {
-//                        print("overlay to remove \(title)")
                         toRemove = overlay
                     }
                 }
