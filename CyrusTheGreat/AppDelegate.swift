@@ -67,11 +67,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let c = connectedProfile {
             coder.encodeObject(c, forKey: "connectedProfile")
         }
+        if let u = userObject {
+            coder.encodeObject(u, forKey: "appDelegateUserObject")
+        }
+        if let initiate = iamInitiator {
+            coder.encodeObject(initiate, forKey: "chatInitated")
+        }
  
     }
     func application(application: UIApplication, didDecodeRestorableStateWithCoder coder: NSCoder) {
         if let c = coder.decodeObjectForKey("connectedProfile") {
             connectedProfile = c as! UserProfile
+            self.otherUserIdentifieir = connectedProfile.user.userId
+        }
+        if let u = coder.decodeObjectForKey("appDelegateUserObject") {
+            userObject = u as! User
+        }
+        if let initiate = coder.decodeObjectForKey("chatInitated"){
+            iamInitiator = initiate as! Bool
         }
     }
 
