@@ -23,8 +23,21 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        firebaseQuestionManager.delegate = self
+        
+        restorationIdentifier = "QuestionsViewControllerId"
+        restorationClass = QuestionsViewController.self
         userToQuestions = [String:[String]]()
+
+        interestMatchLabel.text = "Hi, Cyrus here. I am going to ask both of you about your interests to better assist with your convestations.\nClick the Next Question to start"
+        interestMatchLabel.numberOfLines = 0
+        
+        
+//        interestMatchLabel.preferredMaxLayoutWidth = 350
+        
+    }
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+        firebaseQuestionManager.delegate = self
         appDelegate.justMetUpWith = appDelegate.connectedProfile.user.userId
         appDelegate.userMetWith = appDelegate.connectedProfile.user
         
@@ -35,18 +48,45 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
             questionButton.alpha = 0.0
             
         }
+        
+        
         if let interestCount = appDelegate.connectedProfile.userMatchedCount {
+            print(interestCount)
             questionPerUser = interestCount + 1 // we added 1 for the users field
             
         }
+    }
+    
+    
+    // Restore Info
+    override func encodeRestorableStateWithCoder(coder: NSCoder) {
+        //1
         
-        interestMatchLabel.text = "Hi, Cyrus here. I am going to ask both of you about your interests to better assist with your convestations.\nClick the Next Question to start"
-        interestMatchLabel.numberOfLines = 0
+        
+        coder.encodeObject(firebaseQuestionManager, forKey: "firebaseQuestions")
+        
+        //2
+        super.encodeRestorableStateWithCoder(coder)
+    }
+    
+    override func decodeRestorableStateWithCoder(coder: NSCoder) {
+        
+        if let question = coder.decodeObjectForKey("firebaseQuestions") {
+            firebaseQuestionManager = question as! FirebaseQuestionManager
+        }
         
         
-//        interestMatchLabel.preferredMaxLayoutWidth = 350
+        
+        super.decodeRestorableStateWithCoder(coder)
+    }
+    
+    override func applicationFinishedRestoringState() {
+        // Final configuration goes here.
+        // Load images, reload data, e. t. c.
+        
         
     }
+    
     
     func updateQuestionLabel(question: String) {
         
