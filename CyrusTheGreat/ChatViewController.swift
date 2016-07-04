@@ -37,6 +37,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
     var address:String!
     var completeAddress:String!
     var buildNameTxt = ""
+
     
     var selectedCoordinate:CLLocationCoordinate2D!
     var destinationLocation: CLLocation!
@@ -143,7 +144,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
         
         iamSender = coder.decodeBoolForKey("sentLast")
         
-//        switchState =  coder.decodeBoolForKey("currentState")
         
         super.decodeRestorableStateWithCoder(coder)
     }
@@ -206,8 +206,10 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
     }
     
     func segueToNextPage() {
-//        print("message in segueToNext: \(messagesArray)")
-        performSegueWithIdentifier("yesSegue", sender: self)
+        
+      performSegueWithIdentifier("yesSegue", sender: self)
+
+        
     }
     
     func meetUpCancelled(canceller: String) {
@@ -232,7 +234,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
         sendButton.alpha = 1.0
         self.address = address
         self.completeAddress = completeAddress
-//        chatMessage = address + "\n" + completeAddress
         selectedCoordinate = coordinate
         destinationLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
         updateChatDate()
@@ -297,7 +298,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
-        if (segue.identifier == "yesSegue") {
+        if (segue.identifier == "yesSegue" ) {
             
             let destVC = segue.destinationViewController as! MeetUpAndMapViewController
             print("the message is \(messagesArray)")
