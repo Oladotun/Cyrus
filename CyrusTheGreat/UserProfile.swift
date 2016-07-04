@@ -24,7 +24,7 @@ class UserProfile:NSObject,NSCoding {
         if let userMatchedInterest = aDecoder.decodeObjectForKey("matchedInterests")  {
             self.userMatchedInterest = userMatchedInterest as! [String]
         }
-        if let userCount = aDecoder.decodeObjectForKey("userMatchedCount") {
+        if let userCount = aDecoder.decodeObjectForKey("matchedCounts") {
             userMatchedCount = userCount as! Int
         }
         
