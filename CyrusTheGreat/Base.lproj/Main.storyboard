@@ -261,7 +261,7 @@
                                     <rect key="frame" x="210" y="20" width="180" height="120"/>
                                 </variation>
                             </imageView>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Your School Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kLH-V5-KeM">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Your Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kLH-V5-KeM">
                                 <rect key="frame" x="20" y="165" width="560" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -1020,7 +1020,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vbp-42-5J3" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="ob5-UI-jYw" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-1610" y="1431"/>
+            <point key="canvasLocation" x="-2200" y="1554"/>
         </scene>
         <!--Find User Chat View Controller-->
         <scene sceneID="p9o-45-G0A">
@@ -1050,7 +1050,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="L3x-UN-VZg" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="bRD-VK-fS3" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-15" y="1449"/>
+            <point key="canvasLocation" x="-439" y="1561"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="NsC-HH-sfc">
@@ -1248,7 +1248,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tDd-jz-6ZK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-817" y="1431"/>
+            <point key="canvasLocation" x="-1266" y="1561"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ElW-80-MgB">
@@ -1292,10 +1292,10 @@
         <image name="cyrus" width="350" height="350"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="bXX-RC-uVd"/>
+        <segue reference="8iI-Sx-Oy5"/>
         <segue reference="KXb-Pi-882"/>
-        <segue reference="Yyr-oi-xHs"/>
-        <segue reference="xGD-n5-nfU"/>
-        <segue reference="eOv-3E-glu"/>
+        <segue reference="bXX-RC-uVd"/>
+        <segue reference="z0A-Dz-rAQ"/>
+        <segue reference="MgV-xI-tAr"/>
     </inferredMetricsTieBreakers>
 </document>
