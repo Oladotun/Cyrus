@@ -366,6 +366,10 @@ class FirebaseHomeManager: NSObject,NSCoding {
             return
         }
         
+        if (countInitial < 12) {
+            return
+        }
+        
         
         allActiveUsers.observeEventType(.Value, withBlock: {
             snapshot in
