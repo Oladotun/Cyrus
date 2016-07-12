@@ -22,7 +22,6 @@ class LoginPageViewController: UIViewController, UITextFieldDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         emailTextField.delegate = self
         passField.delegate = self
         passField.secureTextEntry = true
@@ -40,67 +39,64 @@ class LoginPageViewController: UIViewController, UITextFieldDelegate {
             passField.checkEmptyField()
         } else {
             
-            if (checkEmailDomain(getDomainFromEmail(emailTextField.text!.trim()))) {
-                FIRAuth.auth()?.signInWithEmail(self.emailTextField.text!.trim(), password: self.passField.text!, completion:{ user, error in
-                    if error != nil {
-                        // Something went wrong. :(
-                       self.alertView("Invalid Email or Password")
-                    } else {
-                        // Authentication just completed successfully :)
-                        // The logged in user's unique identifier
-                        if let currUser = user {
-                            
-                            self.appDelegate.firebaseUser = currUser
-                            
-                            self.appDelegate.userIdentifier = currUser.uid
-                            // Get the user interests from firebase
-                            let userProfileImage = self.appDelegate.userFire.child("users").child("\(currUser.uid)/image")
-                            userProfileImage.observeSingleEventOfType(.Value, withBlock: {
-                                snapshot in
-                                if ((snapshot.value is NSNull) || snapshot.value == nil) {
-                                    if(!self.segued) {
-                                        self.pageValue = -1
-                                        self.segued = true
-                                        self.performSegueWithIdentifier("NoInterestSegue", sender: self)
-                                    }
-                                    
-                                } else {
-                                    self.pageValue = self.pageValue + 1
-                                    if (self.pageValue > 1) {
-                                        self.performSegueWithIdentifier("LoginHomeSegue", sender: self)
-                                    }
-                                    
+            FIRAuth.auth()?.signInWithEmail(self.emailTextField.text!.trim(), password: self.passField.text!, completion:{ user, error in
+                if error != nil {
+                    // Something went wrong. :(
+                   self.alertView("Invalid Email or Password")
+                } else {
+                    // Authentication just completed successfully :)
+                    // The logged in user's unique identifier
+                    if let currUser = user {
+                        
+                        self.appDelegate.firebaseUser = currUser
+                        
+                        self.appDelegate.userIdentifier = currUser.uid
+                        // Get the user interests from firebase
+                        let userProfileImage = self.appDelegate.userFire.child("users").child("\(currUser.uid)/image")
+                        userProfileImage.observeSingleEventOfType(.Value, withBlock: {
+                            snapshot in
+                            if ((snapshot.value is NSNull) || snapshot.value == nil) {
+                                if(!self.segued) {
+                                    self.pageValue = -1
+                                    self.segued = true
+                                    self.performSegueWithIdentifier("NoInterestSegue", sender: self)
                                 }
-                            })
-                            
-                            let userInterests = self.appDelegate.userFire.child("users").child("\(currUser.uid)/interests")
-                            userInterests.observeSingleEventOfType(.Value, withBlock: { snapshot in
-                                if ((snapshot.value is NSNull)||snapshot.value == nil) {
-                                    if (!self.segued) {
-                                        self.pageValue = -2
-                                         self.segued = true
-                                        self.performSegueWithIdentifier("NoInterestSegue", sender: self)
-                                    }
-                                    
-                                } else {
-                                    self.pageValue = self.pageValue + 1
-                                    if (self.pageValue > 1) {
-                                        self.performSegueWithIdentifier("LoginHomeSegue", sender: self)
-                                    }
-    
+                                
+                            } else {
+                                self.pageValue = self.pageValue + 1
+                                if (self.pageValue > 1) {
+                                    self.performSegueWithIdentifier("LoginHomeSegue", sender: self)
+                                }
+                                
+                            }
+                        })
+                        
+                        let userInterests = self.appDelegate.userFire.child("users").child("\(currUser.uid)/interests")
+                        userInterests.observeSingleEventOfType(.Value, withBlock: { snapshot in
+                            if ((snapshot.value is NSNull)||snapshot.value == nil) {
+                                if (!self.segued) {
+                                    self.pageValue = -2
+                                     self.segued = true
+                                    self.performSegueWithIdentifier("NoInterestSegue", sender: self)
+                                }
+                                
+                            } else {
+                                self.pageValue = self.pageValue + 1
+                                if (self.pageValue > 1) {
+                                    self.performSegueWithIdentifier("LoginHomeSegue", sender: self)
                                 }
 
-                            })
-                            
-                        }
+                            }
 
+                        })
+                        
                     }
 
-                })
+                }
+
+            })
                 
-            } else {
-                emailTextField.errorHighlightTextField("School email required")
-            }
+            
             
         }
     }
@@ -135,66 +131,20 @@ class LoginPageViewController: UIViewController, UITextFieldDelegate {
     }
     
     
-    
-    func getDomainFromEmail(email:String) -> String {
-        
-        if (email.contains("@")) {
-            let indexOfDomain = email.characters.indexOf("@")
-            let indexDomain = email.characters.startIndex.distanceTo(indexOfDomain!) + 1
-            let emailString = (email as NSString).substringFromIndex(indexDomain)
-            return emailString
-            
-        } else {
-            emailTextField.errorHighlightTextField("School Email required")
-            return ""
-        }
- 
-    }
     @IBAction func sendPasswordReset(sender: AnyObject) {
 
         if (emailTextField.text!.isEmpty  ) {
             emailTextField.checkEmptyField()
             
         } else {
-            
-            if (checkEmailDomain(getDomainFromEmail(emailTextField.text!.trim()))) {
-                FIRAuth.auth()?.sendPasswordResetWithEmail(emailTextField.text!, completion: nil)
-                alertView("Password Reset sent to your email \(emailTextField.text!)")
-                
-            } else {
-                alertView("Invalid Email Entered")
-            }
-            
+            FIRAuth.auth()?.sendPasswordResetWithEmail(emailTextField.text!, completion: nil)
+            alertView("Password Reset sent to your email \(emailTextField.text!)")
+  
         }
     }
     
-    
-    func checkEmailDomain(domainCheck:String) -> Bool {
-        
-        if domainCheck.isEmpty {
-            return false
-        }
-        let path = NSBundle.mainBundle().pathForResource("usa_uni", ofType: "json")
-        let jsonData = NSData(contentsOfFile:path!)
-        let json = JSON(data:jsonData!)
-        
-        if let jsonArray = json.array {
-            for item in jsonArray {
-                if let jsonDict = item.dictionary { //  jsonDict : [String: JSon]
-                    let domain = jsonDict["domain"]!.stringValue
-                    if (domainCheck == domain) {
-                        
-                        return true
-                    }
-                    
-                }
-            }
-        }
-        
-        return false
-        
-    }
-    
+
+//    
     func alertView(message:String) {
         
         let alert = UIAlertController(title:"",message: message, preferredStyle: UIAlertControllerStyle.Alert)

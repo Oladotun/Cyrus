@@ -31,7 +31,6 @@ class FirebaseHomeManager: NSObject,NSCoding {
     let userIdString = "userId"
     let interestString = "interests"
     let locationString = "location"
-    let schoolNameString = "schoolName"
     let userFieldString = "userField"
     
     
@@ -147,11 +146,6 @@ class FirebaseHomeManager: NSObject,NSCoding {
 //                     print("interests")
                 }
                 
-                if (child.key == "school_name") {
-                    self.userObject.schoolName = childSnapshot.value as! String
-                     self.countInitial = self.countInitial + 3
-//                    print("school name")
-                }
                 
                 if (child.key == "field_study") {
                     self.userObject.userField = childSnapshot.value as! String
@@ -232,8 +226,6 @@ class FirebaseHomeManager: NSObject,NSCoding {
         }
         
         userStatusFirebase = FIRDatabase.database().referenceFromURL("\(userUrl)/status")
-
-//            Firebase(url:"\(userUrl)/status")
         userFirebase.updateChildValues(["status":userStatus])
         userObject.status = userStatus
         userStatusFirebase.onDisconnectSetValue(notActiveString)
@@ -320,7 +312,6 @@ class FirebaseHomeManager: NSObject,NSCoding {
                         
                         if (snap == "Yes" && !nextPagePath) {
                             // Initialize and Segue to next page
-//                            print("going to next page")
                             nextPagePath = true
                             self.delegate?.segueToNextPage()
                             
@@ -395,39 +386,27 @@ class FirebaseHomeManager: NSObject,NSCoding {
                                 
                                 newFound.user = User()
                                 newFound.user.userId = childValue[self.userIdString]
-                                newFound.user.schoolName = childValue[self.schoolNameString]
+                                newFound.user.firstName = childValue[self.firstNameString]
+                                newFound.user.lastName = childValue["lastName"]
+                                newFound.user.userField = childValue[self.userFieldString]
+                                newFound.user.email = childValue["email"]
+                                let coordinateInString = childValue[self.locationString]
+                                newFound.user.location = coordinateInString!.stringToCLLocation()
                                 
-                                if (self.userObject.schoolName != nil ) {
+                                let distance = newFound.user.location.distanceFromLocation(self.userObject.location)
+                                
+                                if (distance < 2000) {
+                                    newFound.user.interests = (childValue[self.interestString])?.componentsSeparatedByString(",")
+                                    let matchTopics =  self.findMatches(newFound.user.interests)
                                     
-                                    if (newFound.user.schoolName == self.userObject.schoolName) {
-                                        
-//                                        print("Found user with the same school name")
-                                        
-                                        newFound.user.firstName = childValue[self.firstNameString]
-                                        newFound.user.lastName = childValue["lastName"]
-                                        newFound.user.userField = childValue[self.userFieldString]
-                                        newFound.user.email = childValue["email"]
-                                        let coordinateInString = childValue[self.locationString]
-                                        newFound.user.location = coordinateInString!.stringToCLLocation()
-                                        
-                                        let distance = newFound.user.location.distanceFromLocation(self.userObject.location)
-                                        
-                                        if (distance < 2000) {
-                                            newFound.user.interests = (childValue[self.interestString])?.componentsSeparatedByString(",")
-                                            let matchTopics =  self.findMatches(newFound.user.interests)
-                                            
-                                            if (matchTopics.count > 0) {
-                                                newFound.userMatchedInterest = matchTopics
-                                                newFound.userMatchedCount = matchTopics.count
-                                                newFound.userDistance = distance
-                                                self.allFound.append(newFound)
-                                            }
-                                            
-                                        }
-                                        
+                                    if (matchTopics.count > 0) {
+                                        newFound.userMatchedInterest = matchTopics
+                                        newFound.userMatchedCount = matchTopics.count
+                                        newFound.userDistance = distance
+                                        self.allFound.append(newFound)
                                     }
+                                    
                                 }
-                                
                             }
                             
                         }
@@ -565,17 +544,12 @@ class FirebaseHomeManager: NSObject,NSCoding {
         userArray ["userId"] = userObject.userId
         userArray["firstName"] = userObject.firstName
         userArray["lastName"] = userObject.lastName
-        userArray["schoolName"] = userObject.schoolName
         userArray["userField"] = userObject.userField
         userArray["location"] = "\(userObject.location.coordinate.latitude) \(userObject.location.coordinate.longitude)"
         userArray["interests"] = userObject.interests.joinWithSeparator(",")
         userArray["email"] = userObject.email
-        
-//        let userIdLocation = [myId:userArray]
         allActiveUsers.child(myId).updateChildValues(userArray)
-        
         userActiveFirebasePath = allActiveUsers.child(userId)
-//            childByAppendingPath(userId)
         userActiveFirebasePath.onDisconnectRemoveValue()
         
         

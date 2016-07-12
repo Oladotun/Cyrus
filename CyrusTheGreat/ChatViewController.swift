@@ -88,6 +88,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
         messageCount = 0
         warningLabel.text = ""
         warningLabel.textColor = UIColor.redColor()
+//        meetTimePicker
 
     }
   
@@ -153,7 +154,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, ChatViewDelegat
         // Load images, reload data, e. t. c.
         
         guard let firebase = firebaseChatManager else {return}
-        print("Decoded")
         firebase.delegate = self
         updateTableView()
         

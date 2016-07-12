@@ -238,10 +238,11 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         firebaseHomeManager.userObject.status = notActiveString
         self.switchState = false
         locationManager.stopUpdatingLocation()
+        NSUserDefaults.standardUserDefaults().removeObjectForKey("cyrusUserVerified")
         try! FIRAuth.auth()!.signOut()
         self.performSegueWithIdentifier("logOutSegue", sender: self)
         
-        print ("log out working")
+//        print ("log out working")
         
     }
     
@@ -269,7 +270,7 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
     
     func receiveInvite(invitedUser: UserProfile) {
         schedule("Hey you have an invite for a meetup!")
-        alertInvite = UIAlertController(title: "", message: "Hi, You have an invite to catch up from \(invitedUser.user.firstName), who goes to \(invitedUser.user.schoolName) and is in the field of \(invitedUser.user.userField) . \(invitedUser.user.firstName) shares \(invitedUser.userMatchedInterest) as interests with you. We will be discussing about them during your meet up.\n\n Click accept to select a meet up location or decline to cancel", preferredStyle: UIAlertControllerStyle.Alert)
+        alertInvite = UIAlertController(title: "", message: "Hi, You have an invite to catch up from \(invitedUser.user.firstName).\(invitedUser.user.firstName) is in the field of \(invitedUser.user.userField). \(invitedUser.user.firstName) shares \(invitedUser.userMatchedInterest) as topic of interests with you. You will be discussing about them during your meet up.\n\n Click accept to select a meet up location or decline to cancel", preferredStyle: UIAlertControllerStyle.Alert)
         
         let acceptAction: UIAlertAction = UIAlertAction(title: "Accept", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
             
@@ -318,7 +319,7 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         
         if (!self.firebaseHomeManager.setReceiver) {
             
-            let alert = UIAlertController(title:"Invite accepted",message:"Hi, You have been connected with \(firebaseHomeManager.connectedUserInfo.user.firstName), who goes to \(firebaseHomeManager.connectedUserInfo.user.schoolName) and is in the field of \(firebaseHomeManager.connectedUserInfo.user.userField). \(firebaseHomeManager.connectedUserInfo.user.firstName) shares \(firebaseHomeManager.connectedUserInfo.userMatchedInterest) as interests with you. We will be discussing about them during your meet up.\n\n Click okay to select a meet up location" , preferredStyle: UIAlertControllerStyle.Alert)
+            let alert = UIAlertController(title:"Invite accepted",message:"Hi, You have been connected with \(firebaseHomeManager.connectedUserInfo.user.firstName), who is in the field of \(firebaseHomeManager.connectedUserInfo.user.userField). \(firebaseHomeManager.connectedUserInfo.user.firstName) shares \(firebaseHomeManager.connectedUserInfo.userMatchedInterest) as interests with you. You will be discussing about them during your meet up.\n\n Click okay to select a meet up location" , preferredStyle: UIAlertControllerStyle.Alert)
             
             let doneAction: UIAlertAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
                 

@@ -60,7 +60,6 @@ class FrontPageViewController: UIViewController {
             
             if let user = FIRAuth.auth()?.currentUser {
                 appDelegate.firebaseUser = user
-                
                 autData = user.uid
                 verified = user.emailVerified
                 

@@ -14,7 +14,11 @@ class VerifyEmailViewController: UIViewController {
     var timer:NSTimer!
     override func viewDidLoad() {
         super.viewDidLoad()
-        FIRAuth.auth()?.currentUser?.sendEmailVerificationWithCompletion(nil)
+        
+        let cachedTopic = NSUserDefaults.standardUserDefaults().boolForKey("cyrusUserVerified")
+        if (!cachedTopic) {
+          FIRAuth.auth()?.currentUser?.sendEmailVerificationWithCompletion(nil)
+        }
         timer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: #selector(VerifyEmailViewController.checkEmailVerified), userInfo: nil, repeats: true)
         
 
@@ -33,7 +37,9 @@ class VerifyEmailViewController: UIViewController {
         if let verifyStatus = FIRAuth.auth()?.currentUser?.emailVerified {
             if (verifyStatus) {
                 timer.invalidate()
+                NSUserDefaults.standardUserDefaults().setBool(true, forKey: "cyrusUserVerified")
                 self.performSegueWithIdentifier("ProfilePictureSegue", sender: self)
+                
                 
             }
             

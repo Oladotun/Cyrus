@@ -92,20 +92,14 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate,UIPickerVie
             lastNameField.checkEmptyField()
         } else {
             
-            print(schoolEmailField.text!)
-            if (checkEmailDomain(getDomainFromEmail(schoolEmailField.text!))) {
+//            print(schoolEmailField.text!)
+//            if (checkEmailDomain(getDomainFromEmail(schoolEmailField.text!))) {
                 FIRAuth.auth()?.createUserWithEmail(schoolEmailField.text!.trim(), password: passwordField.text!) {
                     ( user, error )in
                         if error != nil {
                             // There was an error creating the account
                             print(error)
                         } else {
-                            
-//                            startingPassword.random()
-                            
-                            
-                            // Verify email
-                            
                             
                             FIRAuth.auth()?.signInWithEmail(self.schoolEmailField.text!.trim(), password: self.passwordField.text!, completion:{ user, error in
                                 if error != nil {
@@ -116,7 +110,6 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate,UIPickerVie
                                     let newUser = [
                                         "first_name": self.firstNameField.text!,
                                         "last_name": self.lastNameField.text!,
-                                        "school_name": self.schoolName,
                                         "field_study": self.studyField
                                     ]
                                     
@@ -130,19 +123,7 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate,UIPickerVie
    
                         }
                 }
-                
-            } else {
-                
-//                print ("wrong usa student domain")
-                cyrusTalkLabel.text = "Wrong Student Domain, Re-enter."
-                cyrusTalkLabel.textColor = UIColor.redColor()
-                cyrusTalkLabel.textAlignment = NSTextAlignment.Left
 
-                
-                
-            }
-
-            
         }
         
     
@@ -150,41 +131,41 @@ class SignUpPageViewController: UIViewController,UITextFieldDelegate,UIPickerVie
     }
     
     
-    func getDomainFromEmail(email:String) -> String {
-        
-        let indexOfDomain = email.characters.indexOf("@")
-        let indexDomain = email.characters.startIndex.distanceTo(indexOfDomain!) + 1
-        let emailString = (email as NSString).substringFromIndex(indexDomain)
-        
-        return emailString
-        
-    }
-    
-    
-    func checkEmailDomain(domainCheck:String) -> Bool {
-        let path = NSBundle.mainBundle().pathForResource("usa_uni", ofType: "json")
-        let jsonData = NSData(contentsOfFile:path!)
-        let json = JSON(data:jsonData!)
-        
-        if let jsonArray = json.array {
-            for item in jsonArray {
-                if let jsonDict = item.dictionary { //  jsonDict : [String: JSon] 
-                    let domain = jsonDict["domain"]!.stringValue
-                    if (domainCheck == domain) {
-                        schoolName = jsonDict["name"]!.stringValue
-                        print("found array")
-                        print("our school name \(schoolName)")
-                        
-                        return true
-                    }
- 
-                }
-            }
-        }
-        
-        return false
-        
-    }
+//    func getDomainFromEmail(email:String) -> String {
+//        
+//        let indexOfDomain = email.characters.indexOf("@")
+//        let indexDomain = email.characters.startIndex.distanceTo(indexOfDomain!) + 1
+//        let emailString = (email as NSString).substringFromIndex(indexDomain)
+//        
+//        return emailString
+//        
+//    }
+//    
+//    
+//    func checkEmailDomain(domainCheck:String) -> Bool {
+//        let path = NSBundle.mainBundle().pathForResource("usa_uni", ofType: "json")
+//        let jsonData = NSData(contentsOfFile:path!)
+//        let json = JSON(data:jsonData!)
+//        
+//        if let jsonArray = json.array {
+//            for item in jsonArray {
+//                if let jsonDict = item.dictionary { //  jsonDict : [String: JSon] 
+//                    let domain = jsonDict["domain"]!.stringValue
+//                    if (domainCheck == domain) {
+//                        schoolName = jsonDict["name"]!.stringValue
+//                        print("found array")
+//                        print("our school name \(schoolName)")
+//                        
+//                        return true
+//                    }
+// 
+//                }
+//            }
+//        }
+//        
+//        return false
+//        
+//    }
     
 
     

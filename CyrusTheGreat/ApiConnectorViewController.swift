@@ -36,7 +36,7 @@ class ApiConnectorViewController: UIViewController,UIImagePickerControllerDelega
             inferredTopic = cachedTopic
             
         }
-        print(inferredTopic)
+       
         
         // Do any additional setup after loading the view.
     }
@@ -126,7 +126,6 @@ class ApiConnectorViewController: UIViewController,UIImagePickerControllerDelega
         if (segue.identifier == "TwitterInferPage") {
             let destVC = segue.destinationViewController as! CollectionTwitterViewController
             destVC.topics = inferredTopic
-            print(destVC.topics)
         }
 //    
     }
