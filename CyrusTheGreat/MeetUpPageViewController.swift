@@ -9,7 +9,7 @@
 import UIKit
 
 
-class MeetUpPageViewController: UIViewController, MapTrackerDelegate,FirebaseInfoMeetUpManagerDelegate { // ,CBCentralManagerDelegate , UITextFieldDelegate
+class MeetUpPageViewController: UIViewController,FirebaseInfoMeetUpManagerDelegate { // ,CBCentralManagerDelegate , UITextFieldDelegate
 
     
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -25,26 +25,22 @@ class MeetUpPageViewController: UIViewController, MapTrackerDelegate,FirebaseInf
     @IBOutlet weak var otherUserInfo: UILabel!
     
     @IBOutlet weak var timeToMeetUpAlert: UILabel!
-    @IBOutlet weak var meetupTime: UILabel!
-    @IBOutlet weak var meetupDesc: UILabel!
+
     @IBOutlet weak var yesButton: UIButton!
     @IBOutlet weak var arrivalQuestions: UILabel!
     
+    @IBOutlet weak var haveYouSeenPrompt: UILabel!
     var otherUserID:String!
-//    var firebaseManager:FirebaseManager!
     var firebaseMeetUpManager: FirebaseInfoMeetUpManager!
-//    var segueToQuestionNode : Firebase!
-//    var questionTime:Bool!
     var time:String!
     var timer:NSTimer!
     
-    init(time:String,destination:String,firebase:FirebaseInfoMeetUpManager) {
+    init(firebase:FirebaseInfoMeetUpManager) {
         super.init(nibName: nil, bundle: nil)
-        self.time = time
-        self.destination = destination
         self.firebaseMeetUpManager = firebase
         restorationIdentifier = "MeetUpPageViewControllerId"
         restorationClass = MeetUpPageViewController.self
+
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -60,13 +56,12 @@ class MeetUpPageViewController: UIViewController, MapTrackerDelegate,FirebaseInf
         myImageLoader.startAnimating()
         otherImageLoader.startAnimating()
         timer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: #selector(MeetUpPageViewController.updateMyImage), userInfo: nil, repeats: true)
+        haveYouSeenPrompt.text = "Have you seen \(appDelegate.connectedProfile.user.firstName) ?"
 
 
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
-        meetupDesc.text = "MeetUp Destination is at \(destination)"
-        meetupTime.text = "Planned meetup time is \(time)"
         timeToMeetUpAlert.text = ""
         self.timeToMeetUpAlert.textColor = UIColor.redColor()
         yesButton.alpha = 1.0
@@ -97,15 +92,6 @@ class MeetUpPageViewController: UIViewController, MapTrackerDelegate,FirebaseInf
     
     // Restore Info
     override func encodeRestorableStateWithCoder(coder: NSCoder) {
-        //1
-        
-        if let meetTime = time {
-            coder.encodeObject(meetTime, forKey: "CyrusChatTime")
-        }
-        if let destiny = destination {
-            coder.encodeObject(destiny, forKey: "CyrusDestination")
-        }
-       
         
         if let firebase = firebaseMeetUpManager {
             coder.encodeObject(firebase, forKey: "firebaseMeetUpInfo")
@@ -116,14 +102,7 @@ class MeetUpPageViewController: UIViewController, MapTrackerDelegate,FirebaseInf
     }
     
     override func decodeRestorableStateWithCoder(coder: NSCoder) {
-        
-        if let ct = coder.decodeObjectForKey("CyrusChatTime") {
-            time = ct as! String
-        }
-        if let dest = coder.decodeObjectForKey("CyrusDestination") {
-            destination = dest as! String
-        }
-        
+
         if let firebaseInfo = coder.decodeObjectForKey("firebaseMeetUpInfo") {
             firebaseMeetUpManager = firebaseInfo as! FirebaseInfoMeetUpManager
         }
@@ -139,23 +118,51 @@ class MeetUpPageViewController: UIViewController, MapTrackerDelegate,FirebaseInf
     }
     
     static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
-        var time = ""
-        var destination = ""
         var firebaseMeetUpManager:FirebaseInfoMeetUpManager
-        if let ct = coder.decodeObjectForKey("CyrusChatTime") {
-            time = ct as! String
-        }
-        if let dest = coder.decodeObjectForKey("CyrusDestination") {
-            destination = dest as! String
+        firebaseMeetUpManager = coder.decodeObjectForKey("firebaseMeetUpInfo") as! FirebaseInfoMeetUpManager
+        let vc = MeetUpPageViewController(firebase: firebaseMeetUpManager)
+        return vc
+    }
+    
+    func meetUpCancelled(canceller:String) {
+        
+        let alert = UIAlertController(title:"",message: "\(canceller) ended meetings", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        let doneAction: UIAlertAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
+            
+            self.performSegueWithIdentifier("GoHome", sender: self)
         }
         
-//        if let firebaseInfo = coder.decodeObjectForKey("firebaseMeetUpInfo") {
-//            firebaseMeetUpManager = firebaseInfo as! FirebaseInfoMeetUpManager
-//        }
-        print("\(time) loaded")
-        firebaseMeetUpManager = coder.decodeObjectForKey("firebaseMeetUpInfo") as! FirebaseInfoMeetUpManager
-        let vc = MeetUpPageViewController(time: time,destination: destination,firebase: firebaseMeetUpManager)
-        return vc
+        alert.addAction(doneAction)
+        
+        NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+            self.presentViewController(alert, animated: true, completion: nil)
+        })
+        
+    }
+    
+    
+    
+    func exitInfo() {
+        let alert = UIAlertController(title: "", message: "Are you sure you want to exit the chat?", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        let acceptAction: UIAlertAction = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
+            
+            let userEnd = [self.appDelegate.userObject.firstName : "_end_chat_"]
+            self.firebaseMeetUpManager.segueCancelMeetUp.setValue(userEnd)
+  
+        }
+        
+        let declineAction: UIAlertAction = UIAlertAction(title: "No", style: UIAlertActionStyle.Cancel) { (alertAction) -> Void in
+            
+        }
+        
+        alert.addAction(acceptAction)
+        alert.addAction(declineAction)
+        
+        NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
     }
     
     
@@ -166,17 +173,18 @@ class MeetUpPageViewController: UIViewController, MapTrackerDelegate,FirebaseInf
         NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
             // Set up fire UID of user
             self.performSegueWithIdentifier("toQuestion", sender: self)
-
-
         }
         
     }
     
     func alertOtherUserArrival() {
         
-        self.timeToMeetUpAlert.text = "Other user has arrived location"
+        self.timeToMeetUpAlert.text = "Other user has seen you, Click yes to continue"
         
         
+    }
+    @IBAction func cancelMeetUpInfo(sender: AnyObject) {
+        exitInfo()
     }
     
     func arrived() {
@@ -201,6 +209,9 @@ class MeetUpPageViewController: UIViewController, MapTrackerDelegate,FirebaseInf
     
     }
     
+    @IBAction func exitBarButton(sender: AnyObject) {
+        exitInfo()
+    }
     
     
   

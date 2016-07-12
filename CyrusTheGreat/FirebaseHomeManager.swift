@@ -161,8 +161,12 @@ class FirebaseHomeManager: NSObject,NSCoding {
                     
                 }
   
-                if (self.countInitial > 14 && self.activeUserCalled) {
-                    self.updateActiveUserFirebase()
+                if (self.countInitial > 11) {
+                    self.activateUserObserver()
+                    if (self.activeUserCalled) {
+                        self.updateActiveUserFirebase()
+                    }
+                    
                     
                 }
                 
@@ -362,6 +366,7 @@ class FirebaseHomeManager: NSObject,NSCoding {
             return
         }
         
+        
         allActiveUsers.observeEventType(.Value, withBlock: {
             snapshot in
             self.allFound = [UserProfile]()
@@ -533,13 +538,10 @@ class FirebaseHomeManager: NSObject,NSCoding {
         }
         activeUserCalled = true
         
-        if (countInitial < 15) {
-            print(countInitial)
-            print("Not all set")
+        if (countInitial < 12) {
             return
         }
-
-        //        var userArray = [String]()
+        
         var userArray = [String : String]()
         userArray ["userId"] = userObject.userId
         userArray["firstName"] = userObject.firstName
@@ -578,11 +580,4 @@ class FirebaseHomeManager: NSObject,NSCoding {
 
 }
 
-extension String {
-    func stringToImage() -> UIImage {
-        let dataDecoded:NSData? = NSData(base64EncodedString: self, options:.IgnoreUnknownCharacters)
-        let decodedimage:UIImage = UIImage(data: dataDecoded!)!
-        return decodedimage
-        
-    }
-}
+

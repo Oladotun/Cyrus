@@ -12,8 +12,8 @@ protocol FirebaseInfoMeetUpManagerDelegate {
     
     func segueToNext()
     func alertOtherUserArrival()
-//    func updateMyImage(image:UIImage)
     func updateOtherUserImage(image:UIImage)
+    func meetUpCancelled(canceller:String)
     
 }
 
@@ -21,6 +21,7 @@ class FirebaseInfoMeetUpManager: NSObject,NSCoding {
     
     var meetUpPathWay:FIRDatabaseReference!
     var segueToQuestionNode:FIRDatabaseReference!
+    var segueCancelMeetUp: FIRDatabaseReference!
     var delegate:FirebaseInfoMeetUpManagerDelegate?
     var userId:String!
     var otherUserId:String!
@@ -42,6 +43,7 @@ class FirebaseInfoMeetUpManager: NSObject,NSCoding {
             let meetUpUrl = userMeetUpPathway as! String
             meetUpPathWay = FIRDatabase.database().referenceFromURL(meetUpUrl)
             segueToQuestionNode = meetUpPathWay.child("segueToQuestion")
+            segueCancelMeetUp = meetUpPathWay.child("pathWayCancelMeet")
             observeNextQuestionNode()
             observeImageOtherUser()
         }
@@ -66,6 +68,7 @@ class FirebaseInfoMeetUpManager: NSObject,NSCoding {
         super.init()
         meetUpPathWay = meetPath
         segueToQuestionNode = meetUpPathWay.child("segueToQuestion")
+        segueCancelMeetUp = meetUpPathWay.child("pathWayCancelMeet")
         userId = myId
         self.questionTime = false
         self.otherUserId = otherUserId
@@ -81,7 +84,7 @@ class FirebaseInfoMeetUpManager: NSObject,NSCoding {
         let imageRef = storage.referenceForURL("gs://project-5582715640635114460.appspot.com/\(otherUserId).jpg")
         
         // Download in memory with a maximum allowed size of 1MB (1 * 1024 * 1024 bytes)
-        imageRef.dataWithMaxSize(1 * 1024 * 1024) { (data, error) -> Void in
+        imageRef.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
             if (error != nil) {
                 // Uh-oh, an error occurred!
             } else {
@@ -93,6 +96,26 @@ class FirebaseInfoMeetUpManager: NSObject,NSCoding {
             }
         }
         
+    }
+    func observeCancelMeetuPNode() {
+        segueCancelMeetUp.observeEventType(.Value, withBlock: {
+            snapshot in
+            
+            for child in snapshot.children {
+
+                let childSnapshot = snapshot.childSnapshotForPath(child.key!!)
+                
+                if let childValue = childSnapshot.value as? String {
+                    
+                    if (childValue.contains("_end_chat_")) {
+                        let childKey :String = child.key!!
+                        self.delegate?.meetUpCancelled(childKey)
+                    }
+                    
+                }
+
+            }
+        })
     }
     
     func observeNextQuestionNode() {

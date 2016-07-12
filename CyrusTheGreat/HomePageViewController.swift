@@ -323,7 +323,7 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
             
             let doneAction: UIAlertAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
                 
-                 self.performSegueWithIdentifier("idSegueChat", sender: self)
+                 self.performSegueWithIdentifier("meetWearingSegue", sender: self)
             }
             
             alert.addAction(doneAction)
@@ -333,7 +333,7 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
             })
             
         } else {
-           self.performSegueWithIdentifier("idSegueChat", sender: self)
+           self.performSegueWithIdentifier("meetWearingSegue", sender: self)
         }
         
     }
@@ -400,14 +400,14 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
-        if segue.identifier == "idSegueChat" {
+        if segue.identifier == "meetWearingSegue" {
+    
+            let childVC = segue.destinationViewController as! UINavigationController
+            let childViewController = childVC.topViewController as! MeetUpPageViewController
+            childViewController.firebaseMeetUpManager = FirebaseInfoMeetUpManager(meetPath: firebaseHomeManager.meetUpPathWay, myId: firebaseHomeManager.userId, otherUserId: firebaseHomeManager.connectedUserInfo.user.userId)
             
-            let destinationVC = segue.destinationViewController as! ChatViewController
             self.chatInitiator = !self.firebaseHomeManager.setReceiver
-            
-            destinationVC.firebaseChatManager = FirebaseChatManager(meetUpPath: self.firebaseHomeManager.meetUpPathWay,currUserId: appDelegate.userIdentifier)
             appDelegate.otherUserIdentifieir = firebaseHomeManager.connectedUserInfo.user.userId
-            destinationVC.myName = self.firebaseHomeManager.userObject.firstName
             appDelegate.userObject = self.firebaseHomeManager.userObject
             appDelegate.connectedProfile = self.firebaseHomeManager.connectedUserInfo
             firebaseHomeManager.removeActiveUser(appDelegate.userIdentifier)
@@ -420,7 +420,6 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
             self.switchState = false
             decoded = false
             if (self.chatInitiator == true) {
-               destinationVC.initiator = self.chatInitiator
                appDelegate.iamInitiator = self.chatInitiator
             }
             
@@ -428,7 +427,8 @@ class HomePageViewController: UIViewController, FirebaseHomeDelegate, CLLocation
         }
         
         if (segue.identifier == "segueMeetupInfo"){
-            let destVC = segue.destinationViewController as! CompletedMeetupsViewController
+            let destVCNav = segue.destinationViewController as! UINavigationController
+            let destVC = destVCNav.topViewController as! CompletedMeetupsViewController
             destVC.meetUpList = firebaseHomeManager.userMetUpWithDict
             
         }

@@ -78,3 +78,34 @@ extension Array {
         return self[index]
     }
 }
+
+extension String {
+    func stringToImage() -> UIImage {
+        let dataDecoded:NSData? = NSData(base64EncodedString: self, options:.IgnoreUnknownCharacters)
+        let decodedimage:UIImage = UIImage(data: dataDecoded!)!
+        return decodedimage
+        
+    }
+    func contains(find: String) -> Bool{
+        return self.rangeOfString(find) != nil
+    }
+    func stringToCLLocation() -> CLLocation{
+        let coordinateString = self.componentsSeparatedByString(" ")
+        
+        if (coordinateString.count < 2) {
+            NSException(name: "Coordinate String Array Error", reason: "The coordinate string after split contains 1 or less elements", userInfo: nil).raise()
+        }
+        
+        let latString = coordinateString[0]
+        let longString = coordinateString[1]
+        
+        let lat = (latString as NSString).doubleValue
+        let long = (longString as NSString).doubleValue
+        
+        let latDegrees: CLLocationDegrees = lat
+        let longDegrees: CLLocationDegrees = long
+        
+        return CLLocation(latitude: latDegrees, longitude: longDegrees)
+        
+    }
+}

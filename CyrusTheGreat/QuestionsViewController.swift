@@ -96,7 +96,6 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
     
     func meetUpCancelled(canceller:String) {
         
-        firebaseQuestionManager.meetUpPathWay.removeValue()
         let alert = UIAlertController(title:"",message: "\(canceller) ended meetings", preferredStyle: UIAlertControllerStyle.Alert)
         
         let doneAction: UIAlertAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
@@ -113,8 +112,6 @@ class QuestionsViewController: UIViewController,FirebaseQuestionDelegate {
     }
     
     func chattingDone() {
-        
-        firebaseQuestionManager.meetUpPathWay.removeValue()
         let alert = UIAlertController(title:"",message: "Chat Done!\n Stay in touch with each others by sharing contact information such as Email, Linkedln, Facebook or Phone number.", preferredStyle: UIAlertControllerStyle.Alert)
         
         let doneAction: UIAlertAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
