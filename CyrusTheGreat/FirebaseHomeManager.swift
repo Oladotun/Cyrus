@@ -141,8 +141,23 @@ class FirebaseHomeManager: NSObject,NSCoding {
                 }
                 
                 if (child.key == "interests") {
-                    self.userObject.interests = childSnapshot.value as! [String]
-                     self.countInitial = self.countInitial + 2
+                     var interestArray = [String]()
+                    if let interestValue = childSnapshot.value {
+                        let value = interestValue as! NSMutableArray
+                        for item in value {
+                            if (item is NSNull) {
+                                
+                            }else {
+                                interestArray.append(item as! String)
+                            }
+                           
+                        }
+                        
+                        self.userObject.interests =  interestArray
+                        self.countInitial = self.countInitial + 2 
+                        
+                    }
+                    
 //                     print("interests")
                 }
                 
